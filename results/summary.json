@@ -1,0 +1,1939 @@
+{
+  "disclaimer": "Simplified simulation of data-transfer rules; NOT legal advice.",
+  "backend": "mock",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "n_tasks_per_run": 300,
+  "auction_format": "second_price",
+  "log_file": "results/transactions.jsonl",
+  "log_lines": 5400,
+  "elapsed_s": 0.19,
+  "combos": {
+    "posted_price/cheapest": {
+      "mechanism": "posted_price",
+      "policy": "cheapest",
+      "aggregate": {
+        "n_tx": {
+          "mean": 300.0,
+          "std": 0.0
+        },
+        "n_allowed": {
+          "mean": 238.33333333333334,
+          "std": 5.131601439446884
+        },
+        "n_blocked": {
+          "mean": 61.0,
+          "std": 5.291502622129181
+        },
+        "n_unfilled": {
+          "mean": 0.6666666666666666,
+          "std": 0.5773502691896257
+        },
+        "fill_rate": {
+          "mean": 0.7944444444444444,
+          "std": 0.01710533813148961
+        },
+        "accuracy": {
+          "mean": 0.7554721665014257,
+          "std": 0.01948039759139335
+        },
+        "total_cost": {
+          "mean": 2.294341333333333,
+          "std": 0.05497099153492989
+        },
+        "total_fee": {
+          "mean": 0.06019778666666667,
+          "std": 0.001665945178609827
+        },
+        "mean_latency_ms": {
+          "mean": 1014.5429321730193,
+          "std": 3.1047276258281347
+        },
+        "p95_latency_ms": {
+          "mean": 1704.2407303774005,
+          "std": 21.64082516556772
+        },
+        "blocked_attempts": {
+          "mean": 61.0,
+          "std": 5.291502622129181
+        },
+        "violating_flows_through": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "compliance_violations": {
+          "mean": 61.0,
+          "std": 5.291502622129181
+        },
+        "blocked_by_rule": {
+          "BR-LGPD-33-VIII": {
+            "mean": 7.666666666666667,
+            "std": 3.7859388972001824
+          },
+          "CN-DSL-31": {
+            "mean": 25.0,
+            "std": 4.58257569495584
+          },
+          "CN-PIPL-38": {
+            "mean": 15.666666666666666,
+            "std": 2.516611478423583
+          },
+          "CN-PIPL-40": {
+            "mean": 12.666666666666666,
+            "std": 2.0816659994661326
+          }
+        },
+        "cross_border_share": {
+          "mean": 0.6308087821887366,
+          "std": 0.010390380782304509
+        },
+        "fraud_exposure": {
+          "mean": 0.4754623052506431,
+          "std": 0.004850309541864808
+        },
+        "fraud_accuracy_claimed": {
+          "mean": 0.9228485146449747,
+          "std": 0.0015456219234167116
+        },
+        "fraud_accuracy_actual": {
+          "mean": 0.6450520636361344,
+          "std": 0.04878334632544971
+        },
+        "fraud_accuracy_gap": {
+          "mean": 0.2777964510088404,
+          "std": 0.048041211953005356
+        },
+        "honest_accuracy": {
+          "mean": 0.8559182118364236,
+          "std": 0.009728791438156782
+        },
+        "total_buyer_surplus": {
+          "mean": 10.888794213333332,
+          "std": 0.16218697061533097
+        },
+        "total_seller_profit": {
+          "mean": 1.1066820000000002,
+          "std": 0.023451663416482953
+        },
+        "buyer_surplus": {
+          "buyer_br_1": {
+            "mean": 2.12883776,
+            "std": 0.13922620634714986
+          },
+          "buyer_br_2": {
+            "mean": 2.11196964,
+            "std": 0.03190059718633511
+          },
+          "buyer_cn_1": {
+            "mean": 1.267963093333333,
+            "std": 0.42085934393132535
+          },
+          "buyer_cn_2": {
+            "mean": 1.4511375866666665,
+            "std": 0.2242114094231784
+          },
+          "buyer_sg_1": {
+            "mean": 2.1513650666666666,
+            "std": 0.1253102188475198
+          },
+          "buyer_sg_2": {
+            "mean": 1.7775210666666663,
+            "std": 0.24923290627173098
+          }
+        },
+        "seller_profit": {
+          "seller_br": {
+            "mean": 0.5376013333333334,
+            "std": 0.007388009023636548
+          },
+          "seller_cn": {
+            "mean": 0.060381333333333335,
+            "std": 0.01681681507697975
+          },
+          "seller_sg": {
+            "mean": 0.5086993333333334,
+            "std": 0.004000488261866776
+          }
+        }
+      },
+      "per_seed": [
+        {
+          "n_tx": 300,
+          "n_allowed": 244,
+          "n_blocked": 55,
+          "n_unfilled": 1,
+          "fill_rate": 0.8133333333333334,
+          "accuracy": 0.7418032786885246,
+          "total_cost": 2.357071,
+          "total_fee": 0.06201404,
+          "mean_latency_ms": 1018.0260281755423,
+          "p95_latency_ms": 1719.6783900682444,
+          "blocked_attempts": 55,
+          "violating_flows_through": 0,
+          "compliance_violations": 55,
+          "blocked_by_rule": {
+            "CN-PIPL-40": 11,
+            "CN-DSL-31": 26,
+            "CN-PIPL-38": 13,
+            "BR-LGPD-33-VIII": 5
+          },
+          "cross_border_share": 0.6311475409836066,
+          "fraud_exposure": 0.47950819672131145,
+          "fraud_accuracy_claimed": 0.9211111111111111,
+          "fraud_accuracy_actual": 0.6068376068376068,
+          "fraud_accuracy_gap": 0.3142735042735043,
+          "honest_accuracy": 0.8661417322834646,
+          "total_buyer_surplus": 10.910914959999998,
+          "total_seller_profit": 1.1334890000000002,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.7372807599999995,
+            "buyer_cn_2": 1.20661928,
+            "buyer_sg_1": 2.2382082,
+            "buyer_sg_2": 1.6301491999999993,
+            "buyer_br_1": 2.01787604,
+            "buyer_br_2": 2.0807814799999997
+          },
+          "seller_profit": {
+            "seller_cn": 0.079392,
+            "seller_sg": 0.5133170000000001,
+            "seller_br": 0.54078
+          }
+        },
+        {
+          "n_tx": 300,
+          "n_allowed": 237,
+          "n_blocked": 63,
+          "n_unfilled": 0,
+          "fill_rate": 0.79,
+          "accuracy": 0.7468354430379747,
+          "total_cost": 2.254577,
+          "total_fee": 0.05874076,
+          "mean_latency_ms": 1013.5364796135112,
+          "p95_latency_ms": 1713.5390774805483,
+          "blocked_attempts": 63,
+          "violating_flows_through": 0,
+          "compliance_violations": 63,
+          "blocked_by_rule": {
+            "CN-PIPL-40": 12,
+            "CN-DSL-31": 29,
+            "CN-PIPL-38": 16,
+            "BR-LGPD-33-VIII": 6
+          },
+          "cross_border_share": 0.620253164556962,
+          "fraud_exposure": 0.4767932489451477,
+          "fraud_accuracy_claimed": 0.924070796460177,
+          "fraud_accuracy_actual": 0.6283185840707964,
+          "fraud_accuracy_gap": 0.29575221238938054,
+          "honest_accuracy": 0.8548387096774194,
+          "total_buyer_surplus": 10.716682239999999,
+          "total_seller_profit": 1.089959,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.1425209399999998,
+            "buyer_cn_2": 1.49971598,
+            "buyer_sg_1": 2.007712,
+            "buyer_sg_2": 1.6371318,
+            "buyer_br_1": 2.2850636399999997,
+            "buyer_br_2": 2.14453788
+          },
+          "seller_profit": {
+            "seller_cn": 0.054304000000000005,
+            "seller_sg": 0.506499,
+            "seller_br": 0.529156
+          }
+        },
+        {
+          "n_tx": 300,
+          "n_allowed": 234,
+          "n_blocked": 65,
+          "n_unfilled": 1,
+          "fill_rate": 0.78,
+          "accuracy": 0.7777777777777778,
+          "total_cost": 2.271376,
+          "total_fee": 0.05983856,
+          "mean_latency_ms": 1012.0662887300043,
+          "p95_latency_ms": 1679.5047235834086,
+          "blocked_attempts": 65,
+          "violating_flows_through": 0,
+          "compliance_violations": 65,
+          "blocked_by_rule": {
+            "CN-PIPL-38": 18,
+            "CN-DSL-31": 20,
+            "CN-PIPL-40": 15,
+            "BR-LGPD-33-VIII": 12
+          },
+          "cross_border_share": 0.6410256410256411,
+          "fraud_exposure": 0.4700854700854701,
+          "fraud_accuracy_claimed": 0.9233636363636363,
+          "fraud_accuracy_actual": 0.7,
+          "fraud_accuracy_gap": 0.22336363636363632,
+          "honest_accuracy": 0.8467741935483871,
+          "total_buyer_surplus": 11.03878544,
+          "total_seller_profit": 1.0965980000000002,
+          "buyer_surplus": {
+            "buyer_cn_1": 0.9240875799999998,
+            "buyer_cn_2": 1.6470775,
+            "buyer_sg_1": 2.208175,
+            "buyer_sg_2": 2.0652822,
+            "buyer_br_1": 2.0835736000000002,
+            "buyer_br_2": 2.11058956
+          },
+          "seller_profit": {
+            "seller_cn": 0.04744799999999999,
+            "seller_sg": 0.506282,
+            "seller_br": 0.5428680000000002
+          }
+        }
+      ],
+      "gateway_per_seed": [
+        {
+          "allowed": {
+            "SG->BR": 53,
+            "BR->BR": 44,
+            "CN->BR": 23,
+            "BR->SG": 44,
+            "CN->SG": 27,
+            "SG->SG": 46,
+            "BR->CN": 7
+          },
+          "blocked": {
+            "CN->BR": 35,
+            "CN->SG": 15,
+            "BR->SG": 5
+          },
+          "allowed_total": 244,
+          "blocked_total": 55
+        },
+        {
+          "allowed": {
+            "SG->BR": 54,
+            "BR->BR": 44,
+            "CN->BR": 22,
+            "BR->SG": 46,
+            "CN->SG": 21,
+            "SG->SG": 46,
+            "BR->CN": 4
+          },
+          "blocked": {
+            "CN->BR": 37,
+            "CN->SG": 20,
+            "BR->SG": 5,
+            "BR->CN": 1
+          },
+          "allowed_total": 237,
+          "blocked_total": 63
+        },
+        {
+          "allowed": {
+            "CN->BR": 21,
+            "SG->BR": 57,
+            "BR->BR": 42,
+            "BR->SG": 42,
+            "CN->SG": 26,
+            "SG->SG": 42,
+            "BR->CN": 4
+          },
+          "blocked": {
+            "CN->BR": 39,
+            "CN->SG": 14,
+            "BR->SG": 12
+          },
+          "allowed_total": 234,
+          "blocked_total": 65
+        }
+      ]
+    },
+    "posted_price/quality_per_cost": {
+      "mechanism": "posted_price",
+      "policy": "quality_per_cost",
+      "aggregate": {
+        "n_tx": {
+          "mean": 300.0,
+          "std": 0.0
+        },
+        "n_allowed": {
+          "mean": 245.66666666666666,
+          "std": 0.5773502691896257
+        },
+        "n_blocked": {
+          "mean": 53.666666666666664,
+          "std": 0.5773502691896257
+        },
+        "n_unfilled": {
+          "mean": 0.6666666666666666,
+          "std": 0.5773502691896257
+        },
+        "fill_rate": {
+          "mean": 0.8188888888888889,
+          "std": 0.001924500897298733
+        },
+        "accuracy": {
+          "mean": 0.7367346938775511,
+          "std": 0.023771522656702643
+        },
+        "total_cost": {
+          "mean": 2.4163383333333335,
+          "std": 0.023850048141111545
+        },
+        "total_fee": {
+          "mean": 0.05970181333333333,
+          "std": 0.002829876766951757
+        },
+        "mean_latency_ms": {
+          "mean": 988.0274067210704,
+          "std": 2.215410928674234
+        },
+        "p95_latency_ms": {
+          "mean": 1676.98084085902,
+          "std": 60.979364566481536
+        },
+        "blocked_attempts": {
+          "mean": 53.666666666666664,
+          "std": 0.5773502691896257
+        },
+        "violating_flows_through": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "compliance_violations": {
+          "mean": 53.666666666666664,
+          "std": 0.5773502691896257
+        },
+        "blocked_by_rule": {
+          "BR-LGPD-33-VIII": {
+            "mean": 6.333333333333333,
+            "std": 3.2145502536643185
+          },
+          "CN-DSL-31": {
+            "mean": 25.0,
+            "std": 4.58257569495584
+          },
+          "CN-PIPL-38": {
+            "mean": 9.666666666666666,
+            "std": 2.8867513459481287
+          },
+          "CN-PIPL-40": {
+            "mean": 12.666666666666666,
+            "std": 2.0816659994661326
+          }
+        },
+        "cross_border_share": {
+          "mean": 0.598379514407389,
+          "std": 0.005340107980002442
+        },
+        "fraud_exposure": {
+          "mean": 0.4884685581549693,
+          "std": 0.0011495276638917385
+        },
+        "fraud_accuracy_claimed": {
+          "mean": 0.9282499999999999,
+          "std": 0.002322893310794413
+        },
+        "fraud_accuracy_actual": {
+          "mean": 0.6611111111111111,
+          "std": 0.03849001794597504
+        },
+        "fraud_accuracy_gap": {
+          "mean": 0.26713888888888887,
+          "std": 0.0391321065016855
+        },
+        "honest_accuracy": {
+          "mean": 0.808994708994709,
+          "std": 0.014226803872749952
+        },
+        "total_buyer_surplus": {
+          "mean": 10.967293186666668,
+          "std": 0.5506055353569719
+        },
+        "total_seller_profit": {
+          "mean": 1.1595463333333331,
+          "std": 0.012009022039006209
+        },
+        "buyer_surplus": {
+          "buyer_br_1": {
+            "mean": 2.0453756533333336,
+            "std": 0.16476034886334215
+          },
+          "buyer_br_2": {
+            "mean": 1.8723565466666672,
+            "std": 0.06603491556149152
+          },
+          "buyer_cn_1": {
+            "mean": 1.4519188466666668,
+            "std": 0.3125160585739742
+          },
+          "buyer_cn_2": {
+            "mean": 1.6570636066666669,
+            "std": 0.45334506145768255
+          },
+          "buyer_sg_1": {
+            "mean": 2.3215830000000004,
+            "std": 0.23962199566350315
+          },
+          "buyer_sg_2": {
+            "mean": 1.6189955333333337,
+            "std": 0.17764579080589937
+          }
+        },
+        "seller_profit": {
+          "seller_br": {
+            "mean": 0.5478746666666666,
+            "std": 0.0031946112961255195
+          },
+          "seller_cn": {
+            "mean": 0.09202666666666666,
+            "std": 0.00839116233506022
+          },
+          "seller_sg": {
+            "mean": 0.5196449999999998,
+            "std": 0.007895034958757324
+          }
+        }
+      },
+      "per_seed": [
+        {
+          "n_tx": 300,
+          "n_allowed": 245,
+          "n_blocked": 54,
+          "n_unfilled": 1,
+          "fill_rate": 0.8166666666666667,
+          "accuracy": 0.710204081632653,
+          "total_cost": 2.432402,
+          "total_fee": 0.06296042,
+          "mean_latency_ms": 989.8648492990328,
+          "p95_latency_ms": 1698.750090670262,
+          "blocked_attempts": 54,
+          "violating_flows_through": 0,
+          "compliance_violations": 54,
+          "blocked_by_rule": {
+            "CN-PIPL-40": 11,
+            "CN-DSL-31": 26,
+            "CN-PIPL-38": 13,
+            "BR-LGPD-33-VIII": 4
+          },
+          "cross_border_share": 0.6040816326530613,
+          "fraud_exposure": 0.4897959183673469,
+          "fraud_accuracy_claimed": 0.9289166666666666,
+          "fraud_accuracy_actual": 0.6166666666666667,
+          "fraud_accuracy_gap": 0.3122499999999999,
+          "honest_accuracy": 0.8,
+          "total_buyer_surplus": 10.36463758,
+          "total_seller_profit": 1.1658860000000002,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.7241857,
+            "buyer_cn_2": 1.23958964,
+            "buyer_sg_1": 2.137515,
+            "buyer_sg_2": 1.4177234,
+            "buyer_br_1": 1.9128905600000004,
+            "buyer_br_2": 1.9327332800000006
+          },
+          "seller_profit": {
+            "seller_cn": 0.101648,
+            "seller_sg": 0.5194140000000002,
+            "seller_br": 0.5448240000000001
+          }
+        },
+        {
+          "n_tx": 300,
+          "n_allowed": 246,
+          "n_blocked": 54,
+          "n_unfilled": 0,
+          "fill_rate": 0.82,
+          "accuracy": 0.7439024390243902,
+          "total_cost": 2.388934,
+          "total_fee": 0.057862000000000004,
+          "mean_latency_ms": 988.6500806320323,
+          "p95_latency_ms": 1608.1043395833103,
+          "blocked_attempts": 54,
+          "violating_flows_through": 0,
+          "compliance_violations": 54,
+          "blocked_by_rule": {
+            "CN-PIPL-40": 12,
+            "CN-DSL-31": 29,
+            "BR-LGPD-33-VIII": 5,
+            "CN-PIPL-38": 8
+          },
+          "cross_border_share": 0.5975609756097561,
+          "fraud_exposure": 0.4878048780487805,
+          "fraud_accuracy_claimed": 0.9301666666666667,
+          "fraud_accuracy_actual": 0.6833333333333333,
+          "fraud_accuracy_gap": 0.24683333333333335,
+          "honest_accuracy": 0.8015873015873016,
+          "total_buyer_surplus": 11.093204000000002,
+          "total_seller_profit": 1.1456959999999996,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.1106772600000003,
+            "buyer_cn_2": 1.5922894200000004,
+            "buyer_sg_1": 2.5925246,
+            "buyer_sg_2": 1.6853508,
+            "buyer_br_1": 2.229862640000001,
+            "buyer_br_2": 1.8824992800000002
+          },
+          "seller_profit": {
+            "seller_cn": 0.08622400000000001,
+            "seller_sg": 0.5118679999999995,
+            "seller_br": 0.547604
+          }
+        },
+        {
+          "n_tx": 300,
+          "n_allowed": 246,
+          "n_blocked": 53,
+          "n_unfilled": 1,
+          "fill_rate": 0.82,
+          "accuracy": 0.7560975609756098,
+          "total_cost": 2.427679,
+          "total_fee": 0.058283020000000005,
+          "mean_latency_ms": 985.5672902321462,
+          "p95_latency_ms": 1724.0880923234881,
+          "blocked_attempts": 53,
+          "violating_flows_through": 0,
+          "compliance_violations": 53,
+          "blocked_by_rule": {
+            "BR-LGPD-33-VIII": 10,
+            "CN-DSL-31": 20,
+            "CN-PIPL-40": 15,
+            "CN-PIPL-38": 8
+          },
+          "cross_border_share": 0.5934959349593496,
+          "fraud_exposure": 0.4878048780487805,
+          "fraud_accuracy_claimed": 0.9256666666666666,
+          "fraud_accuracy_actual": 0.6833333333333333,
+          "fraud_accuracy_gap": 0.2423333333333333,
+          "honest_accuracy": 0.8253968253968254,
+          "total_buyer_surplus": 11.444037980000003,
+          "total_seller_profit": 1.1670569999999996,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.5208935800000003,
+            "buyer_cn_2": 2.1393117600000005,
+            "buyer_sg_1": 2.2347094000000007,
+            "buyer_sg_2": 1.7539124000000004,
+            "buyer_br_1": 1.9933737600000003,
+            "buyer_br_2": 1.8018370800000008
+          },
+          "seller_profit": {
+            "seller_cn": 0.08820800000000001,
+            "seller_sg": 0.5276529999999996,
+            "seller_br": 0.5511959999999999
+          }
+        }
+      ],
+      "gateway_per_seed": [
+        {
+          "allowed": {
+            "SG->SG": 48,
+            "BR->SG": 39,
+            "CN->SG": 33,
+            "BR->BR": 49,
+            "CN->BR": 17,
+            "SG->BR": 51,
+            "BR->CN": 8
+          },
+          "blocked": {
+            "CN->SG": 21,
+            "CN->BR": 29,
+            "BR->SG": 3,
+            "BR->CN": 1
+          },
+          "allowed_total": 245,
+          "blocked_total": 54
+        },
+        {
+          "allowed": {
+            "SG->SG": 47,
+            "BR->SG": 36,
+            "CN->SG": 37,
+            "SG->BR": 53,
+            "BR->BR": 52,
+            "CN->BR": 14,
+            "BR->CN": 7
+          },
+          "blocked": {
+            "CN->SG": 19,
+            "CN->BR": 30,
+            "BR->SG": 4,
+            "BR->CN": 1
+          },
+          "allowed_total": 246,
+          "blocked_total": 54
+        },
+        {
+          "allowed": {
+            "CN->SG": 38,
+            "SG->SG": 49,
+            "BR->SG": 33,
+            "SG->BR": 49,
+            "BR->BR": 51,
+            "CN->BR": 19,
+            "BR->CN": 6,
+            "SG->CN": 1
+          },
+          "blocked": {
+            "BR->SG": 7,
+            "CN->SG": 21,
+            "CN->BR": 22,
+            "BR->CN": 3
+          },
+          "allowed_total": 246,
+          "blocked_total": 53
+        }
+      ]
+    },
+    "posted_price/compliance_aware": {
+      "mechanism": "posted_price",
+      "policy": "compliance_aware",
+      "aggregate": {
+        "n_tx": {
+          "mean": 300.0,
+          "std": 0.0
+        },
+        "n_allowed": {
+          "mean": 296.0,
+          "std": 2.6457513110645907
+        },
+        "n_blocked": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "n_unfilled": {
+          "mean": 4.0,
+          "std": 2.6457513110645907
+        },
+        "fill_rate": {
+          "mean": 0.9866666666666667,
+          "std": 0.00881917103688194
+        },
+        "accuracy": {
+          "mean": 0.7791643262739917,
+          "std": 0.01937307059299771
+        },
+        "total_cost": {
+          "mean": 3.995351,
+          "std": 0.1979328760640839
+        },
+        "total_fee": {
+          "mean": 0.060956586666666666,
+          "std": 0.0005792504678749361
+        },
+        "mean_latency_ms": {
+          "mean": 978.521636043574,
+          "std": 12.52872296991144
+        },
+        "p95_latency_ms": {
+          "mean": 1637.6917908292398,
+          "std": 15.44381648299715
+        },
+        "blocked_attempts": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "violating_flows_through": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "compliance_violations": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "blocked_by_rule": {},
+        "cross_border_share": {
+          "mean": 0.5000076609860455,
+          "std": 0.0016950061472423392
+        },
+        "fraud_exposure": {
+          "mean": 0.40542709393065574,
+          "std": 0.003639700463102845
+        },
+        "fraud_accuracy_claimed": {
+          "mean": 0.9282499999999999,
+          "std": 0.002322893310794413
+        },
+        "fraud_accuracy_actual": {
+          "mean": 0.6305555555555555,
+          "std": 0.04882887730901931
+        },
+        "fraud_accuracy_gap": {
+          "mean": 0.29769444444444443,
+          "std": 0.046518390429465074
+        },
+        "honest_accuracy": {
+          "mean": 0.8807072500610643,
+          "std": 0.0044902886670395315
+        },
+        "total_buyer_surplus": {
+          "mean": 13.837025746666669,
+          "std": 0.4439855497292515
+        },
+        "total_seller_profit": {
+          "mean": 1.7931169999999998,
+          "std": 0.08082613288411128
+        },
+        "buyer_surplus": {
+          "buyer_br_1": {
+            "mean": 2.2237786933333337,
+            "std": 0.3387287720629291
+          },
+          "buyer_br_2": {
+            "mean": 1.9406045866666666,
+            "std": 0.0994756457551803
+          },
+          "buyer_cn_1": {
+            "mean": 2.439792093333334,
+            "std": 0.3824370110557716
+          },
+          "buyer_cn_2": {
+            "mean": 3.2863835733333335,
+            "std": 0.22256556889785106
+          },
+          "buyer_sg_1": {
+            "mean": 2.3847916666666666,
+            "std": 0.4528318542623221
+          },
+          "buyer_sg_2": {
+            "mean": 1.561675133333333,
+            "std": 0.10843911859644245
+          }
+        },
+        "seller_profit": {
+          "seller_br": {
+            "mean": 0.532308,
+            "std": 0.0059279932523578945
+          },
+          "seller_cn": {
+            "mean": 0.7358720000000002,
+            "std": 0.07109017462350203
+          },
+          "seller_sg": {
+            "mean": 0.5249369999999999,
+            "std": 0.009018045963511198
+          }
+        }
+      },
+      "per_seed": [
+        {
+          "n_tx": 300,
+          "n_allowed": 297,
+          "n_blocked": 0,
+          "n_unfilled": 3,
+          "fill_rate": 0.99,
+          "accuracy": 0.7845117845117845,
+          "total_cost": 4.149253,
+          "total_fee": 0.061323880000000004,
+          "mean_latency_ms": 982.3369784044384,
+          "p95_latency_ms": 1640.3203093756267,
+          "blocked_attempts": 0,
+          "violating_flows_through": 0,
+          "compliance_violations": 0,
+          "blocked_by_rule": {},
+          "cross_border_share": 0.4983164983164983,
+          "fraud_exposure": 0.40404040404040403,
+          "fraud_accuracy_claimed": 0.9289166666666666,
+          "fraud_accuracy_actual": 0.65,
+          "fraud_accuracy_gap": 0.2789166666666666,
+          "honest_accuracy": 0.8757062146892656,
+          "total_buyer_surplus": 13.949423120000002,
+          "total_seller_profit": 1.853409,
+          "buyer_surplus": {
+            "buyer_cn_1": 2.091916320000001,
+            "buyer_cn_2": 3.4543578800000003,
+            "buyer_sg_1": 2.7339891999999995,
+            "buyer_sg_2": 1.4983385999999999,
+            "buyer_br_1": 2.136499040000001,
+            "buyer_br_2": 2.03432208
+          },
+          "seller_profit": {
+            "seller_cn": 0.7933200000000002,
+            "seller_sg": 0.5215209999999998,
+            "seller_br": 0.538568
+          }
+        },
+        {
+          "n_tx": 300,
+          "n_allowed": 298,
+          "n_blocked": 0,
+          "n_unfilled": 2,
+          "fill_rate": 0.9933333333333333,
+          "accuracy": 0.7953020134228188,
+          "total_cost": 4.064732,
+          "total_fee": 0.06125704,
+          "mean_latency_ms": 988.6991322702914,
+          "p95_latency_ms": 1651.6526628238612,
+          "blocked_attempts": 0,
+          "violating_flows_through": 0,
+          "compliance_violations": 0,
+          "blocked_by_rule": {},
+          "cross_border_share": 0.5,
+          "fraud_exposure": 0.40268456375838924,
+          "fraud_accuracy_claimed": 0.9301666666666667,
+          "fraud_accuracy_actual": 0.6666666666666666,
+          "fraud_accuracy_gap": 0.26350000000000007,
+          "honest_accuracy": 0.8820224719101124,
+          "total_buyer_surplus": 14.214010960000003,
+          "total_seller_profit": 1.8246680000000002,
+          "buyer_surplus": {
+            "buyer_cn_1": 2.8493035400000015,
+            "buyer_cn_2": 3.3708419800000002,
+            "buyer_sg_1": 1.8731432000000003,
+            "buyer_sg_2": 1.6868869999999996,
+            "buyer_br_1": 2.5976061600000007,
+            "buyer_br_2": 1.83622908
+          },
+          "seller_profit": {
+            "seller_cn": 0.7579280000000002,
+            "seller_sg": 0.535164,
+            "seller_br": 0.531576
+          }
+        },
+        {
+          "n_tx": 300,
+          "n_allowed": 293,
+          "n_blocked": 0,
+          "n_unfilled": 7,
+          "fill_rate": 0.9766666666666667,
+          "accuracy": 0.757679180887372,
+          "total_cost": 3.772068,
+          "total_fee": 0.06028884,
+          "mean_latency_ms": 964.5287974559922,
+          "p95_latency_ms": 1621.1024002882318,
+          "blocked_attempts": 0,
+          "violating_flows_through": 0,
+          "compliance_violations": 0,
+          "blocked_by_rule": {},
+          "cross_border_share": 0.5017064846416383,
+          "fraud_exposure": 0.40955631399317405,
+          "fraud_accuracy_claimed": 0.9256666666666666,
+          "fraud_accuracy_actual": 0.575,
+          "fraud_accuracy_gap": 0.3506666666666667,
+          "honest_accuracy": 0.884393063583815,
+          "total_buyer_surplus": 13.34764316,
+          "total_seller_profit": 1.701274,
+          "buyer_surplus": {
+            "buyer_cn_1": 2.3781564200000003,
+            "buyer_cn_2": 3.0339508600000005,
+            "buyer_sg_1": 2.5472425999999997,
+            "buyer_sg_2": 1.4997997999999997,
+            "buyer_br_1": 1.9372308800000004,
+            "buyer_br_2": 1.9512626
+          },
+          "seller_profit": {
+            "seller_cn": 0.6563680000000001,
+            "seller_sg": 0.518126,
+            "seller_br": 0.5267799999999999
+          }
+        }
+      ],
+      "gateway_per_seed": [
+        {
+          "allowed": {
+            "CN->CN": 50,
+            "SG->SG": 48,
+            "BR->SG": 39,
+            "CN->SG": 33,
+            "BR->BR": 51,
+            "CN->BR": 17,
+            "SG->BR": 50,
+            "BR->CN": 9
+          },
+          "blocked": {},
+          "allowed_total": 297,
+          "blocked_total": 0
+        },
+        {
+          "allowed": {
+            "CN->CN": 49,
+            "SG->SG": 47,
+            "BR->SG": 36,
+            "CN->SG": 37,
+            "SG->BR": 52,
+            "BR->BR": 53,
+            "CN->BR": 14,
+            "BR->CN": 10
+          },
+          "blocked": {},
+          "allowed_total": 298,
+          "blocked_total": 0
+        },
+        {
+          "allowed": {
+            "CN->SG": 38,
+            "SG->SG": 49,
+            "BR->SG": 33,
+            "BR->BR": 54,
+            "CN->CN": 43,
+            "SG->BR": 47,
+            "CN->BR": 19,
+            "BR->CN": 9,
+            "SG->CN": 1
+          },
+          "blocked": {},
+          "allowed_total": 293,
+          "blocked_total": 0
+        }
+      ]
+    },
+    "sealed_bid/cheapest": {
+      "mechanism": "sealed_bid",
+      "policy": "cheapest",
+      "aggregate": {
+        "n_tx": {
+          "mean": 300.0,
+          "std": 0.0
+        },
+        "n_allowed": {
+          "mean": 227.0,
+          "std": 4.358898943540674
+        },
+        "n_blocked": {
+          "mean": 54.0,
+          "std": 0.0
+        },
+        "n_unfilled": {
+          "mean": 19.0,
+          "std": 4.358898943540674
+        },
+        "fill_rate": {
+          "mean": 0.7566666666666667,
+          "std": 0.014529663145135558
+        },
+        "accuracy": {
+          "mean": 0.7135917259624156,
+          "std": 0.0296401988462477
+        },
+        "total_cost": {
+          "mean": 3.068653454252653,
+          "std": 0.1055913286325887
+        },
+        "total_fee": {
+          "mean": 0.07680192651351296,
+          "std": 0.002570190396668715
+        },
+        "mean_latency_ms": {
+          "mean": 965.5794542826767,
+          "std": 10.250885660730514
+        },
+        "p95_latency_ms": {
+          "mean": 1642.3951090617757,
+          "std": 67.23026515110583
+        },
+        "blocked_attempts": {
+          "mean": 54.0,
+          "std": 0.0
+        },
+        "violating_flows_through": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "compliance_violations": {
+          "mean": 54.0,
+          "std": 0.0
+        },
+        "blocked_by_rule": {
+          "BR-LGPD-33-VIII": {
+            "mean": 7.0,
+            "std": 3.605551275463989
+          },
+          "CN-DSL-31": {
+            "mean": 25.0,
+            "std": 4.58257569495584
+          },
+          "CN-PIPL-38": {
+            "mean": 9.333333333333334,
+            "std": 1.5275252316519468
+          },
+          "CN-PIPL-40": {
+            "mean": 12.666666666666666,
+            "std": 2.0816659994661326
+          }
+        },
+        "cross_border_share": {
+          "mean": 0.5965765827403758,
+          "std": 0.03152894297299987
+        },
+        "fraud_exposure": {
+          "mean": 0.5287629994526547,
+          "std": 0.010048782592326758
+        },
+        "fraud_accuracy_claimed": {
+          "mean": 0.9259166666666667,
+          "std": 0.004630064794362985
+        },
+        "fraud_accuracy_actual": {
+          "mean": 0.6222222222222222,
+          "std": 0.0375770812735241
+        },
+        "fraud_accuracy_gap": {
+          "mean": 0.30369444444444443,
+          "std": 0.03443193097069016
+        },
+        "honest_accuracy": {
+          "mean": 0.8170177045177045,
+          "std": 0.05233919729539408
+        },
+        "total_buyer_surplus": {
+          "mean": 9.081211285900501,
+          "std": 0.4646810204255449
+        },
+        "total_seller_profit": {
+          "mean": 1.9797667875859866,
+          "std": 0.06851045384657635
+        },
+        "buyer_surplus": {
+          "buyer_br_1": {
+            "mean": 1.6175824515356954,
+            "std": 0.24280340176793297
+          },
+          "buyer_br_2": {
+            "mean": 1.8009213278652612,
+            "std": 0.16254515882881074
+          },
+          "buyer_cn_1": {
+            "mean": 1.2990041824182768,
+            "std": 0.2146032598849984
+          },
+          "buyer_cn_2": {
+            "mean": 1.4509867297939003,
+            "std": 0.31167045276915456
+          },
+          "buyer_sg_1": {
+            "mean": 2.345708070989834,
+            "std": 0.14961267889605062
+          },
+          "buyer_sg_2": {
+            "mean": 0.567008523297534,
+            "std": 0.2844118361559462
+          }
+        },
+        "seller_profit": {
+          "seller_br": {
+            "mean": 1.4841057763054624,
+            "std": 0.09263909473556364
+          },
+          "seller_cn": {
+            "mean": 0.139938,
+            "std": 0.02545447159145128
+          },
+          "seller_sg": {
+            "mean": 0.35572301128052436,
+            "std": 0.017678858102492027
+          }
+        }
+      },
+      "per_seed": [
+        {
+          "n_tx": 300,
+          "n_allowed": 224,
+          "n_blocked": 54,
+          "n_unfilled": 22,
+          "fill_rate": 0.7466666666666667,
+          "accuracy": 0.6830357142857143,
+          "total_cost": 2.9630802679268773,
+          "total_fee": 0.07772788219818401,
+          "mean_latency_ms": 971.7919885878979,
+          "p95_latency_ms": 1719.817678790873,
+          "blocked_attempts": 54,
+          "violating_flows_through": 0,
+          "compliance_violations": 54,
+          "blocked_by_rule": {
+            "CN-PIPL-40": 11,
+            "CN-DSL-31": 26,
+            "CN-PIPL-38": 11,
+            "BR-LGPD-33-VIII": 6
+          },
+          "cross_border_share": 0.6116071428571429,
+          "fraud_exposure": 0.5357142857142857,
+          "fraud_accuracy_claimed": 0.9241666666666667,
+          "fraud_accuracy_actual": 0.5833333333333334,
+          "fraud_accuracy_gap": 0.3408333333333333,
+          "honest_accuracy": 0.7980769230769231,
+          "total_buyer_surplus": 8.58919184987494,
+          "total_seller_profit": 1.9180602679268772,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.511367398873971,
+            "buyer_cn_2": 1.3989512124754568,
+            "buyer_sg_1": 2.1741964277479595,
+            "buyer_sg_2": 0.24635325637915864,
+            "buyer_br_1": 1.347359873328826,
+            "buyer_br_2": 1.9109636810695674
+          },
+          "seller_profit": {
+            "seller_cn": 0.13122,
+            "seller_sg": 0.34852371211124344,
+            "seller_br": 1.4383165558156337
+          }
+        },
+        {
+          "n_tx": 300,
+          "n_allowed": 232,
+          "n_blocked": 54,
+          "n_unfilled": 14,
+          "fill_rate": 0.7733333333333333,
+          "accuracy": 0.7155172413793104,
+          "total_cost": 3.174262915845442,
+          "total_fee": 0.07389705734934365,
+          "mean_latency_ms": 971.1986653381193,
+          "p95_latency_ms": 1598.7626632879217,
+          "blocked_attempts": 54,
+          "violating_flows_through": 0,
+          "compliance_violations": 54,
+          "blocked_by_rule": {
+            "CN-PIPL-40": 12,
+            "CN-DSL-31": 29,
+            "BR-LGPD-33-VIII": 4,
+            "CN-PIPL-38": 9
+          },
+          "cross_border_share": 0.5603448275862069,
+          "fraud_exposure": 0.5172413793103449,
+          "fraud_accuracy_claimed": 0.9311666666666666,
+          "fraud_accuracy_actual": 0.6583333333333333,
+          "fraud_accuracy_gap": 0.27283333333333326,
+          "honest_accuracy": 0.7767857142857143,
+          "total_buyer_surplus": 9.141840026805216,
+          "total_seller_profit": 2.0534909158454417,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.3034162330308532,
+            "buyer_cn_2": 1.1686091255950186,
+            "buyer_sg_1": 2.449401865205431,
+            "buyer_sg_2": 0.7887791579344461,
+            "buyer_br_1": 1.8174108989551792,
+            "buyer_br_2": 1.6142227460842873
+          },
+          "seller_profit": {
+            "seller_cn": 0.119988,
+            "seller_sg": 0.3427796988446728,
+            "seller_br": 1.590723217000769
+          }
+        },
+        {
+          "n_tx": 300,
+          "n_allowed": 225,
+          "n_blocked": 54,
+          "n_unfilled": 21,
+          "fill_rate": 0.75,
+          "accuracy": 0.7422222222222222,
+          "total_cost": 3.068617178985641,
+          "total_fee": 0.0787808399930112,
+          "mean_latency_ms": 953.7477089220132,
+          "p95_latency_ms": 1608.604985106532,
+          "blocked_attempts": 54,
+          "violating_flows_through": 0,
+          "compliance_violations": 54,
+          "blocked_by_rule": {
+            "BR-LGPD-33-VIII": 11,
+            "CN-DSL-31": 20,
+            "CN-PIPL-40": 15,
+            "CN-PIPL-38": 8
+          },
+          "cross_border_share": 0.6177777777777778,
+          "fraud_exposure": 0.5333333333333333,
+          "fraud_accuracy_claimed": 0.9224166666666667,
+          "fraud_accuracy_actual": 0.625,
+          "fraud_accuracy_gap": 0.29741666666666666,
+          "honest_accuracy": 0.8761904761904762,
+          "total_buyer_surplus": 9.51260198102135,
+          "total_seller_profit": 1.9677491789856414,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.0822289153500055,
+            "buyer_cn_2": 1.7853998513112255,
+            "buyer_sg_1": 2.413525920016111,
+            "buyer_sg_2": 0.6658931555789974,
+            "buyer_br_1": 1.6879765823230803,
+            "buyer_br_2": 1.877577556441929
+          },
+          "seller_profit": {
+            "seller_cn": 0.168606,
+            "seller_sg": 0.37586562288565684,
+            "seller_br": 1.4232775560999846
+          }
+        }
+      ],
+      "gateway_per_seed": [
+        {
+          "allowed": {
+            "SG->SG": 41,
+            "BR->SG": 43,
+            "CN->SG": 36,
+            "BR->BR": 46,
+            "CN->BR": 16,
+            "SG->BR": 37,
+            "BR->CN": 5
+          },
+          "blocked": {
+            "CN->SG": 22,
+            "CN->BR": 26,
+            "BR->SG": 5,
+            "BR->CN": 1
+          },
+          "allowed_total": 224,
+          "blocked_total": 54
+        },
+        {
+          "allowed": {
+            "SG->SG": 48,
+            "BR->SG": 38,
+            "CN->SG": 34,
+            "SG->BR": 38,
+            "BR->BR": 54,
+            "CN->BR": 16,
+            "BR->CN": 4
+          },
+          "blocked": {
+            "CN->SG": 19,
+            "CN->BR": 31,
+            "BR->SG": 4
+          },
+          "allowed_total": 232,
+          "blocked_total": 54
+        },
+        {
+          "allowed": {
+            "CN->SG": 38,
+            "SG->SG": 42,
+            "BR->SG": 40,
+            "SG->BR": 36,
+            "BR->BR": 44,
+            "CN->BR": 19,
+            "BR->CN": 5,
+            "SG->CN": 1
+          },
+          "blocked": {
+            "BR->SG": 10,
+            "CN->SG": 23,
+            "CN->BR": 20,
+            "BR->CN": 1
+          },
+          "allowed_total": 225,
+          "blocked_total": 54
+        }
+      ]
+    },
+    "sealed_bid/quality_per_cost": {
+      "mechanism": "sealed_bid",
+      "policy": "quality_per_cost",
+      "aggregate": {
+        "n_tx": {
+          "mean": 300.0,
+          "std": 0.0
+        },
+        "n_allowed": {
+          "mean": 226.0,
+          "std": 4.0
+        },
+        "n_blocked": {
+          "mean": 52.666666666666664,
+          "std": 0.5773502691896257
+        },
+        "n_unfilled": {
+          "mean": 21.333333333333332,
+          "std": 4.509249752822894
+        },
+        "fill_rate": {
+          "mean": 0.7533333333333333,
+          "std": 0.013333333333333364
+        },
+        "accuracy": {
+          "mean": 0.7132801135109715,
+          "std": 0.05281489431296362
+        },
+        "total_cost": {
+          "mean": 2.9957859639146496,
+          "std": 0.04525215684846751
+        },
+        "total_fee": {
+          "mean": 0.07543090325586178,
+          "std": 0.00556849550207043
+        },
+        "mean_latency_ms": {
+          "mean": 963.5732907155945,
+          "std": 7.353827123941148
+        },
+        "p95_latency_ms": {
+          "mean": 1642.8023100572927,
+          "std": 51.80890897874285
+        },
+        "blocked_attempts": {
+          "mean": 52.666666666666664,
+          "std": 0.5773502691896257
+        },
+        "violating_flows_through": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "compliance_violations": {
+          "mean": 52.666666666666664,
+          "std": 0.5773502691896257
+        },
+        "blocked_by_rule": {
+          "BR-LGPD-33-VIII": {
+            "mean": 6.666666666666667,
+            "std": 3.0550504633038935
+          },
+          "CN-DSL-31": {
+            "mean": 25.0,
+            "std": 4.58257569495584
+          },
+          "CN-PIPL-38": {
+            "mean": 8.333333333333334,
+            "std": 0.5773502691896257
+          },
+          "CN-PIPL-40": {
+            "mean": 12.666666666666666,
+            "std": 2.0816659994661326
+          }
+        },
+        "cross_border_share": {
+          "mean": 0.5976018727461591,
+          "std": 0.024713543004931858
+        },
+        "fraud_exposure": {
+          "mean": 0.5310843741009189,
+          "std": 0.009401195848799384
+        },
+        "fraud_accuracy_claimed": {
+          "mean": 0.9266111111111112,
+          "std": 0.001958481081896987
+        },
+        "fraud_accuracy_actual": {
+          "mean": 0.625,
+          "std": 0.06614378277661476
+        },
+        "fraud_accuracy_gap": {
+          "mean": 0.3016111111111111,
+          "std": 0.06577805344349139
+        },
+        "honest_accuracy": {
+          "mean": 0.8133443200035875,
+          "std": 0.045654595769002285
+        },
+        "total_buyer_surplus": {
+          "mean": 9.145449799496156,
+          "std": 1.0659266326921848
+        },
+        "total_seller_profit": {
+          "mean": 1.9079506305813163,
+          "std": 0.018723977224155534
+        },
+        "buyer_surplus": {
+          "buyer_br_1": {
+            "mean": 1.7811293010764704,
+            "std": 0.30405192080012056
+          },
+          "buyer_br_2": {
+            "mean": 1.6627562902156594,
+            "std": 0.04812446982489587
+          },
+          "buyer_cn_1": {
+            "mean": 1.4411457415921936,
+            "std": 0.17540691341731227
+          },
+          "buyer_cn_2": {
+            "mean": 1.53488664263281,
+            "std": 0.38782123114253064
+          },
+          "buyer_sg_1": {
+            "mean": 2.2190334291205467,
+            "std": 0.2562253012058512
+          },
+          "buyer_sg_2": {
+            "mean": 0.5064983948584757,
+            "std": 0.3426592605556921
+          }
+        },
+        "seller_profit": {
+          "seller_br": {
+            "mean": 1.3302894491628814,
+            "std": 0.040276609765223
+          },
+          "seller_cn": {
+            "mean": 0.142008,
+            "std": 0.02334394131246908
+          },
+          "seller_sg": {
+            "mean": 0.4356531814184348,
+            "std": 0.004975630207520477
+          }
+        }
+      },
+      "per_seed": [
+        {
+          "n_tx": 300,
+          "n_allowed": 222,
+          "n_blocked": 52,
+          "n_unfilled": 26,
+          "fill_rate": 0.74,
+          "accuracy": 0.6531531531531531,
+          "total_cost": 2.9673754716283867,
+          "total_fee": 0.08150752791661398,
+          "mean_latency_ms": 971.3994500046937,
+          "p95_latency_ms": 1666.6262428556338,
+          "blocked_attempts": 52,
+          "violating_flows_through": 0,
+          "compliance_violations": 52,
+          "blocked_by_rule": {
+            "CN-PIPL-40": 11,
+            "CN-DSL-31": 26,
+            "CN-PIPL-38": 9,
+            "BR-LGPD-33-VIII": 6
+          },
+          "cross_border_share": 0.6261261261261262,
+          "fraud_exposure": 0.5405405405405406,
+          "fraud_accuracy_claimed": 0.9265833333333333,
+          "fraud_accuracy_actual": 0.55,
+          "fraud_accuracy_gap": 0.37658333333333327,
+          "honest_accuracy": 0.7745098039215687,
+          "total_buyer_surplus": 7.961117000455,
+          "total_seller_profit": 1.8910254716283865,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.6006396992758687,
+            "buyer_cn_2": 1.1805894835807067,
+            "buyer_sg_1": 1.9278796833861809,
+            "buyer_sg_2": 0.1254607991428137,
+            "buyer_br_1": 1.4368932790742546,
+            "buyer_br_2": 1.6896540559951758
+          },
+          "seller_profit": {
+            "seller_cn": 0.16648200000000002,
+            "seller_sg": 0.4407589931207677,
+            "seller_br": 1.2837844785076187
+          }
+        },
+        {
+          "n_tx": 300,
+          "n_allowed": 226,
+          "n_blocked": 53,
+          "n_unfilled": 21,
+          "fill_rate": 0.7533333333333333,
+          "accuracy": 0.7345132743362832,
+          "total_cost": 2.9720123916786183,
+          "total_fee": 0.07057211936409497,
+          "mean_latency_ms": 962.513664497167,
+          "p95_latency_ms": 1583.3668945084366,
+          "blocked_attempts": 53,
+          "violating_flows_through": 0,
+          "compliance_violations": 53,
+          "blocked_by_rule": {
+            "CN-PIPL-40": 12,
+            "CN-DSL-31": 29,
+            "BR-LGPD-33-VIII": 4,
+            "CN-PIPL-38": 8
+          },
+          "cross_border_share": 0.584070796460177,
+          "fraud_exposure": 0.5309734513274337,
+          "fraud_accuracy_claimed": 0.9285833333333334,
+          "fraud_accuracy_actual": 0.675,
+          "fraud_accuracy_gap": 0.2535833333333334,
+          "honest_accuracy": 0.8018867924528302,
+          "total_buyer_surplus": 9.447415488957287,
+          "total_seller_profit": 1.9047623916786183,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.2532838083204205,
+            "buyer_cn_2": 1.4748423688925487,
+            "buyer_sg_1": 2.410146301336216,
+            "buyer_sg_2": 0.6046963833990434,
+            "buyer_br_1": 2.013028090002513,
+            "buyer_br_2": 1.691418537006545
+          },
+          "seller_profit": {
+            "seller_cn": 0.119988,
+            "seller_sg": 0.4308188481397067,
+            "seller_br": 1.3539555435389115
+          }
+        },
+        {
+          "n_tx": 300,
+          "n_allowed": 230,
+          "n_blocked": 53,
+          "n_unfilled": 17,
+          "fill_rate": 0.7666666666666667,
+          "accuracy": 0.7521739130434782,
+          "total_cost": 3.047970028436944,
+          "total_fee": 0.07421306248687644,
+          "mean_latency_ms": 956.8067576449229,
+          "p95_latency_ms": 1678.413792807808,
+          "blocked_attempts": 53,
+          "violating_flows_through": 0,
+          "compliance_violations": 53,
+          "blocked_by_rule": {
+            "BR-LGPD-33-VIII": 10,
+            "CN-DSL-31": 20,
+            "CN-PIPL-40": 15,
+            "CN-PIPL-38": 8
+          },
+          "cross_border_share": 0.5826086956521739,
+          "fraud_exposure": 0.5217391304347826,
+          "fraud_accuracy_claimed": 0.9246666666666666,
+          "fraud_accuracy_actual": 0.65,
+          "fraud_accuracy_gap": 0.2746666666666666,
+          "honest_accuracy": 0.8636363636363636,
+          "total_buyer_surplus": 10.02781690907618,
+          "total_seller_profit": 1.9280640284369441,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.4695137171802912,
+            "buyer_cn_2": 1.9492280754251745,
+            "buyer_sg_1": 2.319074302639243,
+            "buyer_sg_2": 0.78933800203357,
+            "buyer_br_1": 1.8934665341526433,
+            "buyer_br_2": 1.607196277645257
+          },
+          "seller_profit": {
+            "seller_cn": 0.13955399999999998,
+            "seller_sg": 0.43538170299482987,
+            "seller_br": 1.3531283254421143
+          }
+        }
+      ],
+      "gateway_per_seed": [
+        {
+          "allowed": {
+            "SG->SG": 39,
+            "BR->SG": 44,
+            "CN->SG": 37,
+            "BR->BR": 44,
+            "CN->BR": 17,
+            "SG->BR": 35,
+            "BR->CN": 6
+          },
+          "blocked": {
+            "CN->SG": 23,
+            "CN->BR": 23,
+            "BR->SG": 5,
+            "BR->CN": 1
+          },
+          "allowed_total": 222,
+          "blocked_total": 52
+        },
+        {
+          "allowed": {
+            "SG->SG": 42,
+            "BR->SG": 40,
+            "CN->SG": 38,
+            "SG->BR": 37,
+            "BR->BR": 52,
+            "CN->BR": 13,
+            "BR->CN": 4
+          },
+          "blocked": {
+            "CN->SG": 22,
+            "CN->BR": 27,
+            "BR->SG": 4
+          },
+          "allowed_total": 226,
+          "blocked_total": 53
+        },
+        {
+          "allowed": {
+            "CN->SG": 38,
+            "SG->SG": 46,
+            "BR->SG": 36,
+            "SG->BR": 36,
+            "BR->BR": 50,
+            "CN->BR": 19,
+            "BR->CN": 4,
+            "SG->CN": 1
+          },
+          "blocked": {
+            "BR->SG": 8,
+            "CN->SG": 21,
+            "CN->BR": 22,
+            "BR->CN": 2
+          },
+          "allowed_total": 230,
+          "blocked_total": 53
+        }
+      ]
+    },
+    "sealed_bid/compliance_aware": {
+      "mechanism": "sealed_bid",
+      "policy": "compliance_aware",
+      "aggregate": {
+        "n_tx": {
+          "mean": 300.0,
+          "std": 0.0
+        },
+        "n_allowed": {
+          "mean": 278.3333333333333,
+          "std": 2.516611478423583
+        },
+        "n_blocked": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "n_unfilled": {
+          "mean": 21.666666666666668,
+          "std": 2.516611478423583
+        },
+        "fill_rate": {
+          "mean": 0.9277777777777777,
+          "std": 0.008388704928078585
+        },
+        "accuracy": {
+          "mean": 0.7533796574066756,
+          "std": 0.0237214629359371
+        },
+        "total_cost": {
+          "mean": 5.801923103425918,
+          "std": 0.19076912128173923
+        },
+        "total_fee": {
+          "mean": 0.08574573817575337,
+          "std": 0.0028900317941531846
+        },
+        "mean_latency_ms": {
+          "mean": 960.1345963316904,
+          "std": 7.829459013100684
+        },
+        "p95_latency_ms": {
+          "mean": 1636.5902112067295,
+          "std": 25.807333470858612
+        },
+        "blocked_attempts": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "violating_flows_through": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "compliance_violations": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "blocked_by_rule": {},
+        "cross_border_share": {
+          "mean": 0.49106068696025695,
+          "std": 0.01122532052892734
+        },
+        "fraud_exposure": {
+          "mean": 0.4311611827666136,
+          "std": 0.003891710641305138
+        },
+        "fraud_accuracy_claimed": {
+          "mean": 0.926138888888889,
+          "std": 0.0021316616714389357
+        },
+        "fraud_accuracy_actual": {
+          "mean": 0.5944444444444444,
+          "std": 0.04194352464039301
+        },
+        "fraud_accuracy_gap": {
+          "mean": 0.33169444444444446,
+          "std": 0.040108735309756914
+        },
+        "honest_accuracy": {
+          "mean": 0.873741619476347,
+          "std": 0.011485368617141445
+        },
+        "total_buyer_surplus": {
+          "mean": 10.552331158398328,
+          "std": 0.254446513190149
+        },
+        "total_seller_profit": {
+          "mean": 3.744630436759252,
+          "std": 0.10979131766599179
+        },
+        "buyer_surplus": {
+          "buyer_br_1": {
+            "mean": 1.8557406135717505,
+            "std": 0.3178334497561412
+          },
+          "buyer_br_2": {
+            "mean": 1.6015723287146788,
+            "std": 0.1568076131951803
+          },
+          "buyer_cn_1": {
+            "mean": 2.002366094561754,
+            "std": 0.12729275580287003
+          },
+          "buyer_cn_2": {
+            "mean": 2.525977832559667,
+            "std": 0.08139277423771389
+          },
+          "buyer_sg_1": {
+            "mean": 1.900278781629746,
+            "std": 0.3165658986713916
+          },
+          "buyer_sg_2": {
+            "mean": 0.6663955073607313,
+            "std": 0.15696772356556046
+          }
+        },
+        "seller_profit": {
+          "seller_br": {
+            "mean": 1.6492678176986562,
+            "std": 0.024830115632092
+          },
+          "seller_cn": {
+            "mean": 1.5838019999999995,
+            "std": 0.13755514851869374
+          },
+          "seller_sg": {
+            "mean": 0.5115606190605965,
+            "std": 0.011532662224534146
+          }
+        }
+      },
+      "per_seed": [
+        {
+          "n_tx": 300,
+          "n_allowed": 276,
+          "n_blocked": 0,
+          "n_unfilled": 24,
+          "fill_rate": 0.92,
+          "accuracy": 0.7536231884057971,
+          "total_cost": 5.920773713666521,
+          "total_fee": 0.0889394682507557,
+          "mean_latency_ms": 959.809005263242,
+          "p95_latency_ms": 1623.521554564078,
+          "blocked_attempts": 0,
+          "violating_flows_through": 0,
+          "compliance_violations": 0,
+          "blocked_by_rule": {},
+          "cross_border_share": 0.5036231884057971,
+          "fraud_exposure": 0.43478260869565216,
+          "fraud_accuracy_claimed": 0.9251666666666666,
+          "fraud_accuracy_actual": 0.6,
+          "fraud_accuracy_gap": 0.3251666666666666,
+          "honest_accuracy": 0.8717948717948718,
+          "total_buyer_surplus": 10.440286818082722,
+          "total_seller_profit": 3.80434771366652,
+          "buyer_surplus": {
+            "buyer_cn_1": 2.1168623216878895,
+            "buyer_cn_2": 2.613296460406634,
+            "buyer_sg_1": 1.8349533837203857,
+            "buyer_sg_2": 0.487754269273451,
+            "buyer_br_1": 1.7993950615086616,
+            "buyer_br_2": 1.5880253214857003
+          },
+          "seller_profit": {
+            "seller_cn": 1.664063999999999,
+            "seller_sg": 0.516614582467889,
+            "seller_br": 1.623669131198632
+          }
+        },
+        {
+          "n_tx": 300,
+          "n_allowed": 278,
+          "n_blocked": 0,
+          "n_unfilled": 22,
+          "fill_rate": 0.9266666666666666,
+          "accuracy": 0.7769784172661871,
+          "total_cost": 5.903117712913627,
+          "total_fee": 0.0833108099382276,
+          "mean_latency_ms": 968.1217717953361,
+          "p95_latency_ms": 1666.317773908871,
+          "blocked_attempts": 0,
+          "violating_flows_through": 0,
+          "compliance_violations": 0,
+          "blocked_by_rule": {},
+          "cross_border_share": 0.48201438848920863,
+          "fraud_exposure": 0.4316546762589928,
+          "fraud_accuracy_claimed": 0.9285833333333334,
+          "fraud_accuracy_actual": 0.6333333333333333,
+          "fraud_accuracy_gap": 0.2952500000000001,
+          "honest_accuracy": 0.8860759493670886,
+          "total_buyer_surplus": 10.843571477148146,
+          "total_seller_profit": 3.8116197129136267,
+          "buyer_surplus": {
+            "buyer_cn_1": 2.0249390694421505,
+            "buyer_cn_2": 2.452212429197274,
+            "buyer_sg_1": 1.6214717188215648,
+            "buyer_sg_2": 0.7822556682681063,
+            "buyer_br_1": 2.197978646923997,
+            "buyer_br_2": 1.764713944495053
+          },
+          "seller_profit": {
+            "seller_cn": 1.6623719999999993,
+            "seller_sg": 0.4983638019133499,
+            "seller_br": 1.6508839110002773
+          }
+        },
+        {
+          "n_tx": 300,
+          "n_allowed": 281,
+          "n_blocked": 0,
+          "n_unfilled": 19,
+          "fill_rate": 0.9366666666666666,
+          "accuracy": 0.7295373665480427,
+          "total_cost": 5.581877883697608,
+          "total_fee": 0.0849869363382768,
+          "mean_latency_ms": 952.4730119364932,
+          "p95_latency_ms": 1619.931305147239,
+          "blocked_attempts": 0,
+          "violating_flows_through": 0,
+          "compliance_violations": 0,
+          "blocked_by_rule": {},
+          "cross_border_share": 0.4875444839857651,
+          "fraud_exposure": 0.42704626334519574,
+          "fraud_accuracy_claimed": 0.9246666666666666,
+          "fraud_accuracy_actual": 0.55,
+          "fraud_accuracy_gap": 0.3746666666666666,
+          "honest_accuracy": 0.8633540372670807,
+          "total_buyer_surplus": 10.373135179964116,
+          "total_seller_profit": 3.6179238836976086,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.8652968925552216,
+            "buyer_cn_2": 2.512424608075094,
+            "buyer_sg_1": 2.2444112423472875,
+            "buyer_sg_2": 0.7291765845406365,
+            "buyer_br_1": 1.5698481322825928,
+            "buyer_br_2": 1.451977720163283
+          },
+          "seller_profit": {
+            "seller_cn": 1.4249699999999998,
+            "seller_sg": 0.5197034728005503,
+            "seller_br": 1.6732504108970585
+          }
+        }
+      ],
+      "gateway_per_seed": [
+        {
+          "allowed": {
+            "CN->CN": 47,
+            "SG->SG": 41,
+            "BR->SG": 43,
+            "CN->SG": 36,
+            "BR->BR": 49,
+            "CN->BR": 17,
+            "SG->BR": 36,
+            "BR->CN": 7
+          },
+          "blocked": {},
+          "allowed_total": 276,
+          "blocked_total": 0
+        },
+        {
+          "allowed": {
+            "CN->CN": 49,
+            "SG->SG": 42,
+            "BR->SG": 40,
+            "CN->SG": 38,
+            "SG->BR": 36,
+            "BR->BR": 53,
+            "CN->BR": 13,
+            "BR->CN": 7
+          },
+          "blocked": {},
+          "allowed_total": 278,
+          "blocked_total": 0
+        },
+        {
+          "allowed": {
+            "CN->SG": 38,
+            "SG->SG": 47,
+            "BR->SG": 35,
+            "BR->BR": 54,
+            "CN->CN": 43,
+            "SG->BR": 37,
+            "CN->BR": 19,
+            "BR->CN": 7,
+            "SG->CN": 1
+          },
+          "blocked": {},
+          "allowed_total": 281,
+          "blocked_total": 0
+        }
+      ]
+    }
+  }
+}

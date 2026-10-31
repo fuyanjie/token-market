@@ -1,0 +1,201 @@
+# token-market v1 sandbox — default configuration
+# All numbers are synthetic. Compliance rules are SIMPLIFIED SIMULATIONS, NOT LEGAL ADVICE.
+
+run:
+  seeds: [0, 1, 2]
+  n_tasks: 300            # tasks per run (spread evenly over rounds)
+  n_rounds: 10
+  backend: mock           # mock | local_hf | real
+  results_dir: results
+  log_file: transactions.jsonl
+
+market:
+  mechanisms: [posted_price, sealed_bid]
+  policies: [cheapest, quality_per_cost, compliance_aware]
+  auction:
+    format: second_price  # second_price | first_price
+    markup_low: 1.10      # bid = cost_per_1k * U(markup_low, markup_high)
+    markup_high: 1.80
+    reserve_price_per_1k: 0.030   # buyer-side max acceptable price (also price paid by a sole bidder in second-price)
+
+# Simulated model catalog. accuracy is P(correct) per difficulty level (1=easy, 2=medium, 3=hard).
+models:
+  sim-strong-r1:
+    accuracy: {1: 0.97, 2: 0.92, 3: 0.85}
+    tokens_mean: 1400
+    tokens_std: 300
+    hf_max_new_tokens: 384
+  sim-mid-r1:
+    accuracy: {1: 0.92, 2: 0.82, 3: 0.68}
+    tokens_mean: 1000
+    tokens_std: 250
+    hf_max_new_tokens: 256
+  sim-weak-r1:
+    accuracy: {1: 0.80, 2: 0.58, 3: 0.35}
+    tokens_mean: 550
+    tokens_std: 150
+    hf_max_new_tokens: 128
+
+sellers:
+  - id: seller_cn
+    jurisdiction: CN
+    claimed_model: sim-strong-r1
+    actual_model: sim-strong-r1
+    price_per_1k: 0.020          # posted price per 1K reasoning tokens (USD, synthetic)
+    cost_per_1k: 0.012           # marginal serving cost of the ACTUAL model
+    latency: {mean_ms: 900, std_ms: 250}
+    capacity_per_round: 12
+    quality_profile: {advertised_accuracy: 0.91, reasoning_effort: 1.0}
+    flags: [br_scc]
+  - id: seller_sg                # FRAUD: claims strong model, actually serves weak model
+    jurisdiction: SG
+    claimed_model: sim-strong-r1
+    actual_model: sim-weak-r1
+    price_per_1k: 0.011
+    cost_per_1k: 0.004
+    latency: {mean_ms: 600, std_ms: 150}
+    capacity_per_round: 12
+    quality_profile: {advertised_accuracy: 0.91, reasoning_effort: 1.0}
+    flags: [cn_standard_contract, br_scc]
+  - id: seller_br
+    jurisdiction: BR
+    claimed_model: sim-mid-r1
+    actual_model: sim-mid-r1
+    price_per_1k: 0.010
+    cost_per_1k: 0.006
+    latency: {mean_ms: 1100, std_ms: 300}
+    capacity_per_round: 12
+    quality_profile: {advertised_accuracy: 0.81, reasoning_effort: 1.0}
+    flags: [sg_contractual_safeguards]
+
+# sensitivity_mix: probability of each data-sensitivity tag per task
+# consent_rate: probability a task carries the data subject's specific consent (used by BR-LGPD-33-VIII)
+buyers:
+  - id: buyer_cn_1
+    jurisdiction: CN
+    budget: 3.0
+    value_per_correct: 0.08
+    allowed_jurisdictions: [CN, SG, BR]
+    sensitivity_mix: {public: 0.4, personal: 0.35, sensitive_personal: 0.15, important_data: 0.10}
+    consent_rate: 0.5
+  - id: buyer_cn_2
+    jurisdiction: CN
+    budget: 3.0
+    value_per_correct: 0.10
+    allowed_jurisdictions: [CN, SG, BR]
+    sensitivity_mix: {public: 0.3, personal: 0.2, sensitive_personal: 0.1, important_data: 0.4}
+    consent_rate: 0.5
+  - id: buyer_sg_1
+    jurisdiction: SG
+    budget: 3.0
+    value_per_correct: 0.08
+    allowed_jurisdictions: [CN, SG, BR]
+    sensitivity_mix: {public: 0.5, personal: 0.35, sensitive_personal: 0.15, important_data: 0.0}
+    consent_rate: 0.5
+  - id: buyer_sg_2
+    jurisdiction: SG
+    budget: 0.6                  # deliberately tight budget
+    value_per_correct: 0.06
+    allowed_jurisdictions: [SG, BR]
+    sensitivity_mix: {public: 0.6, personal: 0.4, sensitive_personal: 0.0, important_data: 0.0}
+    consent_rate: 0.5
+  - id: buyer_br_1
+    jurisdiction: BR
+    budget: 3.0
+    value_per_correct: 0.07
+    allowed_jurisdictions: [CN, SG, BR]
+    sensitivity_mix: {public: 0.4, personal: 0.3, sensitive_personal: 0.3, important_data: 0.0}
+    consent_rate: 0.3
+  - id: buyer_br_2
+    jurisdiction: BR
+    budget: 3.0
+    value_per_correct: 0.07
+    allowed_jurisdictions: [CN, SG, BR]
+    sensitivity_mix: {public: 0.5, personal: 0.3, sensitive_personal: 0.2, important_data: 0.0}
+    consent_rate: 0.8
+
+tasks:
+  types: [arithmetic, word_problem, sequence, logic]
+  difficulty_mix: {1: 0.4, 2: 0.4, 3: 0.2}
+
+# Cross-border corridors "ORIGIN->DEST": latency penalty (ms) and fee/tariff rate (fraction of cost, paid by buyer).
+gateway:
+  default_cross_border: {latency_penalty_ms: 200, fee_rate: 0.03}
+  corridors:
+    CN->SG: {latency_penalty_ms: 80,  fee_rate: 0.02}
+    SG->CN: {latency_penalty_ms: 80,  fee_rate: 0.02}
+    CN->BR: {latency_penalty_ms: 320, fee_rate: 0.05}
+    BR->CN: {latency_penalty_ms: 320, fee_rate: 0.05}
+    SG->BR: {latency_penalty_ms: 280, fee_rate: 0.04}
+    BR->SG: {latency_penalty_ms: 280, fee_rate: 0.04}
+
+# ---------------------------------------------------------------------------
+# Compliance rules — SIMPLIFIED SIMULATION, NOT LEGAL ADVICE.
+# Evaluated in order, only for cross-border flows (buyer jurisdiction != seller jurisdiction).
+#   type: allow   -> matching flow is allowed immediately (short-circuit)
+#   type: require -> matching flow is allowed only if ANY allow_if condition holds, else BLOCKED with rule_id
+# allow_if keys:
+#   dest_in_adequacy: true   -> destination is on origin's adequacy list (compliance.adequacy)
+#   seller_flags_any: [...]  -> seller holds at least one of these legal-mechanism flags
+#   task_flags_all:  [...]   -> task carries all these flags (e.g. specific_consent)
+# Flows matching no rule are allowed.
+# ---------------------------------------------------------------------------
+compliance:
+  adequacy:                  # hypothetical "comparable protection / adequacy" lists, for simulation only
+    SG: [BR]
+    BR: []
+    CN: []
+  rules:
+    - rule_id: GEN-PUBLIC
+      description: Public (non-personal) data may flow to any jurisdiction.
+      origin: ANY
+      sensitivity: [public]
+      type: allow
+    - rule_id: CN-DSL-31
+      description: Important data collected in CN may not leave CN without a security assessment.
+      origin: CN
+      sensitivity: [important_data]
+      type: require
+      allow_if: {seller_flags_any: [cn_security_assessment]}
+    - rule_id: CN-PIPL-40
+      description: Sensitive personal information from CN requires a CAC security assessment before export.
+      origin: CN
+      sensitivity: [sensitive_personal]
+      type: require
+      allow_if: {seller_flags_any: [cn_security_assessment]}
+    - rule_id: CN-PIPL-38
+      description: Personal information export from CN requires a legal mechanism (security assessment / standard contract / certification).
+      origin: CN
+      sensitivity: [personal]
+      type: require
+      allow_if: {seller_flags_any: [cn_security_assessment, cn_standard_contract, cn_certification]}
+    - rule_id: SG-PDPA-26
+      description: Transfer limitation obligation - personal data leaves SG only to comparable-protection jurisdictions or under contractual safeguards.
+      origin: SG
+      sensitivity: [personal, sensitive_personal]
+      type: require
+      allow_if: {dest_in_adequacy: true, seller_flags_any: [sg_contractual_safeguards]}
+    - rule_id: BR-LGPD-33-VIII
+      description: Sensitive personal data transferred from BR requires the data subject's specific consent (simplified).
+      origin: BR
+      sensitivity: [sensitive_personal]
+      type: require
+      allow_if: {task_flags_all: [specific_consent]}
+    - rule_id: BR-LGPD-33
+      description: International transfer from BR only to adequate countries, or with standard contractual clauses, or with specific consent.
+      origin: BR
+      sensitivity: [personal, sensitive_personal]
+      type: require
+      allow_if: {dest_in_adequacy: true, seller_flags_any: [br_scc], task_flags_all: [specific_consent]}
+
+backends:
+  local_hf:
+    model_name: Qwen/Qwen2.5-0.5B-Instruct
+  real:                      # OpenAI-compatible endpoint; unused by default, no keys in repo
+    base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    api_key_env: DASHSCOPE_API_KEY     # or DEEPSEEK_API_KEY with base_url https://api.deepseek.com/v1
+    model_map:                          # simulated model name -> real endpoint model name
+      sim-strong-r1: qwen-plus
+      sim-mid-r1: qwen-turbo
+      sim-weak-r1: qwen-turbo
+    timeout_s: 60
