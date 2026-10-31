@@ -35,3 +35,43 @@ experiments:
   B:
     config: configs/long_math.yaml
     tight_budget_multiplier: 0.5         # vs 3.0 in long_math.yaml: makes budgets bind
+  # ------------------------------------------------------------------ v4
+  I:                                    # imperfect detection: a x d x P (swap-only learning seller)
+    policy: single_best_compliant
+    audit_rates: [0.0, 0.02, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0]
+    detect_probs: [0.3, 0.5, 0.7, 0.9, 1.0]
+    penalties: [0.1, 0.5]
+    run: {n_tasks: 960, n_rounds: 96}
+    budget_multiplier: 12.0
+    q_threshold: 0.1
+  T:                                    # token theft: attack modes x audit regimes, then a (a, d_id, d_len, P) sweep
+    policy: single_best_compliant
+    run: {n_tasks: 960, n_rounds: 96}
+    budget_multiplier: 12.0
+    q_threshold: 0.1
+    matrix: {audit_rate: 0.1, detect_prob: 0.9, detect_prob_length: 0.9, penalty: 0.5}
+    sweep:
+      audit_rates: [0.0, 0.02, 0.05, 0.1, 0.2, 0.3]
+      detect_pairs: [[0.9, 0.9], [0.9, 0.3], [0.3, 0.9], [0.5, 0.5]]   # (d_identity, d_length)
+      penalties: [0.1, 0.5]
+    extras:                             # theft-only attacker variants at the matrix point
+      - {name: "length audit, billed vs actual (default)", attack_modes: [theft], audit_types: [length]}
+      - {name: "length audit, REFERENCE cross-check vs cached claimed-model generation", attack_modes: [theft],
+         audit_types: [length], fraud: {length_audit_reference: true}}
+      - {name: "billing inflated_factor = 2 x full length", attack_modes: [theft], audit_types: [length],
+         fraud: {billed_token_policy: inflated_factor, inflated_factor: 2.0}}
+      - {name: "billing inflated_factor = 2, no audit", attack_modes: [theft], audit_types: [],
+         fraud: {billed_token_policy: inflated_factor, inflated_factor: 2.0}}
+  J:                                    # v4 HEADLINE: joint objective under the swap + theft strategic seller
+    attack_modes: [swap, theft]
+    policies: [single_cheapest_compliant, single_best_compliant, cascade_compliant, vote_k_compliant,
+               compliance_unaware_cheapest, pilot, pilot_compliant, stageroute, stageroute_compliant,
+               audited_compliance_cascade]
+    main_baseline: pilot_compliant
+    budget_multiplier: 2.0
+    sensitivity: [[1.0, 0.5], [0.5, 0.25], [2.0, 1.0], [1.0, 0.0]]   # (lambda, mu); (1, 0) ignores fraud
+    curve_policies: [single_cheapest_compliant, single_best_compliant, cascade_compliant, vote_k_compliant,
+                     compliance_unaware_cheapest, pilot, pilot_compliant, stageroute_compliant,
+                     audited_compliance_cascade]
+    budget_multipliers: [0.2, 0.4, 0.6, 1.0, 1.5, 2.0, 3.0, 5.0]
+    cost_levels: [0.005, 0.01, 0.015, 0.02, 0.0235, 0.0275]   # null: 20/40/60/80% quantiles of all curve costs

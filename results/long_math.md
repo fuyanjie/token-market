@@ -1,5 +1,7 @@
 # B — long reasoning tasks (GSM8K-hard + MATH-500, real Qwen outputs)
 
+_v4: infrastructure / negative finding, NOT a contribution claim — per-purchase cost overruns are large on long outputs, but budget violations are ≈ 0 under normal budgets and only bind under tight budgets._
+
 ## Measured model accuracy on the long subset
 
 | model | n | acc overall | acc GSM8K-hard (d4) | acc MATH-500 L3+ (d5) | tokens mean ± std | p95 | max | truncation rate (= hit max_new_tokens) | explicit 'Answer:' rate |

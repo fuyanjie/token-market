@@ -34,10 +34,15 @@ market:
   budget_multiplier: 1.0             # v3: scales every buyer budget (cost-curve / tight-budget sweeps)
   # v3 buyer audits (identity check of a purchase, see tokenmarket/strategic.py). `rate` applies to every
   # policy except audited_compliance_cascade, which uses audited.audit_rate. Cost is charged to the buyer budget.
-  audit: {rate: 0.0, cost: 0.004}
+  # v4: `types` = checks run on an audited purchase (identity = model-swap check, length = token-theft check);
+  # one audit fee per audited purchase whatever the checks.
+  audit: {rate: 0.0, cost: 0.004, types: [identity]}
   audited:                           # D3 = OUR policy: compliance filter + budget + cascade + audits + trust
     audit_rate: 0.1
+    audit_types: [identity, length]  # v4: D3 also length-audits (token theft)
+    theft_quality_factor: 0.5        # v4: D3 prior: a truncated answer is 0.5x as likely correct (routing)
     cascade: {confidence_threshold: 0.7, max_steps: 3}
+  joint: {lambda: 1.0, mu: 0.5}      # v4 joint objective J = acc - lambda*violation_rate - mu*fraud_share
   pilot: {alpha: 0.5, prior_lambda: 5.0, n_bins: 4}       # D1 (LinUCB + ON-MCKP ZCL); lb/ub: auto
   stageroute: {gamma: 0.5, budget_scale: 1.0}             # D2 (per-query LP, b = budget_scale * B / T)
   auction:
@@ -178,6 +183,18 @@ fraud:
   reputation_loss: 0.0       # R used by analytic/logit seller for the delisting cost (0 when rounds = 0)
   logit_temperature: 0.002
   learning: {learner: egreedy, epsilon: 0.1, eta: 1.0}   # learner: egreedy | hedge (eta only for hedge)
+  # v4: imperfect detection + token theft. detect_prob above = identity check d (miss / false-negative rate 1-d);
+  # false positives are 0 for both checks (honest answers / honest bills are never flagged).
+  attack_modes_enabled: [swap]   # subset of [swap, theft]; [] = honest seller_sg. Default = v3 (swap only)
+  q_theft_static: 1.0            # theft probability of the static strategy (if theft enabled)
+  detect_prob_length: 0.9        # P(length audit flags an over-billed purchase) - SIMULATED; miss rate 1-d_length
+  billed_token_policy: claimed_mean   # claimed_mean: bill the claimed model's advertised mean tokens |
+                                      # inflated_factor: bill inflated_factor x the full (untruncated) length
+  inflated_factor: 2.0
+  theft_max_new_tokens: 48       # a theft purchase stops generating after this many tokens (null: no truncation)
+  length_audit_tol: 0.1          # flag if billed > actual * (1 + tol)
+  length_audit_abs_gap: 0        # ... or billed - actual > abs_gap (0 disables)
+  length_audit_reference: false  # true: compare billed with the claimed model's CACHED reference generation length
 
 tasks:
   types: [arithmetic, word_problem, sequence, logic]

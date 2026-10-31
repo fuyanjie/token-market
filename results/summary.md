@@ -2,7 +2,7 @@
 
 > Simplified simulation of data-transfer rules; NOT legal advice.
 
-seller backends={'seller_cn': 'local_hf', 'seller_sg': 'local_hf', 'seller_br': 'mock'}, seeds=[0, 1, 2], tasks/run=240 (drawn from fixed pool of 80, task_seed=1234), auction=`second_price`, log lines=7031, precompute=0.0s, market sim=0.484s. Values are mean ± std over seeds.
+seller backends={'seller_cn': 'local_hf', 'seller_sg': 'local_hf', 'seller_br': 'mock'}, seeds=[0, 1, 2], tasks/run=240 (drawn from fixed pool of 80, task_seed=1234), auction=`second_price`, log lines=7031, precompute=0.0s, market sim=0.498s. Values are mean ± std over seeds.
 
 ## C2 baseline comparison (posted price)
 
@@ -13,6 +13,16 @@ seller backends={'seller_cn': 'local_hf', 'seller_sg': 'local_hf', 'seller_br': 
 | cascade_compliant | 0.778 ± 0.028 | 7.362 ± 0.371 | 0.0307 ± 0.0015 | 1.58 ± 0.06 | +0.575 ± +0.119 (+8.5% ± +1.7%) | 0.0 ± 0.0 (0.0% ± 0.0%) | 0.0 ± 0.0 | 123.3 ± 10.1 | 0.554 ± 0.023 | 0.331 ± 0.016 | 7.248 ± 0.613 | 4609 ± 417 |
 | vote_k_compliant | 0.689 ± 0.005 | 10.407 ± 0.309 | 0.0434 ± 0.0013 | 1.98 ± 0.05 | +0.521 ± +0.122 (+5.3% ± +1.2%) | 1.0 ± 0.0 (0.2% ± 0.0%) | 0.0 ± 0.0 | 123.3 ± 10.1 | 0.569 ± 0.010 | 0.351 ± 0.003 | 2.659 ± 0.334 | 5160 ± 348 |
 | compliance_unaware_cheapest | 0.653 ± 0.028 | 2.540 ± 0.033 | 0.0106 ± 0.0001 | 1.00 ± 0.00 | +0.273 ± +0.056 (+12.1% ± +2.6%) | 0.0 ± 0.0 (0.0% ± 0.0%) | 56.7 ± 3.5 | 0.0 ± 0.0 | 0.669 ± 0.003 | 0.164 ± 0.004 | 9.570 ± 0.519 | 1321 ± 118 |
+
+## v4 joint objective J = accuracy − 1.0·violation rate (/task) − 0.5·fraud share (/purchase)
+
+| policy | J | task accuracy | compliance violation rate | fraud share (swap or theft) |
+|---|---|---|---|---|
+| cascade_compliant | 0.612 ± 0.027 | 0.778 ± 0.028 | 0.000 ± 0.000 | 0.331 ± 0.016 |
+| single_cheapest_compliant | 0.605 ± 0.003 | 0.665 ± 0.010 | 0.000 ± 0.000 | 0.121 ± 0.018 |
+| vote_k_compliant | 0.513 ± 0.006 | 0.689 ± 0.005 | 0.000 ± 0.000 | 0.351 ± 0.003 |
+| compliance_unaware_cheapest | 0.335 ± 0.016 | 0.653 ± 0.028 | 0.236 ± 0.015 | 0.164 ± 0.004 |
+| single_best_compliant | 0.232 ± 0.017 | 0.639 ± 0.013 | 0.000 ± 0.000 | 0.814 ± 0.020 |
 
 ## Mechanism comparison (single-seller policies: posted price vs sealed-bid second_price auction)
 
@@ -120,8 +130,8 @@ Greedy decoding, chat template, max_new_tokens=256, batched (left padding). reas
 
 ## What is real vs simulated
 
-- **Real**: Qwen2.5-1.5B / 0.5B-Instruct outputs (local CPU inference, cached), their correctness against gold, reasoning-token counts and measured generation times on CPU; the GSM8K / MATH-500 long-task problems and golds.
-- **Simulated**: prices, serving costs (and the swap cost gap), latency noise and corridor penalties/fees, jurisdictions and the (simplified, NOT legal advice) compliance rules, buyers / budgets / sensitivities / consent, audits and swap detection (identity check succeeding with prob d), penalties / stake slashing / delisting, the strategic seller's learning rule, the mock seller (seller_br, MockLLM) and its confidence.
+- **Real**: Qwen2.5-1.5B / 0.5B-Instruct outputs (local CPU inference, cached), their correctness against gold, reasoning-token counts and measured generation times on CPU; the GSM8K / MATH-500 long-task problems and golds. v4 token theft truncates these REAL cached outputs (character-proportional cut, answer re-parsed) - no new generation is run; the optional length-audit reference cross-check compares against the REAL cached greedy generation of the claimed model.
+- **Simulated**: prices, serving costs (and the swap cost gap), latency noise and corridor penalties/fees, jurisdictions and the (simplified, NOT legal advice) compliance rules, buyers / budgets / sensitivities / consent, audits and BOTH detectors (identity check succeeding with prob d, length audit with prob d_length; miss / false-negative rates 1 - d, false positives 0), penalties / stake slashing / delisting, the strategic seller's learning rule and attack choice, the mock seller (seller_br, MockLLM), its confidence and its truncation model.
 
 ## Metric definitions
 

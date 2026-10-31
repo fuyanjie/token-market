@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""v3 experiments on cached model outputs (no model is loaded):
+"""v3 + v4 experiments on cached model outputs (no model is loaded):
 
-  python run_experiments.py                       # C, D, A (+ B if the long-math cache is complete)
+  python run_experiments.py                       # C, I, T, A, D, J (+ B if the long-math cache is complete)
   python run_experiments.py --only C D            # subset
   python run_experiments.py --backend-override mock --seeds 0   # fast all-mock run (CI)
 
 Writes results/fraud_audit_threshold.{md,json}, results/baselines.{md,json}, results/cost_curves.{md,json,png},
-results/long_math.{md,json} (+ results/long_math*/summary.md) and results/experiments_summary.md.
+results/long_math.{md,json} (+ results/long_math*/summary.md), v4: results/imperfect_detection.{md,json,png},
+results/token_theft.{md,json}, results/joint_objective.{md,json}, and results/experiments_summary.md.
 """
 import argparse
 import json
@@ -16,7 +17,8 @@ import time
 
 from tokenmarket.config import load_config
 from tokenmarket.experiments import (REAL_VS_SIM, Context, experiment_A, experiment_B, experiment_C, experiment_D,
-                                     plot_A, plot_C, render_A, render_B, render_C, render_D)
+                                     experiment_I, experiment_J, experiment_T, plot_A, plot_C, plot_I, render_A,
+                                     render_B, render_C, render_D, render_I, render_J, render_T)
 
 
 def _dump(results_dir, name, obj, md):
@@ -27,9 +29,10 @@ def _dump(results_dir, name, obj, md):
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(description="token-market v3 experiments")
+    ap = argparse.ArgumentParser(description="token-market v3 + v4 experiments")
     ap.add_argument("--config", default="configs/experiments.yaml")
-    ap.add_argument("--only", nargs="+", choices=["A", "B", "C", "D"], default=["C", "D", "A", "B"])
+    ap.add_argument("--only", nargs="+", choices=["A", "B", "C", "D", "I", "T", "J"],
+                    default=["C", "I", "T", "D", "A", "J", "B"])
     ap.add_argument("--seeds", type=int, nargs="+", default=None)
     ap.add_argument("--backend-override", choices=["mock", "local_hf"], default=None)
     ap.add_argument("--results-dir", default=None)
@@ -45,17 +48,46 @@ def main(argv=None):
     log_dir = os.path.join(rd, "experiments")
     log = lambda *a: print(*a, flush=True)  # noqa: E731
     ctx = Context(cfg, args.backend_override, args.cache_file, log)
-    md_parts = ["# token-market v3 — experiment summary", "",
+    md_parts = ["# token-market v4 — experiment summary", "",
+                "Novelty framing: compliance-constrained portfolio purchasing + strategic fraud (model swap AND token "
+                "theft) under IMPERFECT audits, compared with PILOT-style / StageRoute-style baselines on the JOINT "
+                "objective J = accuracy − λ·violation rate − μ·fraud share (headline: section J). Reasoning-token "
+                "length uncertainty is NOT claimed as a contribution: the expected-vs-actual cost logging is "
+                "infrastructure and its finding is negative (overruns ≈ 0 under normal budgets, they only bind under "
+                "tight budgets; section B).", "",
                 f"config `{args.config}`, seeds={seeds}, backend override={args.backend_override}, "
                 f"reputation source: " + ", ".join(f"{m}: {ctx.rep.source(m)}" for m in sorted(
                     {s['claimed_model'] for s in cfg['sellers']})), ""]
     out = {}
+    head = len(md_parts)
     if "C" in args.only:
         out["C"] = experiment_C(ctx, seeds, log_dir, log)
         md = render_C(out["C"])
         _dump(rd, "fraud_audit_threshold", out["C"], md)
         plot_C(out["C"], os.path.join(rd, "fraud_audit_threshold.png"))
         md_parts += [md.replace("# C —", "## C —", 1)]
+    jpart = None
+    if "J" in args.only:   # v4 headline first in the summary
+        out["J"] = experiment_J(ctx, seeds, log_dir, log)
+        md = render_J(out["J"])
+        _dump(rd, "joint_objective", out["J"], md)
+        jpart = md.split("## Appendix")[0].replace("# Joint objective —", "## J — Joint objective —", 1)
+    if "I" in args.only:
+        out["I"] = experiment_I(ctx, seeds, log)
+        md = render_I(out["I"])
+        _dump(rd, "imperfect_detection", out["I"], md)
+        if plot_I(out["I"], os.path.join(rd, "imperfect_detection.png")):
+            log(f"[I] wrote {rd}/imperfect_detection.png")
+        hp = out["I"]["heatmap_penalty"]
+        secs = md.split("\n## ")
+        keep = [secs[0].replace("# Imperfect detection —", "## I — Imperfect detection —", 1)] + \
+            ["### " + x for x in secs[1:] if x.startswith(("Thresholds", f"learned swap rate q (P = {hp})"))]
+        md_parts += ["\n".join(keep)]
+    if "T" in args.only:
+        out["T"] = experiment_T(ctx, seeds, log)
+        md = render_T(out["T"])
+        _dump(rd, "token_theft", out["T"], md)
+        md_parts += [md.split("## Sweep")[0].replace("# Token theft —", "## T — Token theft —", 1)]
     if "A" in args.only:
         out["A"] = experiment_A(ctx, seeds, log)
         md = render_A(out["A"])
@@ -76,6 +108,8 @@ def main(argv=None):
             md = render_B(out["B"])
             _dump(rd, "long_math", out["B"], md)
             md_parts += [md.replace("# B —", "## B —", 1)]
+    if jpart:
+        md_parts[head:head] = [jpart]
     md_parts += REAL_VS_SIM + [f"_total experiment time {time.time() - t0:.1f}s_", ""]
     with open(os.path.join(rd, "experiments_summary.md"), "w", encoding="utf-8") as fh:
         fh.write("\n".join(md_parts))

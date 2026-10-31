@@ -1,4 +1,4 @@
-"""Unified transaction log schema (v2 + v3 audit fields).
+"""Unified transaction log schema (v2 + v3 audit fields + v4 token-theft / imperfect-detection fields).
 
 Exactly ONE JSONL line per transaction = one individual seller purchase attempt (allowed or blocked), or one
 `unfilled` line for a task where no purchase was made. Inside a cascade / vote portfolio every seller purchase is
@@ -12,6 +12,8 @@ from typing import Dict, List
 
 NUM = (int, float)
 STATUSES = ("allowed", "blocked", "unfilled")
+ATTACK_MODES = ("none", "swap", "theft", "both")
+AUDIT_TYPES = ("none", "identity", "length", "both")
 
 # field -> (accepted types, nullable)
 SCHEMA: Dict[str, tuple] = {
@@ -36,8 +38,8 @@ SCHEMA: Dict[str, tuple] = {
     "backend": (str, True),             # seller backend that served it: local_hf | mock | real (null if unfilled)
     "cross_border": (bool, False),
     "price_per_1k": (NUM, False),
-    "reasoning_tokens": (int, False),
-    "cost": (NUM, False),               # buyer payment to seller = price_per_1k * tokens / 1000
+    "reasoning_tokens": (int, False),   # tokens ACTUALLY generated (== actual_tokens; 0 if not served)
+    "cost": (NUM, False),               # buyer payment to seller = price_per_1k * BILLED tokens / 1000
     "fee": (NUM, False),                # gateway corridor fee/tariff, paid by buyer
     "expected_cost": (NUM, False),      # pre-purchase: price * advertised tokens (claimed model) / 1000 * (1+fee_rate)
     "actual_cost": (NUM, False),        # realised buyer outlay = cost + fee (0 if not served)
@@ -63,6 +65,16 @@ SCHEMA: Dict[str, tuple] = {
     "audit_cost": (NUM, False),         # audit fee charged to the buyer budget (0 if not audited)
     "swap_detected": (bool, True),      # audit outcome; null if not audited
     "swap_prob": (NUM, True),           # seller's current swap probability q (0 honest; null if unfilled)
+    # v4: token theft + imperfect detection
+    "billed_tokens": (int, False),      # tokens the buyer is billed for (== actual unless token theft)
+    "actual_tokens": (int, False),      # tokens actually generated (alias of reasoning_tokens)
+    "token_inflation": (NUM, True),     # billed / actual (1.0 honest; null if not served)
+    "attack_mode": (str, True),         # realised attack on this purchase: none|swap|theft|both (null if not served)
+    "theft_prob": (NUM, True),          # seller's current theft probability q_theft (0 honest; null if unfilled)
+    "audit_type": (str, False),         # checks run on this purchase: none|identity|length|both
+    "theft_detected": (bool, True),     # length-audit outcome; null if no length check ran
+    "detect_prob_identity": (NUM, True),  # identity-check detection prob d of the buyer's audit regime (null: no such check)
+    "detect_prob_length": (NUM, True),    # length-audit detection prob d_length (null: no such check)
 }
 FIELDS: List[str] = list(SCHEMA)
 
@@ -97,6 +109,13 @@ def validate_record(rec: Dict) -> List[str]:
         errs.append("blocked/unfilled tx must have rule_id")
     if not rec.get("final") and (rec.get("final_answer") is not None or rec.get("final_correct") is not None):
         errs.append("final_answer/final_correct only allowed on final=true lines")
+    if rec.get("attack_mode") is not None and rec["attack_mode"] not in ATTACK_MODES:
+        errs.append(f"bad attack_mode {rec['attack_mode']}")
+    if rec.get("audit_type") is not None and rec["audit_type"] not in AUDIT_TYPES:
+        errs.append(f"bad audit_type {rec['audit_type']}")
+    if isinstance(rec.get("billed_tokens"), int) and isinstance(rec.get("actual_tokens"), int) \
+            and rec["billed_tokens"] < rec["actual_tokens"]:
+        errs.append("billed_tokens < actual_tokens")
     if rec.get("final") and rec.get("final_correct") is None:
         errs.append("final line must set final_correct")
     return errs

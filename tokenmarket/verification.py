@@ -45,7 +45,8 @@ class TrustingVerifier(VerificationModule):
         return UNVERIFIED
 
     def settle(self, tx: Dict) -> Settlement:
-        gross = tx["price_per_1k"] * tx["reasoning_tokens"] / 1000.0
+        # v4: the buyer pays for BILLED tokens (== reasoning_tokens unless the seller commits token theft)
+        gross = tx["price_per_1k"] * tx.get("billed_tokens", tx["reasoning_tokens"]) / 1000.0
         fee = gross * tx.get("fee_rate", 0.0)
         return Settlement(buyer_pays=gross, seller_receives=gross, fee=fee, status=UNVERIFIED)
 

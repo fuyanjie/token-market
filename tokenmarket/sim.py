@@ -21,7 +21,8 @@ from .baselines import PilotRouter, StageRouteRouter
 from .portfolio import AUDITED_POLICIES, ROUTER_POLICIES, SINGLE_POLICIES, Purchase, is_hard, run_policy
 from .precompute import local_cfg, local_models, model_stats, precompute, render_model_accuracy_md
 from .sellers import Reputation, load_sellers
-from .strategic import IdentityCheckDetector, TrustModel, fraud_cfg, make_strategy
+from .strategic import (IdentityCheckDetector, TokenLengthAuditor, TrustModel, attack_mode, audit_type,
+                        billed_tokens, fraud_cfg, make_strategy)
 from .tasks import build_task_pool, sample_run_tasks
 from .verification import TrustingVerifier
 
@@ -39,7 +40,10 @@ def _base_record(run_id, mechanism, policy, seed, rnd, buyer, task) -> Dict:
             "status": "unfilled", "violation": False, "rule_id": None, "final": False, "final_answer": None,
             "final_correct": None, "buyer_surplus": 0.0, "seller_profit": 0.0,
             "verification_status": "unverified",
-            "audited": False, "audit_cost": 0.0, "swap_detected": None, "swap_prob": None}
+            "audited": False, "audit_cost": 0.0, "swap_detected": None, "swap_prob": None,
+            "billed_tokens": 0, "actual_tokens": 0, "token_inflation": None, "attack_mode": None,
+            "theft_prob": None, "audit_type": "none", "theft_detected": None, "detect_prob_identity": None,
+            "detect_prob_length": None}
 
 
 def policy_audit_rate(cfg: Dict, policy: str) -> float:
@@ -49,6 +53,27 @@ def policy_audit_rate(cfg: Dict, policy: str) -> float:
     if policy in AUDITED_POLICIES:
         return float(m.get("audited", {}).get("audit_rate", 0.1))
     return float(m.get("audit", {}).get("rate", 0.0))
+
+
+def policy_audit_checks(cfg: Dict, policy: str) -> List[str]:
+    """v4: checks run on an audited purchase. D3: market.audited.audit_types (default identity + length);
+    every other policy: market.audit.types (default identity only = v3)."""
+    m = cfg["market"]
+    if policy in AUDITED_POLICIES:
+        return list(m.get("audited", {}).get("audit_types", ["identity", "length"]))
+    return list(m.get("audit", {}).get("types", ["identity"]))
+
+
+def joint_objective(accuracy: float, violation_rate: float, fraud_share: float, lam: float = 1.0,
+                    mu: float = 0.5) -> float:
+    """v4 primary ranking metric J = accuracy - lambda * compliance_violation_rate - mu * fraud_share
+    (violation rate per TASK, fraud share per PURCHASE; see metrics.run_metrics)."""
+    return accuracy - lam * violation_rate - mu * fraud_share
+
+
+def joint_weights(cfg: Dict):
+    j = cfg.get("market", {}).get("joint", {})
+    return float(j.get("lambda", 1.0)), float(j.get("mu", 0.5))
 
 
 def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict, rep: Reputation,
@@ -68,9 +93,21 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
     penalty = float(fcfg.get("penalty", 0.0))
     rep_rounds = int(fcfg.get("reputation_rounds", 0))
     detector = IdentityCheckDetector(float(fcfg.get("detect_prob", 0.9)))
-    trust = TrustModel(rep, detector.d) if policy in AUDITED_POLICIES else None
+    length_auditor = TokenLengthAuditor(float(fcfg.get("detect_prob_length", 0.9)),
+                                        float(fcfg.get("length_audit_tol", 0.1)),
+                                        float(fcfg.get("length_audit_abs_gap", 0.0)))
+    checks = policy_audit_checks(cfg, policy)
+    use_reference = bool(fcfg.get("length_audit_reference", False))
+    bill_policy = str(fcfg.get("billed_token_policy", "claimed_mean"))
+    inflate = float(fcfg.get("inflated_factor", 2.0))
+    theft_tmax = fcfg.get("theft_max_new_tokens", 48)
+    d_id_log = detector.d if ("identity" in checks and a_rate > 0) else None
+    d_len_log = length_auditor.d if ("length" in checks and a_rate > 0) else None
+    trust = TrustModel(rep, detector.d, detect_prob_length=length_auditor.d,
+                       theft_quality_factor=float(mcfg.get("audited", {}).get("theft_quality_factor", 0.5))) \
+        if policy in AUDITED_POLICIES else None
     for scfg, s in zip(cfg["sellers"], sellers):
-        s.strategy = make_strategy(scfg, cfg, a_rate, rep)
+        s.strategy = make_strategy(scfg, cfg, a_rate, rep, checks)
     engine = ComplianceEngine.from_config(cfg)
     hard = is_hard(policy)
     gw_mode = "enforce" if hard else mcfg.get("unaware_gateway_mode", "audit_only")
@@ -86,6 +123,8 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
     rng_strategy = random.Random(f"strategy-{seed}")   # separate streams: v2 draws are unchanged
     rng_swap = random.Random(f"swap-{seed}")
     rng_audit = random.Random(f"audit-{seed}")
+    rng_theft = random.Random(f"theft-{seed}")       # v4 streams: v3 draws are unchanged
+    rng_length = random.Random(f"length-audit-{seed}")
 
     tasks = sample_run_tasks(pool, buyers, n_tasks, seed)
     per_round = -(-n_tasks // n_rounds)
@@ -154,6 +193,7 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
                        expected_cost=expected, ts=time.time())
             q_now = s.strategy.q if s.strategy is not None else (1.0 if s.is_model_swap else 0.0)
             rec["swap_prob"] = float(q_now)
+            rec["theft_prob"] = float(s.strategy.q_theft) if s.strategy is not None else 0.0
             gw = gateway.route(buyer, s, task)
             if not gw.allowed:
                 rec.update(status="blocked", rule_id=gw.rule_id, budget_remaining=buyer.remaining,
@@ -165,31 +205,45 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
                 swapped = rng_swap.random() < s.strategy.q
             else:
                 swapped = s.is_model_swap
+            theft = s.strategy is not None and s.strategy.theft_enabled and rng_theft.random() < s.strategy.q_theft
             served = s.actual_model if swapped else (s.honest_model or s.actual_model)
             serve_cost = s.cost_per_1k if (swapped or s.strategy is None) else s.honest_cost_per_1k
             rec["actual_model"] = served
-            res = backends[s.backend].solve(task, served, models[served], s.reasoning_effort, rng_backend)
-            tx = dict(rec, reasoning_tokens=res.reasoning_tokens, fee_rate=gw.fee_rate)
+            be = backends[s.backend]
+            res = be.solve(task, served, models[served], s.reasoning_effort, rng_backend)
+            full_tokens = int(res.reasoning_tokens)
+            if theft:   # v4 token theft: stop early, bill the claimed (or inflated) long generation
+                res = be.truncate(res, task, theft_tmax, rng_theft)
+            actual_tok = int(res.reasoning_tokens)
+            billed = billed_tokens(bill_policy, actual_tok, full_tokens, rep.tokens_mean(s.claimed_model),
+                                   inflate) if theft else actual_tok
+            tx = dict(rec, reasoning_tokens=actual_tok, billed_tokens=billed, fee_rate=gw.fee_rate)
             st = verifier.settle(tx)
             actual = st.buyer_pays + st.fee
             buyer.spent += actual
             correct = res.answer is not None and int(res.answer) == task.gold
             # v3 audit: identity check on a fraction a of purchases, fee charged to the buyer budget
-            audited, detected, a_cost, slashed = False, None, 0.0, 0.0
+            audited, detected, t_detected, a_cost, slashed = False, None, None, 0.0, 0.0
             if a_rate > 0 and rng_audit.random() < a_rate and buyer.remaining >= audit_cost:
                 audited, a_cost = True, audit_cost
                 buyer.spent += audit_cost
-                detected = detector.detect(swapped, rng_audit)
-                if trust is not None:
-                    trust.record(s.id, detected, served)
-                if detected:
+                if "identity" in checks:
+                    detected = detector.detect(swapped, rng_audit)
+                    if trust is not None:
+                        trust.record(s.id, detected, served)
+                if "length" in checks:
+                    ref = be.reference_tokens(task, s.claimed_model) if use_reference else None
+                    t_detected = length_auditor.detect(billed, actual_tok, rng_length, ref)
+                    if trust is not None:
+                        trust.record_length(s.id, t_detected)
+                if detected or t_detected:
                     slashed = penalty
                     s.stake_slashed += penalty
                     if rep_rounds > 0:
                         s.banned_until_round = rnd + 1 + rep_rounds
-            profit = st.seller_receives - serve_cost * res.reasoning_tokens / 1000.0 - slashed
+            profit = st.seller_receives - serve_cost * actual_tok / 1000.0 - slashed
             if s.strategy is not None:
-                s.strategy.observe(swapped, profit)
+                s.strategy.observe(swapped, profit, theft)
             if res.gen_time_s is not None:   # real model: measured gen time + jurisdiction overhead/noise
                 lat = s.latency_mean_ms + res.gen_time_s * 1000.0 * lat_scale + rng_latency.gauss(0, s.latency_std_ms)
             else:
@@ -206,7 +260,12 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
                        status="allowed", violation=violation, rule_id=gw.rule_id if violation else None,
                        buyer_surplus=-actual - a_cost, seller_profit=profit,
                        verification_status=verifier.verify_model_identity(tx),
-                       audited=audited, audit_cost=a_cost, swap_detected=detected)
+                       audited=audited, audit_cost=a_cost, swap_detected=detected,
+                       billed_tokens=int(billed), actual_tokens=actual_tok,
+                       token_inflation=billed / actual_tok if actual_tok else 1.0,
+                       attack_mode=attack_mode(served != s.claimed_model, theft),
+                       audit_type=audit_type(checks) if audited else "none", theft_detected=t_detected,
+                       detect_prob_identity=d_id_log, detect_prob_length=d_len_log)
             lines.append(rec)
             return Purchase(s, rec["answer"], res.confidence, quality(s), correct=bool(correct),
                             actual_cost=actual)
@@ -239,11 +298,20 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
     strat = {s.id: s.strategy for s in sellers if s.strategy is not None}
     m.update(audit_rate=a_rate, total_stake_slashed=sum(s.stake_slashed for s in sellers),
              learned_swap_q={k: v.learned_q() for k, v in strat.items()},
+             learned_theft_q={k: v.learned_q_theft() for k, v in strat.items()},
+             theft_q_history={k: list(v.history_theft) for k, v in strat.items()},
+             theft_gain_analytic={k: v.gain_theft() for k, v in strat.items()},
+             theft_saving={k: v.theft_saving for k, v in strat.items()},
              swap_q_history={k: list(v.history) for k, v in strat.items()},
              swap_gain_analytic={k: v.gain() for k, v in strat.items()},
              swap_cost_saving={k: v.cost_saving for k, v in strat.items()})
+    lam, mu = joint_weights(cfg)
+    m.update(joint_lambda=lam, joint_mu=mu,
+             joint_objective=joint_objective(m["task_accuracy"], m["compliance_violation_rate"],
+                                             m["fraud_share"], lam, mu))
     if trust is not None:
         m["trust_q_hat"] = {s.id: trust.q_hat(s.id) for s in sellers}
+        m["trust_q_hat_theft"] = {s.id: trust.q_hat_theft(s.id) for s in sellers}
     m["gateway"] = gateway.stats()
     return m
 
@@ -349,11 +417,16 @@ def run_all(cfg: Dict, seeds: Optional[List[int]] = None, backend_name: Optional
 REAL_VS_SIM = [
     "## What is real vs simulated", "",
     "- **Real**: Qwen2.5-1.5B / 0.5B-Instruct outputs (local CPU inference, cached), their correctness against gold, "
-    "reasoning-token counts and measured generation times on CPU; the GSM8K / MATH-500 long-task problems and golds.",
+    "reasoning-token counts and measured generation times on CPU; the GSM8K / MATH-500 long-task problems and golds. "
+    "v4 token theft truncates these REAL cached outputs (character-proportional cut, answer re-parsed) - no new "
+    "generation is run; the optional length-audit reference cross-check compares against the REAL cached greedy "
+    "generation of the claimed model.",
     "- **Simulated**: prices, serving costs (and the swap cost gap), latency noise and corridor penalties/fees, "
     "jurisdictions and the (simplified, NOT legal advice) compliance rules, buyers / budgets / sensitivities / "
-    "consent, audits and swap detection (identity check succeeding with prob d), penalties / stake slashing / "
-    "delisting, the strategic seller's learning rule, the mock seller (seller_br, MockLLM) and its confidence.", ""]
+    "consent, audits and BOTH detectors (identity check succeeding with prob d, length audit with prob d_length; "
+    "miss / false-negative rates 1 - d, false positives 0), penalties / stake slashing / delisting, the strategic "
+    "seller's learning rule and attack choice, the mock seller (seller_br, MockLLM), its confidence and its "
+    "truncation model.", ""]
 
 
 def _f(a: Dict, k: str, fmt: str = "{:.3f}") -> str:
@@ -385,6 +458,16 @@ def render_markdown(summary: Dict, cfg: Dict, model_md: str = "") -> str:
                  f"| {_f(a, 'compliance_violations', '{:.1f}')} | {_f(a, 'blocked_or_filtered', '{:.1f}')} "
                  f"| {_f(a, 'cross_border_share')} | {_f(a, 'fraud_seller_share')} "
                  f"| {_f(a, 'total_buyer_surplus')} | {_f(a, 'mean_task_latency_ms', '{:.0f}')} |")
+
+    lam, mu = joint_weights(cfg)
+    L += ["", f"## v4 joint objective J = accuracy − {lam}·violation rate (/task) − {mu}·fraud share (/purchase)", "",
+          "| policy | J | task accuracy | compliance violation rate | fraud share (swap or theft) |",
+          "|---|---|---|---|---|"]
+    for c in sorted((c for c in combos.values() if c["mechanism"] == "posted_price"),
+                    key=lambda c: -c["aggregate"]["joint_objective"]["mean"]):
+        a = c["aggregate"]
+        L.append(f"| {c['policy']} | {_f(a, 'joint_objective')} | {_f(a, 'task_accuracy')} "
+                 f"| {_f(a, 'compliance_violation_rate')} | {_f(a, 'fraud_share')} |")
 
     L += ["", "## Mechanism comparison (single-seller policies: posted price vs sealed-bid "
           f"{summary['auction_format']} auction)", "",

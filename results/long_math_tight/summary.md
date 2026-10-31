@@ -2,7 +2,7 @@
 
 > Simplified simulation of data-transfer rules; NOT legal advice.
 
-seller backends={'seller_cn': 'local_hf', 'seller_sg': 'local_hf', 'seller_br': 'mock'}, seeds=[0, 1, 2], tasks/run=144 (drawn from fixed pool of 48, task_seed=1234), auction=`second_price`, log lines=5224, precompute=0.0s, market sim=0.477s. Values are mean ± std over seeds.
+seller backends={'seller_cn': 'local_hf', 'seller_sg': 'local_hf', 'seller_br': 'mock'}, seeds=[0, 1, 2], tasks/run=144 (drawn from fixed pool of 48, task_seed=1234), auction=`second_price`, log lines=5224, precompute=0.0s, market sim=0.51s. Values are mean ± std over seeds.
 
 ## C2 baseline comparison (posted price)
 
@@ -16,6 +16,19 @@ seller backends={'seller_cn': 'local_hf', 'seller_sg': 'local_hf', 'seller_br': 
 | pilot_compliant | 0.241 ± 0.011 | 5.509 ± 0.172 | 0.0383 ± 0.0012 | 0.83 ± 0.03 | +0.454 ± +0.108 (+9.0% ± +2.0%) | 0.7 ± 0.6 (0.5% ± 0.5%) | 0.0 ± 0.0 | 79.0 ± 6.6 | 0.498 ± 0.027 | 0.090 ± 0.041 | -2.815 ± 0.232 | 5910 ± 182 |
 | stageroute_compliant | 0.250 ± 0.032 | 5.620 ± 0.219 | 0.0390 ± 0.0015 | 0.69 ± 0.09 | +0.275 ± +0.119 (+5.2% ± +2.5%) | 1.0 ± 1.0 (1.0% ± 1.1%) | 0.0 ± 0.0 | 79.0 ± 6.6 | 0.584 ± 0.056 | 0.031 ± 0.013 | -2.800 ± 0.532 | 8724 ± 1824 |
 | audited_compliance_cascade | 0.157 ± 0.024 | 5.960 ± 0.034 | 0.0414 ± 0.0002 | 0.88 ± 0.09 | +0.406 ± +0.075 (+7.3% ± +1.5%) | 3.3 ± 1.2 (2.7% ± 1.1%) | 0.0 ± 0.0 | 79.0 ± 6.6 | 0.563 ± 0.012 | 0.203 ± 0.075 | -4.238 ± 0.291 | 9259 ± 1465 |
+
+## v4 joint objective J = accuracy − 1.0·violation rate (/task) − 0.5·fraud share (/purchase)
+
+| policy | J | task accuracy | compliance violation rate | fraud share (swap or theft) |
+|---|---|---|---|---|
+| stageroute_compliant | 0.234 ± 0.038 | 0.250 ± 0.032 | 0.000 ± 0.000 | 0.031 ± 0.013 |
+| single_cheapest_compliant | 0.231 ± 0.061 | 0.269 ± 0.056 | 0.000 ± 0.000 | 0.074 ± 0.015 |
+| pilot_compliant | 0.196 ± 0.024 | 0.241 ± 0.011 | 0.000 ± 0.000 | 0.090 ± 0.041 |
+| audited_compliance_cascade | 0.056 ± 0.047 | 0.157 ± 0.024 | 0.000 ± 0.000 | 0.203 ± 0.075 |
+| compliance_unaware_cheapest | 0.039 ± 0.016 | 0.262 ± 0.022 | 0.222 ± 0.035 | 0.000 ± 0.000 |
+| cascade_compliant | 0.025 ± 0.057 | 0.157 ± 0.053 | 0.000 ± 0.000 | 0.264 ± 0.009 |
+| vote_k_compliant | -0.020 ± 0.006 | 0.118 ± 0.007 | 0.000 ± 0.000 | 0.275 ± 0.007 |
+| single_best_compliant | -0.269 ± 0.016 | 0.113 ± 0.017 | 0.000 ± 0.000 | 0.765 ± 0.018 |
 
 ## Mechanism comparison (single-seller policies: posted price vs sealed-bid second_price auction)
 
@@ -139,8 +152,8 @@ Greedy decoding, chat template, max_new_tokens=256, batched (left padding). reas
 
 ## What is real vs simulated
 
-- **Real**: Qwen2.5-1.5B / 0.5B-Instruct outputs (local CPU inference, cached), their correctness against gold, reasoning-token counts and measured generation times on CPU; the GSM8K / MATH-500 long-task problems and golds.
-- **Simulated**: prices, serving costs (and the swap cost gap), latency noise and corridor penalties/fees, jurisdictions and the (simplified, NOT legal advice) compliance rules, buyers / budgets / sensitivities / consent, audits and swap detection (identity check succeeding with prob d), penalties / stake slashing / delisting, the strategic seller's learning rule, the mock seller (seller_br, MockLLM) and its confidence.
+- **Real**: Qwen2.5-1.5B / 0.5B-Instruct outputs (local CPU inference, cached), their correctness against gold, reasoning-token counts and measured generation times on CPU; the GSM8K / MATH-500 long-task problems and golds. v4 token theft truncates these REAL cached outputs (character-proportional cut, answer re-parsed) - no new generation is run; the optional length-audit reference cross-check compares against the REAL cached greedy generation of the claimed model.
+- **Simulated**: prices, serving costs (and the swap cost gap), latency noise and corridor penalties/fees, jurisdictions and the (simplified, NOT legal advice) compliance rules, buyers / budgets / sensitivities / consent, audits and BOTH detectors (identity check succeeding with prob d, length audit with prob d_length; miss / false-negative rates 1 - d, false positives 0), penalties / stake slashing / delisting, the strategic seller's learning rule and attack choice, the mock seller (seller_br, MockLLM), its confidence and its truncation model.
 
 ## Metric definitions
 

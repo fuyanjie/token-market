@@ -2,18 +2,20 @@
 
 All policies face the same learning swap seller (seller_sg; penalty P=0.25, d=0.9). Only D3 audits (rate 0.1, audit cost 0.004 per audit charged to the buyer budget), so for every other policy the seller faces a = 0. Mean ± std over seeds [0, 1, 2].
 
-| policy | task accuracy | total cost incl. audit | of which audit | cost/task | budget violations | compliance violations | fraud-seller share (swapped purchases) | sg learned q | swaps detected / served | stake slashed | buyer surplus |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| single_cheapest_compliant | 0.665 ± 0.019 | 5.562 ± 0.292 | 0.000 | 0.0116 ± 0.0006 | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.061 ± 0.019 | 0.922 ± 0.081 | 0.0 / 29.3 | 0.00 | 19.221 ± 0.441 |
-| single_best_compliant | 0.634 ± 0.008 | 11.606 ± 0.227 | 0.000 | 0.0242 ± 0.0005 | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.766 ± 0.016 | 0.950 ± 0.044 | 0.0 / 335.7 | 0.00 | 12.431 ± 0.333 |
-| cascade_compliant | 0.768 ± 0.011 | 13.940 ± 0.054 | 0.000 | 0.0290 ± 0.0001 | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.302 ± 0.014 | 0.950 ± 0.044 | 0.0 / 222.7 | 0.00 | 14.897 ± 0.476 |
-| vote_k_compliant | 0.690 ± 0.014 | 20.669 ± 0.161 | 0.000 | 0.0431 ± 0.0003 | 0.7 ± 0.6 | 0.0 ± 0.0 | 0.323 ± 0.004 | 0.950 ± 0.044 | 0.0 / 311.7 | 0.00 | 5.555 ± 0.581 |
-| compliance_unaware_cheapest | 0.627 ± 0.044 | 3.486 ± 0.028 | 0.000 | 0.0073 ± 0.0001 | 0.0 ± 0.0 | 103.3 ± 6.4 | 0.000 ± 0.000 | 0.539 ± 0.028 | 0.0 / 0.0 | 0.00 | 19.594 ± 1.671 |
-| PILOT-style (our simplified reimpl. of Panda et al. 2025), no compliance filter | 0.883 ± 0.019 | 11.433 ± 0.093 | 0.000 | 0.0238 ± 0.0002 | 0.0 ± 0.0 | 77.7 ± 9.3 | 0.235 ± 0.066 | 0.950 ± 0.044 | 0.0 / 112.7 | 0.00 | 21.420 ± 0.660 |
-| PILOT-style + compliance filter | 0.856 ± 0.013 | 11.183 ± 0.319 | 0.000 | 0.0233 ± 0.0007 | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.215 ± 0.049 | 0.950 ± 0.044 | 0.0 / 103.0 | 0.00 | 20.667 ± 0.634 |
-| StageRoute-style (our simplified reimpl. of Li & Li 2025), no compliance filter | 0.837 ± 0.037 | 12.551 ± 0.154 | 0.000 | 0.0261 ± 0.0003 | 0.0 ± 0.0 | 61.3 ± 8.0 | 0.085 ± 0.038 | 0.950 ± 0.044 | 0.0 / 37.7 | 0.00 | 18.819 ± 1.071 |
-| StageRoute-style + compliance filter | 0.797 ± 0.030 | 11.507 ± 0.565 | 0.000 | 0.0240 ± 0.0012 | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.116 ± 0.086 | 0.950 ± 0.044 | 0.0 / 51.7 | 0.00 | 18.453 ± 1.455 |
-| **D3 audited_compliance_cascade (ours)** | 0.811 ± 0.010 | 11.979 ± 0.364 | 0.233 | 0.0250 ± 0.0008 | 0.3 ± 0.6 | 0.0 ± 0.0 | 0.042 ± 0.017 | 0.131 ± 0.108 | 3.3 / 28.0 | 0.83 | 18.418 ± 0.687 |
+v4: the last column is the joint objective J = accuracy − λ·violation rate (/task) − μ·fraud share (/purchase), λ = 1, μ = 0.5 (here fraud = swap only; the v4 headline with swap + theft and the J ranking is results/joint_objective.md). This raw-accuracy table is kept as the v3 appendix.
+
+| policy | task accuracy | total cost incl. audit | of which audit | cost/task | budget violations | compliance violations | fraud-seller share (swapped purchases) | sg learned q | swaps detected / served | stake slashed | buyer surplus | J |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| single_cheapest_compliant | 0.665 ± 0.019 | 5.562 ± 0.292 | 0.000 | 0.0116 ± 0.0006 | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.061 ± 0.019 | 0.922 ± 0.081 | 0.0 / 29.3 | 0.00 | 19.221 ± 0.441 | 0.635 ± 0.029 |
+| single_best_compliant | 0.634 ± 0.008 | 11.606 ± 0.227 | 0.000 | 0.0242 ± 0.0005 | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.766 ± 0.016 | 0.950 ± 0.044 | 0.0 / 335.7 | 0.00 | 12.431 ± 0.333 | 0.251 ± 0.015 |
+| cascade_compliant | 0.768 ± 0.011 | 13.940 ± 0.054 | 0.000 | 0.0290 ± 0.0001 | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.302 ± 0.014 | 0.950 ± 0.044 | 0.0 / 222.7 | 0.00 | 14.897 ± 0.476 | 0.617 ± 0.008 |
+| vote_k_compliant | 0.690 ± 0.014 | 20.669 ± 0.161 | 0.000 | 0.0431 ± 0.0003 | 0.7 ± 0.6 | 0.0 ± 0.0 | 0.323 ± 0.004 | 0.950 ± 0.044 | 0.0 / 311.7 | 0.00 | 5.555 ± 0.581 | 0.529 ± 0.012 |
+| compliance_unaware_cheapest | 0.627 ± 0.044 | 3.486 ± 0.028 | 0.000 | 0.0073 ± 0.0001 | 0.0 ± 0.0 | 103.3 ± 6.4 | 0.000 ± 0.000 | 0.539 ± 0.028 | 0.0 / 0.0 | 0.00 | 19.594 ± 1.671 | 0.412 ± 0.035 |
+| PILOT-style (our simplified reimpl. of Panda et al. 2025), no compliance filter | 0.883 ± 0.019 | 11.433 ± 0.093 | 0.000 | 0.0238 ± 0.0002 | 0.0 ± 0.0 | 77.7 ± 9.3 | 0.235 ± 0.066 | 0.950 ± 0.044 | 0.0 / 112.7 | 0.00 | 21.420 ± 0.660 | 0.603 ± 0.033 |
+| PILOT-style + compliance filter | 0.856 ± 0.013 | 11.183 ± 0.319 | 0.000 | 0.0233 ± 0.0007 | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.215 ± 0.049 | 0.950 ± 0.044 | 0.0 / 103.0 | 0.00 | 20.667 ± 0.634 | 0.749 ± 0.015 |
+| StageRoute-style (our simplified reimpl. of Li & Li 2025), no compliance filter | 0.837 ± 0.037 | 12.551 ± 0.154 | 0.000 | 0.0261 ± 0.0003 | 0.0 ± 0.0 | 61.3 ± 8.0 | 0.085 ± 0.038 | 0.950 ± 0.044 | 0.0 / 37.7 | 0.00 | 18.819 ± 1.071 | 0.667 ± 0.041 |
+| StageRoute-style + compliance filter | 0.797 ± 0.030 | 11.507 ± 0.565 | 0.000 | 0.0240 ± 0.0012 | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.116 ± 0.086 | 0.950 ± 0.044 | 0.0 / 51.7 | 0.00 | 18.453 ± 1.455 | 0.739 ± 0.073 |
+| **D3 audited_compliance_cascade (ours)** | 0.811 ± 0.010 | 11.979 ± 0.364 | 0.233 | 0.0250 ± 0.0008 | 0.3 ± 0.6 | 0.0 ± 0.0 | 0.042 ± 0.017 | 0.131 ± 0.108 | 3.3 / 28.0 | 0.83 | 18.418 ± 0.687 | 0.790 ± 0.014 |
 
 ## Accuracy at equal cost (from the A curves)
 

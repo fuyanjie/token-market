@@ -1,4 +1,4 @@
-# token-market v3：合规约束下的多模型组合采购沙盒（Compliance-constrained Multi-model Portfolio Purchasing）
+# token-market v4：合规约束下的多模型组合采购 + 不完美审计下的策略性欺诈（Compliance-constrained Portfolio Purchasing under Strategic Fraud）
 
 一个**纯虚拟**的跨境推理 token 交易平台（cross-border reasoning-token marketplace）研究沙盒。
 CN / SG / BR 三个司法辖区（jurisdiction）的买方（buyers）向卖方（sellers）购买"推理 token"来解答有标准答案的推理题。
@@ -6,6 +6,111 @@ v2 的两个卖方是**真实运行的本地小模型**（Qwen2.5-1.5B / 0.5B-In
 
 > ⚠️ **免责声明（Disclaimer）**：合规规则仅为**简化模拟（simplified simulation）**，条款编号只作标签使用，
 > **不构成法律意见（NOT legal advice）**。价格、预算、通道费均为合成数据（synthetic）。默认不调用任何真实 API，不需要任何 API key。
+
+## v4 新增（v4 additions）
+
+**研究定位 / 创新点（novelty framing）**：合规约束下的多模型组合采购（compliance-constrained portfolio purchasing）
++ **不完美审计（imperfect audits）下的策略性欺诈**（模型替换 model swap **与** token 盗刷 token theft），
+在**联合目标（joint objective）J** 上与 PILOT 式 / StageRoute 式基线对比。
+推理 token 长度不确定性**不再**作为贡献点（见下文“降级说明”）。
+
+v2/v3 的行为、默认命令与测试保持不变：默认配置（`attack_modes_enabled: [swap]`）下 `run_sim.py` 的所有指标与 v3 逐项一致，
+`results/fraud_audit_threshold.*` 与 `results/cost_curves.*` 重跑后逐字节相同；新随机流（`theft-*`、`length-audit-*`）不扰动旧的随机抽样。
+
+| 部分 | 内容 | 输出 |
+|---|---|---|
+| **I** 不完美检测（imperfect detection） | 审计率 a × 检测概率 d ∈ {0.3,0.5,0.7,0.9,1.0}（**漏检率 / 假阴性率 miss rate = false-negative rate = 1−d**；假阳性 false positive = 0）× 罚金 P ∈ {0.1,0.5}；解析阈值 a\*(d) = saving/(d·P) 与学习型卖方的经验阈值 | `results/imperfect_detection.{md,json,png}` |
+| **T** token 盗刷卖方（token-theft seller） | seller_sg 每轮学习 (q_swap, q_theft)；攻击模式 attack_mode ∈ {none, swap, theft, both}；身份审计（identity）/ 长度审计（length，`TokenLengthAuditor`）/ 两者 | `results/token_theft.{md,json}` |
+| **J** 联合目标（joint objective，**v4 主表 headline**） | 10 个策略在 swap+theft 策略卖方下按 J 排名，(λ, μ) 敏感性，等成本视图（equal-cost view）；原准确率表作为附录 | `results/joint_objective.{md,json}`；`results/baselines.md` 增加 J 列 |
+
+```bash
+PY=/workspace/tmvenv/bin/python
+$PY run_experiments.py                         # C, I, T, D, A, J, B 全部（缓存命中约 70 秒）
+$PY run_experiments.py --only I T J            # 只跑 v4 部分（约 45 秒）
+$PY -m pytest -q                               # 51 个测试（39 个 v2/v3 + 12 个 v4），约 1.3 秒
+```
+
+### 联合目标（Joint objective）
+
+**J = accuracy − λ · compliance_violation_rate − μ · fraud_share**，默认 **λ = 1.0，μ = 0.5**（`market.joint`），敏感性 (λ, μ) ∈ {(1, 0.5), (0.5, 0.25), (2, 1), (1, 0)}。
+
+- accuracy = 任务准确率（最终答案 == gold；无答案算错）；
+- compliance_violation_rate = 合规违规数 / **任务数**（per task，与 accuracy 同分母）；
+- fraud_share = 被攻击的购买 / **购买数**（per purchase）；被攻击 = 模型替换（actual_model ≠ claimed_model）**或** token 盗刷（billed_tokens > actual_tokens，即 attack_mode ∈ {swap, theft, both}）。
+
+**主基线是 PILOT + 合规过滤（`pilot_compliant`），比较 J 而不是原始准确率。** 结果（swap+theft 学习型卖方，预算 ×2，3 seeds，`results/joint_objective.md`）：
+
+| 排名 | 策略 | J | 准确率 | 违规率 | 欺诈占比 |
+|---|---|---|---|---|---|
+| 1 | stageroute_compliant | 0.811 | 0.822 | 0 | 0.023 |
+| 2 | **pilot_compliant（主基线）** | 0.789 | 0.811 | 0 | 0.045 |
+| 3 | **audited_compliance_cascade（D3，我们的）** | 0.766 | 0.817 | 0 | 0.101 |
+| 4–5 | stageroute / pilot（无合规过滤） | 0.735 / 0.697 | 0.868 / 0.853 | 0.128 / 0.137 | 0.011 / 0.040 |
+
+**诚实结论（honest finding）**：在默认操作点，D3 的准确率略高于 PILOT+合规，但 J 落后 0.022。原因是残余欺诈占比 0.10：
+D3 把学习型卖方的 q_swap / q_theft 压到约 0.08，但 ε 探索使攻击无法降到 0，而 D3 的级联仍会向 seller_sg 购买。
+PILOT/StageRoute 则使用购买后的**真实正确性（神谕反馈 oracle feedback）**，学会绕开被攻击卖方。
+在 (λ, μ) = (1, 0)（不计欺诈）下 D3 排第 2，高于 PILOT+合规。等成本视图中，D3 只有在更高预算（成本/任务 ≈ 0.0275）时
+J 才达到 0.80–0.81，超过 PILOT+合规能达到的最高值 0.789（PILOT 在约 0.0235 处饱和，不会花更多）；
+在相同的较低成本下 PILOT+合规更好。原始准确率表保留为附录，未删减任何内容。
+
+### 不完美检测（Imperfect detection, I）
+
+- `IdentityCheckDetector`：以概率 d 检出替换；**漏检率 / 假阴性率 = 1 − d**（`miss_rate`）；**假阳性率 = 0**（`false_positive_rate`，诚实答案永不被标记）。
+- 解析阈值 **a\*(d) = saving / (d · P)**，对 d 单调递减：d 减半，所需审计率加倍；d → 0 时 a\* → ∞（测试覆盖）。
+- 结果：10 个 (P, d) 组合中，7 个的经验阈值恰好落在解析 a\* 之上的第一个网格点；另外 3 个晚一个网格点，都发生在 a 紧贴 a\* 处（收益 ≈ 0）。
+  例：P = 0.1、d = 0.3 时 a\* = 0.33，a ≤ 0.3 时学到的 q 仍为 0.96。
+
+### Token 盗刷（Token theft, T）
+
+- **攻击**：卖方宣称长链/高投入生成，按 `billed_token_policy` 计费：`claimed_mean`（按宣称模型广告的平均 token 数，默认）或
+  `inflated_factor`（× 完整长度，默认 2.0）；实际只生成 `theft_max_new_tokens`（默认 48）个 token。
+  **买方按计费 token（billed）付款，卖方按实际 token（actual）承担成本**。
+  对真实 Qwen 输出，盗刷是**对缓存的真实输出按字符比例截断**并重新解析答案（不重新生成）；截断后的答案几乎都错。
+  mock 卖方则模拟截断：正确答案以 max_tokens/tokens 的概率保留。
+- **攻击选择**：`AttackStrategy` 每轮在 {0, 0.1, …, 1}² 上选 (q_swap, q_theft)，用 ε-greedy / Hedge 基于自身实际利润学习；每笔独立抽 swap 与 theft，
+  得到 attack_mode ∈ {none, swap, theft, both}。`SwapStrategy` 保留为向后兼容的薄封装（theft 关闭，随机抽样与 v3 完全相同）。
+  解析收益：theft_saving = (price·E[billed − full] + cost·E[full − actual]) / 1000 ≈ 0.0113（替换为 0.0100），阈值 a\*_theft = theft_saving / (d_length · P)。
+- **长度审计 `TokenLengthAuditor`**：当 billed > actual·(1 + tol)（`length_audit_tol` = 0.1）或 billed − actual > abs_gap 时标记，检测概率 d_length（漏检率 1 − d_length）；
+  诚实计费永不误报。**这是模拟审计（SIMULATED）**：真实买方通常看不到隐藏的推理 token。
+  可选 `length_audit_reference: true`：与宣称模型在同一 prompt 上**缓存的真实贪心生成长度**交叉核对（真实信号，对替换答案可能误报）。
+- 被任一检查抓到即罚没一次 P（两项同时命中也只罚一次）。
+- **结果（a = 0.1，d = 0.9/0.9，P = 0.5）：每种攻击都需要对应的审计**：
+
+| 攻击 | 无审计 | 仅身份 | 仅长度 | 身份 + 长度 |
+|---|---|---|---|---|
+| swap-only | ✗ | ✓ | ✗ | ✓ |
+| theft-only | ✗ | ✗ | ✓ | ✓ |
+| both | ✗ | ✗ | ✗ | ✓ |
+
+  只做身份审计时，组合攻击者停止替换但继续盗刷（q_theft 0.97，买方准确率 0.18）；两种审计都做时准确率回到 0.83。
+  不审计时，inflated_factor = 2 的盗刷让买方多付 31.5（合成 USD），准确率 0.17。
+
+### 降级说明：推理 token 长度不确定性（demoted: reasoning-token length uncertainty）
+
+期望 vs 实际成本日志（expected_cost / actual_cost / cost_overrun / budget_overrun）和长数学任务表（B）保留为**基础设施（infrastructure）
+与负面发现（negative finding）**：逐笔超支在长输出下可以很大，但正常预算下预算违规 ≈ 0，只有紧预算时才会约束。
+**这一点不再作为研究贡献（not a contribution claim）。**
+
+### 日志字段（schema v4）
+
+`billed_tokens`（计费 token）、`actual_tokens`（实际生成 token，= `reasoning_tokens`）、`token_inflation`（= billed/actual）、
+`attack_mode`（none|swap|theft|both）、`theft_prob`（卖方当前 q_theft）、`audit_type`（none|identity|length|both）、
+`swap_detected` / `theft_detected`（对应检查未运行时为 null）、`detect_prob_identity` / `detect_prob_length`（买方审计制度的 d；该检查不在制度内时为 null）。
+`cost` = price × **billed_tokens** / 1000。
+
+### 配置（`fraud:` / `market:`）
+
+`fraud.detect_prob`（身份 d）、`detect_prob_length`、`attack_modes_enabled: [swap]`（默认 = v3；`[swap, theft]`、`[theft]`、`[]` = 诚实）、
+`billed_token_policy: claimed_mean | inflated_factor`、`inflated_factor`、`theft_max_new_tokens`、`length_audit_tol`、`length_audit_abs_gap`、
+`length_audit_reference`、`q_theft_static`；`market.audit.types`（非 D3 策略，默认 `[identity]`）、`market.audited.audit_types`
+（D3，默认 `[identity, length]`）、`market.audited.theft_quality_factor`、`market.joint: {lambda, mu}`。
+v4 扫描在 `configs/experiments.yaml` 的 `experiments.I / T / J`。
+
+### 真实 vs 模拟（v4）
+
+**真实**：Qwen 输出、正确性、token 数，以及盗刷截断所依据的缓存输出和可选的参考长度交叉核对。
+**模拟**：两种审计与检测（身份 d、长度 d_length、漏检率 1 − d、零假阳性）、罚金、卖方学习与攻击选择、mock 截断模型、价格/成本。
 
 ## v3 新增（v3 additions）概览
 
@@ -27,7 +132,7 @@ $PY run_experiments.py --only C D --backend-override mock --seeds 0   # 全 mock
 $PY run_sim.py --config configs/long_math.yaml        # 在长任务池上运行市场
 $PY run_sim.py --config configs/long_math.yaml --precompute-only     # 长任务预计算（本机 818 秒）
 $PY scripts/build_long_tasks.py                       # 从 data/raw 重建 data/long_tasks.jsonl（确定性）
-$PY -m pytest -q                                      # 39 个测试，全部 mock / 假 runner，约 1 秒
+$PY -m pytest -q                                      # 51 个测试（v4），全部 mock / 假 runner，约 1.3 秒
 ```
 
 配置：`configs/default.yaml`（新增 `fraud:`、`market.audit / audited / pilot / stageroute / budget_multiplier`、
@@ -51,7 +156,7 @@ $PY -m pytest -q                                      # 39 个测试，全部 mo
   阈值 **a\* = cost_saving / (d·P)**。
 - **学习型卖方（learning seller）**：不知道 a、d、P，只用自己**实际实现的利润**（含被罚没的押金）——
   对 q 网格 {0, 0.1, …, 1} 做 ε-greedy（默认，ε=0.1）或 Hedge，利用“期望利润对 q 线性”从替换/诚实两类购买的利润均值估计每个 q 的收益。
-- **审计/检测为模拟（simulated）**：身份核验以概率 d 检出替换，诚实答案不会误报；`TokenFingerprintDetector` 只是桩（stub）。
+- **审计/检测为模拟（simulated）**：身份核验以概率 d 检出替换（漏检率 / 假阴性率 1−d，v4 实验 I 扫描 d），诚实答案不会误报（假阳性 = 0）；`TokenFingerprintDetector` 只是桩（stub）。
   罚金从卖方押金扣除，**不退给买方**（对买方保守）。审计费 `market.audit.cost`（默认 0.004/次）计入买方预算；
   只在剩余预算足够时审计，因此审计本身不会造成预算超支。
 - 实验：买方策略 `single_best_compliant`（把大部分需求送给欺诈卖方），a ∈ {0,…,0.5} × P ∈ {0.02, 0.1, 0.5}，
@@ -92,7 +197,7 @@ $PY -m pytest -q                                      # 39 个测试，全部 mo
   因此按规则降到 512。实际预计算 818 秒（0.5B 149 秒，1.5B 669 秒）。合成任务池仍是 fp32（v2 缓存不变）；缓存行记录 `dtype` 与 `source`。
 - 实测（`results/long_math.md`）：1.5B 准确率 0.438（GSM8K-hard 0.536，MATH-500 0.300），0.5B 0.146；token 均值约 414–425 ± 90，
   p95 = max = 512，截断率 29% / 42%（两个模型大多用 `\boxed{}` 而非 `Answer:`，解析器回退到最后一个数字）。
-- **C2(d) 成本不确定性**：期望成本按宣称模型平均 token 计，长输出下逐笔相对超支（relative overrun）p95 达 +120%–150%，最大 +219%；
+- **C2(d) 成本不确定性（v4：仅作基础设施 / 负面发现，不是贡献点）**：期望成本按宣称模型平均 token 计，长输出下逐笔相对超支（relative overrun）p95 达 +120%–150%，最大 +219%；
   但正常预算（×3）下**预算违规几乎为 0**（vote_k 1 次）——因为只有期望成本 ≤ 剩余预算才购买，且单笔成本相对预算很小，
   只有预算即将耗尽的那一两笔可能超支。**紧预算变体（×0.5）**下预算真正约束，每个策略出现 2–10 次预算违规（3 seeds 合计），
   最大超支约 0.018 USD（合成单位）。
@@ -117,8 +222,10 @@ GSM8K（MIT, Copyright (c) 2021 OpenAI）与 MATH-500 / PRM800K（MIT, Copyright
   合规检查使用已有的数据驱动规则引擎（rule engine：CN PIPL/DSL、SG PDPA、BR LGPD）。
 - (b) **买方预算约束**：若一笔购买的**期望成本（expected cost）**超过剩余预算，则不购买；同时记录实际支出（realised spend）。
 - (c) **按任务购买模型组合**（不仅是单卖方路由）：级联（cascade）与投票（vote）。
-- (d) **推理 token 长度不确定（uncertain reasoning-token length）**：按每千推理 token 计价；购买前按卖方宣称模型的平均 token 数
+- (d) *基础设施（infrastructure），v4 起不再是贡献点*：按每千推理 token 计价；购买前按卖方宣称模型的平均 token 数
   计算 expected_cost，购买后按实际 token 数计算 actual_cost，记录成本超支（cost_overrun）与预算超支（budget_overrun）。
+  负面发现：正常预算下预算违规 ≈ 0，只在紧预算下约束。
+- (e) **v4：不完美审计下的策略性欺诈**（模型替换 + token 盗刷），以联合目标 J 评估（见上文 v4）。
 - 路由使用的质量估计（estimated quality）= **卖方宣称模型（claimed model）的声誉**，因此模型替换欺诈卖方会欺骗基于质量的路由
   —— 这把 C2 与 B2（欺诈检测）联系起来。
 
@@ -225,7 +332,7 @@ $PY -m pytest -q                                                 # 测试全部�
 | task_type, difficulty, sensitivity | 任务属性 |
 | seller_id, seller_jurisdiction, claimed_model, actual_model, backend | 卖方；backend = local_hf / mock / real（unfilled 时为 null） |
 | cross_border, price_per_1k, reasoning_tokens | 是否跨境、成交价（每千推理 token）、实际推理 token |
-| cost, fee | 付给卖方 = price × tokens/1000；网关通道费 |
+| cost, fee | 付给卖方 = price × billed_tokens/1000（v4：诚实时 billed = 实际 token）；网关通道费 |
 | expected_cost | 购买前：price × 宣称模型平均 token/1000 × (1+fee_rate) |
 | actual_cost, cost_overrun | 实际支出 = cost + fee；actual − expected |
 | budget_remaining, budget_overrun | 本行之后的剩余预算；实际累计支出是否超过预算 |
@@ -264,9 +371,9 @@ $PY -m pytest -q                                                 # 测试全部�
 | `tokenmarket/compliance.py` / `gateway.py` | 规则引擎；跨境网关（enforce / audit_only、通道费与延迟） |
 | `tokenmarket/logging_schema.py` / `metrics.py` / `sim.py` | 日志 schema 与校验；指标；仿真主循环 |
 | `tokenmarket/verification.py` | 验证与结算接口（B1 桩） |
-| `tokenmarket/strategic.py` | v3：策略性替换卖方（analytic / logit / learning）、模拟身份核验、D3 信任模型 |
+| `tokenmarket/strategic.py` | v3：策略性替换卖方（analytic / logit / learning）、模拟身份核验、D3 信任模型；v4：`AttackStrategy`（swap + theft）、`TokenLengthAuditor`、漏检率 |
 | `tokenmarket/baselines.py` | v3：PILOT 式（LinUCB + ZCL）与 StageRoute 式（每查询 LP）路由器 |
-| `tokenmarket/experiments.py` / `run_experiments.py` | v3：A/B/C/D 实验与报告 |
+| `tokenmarket/experiments.py` / `run_experiments.py` | v3：A/B/C/D 实验与报告；v4：I（不完美检测）、T（token 盗刷）、J（联合目标）|
 | `tokenmarket/config.py` | v3：`extends:` 配置继承 |
 
 ## 局限（Limitations）
@@ -280,3 +387,6 @@ $PY -m pytest -q                                                 # 测试全部�
 - 置信度代理较弱（基于格式与自洽），mock 置信度为合成噪声；v2 策略的声誉是静态的（v3 的 PILOT/StageRoute 在线学习，D3 只按审计更新）；卖方报价为随机加价，非策略性报价。
 - v3：审计/检测是概率模拟，不是真实的模型指纹；PILOT/StageRoute 为简化复现且使用真实正确性作为反馈（神谕反馈）；
   长任务 max_new_tokens 受 CPU 限制为 512（截断率 29–42%）且用 bf16；mock 卖方在长任务上的 token 数按难度外推（期望成本偏差为合成结果）。
+- v4：两种检测都是概率模拟（零假阳性是建模假设）；盗刷对真实输出的截断是按字符比例近似 token 截断，而非真实地用更小的 max_new_tokens 重新生成；
+  攻击者在 (q_swap, q_theft) 上独立随机，罚金每笔最多一次；D3 对盗刷的路由折扣（theft_quality_factor = 0.5）是先验而非估计值；
+  J 的权重 (λ, μ) 是规范性选择，结论对其敏感（见敏感性表）。

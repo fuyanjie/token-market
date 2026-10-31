@@ -114,6 +114,22 @@ class Backend(ABC):
               rng: random.Random) -> BackendResult:
         ...
 
+    def truncate(self, res: BackendResult, task, max_tokens: int, rng: random.Random) -> BackendResult:
+        """v4 token theft: the seller stops generating after `max_tokens` tokens. Default: cut the text in
+        proportion to the token count and re-parse the (usually lost) final answer."""
+        if max_tokens is None or res.reasoning_tokens <= int(max_tokens):
+            return res
+        frac = int(max_tokens) / res.reasoning_tokens
+        raw = (res.raw or "")[:int(len(res.raw or "") * frac)]
+        ans = parse_answer(raw)[0]
+        return BackendResult(ans, int(max_tokens), raw, confidence=format_confidence(raw, ans, int(max_tokens),
+                                                                                     int(max_tokens)),
+                             gen_time_s=None if res.gen_time_s is None else res.gen_time_s * frac)
+
+    def reference_tokens(self, task, model_name: str) -> Optional[int]:
+        """Length of a reference generation of `model_name` for this task (None if unavailable)."""
+        return None
+
 
 class MockLLM(Backend):
     """P(correct) = actual model accuracy at task difficulty; wrong answers are perturbed gold.
@@ -137,6 +153,19 @@ class MockLLM(Backend):
             ans = task.gold + delta
         conf = rng.gauss(self.conf_correct if ans == task.gold else self.conf_wrong, self.conf_std)
         return BackendResult(ans, tokens, raw=f"[mock:{model_name}] Answer: {ans}",
+                             confidence=min(1.0, max(0.0, conf)))
+
+    def truncate(self, res, task, max_tokens, rng):
+        """SIMULATED early stop: a correct answer survives truncation with probability max_tokens / tokens,
+        otherwise the answer is perturbed (wrong); confidence redrawn from the mock distribution."""
+        if max_tokens is None or res.reasoning_tokens <= int(max_tokens):
+            return res
+        frac = int(max_tokens) / res.reasoning_tokens
+        ans = res.answer
+        if ans is None or ans != task.gold or rng.random() >= frac:
+            ans = task.gold + rng.choice([-1, 1]) * rng.randint(1, max(2, abs(task.gold) // 5 + 1))
+        conf = rng.gauss(self.conf_correct if ans == task.gold else self.conf_wrong, self.conf_std)
+        return BackendResult(ans, int(max_tokens), raw=f"[mock:truncated] Answer: {ans}",
                              confidence=min(1.0, max(0.0, conf)))
 
 
@@ -212,6 +241,17 @@ class CachedLocalBackend(Backend):
                              confidence=format_confidence(rec["raw_text"], ans, int(rec["reasoning_tokens"]),
                                                           mnt),
                              gen_time_s=float(rec["gen_time_s"]))
+
+    def truncate(self, res, task, max_tokens, rng):
+        """Truncation of the REAL cached output (character-proportional cut of the cached text, answer re-parsed,
+        format confidence recomputed: truncated outputs get 0.2 / 0.0). No new generation is run."""
+        return Backend.truncate(self, res, task, max_tokens, rng)
+
+    def reference_tokens(self, task, model_name):
+        """Cached greedy generation length of `model_name` for this task's prompt (real reference signal)."""
+        mnt = task_max_new_tokens(task, self.max_new_tokens, self.long_max_new_tokens)
+        rec = self.cache.get(model_name, render_task_prompt(task), mnt)
+        return None if rec is None else int(rec["reasoning_tokens"])
 
 
 class RealLLMBackend(Backend):

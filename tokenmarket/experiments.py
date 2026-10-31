@@ -1,4 +1,10 @@
-"""v3 experiments (run_experiments.py):
+"""v3 + v4 experiments (run_experiments.py):
+
+  v4:
+  I  imperfect_detection   : audit rate a x detection prob d (miss rate 1-d) x penalty P, analytic a*(d) vs learned
+  T  token_theft           : swap-only / theft-only / both vs identity / length / both audits, (a, d_id, d_len, P)
+  J  joint_objective       : HEADLINE ranking on J = acc - lambda*viol_rate - mu*fraud_share (+ equal-cost view)
+  v3:
 
   C  fraud_audit_threshold : strategic (learning) model-swap seller vs buyer audit rate x penalty
   D  baselines             : PILOT-style / StageRoute-style (with & without compliance filter), v2 policies and
@@ -22,7 +28,7 @@ from .config import deep_merge, load_config
 from .logging_schema import TransactionLogger, read_log, validate_record
 from .metrics import aggregate, p95
 from .sellers import Reputation
-from .sim import REAL_VS_SIM, build_backends, prepare, run_all, run_single  # noqa: F401
+from .sim import REAL_VS_SIM, build_backends, joint_weights, prepare, run_all, run_single  # noqa: F401
 from .strategic import analytic_threshold, best_response, make_strategy
 
 class NullLogger:
@@ -324,7 +330,8 @@ def experiment_D(ctx: Context, seeds: List[int], log_dir: str, curves: Optional[
                 "task_accuracy", "total_cost", "total_audit_cost", "total_cost_incl_audit",
                 "mean_cost_per_task_incl_audit", "budget_violations", "compliance_violations",
                 "fraud_seller_share", "n_audits", "swaps_detected", "swaps_served", "total_stake_slashed",
-                "total_buyer_surplus", "total_cost_gap", "budget_exhausted_tasks")},
+                "total_buyer_surplus", "total_cost_gap", "budget_exhausted_tasks", "joint_objective",
+                "compliance_violation_rate", "fraud_share")},
                 "learned_q": _ms(m["learned_swap_q"][sid] for m in ps),
                 "sg_swap_rate": _ms(m["seller_swap_rate"][sid] for m in ps)})
             log(f"[D] {pol}: acc={a['task_accuracy']['mean']:.3f} cost={a['total_cost_incl_audit']['mean']:.3f}")
@@ -352,10 +359,13 @@ def render_D(res: Dict) -> str:
          f"d={res['detect_prob']}). Only D3 audits (rate {res['d3_audit_rate']}, audit cost {res['audit_cost']} "
          f"per audit charged to the buyer budget), so for every other policy the seller faces a = 0. "
          f"Mean ± std over seeds {res['seeds']}.", "",
+         "v4: the last column is the joint objective J = accuracy − λ·violation rate (/task) − μ·fraud share "
+         "(/purchase), λ = 1, μ = 0.5 (here fraud = swap only; the v4 headline with swap + theft and the J ranking "
+         "is results/joint_objective.md). This raw-accuracy table is kept as the v3 appendix.", "",
          "| policy | task accuracy | total cost incl. audit | of which audit | cost/task | budget violations "
          "| compliance violations | fraud-seller share (swapped purchases) | sg learned q | swaps detected / served "
-         "| stake slashed | buyer surplus |",
-         "|---|---|---|---|---|---|---|---|---|---|---|---|"]
+         "| stake slashed | buyer surplus | J |",
+         "|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for r in res["rows"]:
         a = r["aggregate"]
         L.append(f"| {LABEL.get(r['policy'], r['policy'])} | {_pm(a, 'task_accuracy')} "
@@ -364,7 +374,8 @@ def render_D(res: Dict) -> str:
                  f"| {_pm(a, 'compliance_violations', '{:.1f}')} | {_pm(a, 'fraud_seller_share')} "
                  f"| {r['learned_q'][0]:.3f} ± {r['learned_q'][1]:.3f} "
                  f"| {a['swaps_detected']['mean']:.1f} / {a['swaps_served']['mean']:.1f} "
-                 f"| {a['total_stake_slashed']['mean']:.2f} | {_pm(a, 'total_buyer_surplus')} |")
+                 f"| {a['total_stake_slashed']['mean']:.2f} | {_pm(a, 'total_buyer_surplus')} "
+                 f"| {_pm(a, 'joint_objective')} |")
     if res.get("equal_cost"):
         e = res["equal_cost"]
         L += ["", "## Accuracy at equal cost (from the A curves)", "",
@@ -442,7 +453,9 @@ def experiment_B(base_cfg_path: str, seeds: List[int], tight_mult: float, backen
 
 
 def render_B(res: Dict) -> str:
-    L = ["# B — long reasoning tasks (GSM8K-hard + MATH-500, real Qwen outputs)", ""]
+    L = ["# B — long reasoning tasks (GSM8K-hard + MATH-500, real Qwen outputs)", "",
+         "_v4: infrastructure / negative finding, NOT a contribution claim — per-purchase cost overruns are large "
+         "on long outputs, but budget violations are ≈ 0 under normal budgets and only bind under tight budgets._", ""]
     ms = res["model_stats"]
     L += ["## Measured model accuracy on the long subset", "",
           "| model | n | acc overall | acc GSM8K-hard (d4) | acc MATH-500 L3+ (d5) | tokens mean ± std | p95 | max "
@@ -475,4 +488,457 @@ def render_B(res: Dict) -> str:
           "EXPECTED cost (claimed model's mean tokens) fits the remaining budget, so a budget violation needs a buyer "
           "whose remaining budget is below the purchase's ACTUAL cost but above its expected cost — at most a few "
           "purchases per buyer at the moment its budget runs out.", ""]
+    return "\n".join(L)
+
+
+# =========================================================================== v4
+def _thresholds(rows: List[Dict], key: str, thr: float) -> Optional[float]:
+    """Smallest audit rate in the (sorted) grid from which on rows[key] (mean over seeds) stays < thr."""
+    rs = sorted(rows, key=lambda r: r["audit_rate"])
+    for i, r in enumerate(rs):
+        if all(x[key] < thr for x in rs[i:]):
+            return r["audit_rate"]
+    return None
+
+
+def _first_above(grid: List[float], a_star: float) -> Optional[float]:
+    return next((a for a in sorted(grid) if a > a_star), None)
+
+
+def _fmt_a(x) -> str:
+    if x is None:
+        return "not reached"
+    return "∞" if x == float("inf") else f"{x:.4f}" if isinstance(x, float) and x not in (0.0,) else str(x)
+
+
+def _attack_row(ps: List[Dict], sid: str) -> Dict:
+    """Seller / buyer outcomes of one sweep point (means over seeds; q's also std)."""
+    g = lambda k: _ms(m[k] for m in ps)[0]  # noqa: E731
+    qs, qt = _ms(m["learned_swap_q"][sid] for m in ps), _ms(m["learned_theft_q"][sid] for m in ps)
+    return {"learned_q_swap": qs[0], "learned_q_swap_std": qs[1],
+            "learned_q_theft": qt[0], "learned_q_theft_std": qt[1],
+            "served_swap_rate": _ms(m["seller_swap_rate"][sid] for m in ps)[0],
+            "served_theft_rate": _ms(m["seller_theft_rate"][sid] for m in ps)[0],
+            "swaps_detected": g("swaps_detected"), "thefts_detected": g("thefts_detected"),
+            "swaps_served": g("swaps_served"), "thefts_served": g("thefts_served"),
+            "n_audits": g("n_audits"), "stake_slashed": g("total_stake_slashed"),
+            "seller_profit": _ms(m["seller_profit"][sid] for m in ps)[0],
+            "fraud_seller_purchases": _ms(m["seller_purchases"][sid] for m in ps)[0],
+            "task_accuracy": g("task_accuracy"), "fraud_share": g("fraud_share"),
+            "buyer_overpayment": g("buyer_overpayment"), "audit_cost": g("total_audit_cost"),
+            "joint_objective": g("joint_objective")}
+
+
+# --------------------------------------------------------------------------- I: imperfect detection
+def experiment_I(ctx: Context, seeds: List[int], log=print) -> Dict:
+    ei = ctx.cfg["experiments"]["I"]
+    sid = fraud_seller_id(ctx.cfg)
+    scfg = next(s for s in ctx.cfg["sellers"] if s["id"] == sid)
+    saving = make_strategy(scfg, ctx.cfg, 0.0, ctx.rep).cost_saving
+    thr = float(ei.get("q_threshold", 0.1))
+    rows = []
+    for P in ei["penalties"]:
+        for d in ei["detect_probs"]:
+            for a in ei["audit_rates"]:
+                over = {"fraud": {"penalty": P, "detect_prob": d, "attack_modes_enabled": ["swap"]},
+                        "run": dict(ei.get("run", {})),
+                        "market": {"audit": {"rate": a, "types": ["identity"]},
+                                   "budget_multiplier": ei.get("budget_multiplier", 1.0)}}
+                ps = run_point(ctx, over, ei["policy"], seeds)["per_seed"]
+                row = dict(penalty=P, detect_prob=d, miss_rate=1 - d, audit_rate=a,
+                           analytic_gain=saving - a * d * P, analytic_q=best_response(saving, a, d, P),
+                           **_attack_row(ps, sid))
+                rows.append(row)
+            log(f"[I] P={P} d={d}: q(a)=" + " ".join(f"{r['learned_q_swap']:.2f}" for r in rows[-len(ei['audit_rates']):]))
+    table = []
+    for P in ei["penalties"]:
+        for d in ei["detect_probs"]:
+            rs = [r for r in rows if r["penalty"] == P and r["detect_prob"] == d]
+            a_star = analytic_threshold(saving, d, P)
+            emp = _thresholds(rs, "learned_q_swap", thr)
+            table.append({"penalty": P, "detect_prob": d, "miss_rate": 1 - d, "analytic_threshold": a_star,
+                          "grid_bracket_analytic": _first_above(ei["audit_rates"], a_star),
+                          "empirical_threshold": emp})
+    return {"cost_saving_per_purchase": saving, "q_threshold": thr, "policy": ei["policy"], "seeds": seeds,
+            "audit_rates": ei["audit_rates"], "detect_probs": ei["detect_probs"], "penalties": ei["penalties"],
+            "heatmap_penalty": ei.get("heatmap_penalty", ei["penalties"][-1]),
+            "n_tasks": ei.get("run", {}).get("n_tasks"), "n_rounds": ei.get("run", {}).get("n_rounds"),
+            "rows": rows, "thresholds": table}
+
+
+def render_I(res: Dict) -> str:
+    L = ["# Imperfect detection — audit rate a × detection probability d (miss rate 1 − d) × penalty P", "",
+         f"Learning model-swap seller (swap only), buyer policy `{res['policy']}`, {res['n_tasks']} tasks / "
+         f"{res['n_rounds']} epochs per run, seeds={res['seeds']}. Identity check detects a swapped answer with "
+         "probability d; **miss rate = false-negative rate = 1 − d**; false-positive rate = 0 (honest answers are "
+         "never flagged). Detection is SIMULATED.", "",
+         f"Swap saving per purchase = {res['cost_saving_per_purchase']:.5f}. Analytic threshold "
+         "**a\\*(d) = saving / (d · P)** (decreasing in d: halving d doubles the audit rate needed). Empirical "
+         f"threshold = smallest grid audit rate from which on the learned q stays < {res['q_threshold']}.", "",
+         "## Thresholds a*(d) vs empirical", "",
+         "| P | d | miss rate 1−d | analytic a*(d) | first grid a > a* | empirical a (learned q < thr) | match |",
+         "|---|---|---|---|---|---|---|"]
+    for t in res["thresholds"]:
+        a_star = t["analytic_threshold"]
+        g, e = t["grid_bracket_analytic"], t["empirical_threshold"]
+        match = "yes" if g == e else ("both beyond grid" if g is None and e is None else "no")
+        L.append(f"| {t['penalty']} | {t['detect_prob']} | {t['miss_rate']:.1f} | "
+                 f"{'∞' if a_star == float('inf') else f'{a_star:.4f}'} | {g if g is not None else '> grid'} "
+                 f"| {e if e is not None else 'not reached'} | {match} |")
+    for P in res["penalties"]:
+        for key, title in (("learned_q_swap", "learned swap rate q"), ("served_swap_rate", "served swap rate")):
+            L += ["", f"## {title} (P = {P}; rows d, columns audit rate a; mean over seeds)", "",
+                  "| d \\ a | " + " | ".join(str(a) for a in res["audit_rates"]) + " |",
+                  "|---|" + "---|" * len(res["audit_rates"])]
+            for d in res["detect_probs"]:
+                cells = []
+                for a in res["audit_rates"]:
+                    r = next(r for r in res["rows"] if r["penalty"] == P and r["detect_prob"] == d
+                             and r["audit_rate"] == a)
+                    star = "*" if r["analytic_q"] == 0 else ""
+                    cells.append(f"{r[key]:.2f}{star}")
+                L.append(f"| {d} | " + " | ".join(cells) + " |")
+    L += ["", "`*` = analytic best response is honest (a > a*(d)). Per-point details (seller profit, detections, "
+          "stake slashed, buyer accuracy) in results/imperfect_detection.json.", ""]
+    return "\n".join(L)
+
+
+def plot_I(res: Dict, path: str) -> bool:
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+        import numpy as np
+    except ImportError:
+        return False
+    Ps = res["penalties"]
+    fig, axes = plt.subplots(1, len(Ps), figsize=(5.2 * len(Ps), 4.2), squeeze=False)
+    A, D = res["audit_rates"], res["detect_probs"]
+    for ax, P in zip(axes[0], Ps):
+        Z = np.array([[next(r["learned_q_swap"] for r in res["rows"] if r["penalty"] == P and r["detect_prob"] == d
+                            and r["audit_rate"] == a) for a in A] for d in D])
+        im = ax.imshow(Z, origin="lower", aspect="auto", cmap="viridis", vmin=0, vmax=1)
+        ax.set_xticks(range(len(A)), [str(a) for a in A], fontsize=7)
+        ax.set_yticks(range(len(D)), [str(d) for d in D])
+        for i in range(len(D)):
+            for j in range(len(A)):
+                ax.text(j, i, f"{Z[i, j]:.2f}", ha="center", va="center", fontsize=6,
+                        color="w" if Z[i, j] < 0.5 else "k")
+        # analytic boundary a*(d) in grid coordinates (piecewise-linear interpolation over the a grid)
+        xs = []
+        for d in D:
+            a_star = analytic_threshold(res["cost_saving_per_purchase"], d, P)
+            xs.append(float(np.interp(a_star, A, range(len(A)), right=np.nan)))
+        ax.plot(xs, range(len(D)), "r--", lw=1.5, label="analytic a*(d)")
+        ax.set_xlabel("audit rate a")
+        ax.set_ylabel("detection prob d (miss rate 1−d)")
+        ax.set_title(f"learned swap rate q, P={P}")
+        ax.legend(fontsize=7, loc="upper right")
+    fig.colorbar(im, ax=axes[0].tolist(), shrink=0.8)
+    fig.savefig(path, dpi=130, bbox_inches="tight")
+    plt.close(fig)
+    return True
+
+
+# --------------------------------------------------------------------------- T: token theft
+ATTACKS = {"honest": [], "swap-only": ["swap"], "theft-only": ["theft"], "both": ["swap", "theft"]}
+AUDIT_REGIMES = {"no audit": [], "identity only": ["identity"], "length only": ["length"],
+                 "identity + length": ["identity", "length"]}
+
+
+def experiment_T(ctx: Context, seeds: List[int], log=print) -> Dict:
+    et = ctx.cfg["experiments"]["T"]
+    sid = fraud_seller_id(ctx.cfg)
+    scfg = next(s for s in ctx.cfg["sellers"] if s["id"] == sid)
+    base_run = {"run": dict(et.get("run", {}))}
+    bm = et.get("budget_multiplier", 1.0)
+    thr = float(et.get("q_threshold", 0.1))
+    m0 = et["matrix"]
+
+    def point(modes, checks, a, d_id, d_len, P, extra=None):
+        over = deep_merge(base_run, {
+            "fraud": {"attack_modes_enabled": modes, "detect_prob": d_id, "detect_prob_length": d_len,
+                      "penalty": P},
+            "market": {"audit": {"rate": a if checks else 0.0, "types": checks or ["identity"]},
+                       "budget_multiplier": bm}})
+        over = deep_merge(over, extra or {})
+        ps = run_point(ctx, over, et["policy"], seeds)["per_seed"]
+        return _attack_row(ps, sid), ps[0]
+
+    matrix = []
+    for an, modes in ATTACKS.items():
+        for rn, checks in AUDIT_REGIMES.items():
+            r, p0 = point(modes, checks, m0["audit_rate"], m0["detect_prob"], m0["detect_prob_length"], m0["penalty"])
+            matrix.append(dict(attack=an, audit=rn, **r))
+            log(f"[T] {an:10s} | {rn:17s}: q_swap={r['learned_q_swap']:.2f} q_theft={r['learned_q_theft']:.2f} "
+                f"acc={r['task_accuracy']:.3f} profit={r['seller_profit']:+.2f}")
+    strat = make_strategy(scfg, deep_merge(ctx.cfg, {"fraud": {"attack_modes_enabled": ["swap", "theft"]}}),
+                          0.0, ctx.rep, ["identity", "length"])
+    swap_saving, theft_saving = strat.cost_saving, strat.theft_saving
+    sweep = []
+    for P in et["sweep"]["penalties"]:
+        for d_id, d_len in et["sweep"]["detect_pairs"]:
+            for a in et["sweep"]["audit_rates"]:
+                r, _ = point(["swap", "theft"], ["identity", "length"], a, d_id, d_len, P)
+                sweep.append(dict(penalty=P, detect_prob=d_id, detect_prob_length=d_len, audit_rate=a,
+                                  analytic_q_swap=best_response(swap_saving, a, d_id, P),
+                                  analytic_q_theft=best_response(theft_saving, a, d_len, P), **r))
+            log(f"[T] sweep P={P} d_id={d_id} d_len={d_len}: q_theft(a)=" +
+                " ".join(f"{r['learned_q_theft']:.2f}" for r in sweep[-len(et['sweep']['audit_rates']):]))
+    thresholds = []
+    for P in et["sweep"]["penalties"]:
+        for d_id, d_len in et["sweep"]["detect_pairs"]:
+            rs = [r for r in sweep if r["penalty"] == P and r["detect_prob"] == d_id and r["detect_prob_length"] == d_len]
+            a_s, a_t = analytic_threshold(swap_saving, d_id, P), analytic_threshold(theft_saving, d_len, P)
+            thresholds.append({"penalty": P, "detect_prob": d_id, "detect_prob_length": d_len,
+                               "analytic_a_swap": a_s, "analytic_a_theft": a_t,
+                               "grid_a_swap": _first_above(et["sweep"]["audit_rates"], a_s),
+                               "grid_a_theft": _first_above(et["sweep"]["audit_rates"], a_t),
+                               "empirical_a_swap": _thresholds(rs, "learned_q_swap", thr),
+                               "empirical_a_theft": _thresholds(rs, "learned_q_theft", thr)})
+    extras = []
+    for ex in et.get("extras", []):
+        r, _ = point(ex["attack_modes"], ex["audit_types"], m0["audit_rate"], m0["detect_prob"],
+                     m0["detect_prob_length"], m0["penalty"], {"fraud": ex.get("fraud", {})})
+        extras.append(dict(name=ex["name"], **r))
+        log(f"[T] extra {ex['name']}: q_theft={r['learned_q_theft']:.2f} thefts detected={r['thefts_detected']:.1f}")
+    f = ctx.cfg["fraud"]
+    return {"seeds": seeds, "policy": et["policy"], "n_tasks": et.get("run", {}).get("n_tasks"),
+            "n_rounds": et.get("run", {}).get("n_rounds"), "matrix_params": m0, "matrix": matrix,
+            "sweep": sweep, "sweep_params": et["sweep"], "thresholds": thresholds, "extras": extras,
+            "swap_saving": swap_saving, "theft_saving": theft_saving, "q_threshold": thr,
+            "billed_token_policy": f.get("billed_token_policy"), "theft_max_new_tokens": f.get("theft_max_new_tokens"),
+            "length_audit_tol": f.get("length_audit_tol"),
+            "claimed_tokens_mean": ctx.rep.tokens_mean(scfg["claimed_model"])}
+
+
+def _deterrence(res: Dict) -> List[Dict]:
+    """For each attack, which audit regimes deter it (learned rate of every enabled attack < threshold)."""
+    out = []
+    thr = res["q_threshold"]
+    for an, modes in ATTACKS.items():
+        if not modes:
+            continue
+        verdict = {}
+        for rn in AUDIT_REGIMES:
+            r = next(x for x in res["matrix"] if x["attack"] == an and x["audit"] == rn)
+            ok = all(r["learned_q_" + m] < thr for m in modes)
+            verdict[rn] = ok
+        out.append({"attack": an, **verdict})
+    return out
+
+
+def render_T(res: Dict) -> str:
+    m0 = res["matrix_params"]
+    L = ["# Token theft — strategic seller chooses (q_swap, q_theft) under identity / length audits", "",
+         f"seller_sg can (i) **swap** (serve Qwen2.5-0.5B while claiming 1.5B) and/or (ii) **steal tokens**: bill "
+         f"`{res['billed_token_policy']}` tokens (claimed-model mean {res['claimed_tokens_mean']:.1f}) while actually "
+         f"stopping after `theft_max_new_tokens` = {res['theft_max_new_tokens']} tokens (truncation of the REAL cached "
+         "Qwen output; the final answer is re-parsed from the truncated text, so it is usually lost). Revenue is "
+         "charged on BILLED tokens, serving cost on ACTUAL tokens. Per epoch the seller picks (q_swap, q_theft) on "
+         "{0, 0.1, …, 1}² by ε-greedy on its own realised profit; per purchase swap ~ Bern(q_swap), theft ~ "
+         "Bern(q_theft) → attack_mode ∈ {none, swap, theft, both}.", "",
+         f"Buyer policy `{res['policy']}`, {res['n_tasks']} tasks / {res['n_rounds']} epochs, seeds={res['seeds']}. "
+         f"Analytic per-purchase gains before penalties: swap {res['swap_saving']:.5f}, theft "
+         f"{res['theft_saving']:.5f} = (price·E[billed − full] + cost·E[full − actual]) / 1000. Length audit flags "
+         f"billed > actual·(1 + {res['length_audit_tol']}); both detectors are SIMULATED (miss rate 1 − d, no false "
+         "positives) except the reference cross-check row below.", "",
+         f"## Attack × audit regime (a = {m0['audit_rate']}, d_identity = {m0['detect_prob']}, d_length = "
+         f"{m0['detect_prob_length']}, P = {m0['penalty']})", "",
+         "| attack enabled | audit regime | learned q_swap | learned q_theft | served swap / theft rate "
+         "| swaps det. / served | thefts det. / served | seller_sg profit | buyer overpayment | buyer accuracy "
+         "| fraud share | J |", "|---|---|---|---|---|---|---|---|---|---|---|---|"]
+    for r in res["matrix"]:
+        L.append(f"| {r['attack']} | {r['audit']} | {r['learned_q_swap']:.2f} ± {r['learned_q_swap_std']:.2f} "
+                 f"| {r['learned_q_theft']:.2f} ± {r['learned_q_theft_std']:.2f} "
+                 f"| {r['served_swap_rate']:.2f} / {r['served_theft_rate']:.2f} "
+                 f"| {r['swaps_detected']:.1f} / {r['swaps_served']:.0f} | {r['thefts_detected']:.1f} / "
+                 f"{r['thefts_served']:.0f} | {r['seller_profit']:+.2f} | {r['buyer_overpayment']:.2f} "
+                 f"| {r['task_accuracy']:.3f} | {r['fraud_share']:.3f} | {r['joint_objective']:.3f} |")
+    L += ["", f"## Which audit is needed to deter which attack (✓ = every enabled attack's learned rate < "
+          f"{res['q_threshold']})", "", "| attack | " + " | ".join(AUDIT_REGIMES) + " |",
+          "|---|" + "---|" * len(AUDIT_REGIMES)]
+    for v in _deterrence(res):
+        L.append(f"| {v['attack']} | " + " | ".join("✓" if v[rn] else "✗" for rn in AUDIT_REGIMES) + " |")
+    sp = res["sweep_params"]
+    L += ["", "## Thresholds for the combined attacker (both enabled, identity + length audits)", "",
+          "| P | d_identity | d_length | analytic a*_swap | grid / empirical a_swap | analytic a*_theft "
+          "| grid / empirical a_theft |", "|---|---|---|---|---|---|---|"]
+    for t in res["thresholds"]:
+        f = lambda x: "> grid" if x is None else str(x)  # noqa: E731
+        e = lambda x: "not reached" if x is None else str(x)  # noqa: E731
+        L.append(f"| {t['penalty']} | {t['detect_prob']} | {t['detect_prob_length']} | {t['analytic_a_swap']:.4f} "
+                 f"| {f(t['grid_a_swap'])} / {e(t['empirical_a_swap'])} | {t['analytic_a_theft']:.4f} "
+                 f"| {f(t['grid_a_theft'])} / {e(t['empirical_a_theft'])} |")
+    L += ["", "## Sweep (both attacks enabled, identity + length audits)", "",
+          "| P | d_id | d_len | a | learned q_swap | learned q_theft | analytic q*_swap / q*_theft | swaps / thefts "
+          "detected | seller_sg profit | buyer accuracy | fraud share | J |",
+          "|---|---|---|---|---|---|---|---|---|---|---|---|"]
+    for r in res["sweep"]:
+        L.append(f"| {r['penalty']} | {r['detect_prob']} | {r['detect_prob_length']} | {r['audit_rate']} "
+                 f"| {r['learned_q_swap']:.2f} | {r['learned_q_theft']:.2f} | {r['analytic_q_swap']:.0f} / "
+                 f"{r['analytic_q_theft']:.0f} | {r['swaps_detected']:.1f} / {r['thefts_detected']:.1f} "
+                 f"| {r['seller_profit']:+.2f} | {r['task_accuracy']:.3f} | {r['fraud_share']:.3f} "
+                 f"| {r['joint_objective']:.3f} |")
+    if res["extras"]:
+        L += ["", f"## Variants (theft-only attacker, a = {m0['audit_rate']}, P = {m0['penalty']})", "",
+              "| variant | learned q_theft | thefts det. / served | seller_sg profit | buyer overpayment "
+              "| buyer accuracy |", "|---|---|---|---|---|---|"]
+        for r in res["extras"]:
+            L.append(f"| {r['name']} | {r['learned_q_theft']:.2f} ± {r['learned_q_theft_std']:.2f} "
+                     f"| {r['thefts_detected']:.1f} / {r['thefts_served']:.0f} | {r['seller_profit']:+.2f} "
+                     f"| {r['buyer_overpayment']:.2f} | {r['task_accuracy']:.3f} |")
+    L += ["", "buyer overpayment = Σ price × (billed − actual) / 1000 (excl. corridor fee). J = accuracy − λ·"
+          "violation rate − μ·fraud share (λ = 1, μ = 0.5; single_best_compliant has 0 violations). Per-seed "
+          "details: results/token_theft.json.", ""]
+    return "\n".join(L)
+
+
+# --------------------------------------------------------------------------- J: joint objective
+JMETRICS = ("joint_objective", "task_accuracy", "compliance_violation_rate", "fraud_share",
+            "mean_cost_per_task_incl_audit")
+
+
+def interp_curve(points: List[Tuple[float, Dict]], c: float) -> Tuple[Optional[Dict], bool]:
+    """Linear interpolation of every metric along a policy's budget-sweep curve (points sorted by cost; equal-cost
+    points averaged). Returns (metrics at cost c, saturated). Below the cheapest point: (None, False). Above the most
+    expensive point the policy cannot spend more: its last point, saturated=True."""
+    by_c: Dict[float, List[Dict]] = {}
+    for x, m in points:
+        by_c.setdefault(round(x, 9), []).append(m)
+    pts = [(x, {k: statistics.fmean(m[k] for m in ms) for k in ms[0]}) for x, ms in sorted(by_c.items())]
+    if not pts or c < pts[0][0] - 1e-12:
+        return None, False
+    if c >= pts[-1][0]:
+        return pts[-1][1], c > pts[-1][0] + 1e-12
+    for (c0, m0), (c1, m1) in zip(pts, pts[1:]):
+        if c0 <= c <= c1:
+            w = (c - c0) / (c1 - c0) if c1 > c0 else 0.0
+            return {k: m0[k] + w * (m1[k] - m0[k]) for k in m0}, False
+    return pts[-1][1], False
+
+
+def _jrow(a: Dict) -> Dict:
+    return {k: a[k]["mean"] for k in JMETRICS} | {k + "_std": a[k]["std"] for k in JMETRICS}
+
+
+def experiment_J(ctx: Context, seeds: List[int], log_dir: str, log=print) -> Dict:
+    ej = ctx.cfg["experiments"]["J"]
+    sid = fraud_seller_id(ctx.cfg)
+    market_over = {"fraud": {"attack_modes_enabled": list(ej.get("attack_modes", ["swap", "theft"]))}}
+    rows = []
+    os.makedirs(log_dir, exist_ok=True)
+    with TransactionLogger(os.path.join(log_dir, "transactions_J.jsonl"), mode="w") as lg:
+        for pol in ej["policies"]:
+            over = deep_merge(market_over, {"market": {"budget_multiplier": ej.get("budget_multiplier", 1.0)}})
+            r = run_point(ctx, over, pol, seeds, lg)
+            a, ps = r["aggregate"], r["per_seed"]
+            rows.append({"policy": pol, **_jrow(a),
+                         "per_seed_components": [{k: m[k] for k in ("task_accuracy", "compliance_violation_rate",
+                                                                    "fraud_share")} for m in ps],
+                         "raw": {k: a[k]["mean"] for k in (
+                             "task_accuracy", "total_cost_incl_audit", "total_audit_cost", "compliance_violations",
+                             "fraud_seller_share", "theft_share", "swaps_detected", "thefts_detected",
+                             "buyer_overpayment", "total_buyer_surplus", "budget_violations", "n_purchases")},
+                         "learned_q_swap": _ms(m["learned_swap_q"][sid] for m in ps)[0],
+                         "learned_q_theft": _ms(m["learned_theft_q"][sid] for m in ps)[0]})
+            log(f"[J] {pol}: J={a['joint_objective']['mean']:.3f} acc={a['task_accuracy']['mean']:.3f} "
+                f"viol={a['compliance_violation_rate']['mean']:.3f} fraud={a['fraud_share']['mean']:.3f}")
+    sens = []
+    for lam, mu in ej["sensitivity"]:
+        sc = {}
+        for r in rows:
+            vals = [ac["task_accuracy"] - lam * ac["compliance_violation_rate"] - mu * ac["fraud_share"]
+                    for ac in r["per_seed_components"]]
+            sc[r["policy"]] = _ms(vals)
+        order = sorted(sc, key=lambda p: -sc[p][0])
+        sens.append({"lambda": lam, "mu": mu, "J": {p: v[0] for p, v in sc.items()},
+                     "J_std": {p: v[1] for p, v in sc.items()}, "ranking": order})
+    # equal-cost view: budget sweeps in the same market
+    curves = {}
+    for pol in ej["curve_policies"]:
+        pts = []
+        for bm in ej["budget_multipliers"]:
+            a = run_point(ctx, deep_merge(market_over, {"market": {"budget_multiplier": bm}}), pol, seeds)["aggregate"]
+            pts.append({"budget_multiplier": bm, **{k: a[k]["mean"] for k in JMETRICS}})
+        curves[pol] = pts
+    log(f"[J] equal-cost curves: {len(ej['curve_policies'])} policies x {len(ej['budget_multipliers'])} budgets")
+    allc = sorted(p["mean_cost_per_task_incl_audit"] for ps in curves.values() for p in ps)
+    levels = ej.get("cost_levels") or sorted({round(allc[int(q * (len(allc) - 1))], 4) for q in (0.2, 0.4, 0.6, 0.8)})
+    eq = {}
+    for pol, ps in curves.items():
+        eq[pol] = {}
+        for c in levels:
+            m, sat = interp_curve([(p["mean_cost_per_task_incl_audit"], {k: p[k] for k in JMETRICS}) for p in ps], c)
+            eq[pol][str(c)] = None if m is None else dict(m, saturated=sat)
+    lam, mu = joint_weights(ctx.cfg)
+    return {"seeds": seeds, "lambda": lam, "mu": mu, "rows": rows, "sensitivity": sens, "curves": curves,
+            "cost_levels": levels, "equal_cost": eq, "main_baseline": ej.get("main_baseline", "pilot_compliant"),
+            "ours": "audited_compliance_cascade", "attack_modes": market_over["fraud"]["attack_modes_enabled"],
+            "budget_multiplier": ej.get("budget_multiplier", 1.0),
+            "d3_audit_rate": ctx.cfg["market"]["audited"]["audit_rate"],
+            "d3_audit_types": ctx.cfg["market"]["audited"].get("audit_types", ["identity", "length"]),
+            "penalty": ctx.cfg["fraud"]["penalty"], "detect_prob": ctx.cfg["fraud"]["detect_prob"],
+            "detect_prob_length": ctx.cfg["fraud"].get("detect_prob_length", 0.9)}
+
+
+def render_J(res: Dict) -> str:
+    rows = sorted(res["rows"], key=lambda r: -r["joint_objective"])
+    base = next((r for r in res["rows"] if r["policy"] == res["main_baseline"]), None)
+    L = ["# Joint objective — main comparison (v4 headline)", "",
+         "**J = accuracy − λ · compliance_violation_rate − μ · fraud_share**, with", "",
+         "- accuracy = task accuracy (final portfolio answer == gold; tasks without an answer count as wrong);",
+         "- compliance_violation_rate = compliance violations / **tasks** (purchases whose data flow breached a "
+         "rule and went through; only the compliance-unaware policies can have them);",
+         "- fraud_share = attacked purchases / **purchases**, attacked = model swap (actual_model ≠ claimed_model) "
+         "OR token theft (billed_tokens > actual_tokens, i.e. attack_mode ∈ {swap, theft, both}).", "",
+         f"Default weights λ = {res['lambda']}, μ = {res['mu']}. Market: the strategic (learning) seller_sg with "
+         f"attack modes {res['attack_modes']} (it learns q_swap and q_theft against each policy's audit regime); only "
+         f"D3 audits (rate {res['d3_audit_rate']}, checks {res['d3_audit_types']}, d_identity = {res['detect_prob']}, "
+         f"d_length = {res['detect_prob_length']}, P = {res['penalty']}); budget × {res['budget_multiplier']}. "
+         f"Mean ± std over seeds {res['seeds']}. **Main baseline to beat on J: `{res['main_baseline']}` "
+         "(PILOT + compliance filter).**", "",
+         "## Ranking by J", "",
+         f"| rank | policy | J | Δ J vs {res['main_baseline']} | accuracy | violation rate (/task) | fraud share "
+         "(/purchase) | cost/task incl. audit | sg learned q_swap / q_theft |", "|---|---|---|---|---|---|---|---|---|"]
+    for i, r in enumerate(rows, 1):
+        dj = f"{r['joint_objective'] - base['joint_objective']:+.3f}" if base else "–"
+        L.append(f"| {i} | {LABEL.get(r['policy'], r['policy'])} | {r['joint_objective']:.3f} ± "
+                 f"{r['joint_objective_std']:.3f} | {dj} | {r['task_accuracy']:.3f} ± {r['task_accuracy_std']:.3f} "
+                 f"| {r['compliance_violation_rate']:.3f} | {r['fraud_share']:.3f} "
+                 f"| {r['mean_cost_per_task_incl_audit']:.4f} | {r['learned_q_swap']:.2f} / {r['learned_q_theft']:.2f} |")
+    pols = [r["policy"] for r in rows]
+    L += ["", "## Sensitivity to (λ, μ)", "", "| policy | " + " | ".join(
+        f"λ={s['lambda']}, μ={s['mu']}" for s in res["sensitivity"]) + " |", "|---|" + "---|" * len(res["sensitivity"])]
+    for p in pols:
+        L.append(f"| {p} | " + " | ".join(f"{s['J'][p]:.3f} (#{s['ranking'].index(p) + 1})"
+                                          for s in res["sensitivity"]) + " |")
+    L += ["", "## Equal-cost view (each policy's budget sweep, metrics linearly interpolated at cost/task = c incl. "
+          "audit; – = policy cannot get this cheap; * = saturated: the policy spends less than c even with the "
+          "largest budget, its most expensive point is shown)", ""]
+    for c in res["cost_levels"]:
+        L += [f"### cost/task = {c:.4f}", "", "| policy | J | accuracy | violation rate | fraud share |",
+              "|---|---|---|---|---|"]
+        cand = [(p, res["equal_cost"][p][str(c)]) for p in res["equal_cost"]]
+        cand.sort(key=lambda pm: -(pm[1]["joint_objective"] if pm[1] else -9))
+        for p, m in cand:
+            if m is None:
+                L.append(f"| {p} | – | – | – | – |")
+                continue
+            s = "*" if m["saturated"] else ""
+            L.append(f"| {p} | {m['joint_objective']:.3f}{s} | {m['task_accuracy']:.3f}{s} "
+                     f"| {m['compliance_violation_rate']:.3f}{s} | {m['fraud_share']:.3f}{s} |")
+        L.append("")
+    L += ["## Appendix — raw-accuracy table (secondary; same runs)", "",
+          "| policy | task accuracy | total cost incl. audit | of which audit | compliance violations | swapped share "
+          "| theft share | swaps / thefts detected | buyer overpayment | buyer surplus | budget violations |",
+          "|---|---|---|---|---|---|---|---|---|---|---|"]
+    for r in sorted(res["rows"], key=lambda r: -r["raw"]["task_accuracy"]):
+        w = r["raw"]
+        L.append(f"| {r['policy']} | {w['task_accuracy']:.3f} | {w['total_cost_incl_audit']:.3f} "
+                 f"| {w['total_audit_cost']:.3f} | {w['compliance_violations']:.1f} | {w['fraud_seller_share']:.3f} "
+                 f"| {w['theft_share']:.3f} | {w['swaps_detected']:.1f} / {w['thefts_detected']:.1f} "
+                 f"| {w['buyer_overpayment']:.3f} | {w['total_buyer_surplus']:.3f} | {w['budget_violations']:.1f} |")
+    L += ["", "The v3 swap-only comparison (raw accuracy, now also with a J column) is kept in results/baselines.md; "
+          "the v3 accuracy-vs-cost curves in results/cost_curves.md.", ""]
     return "\n".join(L)

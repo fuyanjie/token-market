@@ -67,6 +67,18 @@
     "budget_exhausted_tasks": {
      "mean": 0.0,
      "std": 0.0
+    },
+    "joint_objective": {
+     "mean": 0.6347222222222223,
+     "std": 0.028948839370964884
+    },
+    "compliance_violation_rate": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "fraud_share": {
+     "mean": 0.061111111111111116,
+     "std": 0.01935744425661994
     }
    },
    "learned_q": [
@@ -140,6 +152,18 @@
     "budget_exhausted_tasks": {
      "mean": 42.0,
      "std": 1.7320508075688772
+    },
+    "joint_objective": {
+     "mean": 0.25085393407761825,
+     "std": 0.014730768353185028
+    },
+    "compliance_violation_rate": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "fraud_share": {
+     "mean": 0.766347687400319,
+     "std": 0.0158670863194251
     }
    },
    "learned_q": [
@@ -213,6 +237,18 @@
     "budget_exhausted_tasks": {
      "mean": 33.666666666666664,
      "std": 4.932882862316247
+    },
+    "joint_objective": {
+     "mean": 0.6172654540653418,
+     "std": 0.008259282858050993
+    },
+    "compliance_violation_rate": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "fraud_share": {
+     "mean": 0.30158020298042737,
+     "std": 0.014328438381849253
     }
    },
    "learned_q": [
@@ -286,6 +322,18 @@
     "budget_exhausted_tasks": {
      "mean": 63.0,
      "std": 3.4641016151377544
+    },
+    "joint_objective": {
+     "mean": 0.5285479106995813,
+     "std": 0.012176250677337842
+    },
+    "compliance_violation_rate": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "fraud_share": {
+     "mean": 0.3234597341563929,
+     "std": 0.004146285376169998
     }
    },
    "learned_q": [
@@ -357,6 +405,18 @@
      "std": 0.027565407443388264
     },
     "budget_exhausted_tasks": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "joint_objective": {
+     "mean": 0.41180555555555554,
+     "std": 0.03543708561714748
+    },
+    "compliance_violation_rate": {
+     "mean": 0.2152777777777778,
+     "std": 0.013393959390267987
+    },
+    "fraud_share": {
      "mean": 0.0,
      "std": 0.0
     }
@@ -432,6 +492,18 @@
     "budget_exhausted_tasks": {
      "mean": 0.0,
      "std": 0.0
+    },
+    "joint_objective": {
+     "mean": 0.6034722222222223,
+     "std": 0.03333875823911162
+    },
+    "compliance_violation_rate": {
+     "mean": 0.16180555555555556,
+     "std": 0.01935744425661993
+    },
+    "fraud_share": {
+     "mean": 0.2347222222222222,
+     "std": 0.0662858044408482
     }
    },
    "learned_q": [
@@ -505,6 +577,18 @@
     "budget_exhausted_tasks": {
      "mean": 1.6666666666666667,
      "std": 2.8867513459481287
+    },
+    "joint_objective": {
+     "mean": 0.7486659356725146,
+     "std": 0.015082866916142756
+    },
+    "compliance_violation_rate": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "fraud_share": {
+     "mean": 0.21516812865497079,
+     "std": 0.049294852292633765
     }
    },
    "learned_q": [
@@ -578,6 +662,18 @@
     "budget_exhausted_tasks": {
      "mean": 27.333333333333332,
      "std": 23.692474191889147
+    },
+    "joint_objective": {
+     "mean": 0.6667713089802131,
+     "std": 0.04142377299043163
+    },
+    "compliance_violation_rate": {
+     "mean": 0.12777777777777777,
+     "std": 0.016710013077105505
+    },
+    "fraud_share": {
+     "mean": 0.08451293759512939,
+     "std": 0.03757777485060138
     }
    },
    "learned_q": [
@@ -651,6 +747,18 @@
     "budget_exhausted_tasks": {
      "mean": 23.0,
      "std": 20.663978319771825
+    },
+    "joint_objective": {
+     "mean": 0.7394039480167529,
+     "std": 0.07279616873044023
+    },
+    "compliance_violation_rate": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "fraud_share": {
+     "mean": 0.11563654841093866,
+     "std": 0.08576072431136543
     }
    },
    "learned_q": [
@@ -724,6 +832,18 @@
     "budget_exhausted_tasks": {
      "mean": 34.0,
      "std": 6.082762530298219
+    },
+    "joint_objective": {
+     "mean": 0.790321179191105,
+     "std": 0.01412920624359982
+    },
+    "compliance_violation_rate": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "fraud_share": {
+     "mean": 0.04157986384001221,
+     "std": 0.017340779389949545
     }
    },
    "learned_q": [

@@ -30,8 +30,8 @@
       "elapsed_s": 0.0
     }
   },
-  "market_sim_s": 0.484,
-  "elapsed_s": 0.488,
+  "market_sim_s": 0.498,
+  "elapsed_s": 0.501,
   "reputation": {
     "Qwen/Qwen2.5-1.5B-Instruct": {
       "source": "measured",
@@ -125,6 +125,90 @@
       "mechanism": "posted_price",
       "policy": "single_cheapest_compliant",
       "aggregate": {
+        "compliance_violation_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "fraud_share": {
+          "mean": 0.12083333333333335,
+          "std": 0.01816207893141947
+        },
+        "theft_share": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "thefts_served": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "thefts_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "length_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "identity_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "attacks_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_billed_tokens": {
+          "mean": 29377.333333333332,
+          "std": 407.8104134684809
+        },
+        "total_actual_tokens": {
+          "mean": 29377.333333333332,
+          "std": 407.8104134684809
+        },
+        "buyer_overpayment": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "mean_theft_inflation": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "theft_accuracy": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "attack_mode_counts": {
+          "both": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "none": {
+            "mean": 211.0,
+            "std": 4.358898943540674
+          },
+          "swap": {
+            "mean": 29.0,
+            "std": 4.358898943540674
+          },
+          "theft": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "seller_theft_rate": {
+          "seller_br": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
         "n_tasks": {
           "mean": 240.0,
           "std": 0.0
@@ -448,6 +532,24 @@
             "std": 0.0
           }
         },
+        "learned_theft_q": {
+          "seller_sg": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "theft_gain_analytic": {
+          "seller_sg": {
+            "mean": 0.01125975,
+            "std": 0.0
+          }
+        },
+        "theft_saving": {
+          "seller_sg": {
+            "mean": 0.01125975,
+            "std": 0.0
+          }
+        },
         "swap_gain_analytic": {
           "seller_sg": {
             "mean": 0.009963625000000002,
@@ -459,10 +561,46 @@
             "mean": 0.009963625000000002,
             "std": 0.0
           }
+        },
+        "joint_lambda": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "joint_mu": {
+          "mean": 0.5,
+          "std": 0.0
+        },
+        "joint_objective": {
+          "mean": 0.6048611111111111,
+          "std": 0.0031823442326082713
         }
       },
       "per_seed": [
         {
+          "compliance_violation_rate": 0.0,
+          "fraud_share": 0.12916666666666668,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 29480,
+          "total_actual_tokens": 29480,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 209,
+            "swap": 31,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 240,
           "n_lines": 240,
@@ -558,6 +696,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -577,9 +738,36 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.6020833333333333
         },
         {
+          "compliance_violation_rate": 0.0,
+          "fraud_share": 0.13333333333333333,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 28928,
+          "total_actual_tokens": 28928,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 208,
+            "swap": 32,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 240,
           "n_lines": 240,
@@ -675,6 +863,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -694,9 +905,36 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.6083333333333334
         },
         {
+          "compliance_violation_rate": 0.0,
+          "fraud_share": 0.1,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 29724,
+          "total_actual_tokens": 29724,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 216,
+            "swap": 24,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 240,
           "n_lines": 240,
@@ -792,6 +1030,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -811,7 +1072,10 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.6041666666666666
         }
       ],
       "gateway_per_seed": [
@@ -865,6 +1129,90 @@
       "mechanism": "posted_price",
       "policy": "single_best_compliant",
       "aggregate": {
+        "compliance_violation_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "fraud_share": {
+          "mean": 0.8136404962093037,
+          "std": 0.0196977801559846
+        },
+        "theft_share": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "thefts_served": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "thefts_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "length_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "identity_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "attacks_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_billed_tokens": {
+          "mean": 32241.333333333332,
+          "std": 334.13969134679786
+        },
+        "total_actual_tokens": {
+          "mean": 32241.333333333332,
+          "std": 334.13969134679786
+        },
+        "buyer_overpayment": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "mean_theft_inflation": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "theft_accuracy": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "attack_mode_counts": {
+          "both": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "none": {
+            "mean": 41.0,
+            "std": 4.358898943540674
+          },
+          "swap": {
+            "mean": 179.0,
+            "std": 4.58257569495584
+          },
+          "theft": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "seller_theft_rate": {
+          "seller_br": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
         "n_tasks": {
           "mean": 240.0,
           "std": 0.0
@@ -1188,6 +1536,24 @@
             "std": 0.0
           }
         },
+        "learned_theft_q": {
+          "seller_sg": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "theft_gain_analytic": {
+          "seller_sg": {
+            "mean": 0.01125975,
+            "std": 0.0
+          }
+        },
+        "theft_saving": {
+          "seller_sg": {
+            "mean": 0.01125975,
+            "std": 0.0
+          }
+        },
         "swap_gain_analytic": {
           "seller_sg": {
             "mean": 0.009963625000000002,
@@ -1199,10 +1565,46 @@
             "mean": 0.009963625000000002,
             "std": 0.0
           }
+        },
+        "joint_lambda": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "joint_mu": {
+          "mean": 0.5,
+          "std": 0.0
+        },
+        "joint_objective": {
+          "mean": 0.23206864078423714,
+          "std": 0.01725894943188277
         }
       },
       "per_seed": [
         {
+          "compliance_violation_rate": 0.0,
+          "fraud_share": 0.8256880733944955,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 32162,
+          "total_actual_tokens": 32162,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 38,
+            "swap": 180,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 218,
           "n_lines": 240,
@@ -1298,6 +1700,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -1317,9 +1742,36 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.2371559633027523
         },
         {
+          "compliance_violation_rate": 0.0,
+          "fraud_share": 0.8243243243243243,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 32608,
+          "total_actual_tokens": 32608,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 39,
+            "swap": 183,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 222,
           "n_lines": 240,
@@ -1415,6 +1867,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -1434,9 +1909,36 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.21283783783783783
         },
         {
+          "compliance_violation_rate": 0.0,
+          "fraud_share": 0.7909090909090909,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 31954,
+          "total_actual_tokens": 31954,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 46,
+            "swap": 174,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 220,
           "n_lines": 240,
@@ -1532,6 +2034,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -1551,7 +2076,10 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.24621212121212127
         }
       ],
       "gateway_per_seed": [
@@ -1608,6 +2136,90 @@
       "mechanism": "posted_price",
       "policy": "cascade_compliant",
       "aggregate": {
+        "compliance_violation_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "fraud_share": {
+          "mean": 0.33121813399929656,
+          "std": 0.015615788563950695
+        },
+        "theft_share": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "thefts_served": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "thefts_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "length_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "identity_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "attacks_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_billed_tokens": {
+          "mean": 51885.0,
+          "std": 1959.9303559055356
+        },
+        "total_actual_tokens": {
+          "mean": 51885.0,
+          "std": 1959.9303559055356
+        },
+        "buyer_overpayment": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "mean_theft_inflation": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "theft_accuracy": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "attack_mode_counts": {
+          "both": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "none": {
+            "mean": 253.33333333333334,
+            "std": 4.163331998932265
+          },
+          "swap": {
+            "mean": 125.66666666666667,
+            "std": 10.214368964029708
+          },
+          "theft": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "seller_theft_rate": {
+          "seller_br": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
         "n_tasks": {
           "mean": 240.0,
           "std": 0.0
@@ -1944,6 +2556,24 @@
             "std": 0.0
           }
         },
+        "learned_theft_q": {
+          "seller_sg": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "theft_gain_analytic": {
+          "seller_sg": {
+            "mean": 0.01125975,
+            "std": 0.0
+          }
+        },
+        "theft_saving": {
+          "seller_sg": {
+            "mean": 0.01125975,
+            "std": 0.0
+          }
+        },
         "swap_gain_analytic": {
           "seller_sg": {
             "mean": 0.009963625000000002,
@@ -1955,10 +2585,46 @@
             "mean": 0.009963625000000002,
             "std": 0.0
           }
+        },
+        "joint_lambda": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "joint_mu": {
+          "mean": 0.5,
+          "std": 0.0
+        },
+        "joint_objective": {
+          "mean": 0.6121687107781295,
+          "std": 0.027182750622393396
         }
       },
       "per_seed": [
         {
+          "compliance_violation_rate": 0.0,
+          "fraud_share": 0.340153452685422,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 53078,
+          "total_actual_tokens": 53078,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 258,
+            "swap": 133,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 391,
           "n_lines": 405,
@@ -2058,6 +2724,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -2077,9 +2766,36 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.6382566069906224
         },
         {
+          "compliance_violation_rate": 0.0,
+          "fraud_share": 0.3403141361256545,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 52954,
+          "total_actual_tokens": 52954,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 252,
+            "swap": 130,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 382,
           "n_lines": 401,
@@ -2179,6 +2895,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -2198,9 +2937,36 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.5840095986038394
         },
         {
+          "compliance_violation_rate": 0.0,
+          "fraud_share": 0.3131868131868132,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 49623,
+          "total_actual_tokens": 49623,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 250,
+            "swap": 114,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 364,
           "n_lines": 380,
@@ -2300,6 +3066,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -2319,7 +3108,10 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.6142399267399268
         }
       ],
       "gateway_per_seed": [
@@ -2383,6 +3175,90 @@
       "mechanism": "posted_price",
       "policy": "vote_k_compliant",
       "aggregate": {
+        "compliance_violation_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "fraud_share": {
+          "mean": 0.35081127923073213,
+          "std": 0.003475399236876947
+        },
+        "theft_share": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "thefts_served": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "thefts_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "length_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "identity_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "attacks_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_billed_tokens": {
+          "mean": 66075.33333333333,
+          "std": 2225.111532785117
+        },
+        "total_actual_tokens": {
+          "mean": 66075.33333333333,
+          "std": 2225.111532785117
+        },
+        "buyer_overpayment": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "mean_theft_inflation": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "theft_accuracy": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "attack_mode_counts": {
+          "both": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "none": {
+            "mean": 309.0,
+            "std": 7.211102550927978
+          },
+          "swap": {
+            "mean": 167.0,
+            "std": 5.291502622129181
+          },
+          "theft": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "seller_theft_rate": {
+          "seller_br": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
         "n_tasks": {
           "mean": 240.0,
           "std": 0.0
@@ -2715,6 +3591,24 @@
             "std": 0.0
           }
         },
+        "learned_theft_q": {
+          "seller_sg": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "theft_gain_analytic": {
+          "seller_sg": {
+            "mean": 0.01125975,
+            "std": 0.0
+          }
+        },
+        "theft_saving": {
+          "seller_sg": {
+            "mean": 0.01125975,
+            "std": 0.0
+          }
+        },
         "swap_gain_analytic": {
           "seller_sg": {
             "mean": 0.009963625000000002,
@@ -2726,10 +3620,46 @@
             "mean": 0.009963625000000002,
             "std": 0.0
           }
+        },
+        "joint_lambda": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "joint_mu": {
+          "mean": 0.5,
+          "std": 0.0
+        },
+        "joint_objective": {
+          "mean": 0.5134832492735227,
+          "std": 0.005785428131761692
         }
       },
       "per_seed": [
         {
+          "compliance_violation_rate": 0.0,
+          "fraud_share": 0.3525641025641026,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 65336,
+          "total_actual_tokens": 65336,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 303,
+            "swap": 165,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 468,
           "n_lines": 504,
@@ -2828,6 +3758,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -2847,9 +3800,36 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.507051282051282
         },
         {
+          "compliance_violation_rate": 0.0,
+          "fraud_share": 0.35306122448979593,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 68576,
+          "total_actual_tokens": 68576,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 317,
+            "swap": 173,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 490,
           "n_lines": 519,
@@ -2948,6 +3928,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -2967,9 +3970,36 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.5151360544217687
         },
         {
+          "compliance_violation_rate": 0.0,
+          "fraud_share": 0.3468085106382979,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 64314,
+          "total_actual_tokens": 64314,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 307,
+            "swap": 163,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 470,
           "n_lines": 502,
@@ -3068,6 +4098,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -3087,7 +4140,10 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.5182624113475177
         }
       ],
       "gateway_per_seed": [
@@ -3151,6 +4207,90 @@
       "mechanism": "posted_price",
       "policy": "compliance_unaware_cheapest",
       "aggregate": {
+        "compliance_violation_rate": {
+          "mean": 0.23611111111111108,
+          "std": 0.014632852434517696
+        },
+        "fraud_share": {
+          "mean": 0.16433239962651727,
+          "std": 0.004043069111972171
+        },
+        "theft_share": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "thefts_served": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "thefts_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "length_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "identity_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "attacks_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_billed_tokens": {
+          "mean": 29249.0,
+          "std": 301.4979270243827
+        },
+        "total_actual_tokens": {
+          "mean": 29249.0,
+          "std": 301.4979270243827
+        },
+        "buyer_overpayment": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "mean_theft_inflation": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "theft_accuracy": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "attack_mode_counts": {
+          "both": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "none": {
+            "mean": 200.0,
+            "std": 0.0
+          },
+          "swap": {
+            "mean": 39.333333333333336,
+            "std": 1.1547005383792515
+          },
+          "theft": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "seller_theft_rate": {
+          "seller_br": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
         "n_tasks": {
           "mean": 240.0,
           "std": 0.0
@@ -3466,6 +4606,24 @@
             "std": 0.0
           }
         },
+        "learned_theft_q": {
+          "seller_sg": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "theft_gain_analytic": {
+          "seller_sg": {
+            "mean": 0.01125975,
+            "std": 0.0
+          }
+        },
+        "theft_saving": {
+          "seller_sg": {
+            "mean": 0.01125975,
+            "std": 0.0
+          }
+        },
         "swap_gain_analytic": {
           "seller_sg": {
             "mean": 0.009963625000000002,
@@ -3477,10 +4635,46 @@
             "mean": 0.009963625000000002,
             "std": 0.0
           }
+        },
+        "joint_lambda": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "joint_mu": {
+          "mean": 0.5,
+          "std": 0.0
+        },
+        "joint_objective": {
+          "mean": 0.334500466853408,
+          "std": 0.016455291285726717
         }
       },
       "per_seed": [
         {
+          "compliance_violation_rate": 0.2375,
+          "fraud_share": 0.16666666666666666,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 29269,
+          "total_actual_tokens": 29269,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 200,
+            "swap": 40,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 240,
           "n_lines": 240,
@@ -3574,6 +4768,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -3593,9 +4810,36 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.32500000000000007
         },
         {
+          "compliance_violation_rate": 0.22083333333333333,
+          "fraud_share": 0.16666666666666666,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 28938,
+          "total_actual_tokens": 28938,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 200,
+            "swap": 40,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 240,
           "n_lines": 240,
@@ -3689,6 +4933,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -3708,9 +4975,36 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.325
         },
         {
+          "compliance_violation_rate": 0.25,
+          "fraud_share": 0.15966386554621848,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 29540,
+          "total_actual_tokens": 29540,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 200,
+            "swap": 38,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 238,
           "n_lines": 240,
@@ -3804,6 +5098,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -3823,7 +5140,10 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.3535014005602241
         }
       ],
       "gateway_per_seed": [
@@ -3884,6 +5204,90 @@
       "mechanism": "sealed_bid",
       "policy": "single_cheapest_compliant",
       "aggregate": {
+        "compliance_violation_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "fraud_share": {
+          "mean": 0.12083333333333335,
+          "std": 0.01816207893141947
+        },
+        "theft_share": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "thefts_served": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "thefts_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "length_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "identity_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "attacks_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_billed_tokens": {
+          "mean": 29377.333333333332,
+          "std": 407.8104134684809
+        },
+        "total_actual_tokens": {
+          "mean": 29377.333333333332,
+          "std": 407.8104134684809
+        },
+        "buyer_overpayment": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "mean_theft_inflation": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "theft_accuracy": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "attack_mode_counts": {
+          "both": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "none": {
+            "mean": 211.0,
+            "std": 4.358898943540674
+          },
+          "swap": {
+            "mean": 29.0,
+            "std": 4.358898943540674
+          },
+          "theft": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "seller_theft_rate": {
+          "seller_br": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
         "n_tasks": {
           "mean": 240.0,
           "std": 0.0
@@ -4207,6 +5611,24 @@
             "std": 0.0
           }
         },
+        "learned_theft_q": {
+          "seller_sg": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "theft_gain_analytic": {
+          "seller_sg": {
+            "mean": 0.01125975,
+            "std": 0.0
+          }
+        },
+        "theft_saving": {
+          "seller_sg": {
+            "mean": 0.01125975,
+            "std": 0.0
+          }
+        },
         "swap_gain_analytic": {
           "seller_sg": {
             "mean": 0.009963625000000002,
@@ -4218,10 +5640,46 @@
             "mean": 0.009963625000000002,
             "std": 0.0
           }
+        },
+        "joint_lambda": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "joint_mu": {
+          "mean": 0.5,
+          "std": 0.0
+        },
+        "joint_objective": {
+          "mean": 0.6048611111111111,
+          "std": 0.0031823442326082713
         }
       },
       "per_seed": [
         {
+          "compliance_violation_rate": 0.0,
+          "fraud_share": 0.12916666666666668,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 29480,
+          "total_actual_tokens": 29480,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 209,
+            "swap": 31,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 240,
           "n_lines": 240,
@@ -4317,6 +5775,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -4336,9 +5817,36 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.6020833333333333
         },
         {
+          "compliance_violation_rate": 0.0,
+          "fraud_share": 0.13333333333333333,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 28928,
+          "total_actual_tokens": 28928,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 208,
+            "swap": 32,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 240,
           "n_lines": 240,
@@ -4434,6 +5942,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -4453,9 +5984,36 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.6083333333333334
         },
         {
+          "compliance_violation_rate": 0.0,
+          "fraud_share": 0.1,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 29724,
+          "total_actual_tokens": 29724,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 216,
+            "swap": 24,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 240,
           "n_lines": 240,
@@ -4551,6 +6109,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -4570,7 +6151,10 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.6041666666666666
         }
       ],
       "gateway_per_seed": [
@@ -4624,6 +6208,90 @@
       "mechanism": "sealed_bid",
       "policy": "single_best_compliant",
       "aggregate": {
+        "compliance_violation_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "fraud_share": {
+          "mean": 0.43333333333333335,
+          "std": 0.01502313031443329
+        },
+        "theft_share": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "thefts_served": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "thefts_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "length_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "identity_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "attacks_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_billed_tokens": {
+          "mean": 32789.666666666664,
+          "std": 354.0541389863044
+        },
+        "total_actual_tokens": {
+          "mean": 32789.666666666664,
+          "std": 354.0541389863044
+        },
+        "buyer_overpayment": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "mean_theft_inflation": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "theft_accuracy": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "attack_mode_counts": {
+          "both": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "none": {
+            "mean": 136.0,
+            "std": 3.605551275463989
+          },
+          "swap": {
+            "mean": 104.0,
+            "std": 3.605551275463989
+          },
+          "theft": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "seller_theft_rate": {
+          "seller_br": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
         "n_tasks": {
           "mean": 240.0,
           "std": 0.0
@@ -4947,6 +6615,24 @@
             "std": 0.0
           }
         },
+        "learned_theft_q": {
+          "seller_sg": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "theft_gain_analytic": {
+          "seller_sg": {
+            "mean": 0.01125975,
+            "std": 0.0
+          }
+        },
+        "theft_saving": {
+          "seller_sg": {
+            "mean": 0.01125975,
+            "std": 0.0
+          }
+        },
         "swap_gain_analytic": {
           "seller_sg": {
             "mean": 0.009963625000000002,
@@ -4958,10 +6644,46 @@
             "mean": 0.009963625000000002,
             "std": 0.0
           }
+        },
+        "joint_lambda": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "joint_mu": {
+          "mean": 0.5,
+          "std": 0.0
+        },
+        "joint_objective": {
+          "mean": 0.44861111111111107,
+          "std": 0.026379749879475816
         }
       },
       "per_seed": [
         {
+          "compliance_violation_rate": 0.0,
+          "fraud_share": 0.4375,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 32398,
+          "total_actual_tokens": 32398,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 135,
+            "swap": 105,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 240,
           "n_lines": 240,
@@ -5057,6 +6779,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -5076,9 +6821,36 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.41874999999999996
         },
         {
+          "compliance_violation_rate": 0.0,
+          "fraud_share": 0.4166666666666667,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 33087,
+          "total_actual_tokens": 33087,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 140,
+            "swap": 100,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 240,
           "n_lines": 240,
@@ -5174,6 +6946,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -5193,9 +6988,36 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.45833333333333326
         },
         {
+          "compliance_violation_rate": 0.0,
+          "fraud_share": 0.44583333333333336,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 32884,
+          "total_actual_tokens": 32884,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 133,
+            "swap": 107,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 240,
           "n_lines": 240,
@@ -5291,6 +7113,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -5310,7 +7155,10 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.46875
         }
       ],
       "gateway_per_seed": [
@@ -5368,6 +7216,90 @@
       "mechanism": "sealed_bid",
       "policy": "compliance_unaware_cheapest",
       "aggregate": {
+        "compliance_violation_rate": {
+          "mean": 0.2347222222222222,
+          "std": 0.012729376930432886
+        },
+        "fraud_share": {
+          "mean": 0.13779136301472641,
+          "std": 0.013481086581211927
+        },
+        "theft_share": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "thefts_served": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "thefts_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "length_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "identity_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "attacks_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_billed_tokens": {
+          "mean": 27932.0,
+          "std": 397.8906885062781
+        },
+        "total_actual_tokens": {
+          "mean": 27932.0,
+          "std": 397.8906885062781
+        },
+        "buyer_overpayment": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "mean_theft_inflation": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "theft_accuracy": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "attack_mode_counts": {
+          "both": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "none": {
+            "mean": 200.0,
+            "std": 0.0
+          },
+          "swap": {
+            "mean": 32.0,
+            "std": 3.605551275463989
+          },
+          "theft": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "seller_theft_rate": {
+          "seller_br": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
         "n_tasks": {
           "mean": 240.0,
           "std": 0.0
@@ -5683,6 +7615,24 @@
             "std": 0.0
           }
         },
+        "learned_theft_q": {
+          "seller_sg": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "theft_gain_analytic": {
+          "seller_sg": {
+            "mean": 0.01125975,
+            "std": 0.0
+          }
+        },
+        "theft_saving": {
+          "seller_sg": {
+            "mean": 0.01125975,
+            "std": 0.0
+          }
+        },
         "swap_gain_analytic": {
           "seller_sg": {
             "mean": 0.009963625000000002,
@@ -5694,10 +7644,46 @@
             "mean": 0.009963625000000002,
             "std": 0.0
           }
+        },
+        "joint_lambda": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "joint_mu": {
+          "mean": 0.5,
+          "std": 0.0
+        },
+        "joint_objective": {
+          "mean": 0.32971542960374794,
+          "std": 0.013039312432742997
         }
       },
       "per_seed": [
         {
+          "compliance_violation_rate": 0.2375,
+          "fraud_share": 0.14163090128755365,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 28259,
+          "total_actual_tokens": 28259,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 200,
+            "swap": 33,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 233,
           "n_lines": 240,
@@ -5791,6 +7777,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -5810,9 +7819,36 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.3166845493562232
         },
         {
+          "compliance_violation_rate": 0.22083333333333333,
+          "fraud_share": 0.14893617021276595,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 28048,
+          "total_actual_tokens": 28048,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 200,
+            "swap": 35,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 235,
           "n_lines": 240,
@@ -5906,6 +7942,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -5925,9 +7984,36 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.3296985815602837
         },
         {
+          "compliance_violation_rate": 0.24583333333333332,
+          "fraud_share": 0.12280701754385964,
+          "theft_share": 0.0,
+          "thefts_served": 0,
+          "thefts_detected": 0,
+          "length_audits": 0,
+          "identity_audits": 0,
+          "attacks_detected": 0,
+          "total_billed_tokens": 27489,
+          "total_actual_tokens": 27489,
+          "buyer_overpayment": 0.0,
+          "mean_theft_inflation": 0.0,
+          "theft_accuracy": 0.0,
+          "attack_mode_counts": {
+            "none": 200,
+            "swap": 28,
+            "theft": 0,
+            "both": 0
+          },
+          "seller_theft_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.0,
+            "seller_br": 0.0
+          },
           "n_tasks": 240,
           "n_purchases": 228,
           "n_lines": 240,
@@ -6021,6 +8107,29 @@
           "learned_swap_q": {
             "seller_sg": 1.0
           },
+          "learned_theft_q": {
+            "seller_sg": 0.0
+          },
+          "theft_q_history": {
+            "seller_sg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "theft_gain_analytic": {
+            "seller_sg": 0.01125975
+          },
+          "theft_saving": {
+            "seller_sg": 0.01125975
+          },
           "swap_q_history": {
             "seller_sg": [
               1.0,
@@ -6040,7 +8149,10 @@
           },
           "swap_cost_saving": {
             "seller_sg": 0.009963625000000002
-          }
+          },
+          "joint_lambda": 1.0,
+          "joint_mu": 0.5,
+          "joint_objective": 0.3427631578947369
         }
       ],
       "gateway_per_seed": [
