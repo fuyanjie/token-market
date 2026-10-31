@@ -8,7 +8,9 @@
 import argparse
 import sys
 
-import yaml
+import yaml  # noqa: F401  (kept for backwards compatibility)
+
+from tokenmarket.config import load_config
 
 from tokenmarket.sim import run_all
 
@@ -28,8 +30,7 @@ def main(argv=None):
     ap.add_argument("--auction-format", choices=["second_price", "first_price"], default=None)
     args = ap.parse_args(argv)
 
-    with open(args.config, encoding="utf-8") as fh:
-        cfg = yaml.safe_load(fh)
+    cfg = load_config(args.config)
     if args.auction_format:
         cfg["market"]["auction"]["format"] = args.auction_format
     summary = run_all(cfg, seeds=args.seeds, backend_name=args.backend_override, n_tasks=args.n_tasks,

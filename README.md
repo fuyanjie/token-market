@@ -1,4 +1,4 @@
-# token-market v2：合规约束下的多模型组合采购沙盒（Compliance-constrained Multi-model Portfolio Purchasing）
+# token-market v3：合规约束下的多模型组合采购沙盒（Compliance-constrained Multi-model Portfolio Purchasing）
 
 一个**纯虚拟**的跨境推理 token 交易平台（cross-border reasoning-token marketplace）研究沙盒。
 CN / SG / BR 三个司法辖区（jurisdiction）的买方（buyers）向卖方（sellers）购买"推理 token"来解答有标准答案的推理题。
@@ -6,6 +6,108 @@ v2 的两个卖方是**真实运行的本地小模型**（Qwen2.5-1.5B / 0.5B-In
 
 > ⚠️ **免责声明（Disclaimer）**：合规规则仅为**简化模拟（simplified simulation）**，条款编号只作标签使用，
 > **不构成法律意见（NOT legal advice）**。价格、预算、通道费均为合成数据（synthetic）。默认不调用任何真实 API，不需要任何 API key。
+
+## v3 新增（v3 additions）概览
+
+v2 的行为、默认命令与测试保持不变（默认配置下 `run_sim.py` 的结果与 v2 逐项一致）。v3 新增：
+
+| 部分 | 内容 | 输出 |
+|---|---|---|
+| **C** 策略性模型替换卖方（strategic model-swap seller） | seller_sg 每轮（epoch）选择替换概率 q；买方按审计率（audit_rate）审计，检测概率 d，罚没押金（penalty / stake slash）P，可选下架 k 轮（reputation loss） | `results/fraud_audit_threshold.{md,json,png}` |
+| **D** 基线（baselines） | PILOT 式 LinUCB + ON-MCKP ZCL、StageRoute 式每查询 LP 路由（各有无合规过滤两版），与 v2 策略及**我们的** `audited_compliance_cascade`（D3）对比 | `results/baselines.{md,json}` |
+| **A** 准确率-成本曲线（accuracy-vs-cost curves） | 所有策略 × 预算倍数 / 策略旋钮扫描，等成本准确率（accuracy at equal cost）与帕累托前沿（Pareto frontier） | `results/cost_curves.{md,json,png}` |
+| **B** 长推理任务（long reasoning tasks） | 48 道真实题（28 道 GSM8K 最难题 + 20 道 MATH-500 整数答案 L≥3），两个 Qwen 模型真实输出；长输出下的期望/实际成本与预算超支 | `results/long_math.{md,json}`、`results/long_math{,_tight}/summary.md` |
+| 汇总 | 以上关键表 + "What is real vs simulated" | `results/experiments_summary.md` |
+
+```bash
+PY=/workspace/tmvenv/bin/python
+$PY run_sim.py --config configs/default.yaml          # v2 默认仿真（缓存命中 < 1 秒）
+$PY run_experiments.py                                # C、D、A、B（B 需长任务缓存）；缓存命中约 25 秒
+$PY run_experiments.py --only C D --backend-override mock --seeds 0   # 全 mock 快速版（约 2 秒）
+$PY run_sim.py --config configs/long_math.yaml        # 在长任务池上运行市场
+$PY run_sim.py --config configs/long_math.yaml --precompute-only     # 长任务预计算（本机 818 秒）
+$PY scripts/build_long_tasks.py                       # 从 data/raw 重建 data/long_tasks.jsonl（确定性）
+$PY -m pytest -q                                      # 39 个测试，全部 mock / 假 runner，约 1 秒
+```
+
+配置：`configs/default.yaml`（新增 `fraud:`、`market.audit / audited / pilot / stageroute / budget_multiplier`、
+`task_pool.kind`、`backends.local_hf.long_*`）；`configs/experiments.yaml` 与 `configs/long_math.yaml` 通过
+`extends: default.yaml` 继承（深度合并 deep merge，列表整体替换；`tokenmarket/config.py`）。
+新模块：`tokenmarket/strategic.py`（C 与审计/信任模型）、`tokenmarket/baselines.py`（D1/D2）、
+`tokenmarket/experiments.py`（A/B/C/D 实验与报告）、`run_experiments.py`。
+
+### 交易日志新增字段（schema v3）
+
+`audited`（本笔是否被审计）、`audit_cost`（审计费，计入买方预算）、`swap_detected`（审计结果；未审计为 null）、
+`swap_prob`（卖方当前 q；诚实卖方 0；unfilled 为 null）。`actual_model` = 本笔**实际服务**的模型（策略卖方逐笔变化）。
+`seller_profit` 已扣除被罚没的押金。
+
+### C：策略性替换卖方与审计阈值
+
+- seller_sg 宣称 1.5B；以概率 q 服务 0.5B（成本 0.05/1K），否则服务 1.5B（成本 0.12/1K）。
+  `fraud.strategy`：`static`（v2 行为，恒替换，默认）| `analytic` | `logit` | `learning`（实验使用）。
+- **解析最优反应（analytic best response）**：每笔替换期望收益 = cost_saving − a·d·(P + R)，
+  cost_saving = cost_gap × 宣称模型平均 token / 1000 ≈ 0.07 × 142.3 / 1000 = 0.00996；q* = 1[收益 > 0]，
+  阈值 **a\* = cost_saving / (d·P)**。
+- **学习型卖方（learning seller）**：不知道 a、d、P，只用自己**实际实现的利润**（含被罚没的押金）——
+  对 q 网格 {0, 0.1, …, 1} 做 ε-greedy（默认，ε=0.1）或 Hedge，利用“期望利润对 q 线性”从替换/诚实两类购买的利润均值估计每个 q 的收益。
+- **审计/检测为模拟（simulated）**：身份核验以概率 d 检出替换，诚实答案不会误报；`TokenFingerprintDetector` 只是桩（stub）。
+  罚金从卖方押金扣除，**不退给买方**（对买方保守）。审计费 `market.audit.cost`（默认 0.004/次）计入买方预算；
+  只在剩余预算足够时审计，因此审计本身不会造成预算超支。
+- 实验：买方策略 `single_best_compliant`（把大部分需求送给欺诈卖方），a ∈ {0,…,0.5} × P ∈ {0.02, 0.1, 0.5}，
+  960 任务 / 96 轮 × 3 seeds。**结果：三个罚金水平下，经验阈值（学到的 q < 0.1 的最小网格审计率）都落在解析 a\* 之上的第一个网格点**
+  （P=0.1：a\*=0.111 → 经验 0.2；P=0.5：a\*=0.022 → 经验 0.05；P=0.02：a\*=0.55 超出网格，始终替换）。
+  在 a 恰好接近 a\* 的点（收益≈0）学习结果在 seeds 间分化。
+
+### D：基线（我们的简化复现，our simplified reimplementations）
+
+| policy | 论文 | 我们的简化 / 与论文的差别 |
+|---|---|---|
+| `pilot`, `pilot_compliant` | PILOT（Panda et al., arXiv:2508.21141, *Adaptive LLM Routing Under Budget Constraints*） | LinUCB，臂 = 卖方；上下文 = 难度 one-hot、任务类型/来源 one-hot、log 提示长度、偏置（论文用查询嵌入 query embeddings）；“偏好先验（preference prior）” = **宣称模型声誉**：A=λI，b=λθ_prior；奖励 = 购买后观察到的正确性（与论文一样信任观测结果）；成本策略 ON-MCKP ZCL：合格条件 est_cost ≤ est_reward / ((UB·e/LB)^z·(LB/e))，z = 当前预算箱使用率，预算分箱 + 结转（spillover），无合格臂时退化为 B_left/Q_left；取 UCB 最高的合格臂；一个 LinUCB 由所有买方共享，预算按买方 |
+| `stageroute`, `stageroute_compliant` | StageRoute（Li & Li, arXiv:2506.17254, *Near-Optimal Online Deployment and Routing for Streaming LLMs*） | 只实现每查询路由 LP：max Σ μᵁ p s.t. Σ cᴸ p ≤ b = B/T, Σp=1, 0≤p≤α（α = 卖方容量份额），按 p 抽样；f_rad(v,n)=√(γv/n)+γ/n；**跳过分阶段部署 MIP**（只有 3 个固定卖方）；LP 用顶点枚举精确求解（无求解器依赖） |
+| `audited_compliance_cascade`（**D3，我们的**） | — | 硬合规过滤 + 预算 + v2 级联，**外加**按 `market.audited.audit_rate`（默认 0.1）审计；每卖方信任模型：检出后路由质量从宣称模型降为 (1−q̂)·rep(宣称)+q̂·rep(审计揭示的实际模型)，q̂ = 检出数/(审计数·d)（平滑）；被检出即罚没押金 |
+
+两个文献基线都**没有**审计成本、策略性卖方模型和合规过滤（`_compliant` 变体加上硬过滤以公平比较；无过滤版本走 audit_only 网关，违规被计数）。
+**主要发现（strategic seller, P=0.25, d=0.9，3 seeds，见 `results/baselines.md`）**：
+- 非审计策略面对的 a=0，卖方学到 q≈0.95；D3（a=0.1 > a\*≈0.044）把 q 压到 ≈0.13，欺诈服务占比从 v2 级联的 0.30 降到 0.04，
+  准确率 0.811 vs 级联 0.768，总成本（含审计费 0.23）更低。
+- PILOT 式基线准确率最高（0.883 / 带过滤 0.856），因为它**使用购买后的真实正确性作为反馈**——在真实市场中买方通常没有 gold
+  （有 gold 就不必买答案），这是它的“神谕反馈（oracle feedback）”优势；无过滤版本有 ~78 次合规违规。等成本比较见 A。
+
+### A：准确率-成本曲线
+
+`configs/experiments.yaml: experiments.A`：预算倍数 {0.2,…,5.0} × {single_cheapest, single_best, cascade, PILOT(两版), StageRoute(两版), D3}，
+级联置信阈值 {0.1,…,0.95}、vote k=1..3（并各自扫描预算）、D3 审计率 {0.02,…,0.3}；共 102 个点 × 3 seeds。
+成本 = 每任务平均成本**含审计费**。`results/cost_curves.md` 给出所有点（mean ± std）、等成本准确率（各族帕累托包络线性插值）与全局帕累托前沿；
+`results/cost_curves.png` 为图（matplotlib 已装入 venv）。
+
+### B：长推理任务
+
+- 子集：`data/long_tasks.jsonl`（`scripts/build_long_tasks.py`，seed 2024）：GSM8K 测试集按参考解步数/长度排序取前 84 再抽 28；
+  MATH-500 取答案匹配 `^-?\d+$` 且 level ≥ 3 的题抽 20。记录 source、index/id、level、gold。市场中难度记为 4（GSM8K-hard）/ 5（MATH-500）。
+- `task_pool.kind: synthetic | long_math | mixed`；`configs/long_math.yaml` 在长任务池上跑市场（144 任务/run，预算 ×3）。
+- 长任务 prompt：逐步求解并以 `Answer: <integer>` 结尾；缓存键方案不变（模型, sha256(prompt), max_new_tokens）。
+- **max_new_tokens = 512（目标 768 已降低）**：基准测试（benchmark）显示 fp32 下 0.5B 一个 16 题批次 768 token 需 146–618 秒，
+  且 1.5B fp32（≈6.2 GB）超出本机可用内存；改用 **bf16**（CPU 有 AMX/AVX512-bf16）后 1.5B 约 0.52 s/step，768 预计约 30 分钟 > 25 分钟预算，
+  因此按规则降到 512。实际预计算 818 秒（0.5B 149 秒，1.5B 669 秒）。合成任务池仍是 fp32（v2 缓存不变）；缓存行记录 `dtype` 与 `source`。
+- 实测（`results/long_math.md`）：1.5B 准确率 0.438（GSM8K-hard 0.536，MATH-500 0.300），0.5B 0.146；token 均值约 414–425 ± 90，
+  p95 = max = 512，截断率 29% / 42%（两个模型大多用 `\boxed{}` 而非 `Answer:`，解析器回退到最后一个数字）。
+- **C2(d) 成本不确定性**：期望成本按宣称模型平均 token 计，长输出下逐笔相对超支（relative overrun）p95 达 +120%–150%，最大 +219%；
+  但正常预算（×3）下**预算违规几乎为 0**（vote_k 1 次）——因为只有期望成本 ≤ 剩余预算才购买，且单笔成本相对预算很小，
+  只有预算即将耗尽的那一两笔可能超支。**紧预算变体（×0.5）**下预算真正约束，每个策略出现 2–10 次预算违规（3 seeds 合计），
+  最大超支约 0.018 USD（合成单位）。
+
+### 真实 vs 模拟（What is real vs simulated）
+
+- **真实**：Qwen2.5-1.5B / 0.5B-Instruct 的输出（本地 CPU 推理并缓存）、与 gold 比对的正确性、推理 token 数、CPU 生成时间；GSM8K / MATH-500 题目与答案。
+- **模拟**：价格、服务成本与成本差、延迟噪声与通道惩罚/费用、辖区与（简化的，非法律意见）合规规则、买方/预算/敏感度、
+  审计与替换检测、罚金/押金罚没/下架、卖方学习规则、mock 卖方（seller_br）及其置信度。
+
+### 数据与许可（Data & licences）
+
+GSM8K（MIT, Copyright (c) 2021 OpenAI）与 MATH-500 / PRM800K（MIT, Copyright (c) 2023 OpenAI），详见 `LICENSES/DATA_LICENSES.md`。
+原始测试集 `data/raw/*.jsonl`（约 1.2 MB）**直接提交入库**，以便确定性地重建子集；`data/long_tasks.jsonl` 与 `cache/llm_outputs.jsonl`（含 2×48 条长任务输出）也入库。
+实验交易日志 `results/experiments/*.jsonl` 与 `results/long_math*/transactions.jsonl` 较大，不入 git。
 
 ## 研究问题 C2（Research question）
 
@@ -162,6 +264,10 @@ $PY -m pytest -q                                                 # 测试全部�
 | `tokenmarket/compliance.py` / `gateway.py` | 规则引擎；跨境网关（enforce / audit_only、通道费与延迟） |
 | `tokenmarket/logging_schema.py` / `metrics.py` / `sim.py` | 日志 schema 与校验；指标；仿真主循环 |
 | `tokenmarket/verification.py` | 验证与结算接口（B1 桩） |
+| `tokenmarket/strategic.py` | v3：策略性替换卖方（analytic / logit / learning）、模拟身份核验、D3 信任模型 |
+| `tokenmarket/baselines.py` | v3：PILOT 式（LinUCB + ZCL）与 StageRoute 式（每查询 LP）路由器 |
+| `tokenmarket/experiments.py` / `run_experiments.py` | v3：A/B/C/D 实验与报告 |
+| `tokenmarket/config.py` | v3：`extends:` 配置继承 |
 
 ## 局限（Limitations）
 
@@ -171,4 +277,6 @@ $PY -m pytest -q                                                 # 测试全部�
 - **合规规则高度简化，不是法律意见**：未建模数据量阈值、CIIO、豁免、再转移、本地化等。
 - **小模型 + CPU**：0.5B/1.5B 在 80 道简单题上的准确率与 token 分布不代表大推理模型；gen time 为 CPU 批量摊销时间；
   同一题被重复抽到时真实模型输出相同（贪心 + 缓存），故 seed 间方差主要来自市场动态与 mock 卖方。
-- 置信度代理较弱（基于格式与自洽），mock 置信度为合成噪声；声誉是静态的（无在线学习）；卖方报价为随机加价，非策略性报价。
+- 置信度代理较弱（基于格式与自洽），mock 置信度为合成噪声；v2 策略的声誉是静态的（v3 的 PILOT/StageRoute 在线学习，D3 只按审计更新）；卖方报价为随机加价，非策略性报价。
+- v3：审计/检测是概率模拟，不是真实的模型指纹；PILOT/StageRoute 为简化复现且使用真实正确性作为反馈（神谕反馈）；
+  长任务 max_new_tokens 受 CPU 限制为 512（截断率 29–42%）且用 bf16；mock 卖方在长任务上的 token 数按难度外推（期望成本偏差为合成结果）。

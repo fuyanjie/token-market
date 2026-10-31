@@ -2,7 +2,7 @@
 
 > Simplified simulation of data-transfer rules; NOT legal advice.
 
-seller backends={'seller_cn': 'local_hf', 'seller_sg': 'local_hf', 'seller_br': 'mock'}, seeds=[0, 1, 2], tasks/run=240 (drawn from fixed pool of 80, task_seed=1234), auction=`second_price`, log lines=7031, precompute=0.0s, market sim=0.41s. Values are mean ± std over seeds.
+seller backends={'seller_cn': 'local_hf', 'seller_sg': 'local_hf', 'seller_br': 'mock'}, seeds=[0, 1, 2], tasks/run=240 (drawn from fixed pool of 80, task_seed=1234), auction=`second_price`, log lines=7031, precompute=0.0s, market sim=0.484s. Values are mean ± std over seeds.
 
 ## C2 baseline comparison (posted price)
 
@@ -117,6 +117,11 @@ seller backends={'seller_cn': 'local_hf', 'seller_sg': 'local_hf', 'seller_br': 
 | Qwen/Qwen2.5-1.5B-Instruct | 80 | 0.925 | 0.929 (28) | 1.000 (28) | 0.833 (24) | 142.3 ± 47.2 | 2.53 ± 0.77 | 202.5 | 0.900 | 0.037 |
 
 Greedy decoding, chat template, max_new_tokens=256, batched (left padding). reasoning tokens = generated tokens excluding EOS/padding; gen time/item = amortised share of batch wall time proportional to generated tokens (8 CPU threads). Correct = parsed answer (last 'Answer:' number, else last number) == gold.
+
+## What is real vs simulated
+
+- **Real**: Qwen2.5-1.5B / 0.5B-Instruct outputs (local CPU inference, cached), their correctness against gold, reasoning-token counts and measured generation times on CPU; the GSM8K / MATH-500 long-task problems and golds.
+- **Simulated**: prices, serving costs (and the swap cost gap), latency noise and corridor penalties/fees, jurisdictions and the (simplified, NOT legal advice) compliance rules, buyers / budgets / sensitivities / consent, audits and swap detection (identity check succeeding with prob d), penalties / stake slashing / delisting, the strategic seller's learning rule, the mock seller (seller_br, MockLLM) and its confidence.
 
 ## Metric definitions
 

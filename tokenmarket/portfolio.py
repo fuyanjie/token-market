@@ -15,10 +15,16 @@ from collections import Counter
 from dataclasses import dataclass
 from typing import Callable, List, Optional, Sequence
 
-HARD_POLICIES = ("single_cheapest_compliant", "single_best_compliant", "cascade_compliant", "vote_k_compliant")
-BASELINE_POLICIES = ("compliance_unaware_cheapest",)
+HARD_POLICIES = ("single_cheapest_compliant", "single_best_compliant", "cascade_compliant", "vote_k_compliant",
+                 # v3: literature baselines + compliance filter, and OUR audited policy (D3)
+                 "pilot_compliant", "stageroute_compliant", "audited_compliance_cascade")
+BASELINE_POLICIES = ("compliance_unaware_cheapest",
+                     # v3: our simplified reimplementations of PILOT / StageRoute (no compliance filter)
+                     "pilot", "stageroute")
 POLICIES = HARD_POLICIES + BASELINE_POLICIES
 SINGLE_POLICIES = ("single_cheapest_compliant", "single_best_compliant", "compliance_unaware_cheapest")
+ROUTER_POLICIES = ("pilot", "pilot_compliant", "stageroute", "stageroute_compliant")
+AUDITED_POLICIES = ("audited_compliance_cascade",)
 
 
 def is_hard(policy: str) -> bool:
@@ -34,6 +40,8 @@ class Purchase:
     confidence: Optional[float]
     quality: float              # buyer's estimated quality of this seller (claimed-model reputation)
     served: bool = True         # False if blocked at the gateway
+    correct: Optional[bool] = None   # v3: observed correctness (feedback for the PILOT / StageRoute bandits)
+    actual_cost: float = 0.0         # v3: realised cost of this purchase
 
 
 @dataclass
@@ -62,10 +70,26 @@ def majority_vote(purchases: Sequence[Purchase]) -> Optional[int]:
 
 
 def run_policy(policy: str, cands: List, price: Callable, exp_cost: Callable, quality: Callable,
-               buy: Callable, cfg_market: dict) -> Decision:
+               buy: Callable, cfg_market: dict, router=None, task=None, buyer=None) -> Decision:
     """cands: compliant (or, for the baseline, all) candidate sellers. price(s) -> price_per_1k,
-    exp_cost(s) -> expected cost, quality(s) -> estimated quality."""
+    exp_cost(s) -> expected cost, quality(s) -> estimated quality (for audited_compliance_cascade: the
+    audit-trust-adjusted quality). router: PilotRouter / StageRouteRouter for ROUTER_POLICIES."""
     by_cost = sorted(cands, key=lambda s: (exp_cost(s), -quality(s), s.id))
+
+    if policy in ROUTER_POLICIES:
+        s = router.choose(task, buyer, cands, exp_cost)
+        p = buy(s, price(s), 0) if s is not None else None
+        if p is not None:
+            router.update(task, buyer, s, p.correct, p.actual_cost)
+        router.end_query(buyer)
+        if p is None:
+            return Decision(None, [], "budget")
+        return Decision(p.answer if p.served else None, [p], "single")
+
+    if policy == "audited_compliance_cascade":   # same control flow as cascade, quality = audited trust
+        policy = "cascade_compliant"
+        cfg_market = dict(cfg_market, cascade=cfg_market.get("audited", {}).get("cascade",
+                                                                               cfg_market.get("cascade", {})))
 
     if policy in ("single_cheapest_compliant", "compliance_unaware_cheapest", "single_best_compliant"):
         s = by_cost[0] if policy != "single_best_compliant" else \

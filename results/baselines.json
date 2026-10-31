@@ -1,0 +1,838 @@
+{
+ "seeds": [
+  0,
+  1,
+  2
+ ],
+ "rows": [
+  {
+   "policy": "single_cheapest_compliant",
+   "aggregate": {
+    "task_accuracy": {
+     "mean": 0.6652777777777777,
+     "std": 0.01935744425661993
+    },
+    "total_cost": {
+     "mean": 5.561891666666667,
+     "std": 0.2923403288191578
+    },
+    "total_audit_cost": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_cost_incl_audit": {
+     "mean": 5.561891666666667,
+     "std": 0.2923403288191578
+    },
+    "mean_cost_per_task_incl_audit": {
+     "mean": 0.011587274305555556,
+     "std": 0.0006090423517065786
+    },
+    "budget_violations": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "compliance_violations": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "fraud_seller_share": {
+     "mean": 0.061111111111111116,
+     "std": 0.01935744425661994
+    },
+    "n_audits": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "swaps_detected": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "swaps_served": {
+     "mean": 29.333333333333332,
+     "std": 9.29157324317757
+    },
+    "total_stake_slashed": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_buyer_surplus": {
+     "mean": 19.221441666666667,
+     "std": 0.4414854378732033
+    },
+    "total_cost_gap": {
+     "mean": 0.3982234,
+     "std": 0.15532929795088635
+    },
+    "budget_exhausted_tasks": {
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "learned_q": [
+    0.9222222222222222,
+    0.08147227431145812
+   ],
+   "sg_swap_rate": [
+    0.742377260981912,
+    0.2525817856538462
+   ]
+  },
+  {
+   "policy": "single_best_compliant",
+   "aggregate": {
+    "task_accuracy": {
+     "mean": 0.6340277777777777,
+     "std": 0.007887372702500351
+    },
+    "total_cost": {
+     "mean": 11.606148666666668,
+     "std": 0.22652212017949444
+    },
+    "total_audit_cost": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_cost_incl_audit": {
+     "mean": 11.606148666666668,
+     "std": 0.22652212017949444
+    },
+    "mean_cost_per_task_incl_audit": {
+     "mean": 0.024179476388888888,
+     "std": 0.00047192108370727975
+    },
+    "budget_violations": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "compliance_violations": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "fraud_seller_share": {
+     "mean": 0.766347687400319,
+     "std": 0.0158670863194251
+    },
+    "n_audits": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "swaps_detected": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "swaps_served": {
+     "mean": 335.6666666666667,
+     "std": 7.505553499465135
+    },
+    "total_stake_slashed": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_buyer_surplus": {
+     "mean": 12.430518000000001,
+     "std": 0.33289103562168915
+    },
+    "total_cost_gap": {
+     "mean": 0.43778064999999877,
+     "std": 0.1823112201016529
+    },
+    "budget_exhausted_tasks": {
+     "mean": 42.0,
+     "std": 1.7320508075688772
+    }
+   },
+   "learned_q": [
+    0.9500000000000001,
+    0.0435012771204606
+   ],
+   "sg_swap_rate": [
+    0.951291847724456,
+    0.025994202555679243
+   ]
+  },
+  {
+   "policy": "cascade_compliant",
+   "aggregate": {
+    "task_accuracy": {
+     "mean": 0.7680555555555556,
+     "std": 0.011474105306846063
+    },
+    "total_cost": {
+     "mean": 13.939874600000001,
+     "std": 0.054015238457679735
+    },
+    "total_audit_cost": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_cost_incl_audit": {
+     "mean": 13.939874600000001,
+     "std": 0.054015238457679735
+    },
+    "mean_cost_per_task_incl_audit": {
+     "mean": 0.029041405416666666,
+     "std": 0.00011253174678683294
+    },
+    "budget_violations": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "compliance_violations": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "fraud_seller_share": {
+     "mean": 0.30158020298042737,
+     "std": 0.014328438381849253
+    },
+    "n_audits": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "swaps_detected": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "swaps_served": {
+     "mean": 222.66666666666666,
+     "std": 13.79613472438325
+    },
+    "total_stake_slashed": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_buyer_surplus": {
+     "mean": 14.896792066666668,
+     "std": 0.4763284657869733
+    },
+    "total_cost_gap": {
+     "mean": 1.0570627533333325,
+     "std": 0.1786259746705536
+    },
+    "budget_exhausted_tasks": {
+     "mean": 33.666666666666664,
+     "std": 4.932882862316247
+    }
+   },
+   "learned_q": [
+    0.9500000000000001,
+    0.0435012771204606
+   ],
+   "sg_swap_rate": [
+    0.9555284807412626,
+    0.01717470381968293
+   ]
+  },
+  {
+   "policy": "vote_k_compliant",
+   "aggregate": {
+    "task_accuracy": {
+     "mean": 0.6902777777777778,
+     "std": 0.014180956844904275
+    },
+    "total_cost": {
+     "mean": 20.6687846,
+     "std": 0.16138428424093768
+    },
+    "total_audit_cost": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_cost_incl_audit": {
+     "mean": 20.6687846,
+     "std": 0.16138428424093768
+    },
+    "mean_cost_per_task_incl_audit": {
+     "mean": 0.043059967916666664,
+     "std": 0.00033621725883528457
+    },
+    "budget_violations": {
+     "mean": 0.6666666666666666,
+     "std": 0.5773502691896257
+    },
+    "compliance_violations": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "fraud_seller_share": {
+     "mean": 0.3234597341563929,
+     "std": 0.004146285376169998
+    },
+    "n_audits": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "swaps_detected": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "swaps_served": {
+     "mean": 311.6666666666667,
+     "std": 4.163331998932265
+    },
+    "total_stake_slashed": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_buyer_surplus": {
+     "mean": 5.554548733333335,
+     "std": 0.5806281981899378
+    },
+    "total_cost_gap": {
+     "mean": 0.7965905249999979,
+     "std": 0.30773999582063233
+    },
+    "budget_exhausted_tasks": {
+     "mean": 63.0,
+     "std": 3.4641016151377544
+    }
+   },
+   "learned_q": [
+    0.9500000000000001,
+    0.0435012771204606
+   ],
+   "sg_swap_rate": [
+    0.9497369909502263,
+    0.026205299125868862
+   ]
+  },
+  {
+   "policy": "compliance_unaware_cheapest",
+   "aggregate": {
+    "task_accuracy": {
+     "mean": 0.6270833333333333,
+     "std": 0.04350127712046066
+    },
+    "total_cost": {
+     "mean": 3.4861355999999994,
+     "std": 0.027565407443388264
+    },
+    "total_audit_cost": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_cost_incl_audit": {
+     "mean": 3.4861355999999994,
+     "std": 0.027565407443388264
+    },
+    "mean_cost_per_task_incl_audit": {
+     "mean": 0.0072627824999999995,
+     "std": 5.742793217372548e-05
+    },
+    "budget_violations": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "compliance_violations": {
+     "mean": 103.33333333333333,
+     "std": 6.429100507328637
+    },
+    "fraud_seller_share": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "n_audits": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "swaps_detected": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "swaps_served": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_stake_slashed": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_buyer_surplus": {
+     "mean": 19.5938644,
+     "std": 1.6710388336862552
+    },
+    "total_cost_gap": {
+     "mean": 0.5197355999999996,
+     "std": 0.027565407443388264
+    },
+    "budget_exhausted_tasks": {
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "learned_q": [
+    0.5388888888888889,
+    0.027743033826997436
+   ],
+   "sg_swap_rate": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "policy": "pilot",
+   "aggregate": {
+    "task_accuracy": {
+     "mean": 0.8826388888888889,
+     "std": 0.01924500897298752
+    },
+    "total_cost": {
+     "mean": 11.433306533333335,
+     "std": 0.09318343420701691
+    },
+    "total_audit_cost": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_cost_incl_audit": {
+     "mean": 11.433306533333335,
+     "std": 0.09318343420701691
+    },
+    "mean_cost_per_task_incl_audit": {
+     "mean": 0.023819388611111113,
+     "std": 0.00019413215459795154
+    },
+    "budget_violations": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "compliance_violations": {
+     "mean": 77.66666666666667,
+     "std": 9.29157324317757
+    },
+    "fraud_seller_share": {
+     "mean": 0.2347222222222222,
+     "std": 0.0662858044408482
+    },
+    "n_audits": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "swaps_detected": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "swaps_served": {
+     "mean": 112.66666666666667,
+     "std": 31.817186131607134
+    },
+    "total_stake_slashed": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_buyer_surplus": {
+     "mean": 21.4200268,
+     "std": 0.6598164070991875
+    },
+    "total_cost_gap": {
+     "mean": 0.10047448833333306,
+     "std": 0.10845956405920125
+    },
+    "budget_exhausted_tasks": {
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "learned_q": [
+    0.9500000000000001,
+    0.0435012771204606
+   ],
+   "sg_swap_rate": [
+    0.9504862761052881,
+    0.017018212195412007
+   ]
+  },
+  {
+   "policy": "pilot_compliant",
+   "aggregate": {
+    "task_accuracy": {
+     "mean": 0.8562500000000001,
+     "std": 0.01267242193812131
+    },
+    "total_cost": {
+     "mean": 11.182950266666666,
+     "std": 0.3188113391869449
+    },
+    "total_audit_cost": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_cost_incl_audit": {
+     "mean": 11.182950266666666,
+     "std": 0.3188113391869449
+    },
+    "mean_cost_per_task_incl_audit": {
+     "mean": 0.023297813055555557,
+     "std": 0.000664190289972801
+    },
+    "budget_violations": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "compliance_violations": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "fraud_seller_share": {
+     "mean": 0.21516812865497079,
+     "std": 0.049294852292633765
+    },
+    "n_audits": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "swaps_detected": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "swaps_served": {
+     "mean": 103.0,
+     "std": 24.06241883103193
+    },
+    "total_stake_slashed": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_buyer_surplus": {
+     "mean": 20.667049733333332,
+     "std": 0.6339483669780804
+    },
+    "total_cost_gap": {
+     "mean": 0.09358901166666615,
+     "std": 0.11090555972761805
+    },
+    "budget_exhausted_tasks": {
+     "mean": 1.6666666666666667,
+     "std": 2.8867513459481287
+    }
+   },
+   "learned_q": [
+    0.9500000000000001,
+    0.0435012771204606
+   ],
+   "sg_swap_rate": [
+    0.9372045372260218,
+    0.015442767469030812
+   ]
+  },
+  {
+   "policy": "stageroute",
+   "aggregate": {
+    "task_accuracy": {
+     "mean": 0.8368055555555555,
+     "std": 0.03705367103320583
+    },
+    "total_cost": {
+     "mean": 12.551453,
+     "std": 0.15402082797375127
+    },
+    "total_audit_cost": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_cost_incl_audit": {
+     "mean": 12.551453,
+     "std": 0.15402082797375127
+    },
+    "mean_cost_per_task_incl_audit": {
+     "mean": 0.02614886041666667,
+     "std": 0.0003208767249453147
+    },
+    "budget_violations": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "compliance_violations": {
+     "mean": 61.333333333333336,
+     "std": 8.020806277010642
+    },
+    "fraud_seller_share": {
+     "mean": 0.08451293759512939,
+     "std": 0.03757777485060138
+    },
+    "n_audits": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "swaps_detected": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "swaps_served": {
+     "mean": 37.666666666666664,
+     "std": 15.50268793897798
+    },
+    "total_stake_slashed": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_buyer_surplus": {
+     "mean": 18.818547,
+     "std": 1.071395826690452
+    },
+    "total_cost_gap": {
+     "mean": 0.12370561166666742,
+     "std": 0.1582641499136927
+    },
+    "budget_exhausted_tasks": {
+     "mean": 27.333333333333332,
+     "std": 23.692474191889147
+    }
+   },
+   "learned_q": [
+    0.9500000000000001,
+    0.0435012771204606
+   ],
+   "sg_swap_rate": [
+    0.8880303030303031,
+    0.018409558542507934
+   ]
+  },
+  {
+   "policy": "stageroute_compliant",
+   "aggregate": {
+    "task_accuracy": {
+     "mean": 0.7972222222222222,
+     "std": 0.02992564087002119
+    },
+    "total_cost": {
+     "mean": 11.5066824,
+     "std": 0.5654752985190071
+    },
+    "total_audit_cost": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_cost_incl_audit": {
+     "mean": 11.5066824,
+     "std": 0.5654752985190071
+    },
+    "mean_cost_per_task_incl_audit": {
+     "mean": 0.023972254999999998,
+     "std": 0.0011780735385812648
+    },
+    "budget_violations": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "compliance_violations": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "fraud_seller_share": {
+     "mean": 0.11563654841093866,
+     "std": 0.08576072431136543
+    },
+    "n_audits": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "swaps_detected": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "swaps_served": {
+     "mean": 51.666666666666664,
+     "std": 37.60762334066503
+    },
+    "total_stake_slashed": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "total_buyer_surplus": {
+     "mean": 18.453317600000002,
+     "std": 1.4553079918818388
+    },
+    "total_cost_gap": {
+     "mean": 0.22885163500000041,
+     "std": 0.23218359301854244
+    },
+    "budget_exhausted_tasks": {
+     "mean": 23.0,
+     "std": 20.663978319771825
+    }
+   },
+   "learned_q": [
+    0.9500000000000001,
+    0.0435012771204606
+   ],
+   "sg_swap_rate": [
+    0.8847962382445141,
+    0.05770766900169765
+   ]
+  },
+  {
+   "policy": "audited_compliance_cascade",
+   "aggregate": {
+    "task_accuracy": {
+     "mean": 0.8111111111111112,
+     "std": 0.010485881160098227
+    },
+    "total_cost": {
+     "mean": 11.745830533333333,
+     "std": 0.34589487569874916
+    },
+    "total_audit_cost": {
+     "mean": 0.2333333333333333,
+     "std": 0.02052640575778754
+    },
+    "total_cost_incl_audit": {
+     "mean": 11.979163866666667,
+     "std": 0.36431496076150016
+    },
+    "mean_cost_per_task_incl_audit": {
+     "mean": 0.024956591388888883,
+     "std": 0.0007589895015864597
+    },
+    "budget_violations": {
+     "mean": 0.3333333333333333,
+     "std": 0.5773502691896257
+    },
+    "compliance_violations": {
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "fraud_seller_share": {
+     "mean": 0.04157986384001221,
+     "std": 0.017340779389949545
+    },
+    "n_audits": {
+     "mean": 58.333333333333336,
+     "std": 5.131601439446884
+    },
+    "swaps_detected": {
+     "mean": 3.3333333333333335,
+     "std": 1.5275252316519468
+    },
+    "swaps_served": {
+     "mean": 28.0,
+     "std": 12.288205727444508
+    },
+    "total_stake_slashed": {
+     "mean": 0.8333333333333334,
+     "std": 0.3818813079129867
+    },
+    "total_buyer_surplus": {
+     "mean": 18.4175028,
+     "std": 0.6871939997564871
+    },
+    "total_cost_gap": {
+     "mean": 0.824611603333332,
+     "std": 0.14135733248460106
+    },
+    "budget_exhausted_tasks": {
+     "mean": 34.0,
+     "std": 6.082762530298219
+    }
+   },
+   "learned_q": [
+    0.13055555555555556,
+    0.10803913042830224
+   ],
+   "sg_swap_rate": [
+    0.12225225623867438,
+    0.051824648356695334
+   ]
+  }
+ ],
+ "equal_cost": {
+  "cost_levels": [
+   0.01,
+   0.0203,
+   0.0246,
+   0.0272
+  ],
+  "by_family": {
+   "audited_compliance_cascade": {
+    "0.01": 0.3173579906684413,
+    "0.0203": 0.6456612475980705,
+    "0.0246": 0.7862696917348808,
+    "0.0272": 0.8770833333333333
+   },
+   "audited_compliance_cascade (audit rate)": {
+    "0.01": null,
+    "0.0203": null,
+    "0.0246": null,
+    "0.0272": 0.8798611111111111
+   },
+   "cascade_compliant": {
+    "0.01": 0.2650876431598944,
+    "0.0203": 0.5368425147244957,
+    "0.0246": 0.6456336938441298,
+    "0.0272": 0.7103749242006073
+   },
+   "cascade_compliant (threshold)": {
+    "0.01": null,
+    "0.0203": 0.7692831822645883,
+    "0.0246": 0.797633310495726,
+    "0.0272": 0.8076852774973773
+   },
+   "pilot": {
+    "0.01": 0.5463769780112041,
+    "0.0203": 0.7875994234771604,
+    "0.0246": 0.8901509285651987,
+    "0.0272": 0.8958333333333334
+   },
+   "pilot_compliant": {
+    "0.01": 0.4650227084793519,
+    "0.0203": 0.7606928916751199,
+    "0.0246": 0.8749580917044785,
+    "0.0272": 0.8756944444444444
+   },
+   "single_best_compliant": {
+    "0.01": 0.27470015683684085,
+    "0.0203": 0.5382617866563065,
+    "0.0246": 0.6443780045141154,
+    "0.0272": 0.6930555555555555
+   },
+   "single_cheapest_compliant": {
+    "0.01": 0.5875081939524813,
+    "0.0203": 0.6652777777777777,
+    "0.0246": 0.6652777777777777,
+    "0.0272": 0.6652777777777777
+   },
+   "stageroute": {
+    "0.01": 0.3054302027123601,
+    "0.0203": 0.6440136795389003,
+    "0.0246": 0.7859529261479846,
+    "0.0272": 0.86486537999253
+   },
+   "stageroute_compliant": {
+    "0.01": 0.3420625947528995,
+    "0.0203": 0.6811876143758371,
+    "0.0246": 0.8194451351144983,
+    "0.0272": 0.8319444444444445
+   },
+   "vote_k_compliant (k)": {
+    "0.01": null,
+    "0.0203": null,
+    "0.0246": null,
+    "0.0272": 0.6934156689770121
+   },
+   "vote_k_compliant k=1": {
+    "0.01": 0.27470015683684085,
+    "0.0203": 0.5382617866563065,
+    "0.0246": 0.6443780045141154,
+    "0.0272": 0.6930555555555555
+   },
+   "vote_k_compliant k=2": {
+    "0.01": 0.17262159049506304,
+    "0.0203": 0.33489733304215696,
+    "0.0246": 0.4012179228549365,
+    "0.0272": 0.439740373387279
+   },
+   "vote_k_compliant k=3": {
+    "0.01": 0.17444985861390983,
+    "0.0203": 0.33956948723156966,
+    "0.0246": 0.405238901596314,
+    "0.0272": 0.4471526604538776
+   }
+  }
+ },
+ "fraud_seller": "seller_sg",
+ "penalty": 0.25,
+ "detect_prob": 0.9,
+ "d3_audit_rate": 0.1,
+ "audit_cost": 0.004
+}

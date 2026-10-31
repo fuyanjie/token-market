@@ -30,8 +30,8 @@
       "elapsed_s": 0.0
     }
   },
-  "market_sim_s": 0.41,
-  "elapsed_s": 0.412,
+  "market_sim_s": 0.484,
+  "elapsed_s": 0.488,
   "reputation": {
     "Qwen/Qwen2.5-1.5B-Instruct": {
       "source": "measured",
@@ -57,6 +57,9 @@
       "model": "Qwen/Qwen2.5-0.5B-Instruct",
       "n": 80,
       "max_new_tokens": 256,
+      "long_max_new_tokens": 512,
+      "tokens_p95": 256.0,
+      "tokens_max": 256,
       "accuracy": 0.6625,
       "by_difficulty": {
         "1": {
@@ -87,6 +90,9 @@
       "model": "Qwen/Qwen2.5-1.5B-Instruct",
       "n": 80,
       "max_new_tokens": 256,
+      "long_max_new_tokens": 512,
+      "tokens_p95": 245.0,
+      "tokens_max": 256,
       "accuracy": 0.925,
       "by_difficulty": {
         "1": {
@@ -166,6 +172,30 @@
         "mean_cost_per_task": {
           "mean": 0.011717169444444444,
           "std": 0.0003091584479751416
+        },
+        "total_audit_cost": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_cost_incl_audit": {
+          "mean": 2.8121206666666665,
+          "std": 0.07419802751403401
+        },
+        "mean_cost_per_task_incl_audit": {
+          "mean": 0.011717169444444444,
+          "std": 0.0003091584479751416
+        },
+        "n_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "swaps_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "swaps_served": {
+          "mean": 29.0,
+          "std": 4.358898943540674
         },
         "mean_price_per_1k": {
           "mean": 0.09044444444444444,
@@ -333,6 +363,42 @@
             "std": 0.11996108926611117
           }
         },
+        "seller_purchases": {
+          "seller_br": {
+            "mean": 183.66666666666666,
+            "std": 1.5275252316519468
+          },
+          "seller_cn": {
+            "mean": 27.333333333333332,
+            "std": 5.8594652770823155
+          },
+          "seller_sg": {
+            "mean": 29.0,
+            "std": 4.358898943540674
+          }
+        },
+        "seller_swap_rate": {
+          "seller_br": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 1.0,
+            "std": 0.0
+          }
+        },
+        "overrun_purchases": {
+          "mean": 142.66666666666666,
+          "std": 3.0550504633038935
+        },
+        "max_rel_cost_overrun": {
+          "mean": 1.3233333333333333,
+          "std": 0.08504900548115386
+        },
         "filtered_candidates": {
           "mean": 123.33333333333333,
           "std": 10.066445913694333
@@ -367,7 +433,33 @@
           "mean": 0.0,
           "std": 0.0
         },
-        "stop_reasons": {}
+        "stop_reasons": {},
+        "audit_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_stake_slashed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "learned_swap_q": {
+          "seller_sg": {
+            "mean": 1.0,
+            "std": 0.0
+          }
+        },
+        "swap_gain_analytic": {
+          "seller_sg": {
+            "mean": 0.009963625000000002,
+            "std": 0.0
+          }
+        },
+        "swap_cost_saving": {
+          "seller_sg": {
+            "mean": 0.009963625000000002,
+            "std": 0.0
+          }
+        }
       },
       "per_seed": [
         {
@@ -383,6 +475,12 @@
           "total_cost": 2.8007277999999998,
           "total_fee": 0.048187799999999996,
           "mean_cost_per_task": 0.011669699166666665,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 2.8007277999999998,
+          "mean_cost_per_task_incl_audit": 0.011669699166666665,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 31,
           "mean_price_per_1k": 0.09008333333333333,
           "total_expected_cost": 2.65302803,
           "total_cost_gap": 0.14769976999999956,
@@ -432,6 +530,18 @@
             "seller_sg": 0.5806451612903226,
             "seller_cn": 1.0
           },
+          "seller_purchases": {
+            "seller_cn": 25,
+            "seller_sg": 31,
+            "seller_br": 184
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 146,
+          "max_rel_cost_overrun": 1.29,
           "filtered_candidates": 122,
           "filtered_by_rule": {
             "CN-PIPL-38": 30,
@@ -442,7 +552,32 @@
           },
           "blocked_or_filtered": 122,
           "audit_violations_enforced": 0,
-          "stop_reasons": {}
+          "stop_reasons": {},
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
+          }
         },
         {
           "n_tasks": 240,
@@ -457,6 +592,12 @@
           "total_cost": 2.744278,
           "total_fee": 0.050718,
           "mean_cost_per_task": 0.011434491666666666,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 2.744278,
+          "mean_cost_per_task_incl_audit": 0.011434491666666666,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 32,
           "mean_price_per_1k": 0.08941666666666667,
           "total_expected_cost": 2.6309634400000004,
           "total_cost_gap": 0.11331455999999962,
@@ -506,6 +647,18 @@
             "seller_cn": 0.8695652173913043,
             "seller_br": 0.6270270270270271
           },
+          "seller_purchases": {
+            "seller_cn": 23,
+            "seller_sg": 32,
+            "seller_br": 185
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 140,
+          "max_rel_cost_overrun": 1.2599999999999998,
           "filtered_candidates": 114,
           "filtered_by_rule": {
             "CN-PIPL-38": 28,
@@ -516,7 +669,32 @@
           },
           "blocked_or_filtered": 114,
           "audit_violations_enforced": 0,
-          "stop_reasons": {}
+          "stop_reasons": {},
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
+          }
         },
         {
           "n_tasks": 240,
@@ -531,6 +709,12 @@
           "total_cost": 2.8913562,
           "total_fee": 0.0427962,
           "mean_cost_per_task": 0.0120473175,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 2.8913562,
+          "mean_cost_per_task_incl_audit": 0.0120473175,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 24,
           "mean_price_per_1k": 0.09183333333333334,
           "total_expected_cost": 2.71289096,
           "total_cost_gap": 0.17846523999999997,
@@ -580,6 +764,18 @@
             "seller_cn": 0.8235294117647058,
             "seller_sg": 0.75
           },
+          "seller_purchases": {
+            "seller_cn": 34,
+            "seller_sg": 24,
+            "seller_br": 182
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 142,
+          "max_rel_cost_overrun": 1.42,
           "filtered_candidates": 134,
           "filtered_by_rule": {
             "CN-DSL-31": 50,
@@ -590,7 +786,32 @@
           },
           "blocked_or_filtered": 134,
           "audit_violations_enforced": 0,
-          "stop_reasons": {}
+          "stop_reasons": {},
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
+          }
         }
       ],
       "gateway_per_seed": [
@@ -691,6 +912,30 @@
         "mean_cost_per_task": {
           "mean": 0.024346964444444442,
           "std": 0.00017732702601826048
+        },
+        "total_audit_cost": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_cost_incl_audit": {
+          "mean": 5.843271466666667,
+          "std": 0.04255848624438276
+        },
+        "mean_cost_per_task_incl_audit": {
+          "mean": 0.024346964444444442,
+          "std": 0.00017732702601826048
+        },
+        "n_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "swaps_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "swaps_served": {
+          "mean": 179.0,
+          "std": 4.58257569495584
         },
         "mean_price_per_1k": {
           "mean": 0.17693892558112742,
@@ -858,6 +1103,42 @@
             "std": 0.015774597518842186
           }
         },
+        "seller_purchases": {
+          "seller_br": {
+            "mean": 10.666666666666666,
+            "std": 0.5773502691896257
+          },
+          "seller_cn": {
+            "mean": 30.333333333333332,
+            "std": 4.932882862316247
+          },
+          "seller_sg": {
+            "mean": 179.0,
+            "std": 4.58257569495584
+          }
+        },
+        "seller_swap_rate": {
+          "seller_br": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 1.0,
+            "std": 0.0
+          }
+        },
+        "overrun_purchases": {
+          "mean": 102.33333333333333,
+          "std": 4.041451884327381
+        },
+        "max_rel_cost_overrun": {
+          "mean": 0.8456947981616464,
+          "std": 0.08167070050103323
+        },
         "filtered_candidates": {
           "mean": 123.0,
           "std": 9.539392014169456
@@ -892,7 +1173,33 @@
           "mean": 0.0,
           "std": 0.0
         },
-        "stop_reasons": {}
+        "stop_reasons": {},
+        "audit_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_stake_slashed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "learned_swap_q": {
+          "seller_sg": {
+            "mean": 1.0,
+            "std": 0.0
+          }
+        },
+        "swap_gain_analytic": {
+          "seller_sg": {
+            "mean": 0.009963625000000002,
+            "std": 0.0
+          }
+        },
+        "swap_cost_saving": {
+          "seller_sg": {
+            "mean": 0.009963625000000002,
+            "std": 0.0
+          }
+        }
       },
       "per_seed": [
         {
@@ -908,6 +1215,12 @@
           "total_cost": 5.838455199999999,
           "total_fee": 0.1102752,
           "mean_cost_per_task": 0.024326896666666663,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 5.838455199999999,
+          "mean_cost_per_task_incl_audit": 0.024326896666666663,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 180,
           "mean_price_per_1k": 0.17642201834862387,
           "total_expected_cost": 5.546050685,
           "total_cost_gap": 0.2924045149999994,
@@ -957,6 +1270,18 @@
             "seller_cn": 1.0,
             "seller_br": 0.8181818181818182
           },
+          "seller_purchases": {
+            "seller_cn": 27,
+            "seller_sg": 180,
+            "seller_br": 11
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 106,
+          "max_rel_cost_overrun": 0.7985421972424693,
           "filtered_candidates": 122,
           "filtered_by_rule": {
             "CN-PIPL-38": 30,
@@ -967,7 +1292,32 @@
           },
           "blocked_or_filtered": 122,
           "audit_violations_enforced": 0,
-          "stop_reasons": {}
+          "stop_reasons": {},
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
+          }
         },
         {
           "n_tasks": 240,
@@ -982,6 +1332,12 @@
           "total_cost": 5.8880332,
           "total_fee": 0.1050932,
           "mean_cost_per_task": 0.024533471666666664,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 5.8880332,
+          "mean_cost_per_task_incl_audit": 0.024533471666666664,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 183,
           "mean_price_per_1k": 0.17657657657657655,
           "total_expected_cost": 5.65486573,
           "total_cost_gap": 0.2331674699999997,
@@ -1031,6 +1387,18 @@
             "seller_cn": 0.8928571428571429,
             "seller_br": 0.7272727272727273
           },
+          "seller_purchases": {
+            "seller_cn": 28,
+            "seller_sg": 183,
+            "seller_br": 11
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 103,
+          "max_rel_cost_overrun": 0.7985421972424696,
           "filtered_candidates": 114,
           "filtered_by_rule": {
             "CN-PIPL-38": 28,
@@ -1041,7 +1409,32 @@
           },
           "blocked_or_filtered": 114,
           "audit_violations_enforced": 0,
-          "stop_reasons": {}
+          "stop_reasons": {},
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
+          }
         },
         {
           "n_tasks": 240,
@@ -1056,6 +1449,12 @@
           "total_cost": 5.803326,
           "total_fee": 0.098406,
           "mean_cost_per_task": 0.024180525,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 5.803326,
+          "mean_cost_per_task_incl_audit": 0.024180525,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 174,
           "mean_price_per_1k": 0.17781818181818182,
           "total_expected_cost": 5.640211610000001,
           "total_cost_gap": 0.1631143899999996,
@@ -1105,6 +1504,18 @@
             "seller_cn": 0.8333333333333334,
             "seller_br": 0.8
           },
+          "seller_purchases": {
+            "seller_cn": 36,
+            "seller_sg": 174,
+            "seller_br": 10
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 98,
+          "max_rel_cost_overrun": 0.94,
           "filtered_candidates": 133,
           "filtered_by_rule": {
             "CN-DSL-31": 50,
@@ -1115,7 +1526,32 @@
           },
           "blocked_or_filtered": 133,
           "audit_violations_enforced": 0,
-          "stop_reasons": {}
+          "stop_reasons": {},
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
+          }
         }
       ],
       "gateway_per_seed": [
@@ -1219,6 +1655,30 @@
         "mean_cost_per_task": {
           "mean": 0.030675363611111114,
           "std": 0.0015475161105188901
+        },
+        "total_audit_cost": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_cost_incl_audit": {
+          "mean": 7.362087266666666,
+          "std": 0.3714038665245335
+        },
+        "mean_cost_per_task_incl_audit": {
+          "mean": 0.030675363611111114,
+          "std": 0.0015475161105188901
+        },
+        "n_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "swaps_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "swaps_served": {
+          "mean": 125.66666666666667,
+          "std": 10.214368964029708
         },
         "mean_price_per_1k": {
           "mean": 0.131282982716279,
@@ -1386,6 +1846,42 @@
             "std": 0.016347120004203426
           }
         },
+        "seller_purchases": {
+          "seller_br": {
+            "mean": 168.0,
+            "std": 2.6457513110645907
+          },
+          "seller_cn": {
+            "mean": 85.33333333333333,
+            "std": 1.5275252316519468
+          },
+          "seller_sg": {
+            "mean": 125.66666666666667,
+            "std": 10.214368964029708
+          }
+        },
+        "seller_swap_rate": {
+          "seller_br": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 1.0,
+            "std": 0.0
+          }
+        },
+        "overrun_purchases": {
+          "mean": 218.33333333333334,
+          "std": 6.429100507328637
+        },
+        "max_rel_cost_overrun": {
+          "mean": 1.2266666666666666,
+          "std": 0.14153915830374783
+        },
         "filtered_candidates": {
           "mean": 123.33333333333333,
           "std": 10.066445913694333
@@ -1433,6 +1929,32 @@
             "mean": 32.0,
             "std": 1.7320508075688772
           }
+        },
+        "audit_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_stake_slashed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "learned_swap_q": {
+          "seller_sg": {
+            "mean": 1.0,
+            "std": 0.0
+          }
+        },
+        "swap_gain_analytic": {
+          "seller_sg": {
+            "mean": 0.009963625000000002,
+            "std": 0.0
+          }
+        },
+        "swap_cost_saving": {
+          "seller_sg": {
+            "mean": 0.009963625000000002,
+            "std": 0.0
+          }
         }
       },
       "per_seed": [
@@ -1449,6 +1971,12 @@
           "total_cost": 7.5554974,
           "total_fee": 0.1599574,
           "mean_cost_per_task": 0.03148123916666667,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 7.5554974,
+          "mean_cost_per_task_incl_audit": 0.03148123916666667,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 133,
           "mean_price_per_1k": 0.1319693094629156,
           "total_expected_cost": 7.0534204250000005,
           "total_cost_gap": 0.5020769749999996,
@@ -1498,6 +2026,18 @@
             "seller_sg": 0.631578947368421,
             "seller_cn": 0.9540229885057471
           },
+          "seller_purchases": {
+            "seller_cn": 87,
+            "seller_sg": 133,
+            "seller_br": 171
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 223,
+          "max_rel_cost_overrun": 1.1399999999999997,
           "filtered_candidates": 122,
           "filtered_by_rule": {
             "CN-PIPL-38": 30,
@@ -1512,6 +2052,31 @@
             "confident": 190,
             "exhausted": 33,
             "budget": 17
+          },
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
           }
         },
         {
@@ -1527,6 +2092,12 @@
           "total_cost": 7.5968716,
           "total_fee": 0.1452116,
           "mean_cost_per_task": 0.03165363166666667,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 7.5968716,
+          "mean_cost_per_task_incl_audit": 0.03165363166666667,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 130,
           "mean_price_per_1k": 0.13198952879581152,
           "total_expected_cost": 6.884691655,
           "total_cost_gap": 0.7121799449999999,
@@ -1576,6 +2147,18 @@
             "seller_cn": 0.8941176470588236,
             "seller_br": 0.6107784431137725
           },
+          "seller_purchases": {
+            "seller_cn": 85,
+            "seller_sg": 130,
+            "seller_br": 167
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 221,
+          "max_rel_cost_overrun": 1.15,
           "filtered_candidates": 114,
           "filtered_by_rule": {
             "CN-PIPL-38": 28,
@@ -1590,6 +2173,31 @@
             "exhausted": 33,
             "confident": 186,
             "budget": 21
+          },
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
           }
         },
         {
@@ -1605,6 +2213,12 @@
           "total_cost": 6.9338928,
           "total_fee": 0.1301528,
           "mean_cost_per_task": 0.02889122,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 6.9338928,
+          "mean_cost_per_task_incl_audit": 0.02889122,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 114,
           "mean_price_per_1k": 0.1298901098901099,
           "total_expected_cost": 6.424336795,
           "total_cost_gap": 0.5095560049999994,
@@ -1654,6 +2268,18 @@
             "seller_sg": 0.6578947368421053,
             "seller_cn": 0.8809523809523809
           },
+          "seller_purchases": {
+            "seller_cn": 84,
+            "seller_sg": 114,
+            "seller_br": 166
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 211,
+          "max_rel_cost_overrun": 1.3900000000000001,
           "filtered_candidates": 134,
           "filtered_by_rule": {
             "CN-DSL-31": 50,
@@ -1668,6 +2294,31 @@
             "exhausted": 30,
             "confident": 194,
             "budget": 16
+          },
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
           }
         }
       ],
@@ -1779,6 +2430,30 @@
         "mean_cost_per_task": {
           "mean": 0.043364066111111106,
           "std": 0.0012860638514543494
+        },
+        "total_audit_cost": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_cost_incl_audit": {
+          "mean": 10.407375866666667,
+          "std": 0.30865532434904375
+        },
+        "mean_cost_per_task_incl_audit": {
+          "mean": 0.043364066111111106,
+          "std": 0.0012860638514543494
+        },
+        "n_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "swaps_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "swaps_served": {
+          "mean": 167.0,
+          "std": 5.291502622129181
         },
         "mean_price_per_1k": {
           "mean": 0.14857447055927298,
@@ -1946,6 +2621,42 @@
             "std": 0.021480755275485017
           }
         },
+        "seller_purchases": {
+          "seller_br": {
+            "mean": 151.0,
+            "std": 4.358898943540674
+          },
+          "seller_cn": {
+            "mean": 158.0,
+            "std": 3.0
+          },
+          "seller_sg": {
+            "mean": 167.0,
+            "std": 5.291502622129181
+          }
+        },
+        "seller_swap_rate": {
+          "seller_br": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 1.0,
+            "std": 0.0
+          }
+        },
+        "overrun_purchases": {
+          "mean": 248.66666666666666,
+          "std": 12.897028081435403
+        },
+        "max_rel_cost_overrun": {
+          "mean": 1.2199999999999995,
+          "std": 0.15620499351813297
+        },
         "filtered_candidates": {
           "mean": 123.33333333333333,
           "std": 10.066445913694333
@@ -1989,6 +2700,32 @@
             "mean": 204.0,
             "std": 3.605551275463989
           }
+        },
+        "audit_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_stake_slashed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "learned_swap_q": {
+          "seller_sg": {
+            "mean": 1.0,
+            "std": 0.0
+          }
+        },
+        "swap_gain_analytic": {
+          "seller_sg": {
+            "mean": 0.009963625000000002,
+            "std": 0.0
+          }
+        },
+        "swap_cost_saving": {
+          "seller_sg": {
+            "mean": 0.009963625000000002,
+            "std": 0.0
+          }
         }
       },
       "per_seed": [
@@ -2005,6 +2742,12 @@
           "total_cost": 10.3188328,
           "total_fee": 0.21833280000000002,
           "mean_cost_per_task": 0.04299513666666666,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 10.3188328,
+          "mean_cost_per_task_incl_audit": 0.04299513666666666,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 165,
           "mean_price_per_1k": 0.14867521367521366,
           "total_expected_cost": 9.72407218,
           "total_cost_gap": 0.5947606199999989,
@@ -2054,6 +2797,18 @@
             "seller_cn": 0.9225806451612903,
             "seller_br": 0.6216216216216216
           },
+          "seller_purchases": {
+            "seller_cn": 155,
+            "seller_sg": 165,
+            "seller_br": 148
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 245,
+          "max_rel_cost_overrun": 1.1399999999999997,
           "filtered_candidates": 122,
           "filtered_by_rule": {
             "CN-PIPL-38": 30,
@@ -2067,6 +2822,31 @@
           "stop_reasons": {
             "vote": 200,
             "budget": 40
+          },
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
           }
         },
         {
@@ -2082,6 +2862,12 @@
           "total_cost": 10.750626,
           "total_fee": 0.221926,
           "mean_cost_per_task": 0.044794275,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 10.750626,
+          "mean_cost_per_task_incl_audit": 0.044794275,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 173,
           "mean_price_per_1k": 0.1483673469387755,
           "total_expected_cost": 10.162707580000001,
           "total_cost_gap": 0.5879184199999994,
@@ -2131,6 +2917,18 @@
             "seller_cn": 0.9130434782608695,
             "seller_br": 0.6217948717948718
           },
+          "seller_purchases": {
+            "seller_cn": 161,
+            "seller_sg": 173,
+            "seller_br": 156
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 263,
+          "max_rel_cost_overrun": 1.3999999999999995,
           "filtered_candidates": 114,
           "filtered_by_rule": {
             "CN-PIPL-38": 28,
@@ -2144,6 +2942,31 @@
           "stop_reasons": {
             "vote": 207,
             "budget": 33
+          },
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
           }
         },
         {
@@ -2159,6 +2982,12 @@
           "total_cost": 10.1526688,
           "total_fee": 0.20958880000000002,
           "mean_cost_per_task": 0.04230278666666667,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 10.1526688,
+          "mean_cost_per_task_incl_audit": 0.04230278666666667,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 163,
           "mean_price_per_1k": 0.14868085106382978,
           "total_expected_cost": 9.77207665,
           "total_cost_gap": 0.38059215,
@@ -2208,6 +3037,18 @@
             "seller_cn": 0.8924050632911392,
             "seller_br": 0.6711409395973155
           },
+          "seller_purchases": {
+            "seller_cn": 158,
+            "seller_sg": 163,
+            "seller_br": 149
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 238,
+          "max_rel_cost_overrun": 1.1199999999999997,
           "filtered_candidates": 134,
           "filtered_by_rule": {
             "CN-DSL-31": 50,
@@ -2221,6 +3062,31 @@
           "stop_reasons": {
             "vote": 205,
             "budget": 35
+          },
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
           }
         }
       ],
@@ -2332,6 +3198,30 @@
         "mean_cost_per_task": {
           "mean": 0.010581624166666666,
           "std": 0.00013859572189314998
+        },
+        "total_audit_cost": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_cost_incl_audit": {
+          "mean": 2.5395898,
+          "std": 0.03326297325435603
+        },
+        "mean_cost_per_task_incl_audit": {
+          "mean": 0.010581624166666666,
+          "std": 0.00013859572189314998
+        },
+        "n_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "swaps_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "swaps_served": {
+          "mean": 39.333333333333336,
+          "std": 1.1547005383792515
         },
         "mean_price_per_1k": {
           "mean": 0.07971988795518208,
@@ -2512,6 +3402,42 @@
             "std": 0.042966789124652585
           }
         },
+        "seller_purchases": {
+          "seller_br": {
+            "mean": 200.0,
+            "std": 0.0
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 39.333333333333336,
+            "std": 1.1547005383792515
+          }
+        },
+        "seller_swap_rate": {
+          "seller_br": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 1.0,
+            "std": 0.0
+          }
+        },
+        "overrun_purchases": {
+          "mean": 147.0,
+          "std": 6.557438524302
+        },
+        "max_rel_cost_overrun": {
+          "mean": 1.3533333333333333,
+          "std": 0.14502873278538064
+        },
         "filtered_candidates": {
           "mean": 0.0,
           "std": 0.0
@@ -2525,7 +3451,33 @@
           "mean": 0.0,
           "std": 0.0
         },
-        "stop_reasons": {}
+        "stop_reasons": {},
+        "audit_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_stake_slashed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "learned_swap_q": {
+          "seller_sg": {
+            "mean": 1.0,
+            "std": 0.0
+          }
+        },
+        "swap_gain_analytic": {
+          "seller_sg": {
+            "mean": 0.009963625000000002,
+            "std": 0.0
+          }
+        },
+        "swap_cost_saving": {
+          "seller_sg": {
+            "mean": 0.009963625000000002,
+            "std": 0.0
+          }
+        }
       },
       "per_seed": [
         {
@@ -2541,6 +3493,12 @@
           "total_cost": 2.5541076,
           "total_fee": 0.0665676,
           "mean_cost_per_task": 0.010642115,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 2.5541076,
+          "mean_cost_per_task_incl_audit": 0.010642115,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 40,
           "mean_price_per_1k": 0.08,
           "total_expected_cost": 2.2837266,
           "total_cost_gap": 0.270381,
@@ -2594,11 +3552,48 @@
             "seller_br": 0.65,
             "seller_sg": 0.625
           },
+          "seller_purchases": {
+            "seller_cn": 0,
+            "seller_sg": 40,
+            "seller_br": 200
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 146,
+          "max_rel_cost_overrun": 1.21,
           "filtered_candidates": 0,
           "filtered_by_rule": {},
           "blocked_or_filtered": 0,
           "audit_violations_enforced": 0,
-          "stop_reasons": {}
+          "stop_reasons": {},
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
+          }
         },
         {
           "n_tasks": 240,
@@ -2613,6 +3608,12 @@
           "total_cost": 2.5015356,
           "total_fee": 0.0650556,
           "mean_cost_per_task": 0.010423065,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 2.5015356,
+          "mean_cost_per_task_incl_audit": 0.010423065,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 40,
           "mean_price_per_1k": 0.08,
           "total_expected_cost": 2.2837266,
           "total_cost_gap": 0.21780899999999992,
@@ -2666,11 +3667,48 @@
             "seller_br": 0.62,
             "seller_sg": 0.675
           },
+          "seller_purchases": {
+            "seller_cn": 0,
+            "seller_sg": 40,
+            "seller_br": 200
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 141,
+          "max_rel_cost_overrun": 1.3499999999999996,
           "filtered_candidates": 0,
           "filtered_by_rule": {},
           "blocked_or_filtered": 0,
           "audit_violations_enforced": 0,
-          "stop_reasons": {}
+          "stop_reasons": {},
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
+          }
         },
         {
           "n_tasks": 240,
@@ -2685,6 +3723,12 @@
           "total_cost": 2.5631262,
           "total_fee": 0.0686862,
           "mean_cost_per_task": 0.0106796925,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 2.5631262,
+          "mean_cost_per_task_incl_audit": 0.0106796925,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 38,
           "mean_price_per_1k": 0.07915966386554622,
           "total_expected_cost": 2.2324851000000003,
           "total_cost_gap": 0.3306410999999998,
@@ -2738,11 +3782,48 @@
             "seller_br": 0.685,
             "seller_sg": 0.7105263157894737
           },
+          "seller_purchases": {
+            "seller_cn": 0,
+            "seller_sg": 38,
+            "seller_br": 200
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 154,
+          "max_rel_cost_overrun": 1.5,
           "filtered_candidates": 0,
           "filtered_by_rule": {},
           "blocked_or_filtered": 0,
           "audit_violations_enforced": 0,
-          "stop_reasons": {}
+          "stop_reasons": {},
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
+          }
         }
       ],
       "gateway_per_seed": [
@@ -2850,6 +3931,30 @@
         "mean_cost_per_task": {
           "mean": 0.015348393991030556,
           "std": 0.00077489469837071
+        },
+        "total_audit_cost": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_cost_incl_audit": {
+          "mean": 3.6836145578473336,
+          "std": 0.18597472760897038
+        },
+        "mean_cost_per_task_incl_audit": {
+          "mean": 0.015348393991030556,
+          "std": 0.00077489469837071
+        },
+        "n_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "swaps_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "swaps_served": {
+          "mean": 29.0,
+          "std": 4.358898943540674
         },
         "mean_price_per_1k": {
           "mean": 0.1202467983510793,
@@ -3017,6 +4122,42 @@
             "std": 0.11996108926611117
           }
         },
+        "seller_purchases": {
+          "seller_br": {
+            "mean": 183.66666666666666,
+            "std": 1.5275252316519468
+          },
+          "seller_cn": {
+            "mean": 27.333333333333332,
+            "std": 5.8594652770823155
+          },
+          "seller_sg": {
+            "mean": 29.0,
+            "std": 4.358898943540674
+          }
+        },
+        "seller_swap_rate": {
+          "seller_br": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 1.0,
+            "std": 0.0
+          }
+        },
+        "overrun_purchases": {
+          "mean": 142.66666666666666,
+          "std": 3.0550504633038935
+        },
+        "max_rel_cost_overrun": {
+          "mean": 1.3233333333333335,
+          "std": 0.08504900548115377
+        },
         "filtered_candidates": {
           "mean": 123.33333333333333,
           "std": 10.066445913694333
@@ -3051,7 +4192,33 @@
           "mean": 0.0,
           "std": 0.0
         },
-        "stop_reasons": {}
+        "stop_reasons": {},
+        "audit_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_stake_slashed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "learned_swap_q": {
+          "seller_sg": {
+            "mean": 1.0,
+            "std": 0.0
+          }
+        },
+        "swap_gain_analytic": {
+          "seller_sg": {
+            "mean": 0.009963625000000002,
+            "std": 0.0
+          }
+        },
+        "swap_cost_saving": {
+          "seller_sg": {
+            "mean": 0.009963625000000002,
+            "std": 0.0
+          }
+        }
       },
       "per_seed": [
         {
@@ -3067,6 +4234,12 @@
           "total_cost": 3.65477356953256,
           "total_fee": 0.05484044542117485,
           "mean_cost_per_task": 0.015228223206385666,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 3.65477356953256,
+          "mean_cost_per_task_incl_audit": 0.015228223206385666,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 31,
           "mean_price_per_1k": 0.1199747879694054,
           "total_expected_cost": 3.4743234421413085,
           "total_cost_gap": 0.18045012739125132,
@@ -3116,6 +4289,18 @@
             "seller_sg": 0.5806451612903226,
             "seller_cn": 1.0
           },
+          "seller_purchases": {
+            "seller_cn": 25,
+            "seller_sg": 31,
+            "seller_br": 184
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 146,
+          "max_rel_cost_overrun": 1.2900000000000005,
           "filtered_candidates": 122,
           "filtered_by_rule": {
             "CN-PIPL-38": 30,
@@ -3126,7 +4311,32 @@
           },
           "blocked_or_filtered": 122,
           "audit_violations_enforced": 0,
-          "stop_reasons": {}
+          "stop_reasons": {},
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
+          }
         },
         {
           "n_tasks": 240,
@@ -3141,6 +4351,12 @@
           "total_cost": 3.513745205963217,
           "total_fee": 0.056439264115524114,
           "mean_cost_per_task": 0.014640605024846737,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 3.513745205963217,
+          "mean_cost_per_task_incl_audit": 0.014640605024846737,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 32,
           "mean_price_per_1k": 0.11705179884976882,
           "total_expected_cost": 3.3887385957816147,
           "total_cost_gap": 0.12500661018160208,
@@ -3190,6 +4406,18 @@
             "seller_cn": 0.8695652173913043,
             "seller_br": 0.6270270270270271
           },
+          "seller_purchases": {
+            "seller_cn": 23,
+            "seller_sg": 32,
+            "seller_br": 185
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 140,
+          "max_rel_cost_overrun": 1.2599999999999998,
           "filtered_candidates": 114,
           "filtered_by_rule": {
             "CN-PIPL-38": 28,
@@ -3200,7 +4428,32 @@
           },
           "blocked_or_filtered": 114,
           "audit_violations_enforced": 0,
-          "stop_reasons": {}
+          "stop_reasons": {},
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
+          }
         },
         {
           "n_tasks": 240,
@@ -3215,6 +4468,12 @@
           "total_cost": 3.8823248980462237,
           "total_fee": 0.04821827033336863,
           "mean_cost_per_task": 0.016176353741859266,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 3.8823248980462237,
+          "mean_cost_per_task_incl_audit": 0.016176353741859266,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 24,
           "mean_price_per_1k": 0.1237138082340637,
           "total_expected_cost": 3.6259440939264143,
           "total_cost_gap": 0.25638080411980946,
@@ -3264,6 +4523,18 @@
             "seller_cn": 0.8235294117647058,
             "seller_sg": 0.75
           },
+          "seller_purchases": {
+            "seller_cn": 34,
+            "seller_sg": 24,
+            "seller_br": 182
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 142,
+          "max_rel_cost_overrun": 1.42,
           "filtered_candidates": 134,
           "filtered_by_rule": {
             "CN-DSL-31": 50,
@@ -3274,7 +4545,32 @@
           },
           "blocked_or_filtered": 134,
           "audit_violations_enforced": 0,
-          "stop_reasons": {}
+          "stop_reasons": {},
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
+          }
         }
       ],
       "gateway_per_seed": [
@@ -3375,6 +4671,30 @@
         "mean_cost_per_task": {
           "mean": 0.01650522330625481,
           "std": 0.0008091377723010069
+        },
+        "total_audit_cost": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_cost_incl_audit": {
+          "mean": 3.9612535935011537,
+          "std": 0.19419306535224196
+        },
+        "mean_cost_per_task_incl_audit": {
+          "mean": 0.01650522330625481,
+          "std": 0.0008091377723010069
+        },
+        "n_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "swaps_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "swaps_served": {
+          "mean": 104.0,
+          "std": 3.605551275463989
         },
         "mean_price_per_1k": {
           "mean": 0.11761827676291942,
@@ -3542,6 +4862,42 @@
             "std": 0.04079853190797843
           }
         },
+        "seller_purchases": {
+          "seller_br": {
+            "mean": 108.66666666666667,
+            "std": 9.073771725877465
+          },
+          "seller_cn": {
+            "mean": 27.333333333333332,
+            "std": 5.8594652770823155
+          },
+          "seller_sg": {
+            "mean": 104.0,
+            "std": 3.605551275463989
+          }
+        },
+        "seller_swap_rate": {
+          "seller_br": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 1.0,
+            "std": 0.0
+          }
+        },
+        "overrun_purchases": {
+          "mean": 132.0,
+          "std": 5.5677643628300215
+        },
+        "max_rel_cost_overrun": {
+          "mean": 1.0533333333333335,
+          "std": 0.1858314648635512
+        },
         "filtered_candidates": {
           "mean": 123.33333333333333,
           "std": 10.066445913694333
@@ -3576,7 +4932,33 @@
           "mean": 0.0,
           "std": 0.0
         },
-        "stop_reasons": {}
+        "stop_reasons": {},
+        "audit_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_stake_slashed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "learned_swap_q": {
+          "seller_sg": {
+            "mean": 1.0,
+            "std": 0.0
+          }
+        },
+        "swap_gain_analytic": {
+          "seller_sg": {
+            "mean": 0.009963625000000002,
+            "std": 0.0
+          }
+        },
+        "swap_cost_saving": {
+          "seller_sg": {
+            "mean": 0.009963625000000002,
+            "std": 0.0
+          }
+        }
       },
       "per_seed": [
         {
@@ -3592,6 +4974,12 @@
           "total_cost": 3.8336736645209144,
           "total_fee": 0.048813892556873406,
           "mean_cost_per_task": 0.015973640268837144,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 3.8336736645209144,
+          "mean_cost_per_task_incl_audit": 0.015973640268837144,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 105,
           "mean_price_per_1k": 0.11658757323056097,
           "total_expected_cost": 3.6516581160495476,
           "total_cost_gap": 0.1820155484713668,
@@ -3641,6 +5029,18 @@
             "seller_br": 0.6454545454545455,
             "seller_cn": 1.0
           },
+          "seller_purchases": {
+            "seller_cn": 25,
+            "seller_sg": 105,
+            "seller_br": 110
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 133,
+          "max_rel_cost_overrun": 0.9000000000000001,
           "filtered_candidates": 122,
           "filtered_by_rule": {
             "CN-PIPL-38": 30,
@@ -3651,7 +5051,32 @@
           },
           "blocked_or_filtered": 122,
           "audit_violations_enforced": 0,
-          "stop_reasons": {}
+          "stop_reasons": {},
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
+          }
         },
         {
           "n_tasks": 240,
@@ -3666,6 +5091,12 @@
           "total_cost": 3.8653455056488983,
           "total_fee": 0.04931556471846726,
           "mean_cost_per_task": 0.016105606273537076,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 3.8653455056488983,
+          "mean_cost_per_task_incl_audit": 0.016105606273537076,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 100,
           "mean_price_per_1k": 0.11292156259936596,
           "total_expected_cost": 3.5221551322980815,
           "total_cost_gap": 0.3431903733508168,
@@ -3715,6 +5146,18 @@
             "seller_cn": 0.8695652173913043,
             "seller_br": 0.7264957264957265
           },
+          "seller_purchases": {
+            "seller_cn": 23,
+            "seller_sg": 100,
+            "seller_br": 117
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 137,
+          "max_rel_cost_overrun": 1.2599999999999998,
           "filtered_candidates": 114,
           "filtered_by_rule": {
             "CN-PIPL-38": 28,
@@ -3725,7 +5168,32 @@
           },
           "blocked_or_filtered": 114,
           "audit_violations_enforced": 0,
-          "stop_reasons": {}
+          "stop_reasons": {},
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
+          }
         },
         {
           "n_tasks": 240,
@@ -3740,6 +5208,12 @@
           "total_cost": 4.184741610333648,
           "total_fee": 0.05009005432677811,
           "mean_cost_per_task": 0.0174364233763902,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 4.184741610333648,
+          "mean_cost_per_task_incl_audit": 0.0174364233763902,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 107,
           "mean_price_per_1k": 0.1233456944588313,
           "total_expected_cost": 3.9252586505386518,
           "total_cost_gap": 0.2594829597949966,
@@ -3789,6 +5263,18 @@
             "seller_cn": 0.8235294117647058,
             "seller_sg": 0.616822429906542
           },
+          "seller_purchases": {
+            "seller_cn": 34,
+            "seller_sg": 107,
+            "seller_br": 99
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 126,
+          "max_rel_cost_overrun": 1.0,
           "filtered_candidates": 134,
           "filtered_by_rule": {
             "CN-DSL-31": 50,
@@ -3799,7 +5285,32 @@
           },
           "blocked_or_filtered": 134,
           "audit_violations_enforced": 0,
-          "stop_reasons": {}
+          "stop_reasons": {},
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
+          }
         }
       ],
       "gateway_per_seed": [
@@ -3904,6 +5415,30 @@
         "mean_cost_per_task": {
           "mean": 0.011304130336112073,
           "std": 0.00015216629234132884
+        },
+        "total_audit_cost": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_cost_incl_audit": {
+          "mean": 2.7129912806668983,
+          "std": 0.03651991016191898
+        },
+        "mean_cost_per_task_incl_audit": {
+          "mean": 0.011304130336112073,
+          "std": 0.00015216629234132884
+        },
+        "n_audits": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "swaps_detected": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "swaps_served": {
+          "mean": 32.0,
+          "std": 3.605551275463989
         },
         "mean_price_per_1k": {
           "mean": 0.09014660444628138,
@@ -4084,6 +5619,42 @@
             "std": 0.07297304808724704
           }
         },
+        "seller_purchases": {
+          "seller_br": {
+            "mean": 200.0,
+            "std": 0.0
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 32.0,
+            "std": 3.605551275463989
+          }
+        },
+        "seller_swap_rate": {
+          "seller_br": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 1.0,
+            "std": 0.0
+          }
+        },
+        "overrun_purchases": {
+          "mean": 141.66666666666666,
+          "std": 4.509249752822894
+        },
+        "max_rel_cost_overrun": {
+          "mean": 1.3333333333333333,
+          "std": 0.11590225767142473
+        },
         "filtered_candidates": {
           "mean": 0.0,
           "std": 0.0
@@ -4097,7 +5668,33 @@
           "mean": 0.0,
           "std": 0.0
         },
-        "stop_reasons": {}
+        "stop_reasons": {},
+        "audit_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "total_stake_slashed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "learned_swap_q": {
+          "seller_sg": {
+            "mean": 1.0,
+            "std": 0.0
+          }
+        },
+        "swap_gain_analytic": {
+          "seller_sg": {
+            "mean": 0.009963625000000002,
+            "std": 0.0
+          }
+        },
+        "swap_cost_saving": {
+          "seller_sg": {
+            "mean": 0.009963625000000002,
+            "std": 0.0
+          }
+        }
       },
       "per_seed": [
         {
@@ -4113,6 +5710,12 @@
           "total_cost": 2.738900703752416,
           "total_fee": 0.07181922881067808,
           "mean_cost_per_task": 0.011412086265635066,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 2.738900703752416,
+          "mean_cost_per_task_incl_audit": 0.011412086265635066,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 33,
           "mean_price_per_1k": 0.09099684893165987,
           "total_expected_cost": 2.466728143037237,
           "total_cost_gap": 0.27217256071517903,
@@ -4166,11 +5769,48 @@
             "seller_br": 0.65,
             "seller_sg": 0.6060606060606061
           },
+          "seller_purchases": {
+            "seller_cn": 0,
+            "seller_sg": 33,
+            "seller_br": 200
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 142,
+          "max_rel_cost_overrun": 1.21,
           "filtered_candidates": 0,
           "filtered_by_rule": {},
           "blocked_or_filtered": 0,
           "audit_violations_enforced": 0,
-          "stop_reasons": {}
+          "stop_reasons": {},
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
+          }
         },
         {
           "n_tasks": 240,
@@ -4185,6 +5825,12 @@
           "total_cost": 2.728850284343915,
           "total_fee": 0.0732214676526468,
           "mean_cost_per_task": 0.011370209518099646,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 2.728850284343915,
+          "mean_cost_per_task_incl_audit": 0.011370209518099646,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 35,
           "mean_price_per_1k": 0.09109388907059984,
           "total_expected_cost": 2.5000036977572044,
           "total_cost_gap": 0.22884658658671064,
@@ -4238,11 +5884,48 @@
             "seller_br": 0.635,
             "seller_sg": 0.6571428571428571
           },
+          "seller_purchases": {
+            "seller_cn": 0,
+            "seller_sg": 35,
+            "seller_br": 200
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 137,
+          "max_rel_cost_overrun": 1.35,
           "filtered_candidates": 0,
           "filtered_by_rule": {},
           "blocked_or_filtered": 0,
           "audit_violations_enforced": 0,
-          "stop_reasons": {}
+          "stop_reasons": {},
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
+          }
         },
         {
           "n_tasks": 240,
@@ -4257,6 +5940,12 @@
           "total_cost": 2.671222853904363,
           "total_fee": 0.0703277105020267,
           "mean_cost_per_task": 0.011130095224601512,
+          "total_audit_cost": 0.0,
+          "total_cost_incl_audit": 2.671222853904363,
+          "mean_cost_per_task_incl_audit": 0.011130095224601512,
+          "n_audits": 0,
+          "swaps_detected": 0,
+          "swaps_served": 28,
           "mean_price_per_1k": 0.08834907533658444,
           "total_expected_cost": 2.3124385673582935,
           "total_cost_gap": 0.35878428654606953,
@@ -4310,11 +5999,48 @@
             "seller_br": 0.675,
             "seller_sg": 0.75
           },
+          "seller_purchases": {
+            "seller_cn": 0,
+            "seller_sg": 28,
+            "seller_br": 200
+          },
+          "seller_swap_rate": {
+            "seller_cn": 0.0,
+            "seller_sg": 1.0,
+            "seller_br": 0.0
+          },
+          "overrun_purchases": 146,
+          "max_rel_cost_overrun": 1.44,
           "filtered_candidates": 0,
           "filtered_by_rule": {},
           "blocked_or_filtered": 0,
           "audit_violations_enforced": 0,
-          "stop_reasons": {}
+          "stop_reasons": {},
+          "audit_rate": 0.0,
+          "total_stake_slashed": 0.0,
+          "learned_swap_q": {
+            "seller_sg": 1.0
+          },
+          "swap_q_history": {
+            "seller_sg": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "swap_gain_analytic": {
+            "seller_sg": 0.009963625000000002
+          },
+          "swap_cost_saving": {
+            "seller_sg": 0.009963625000000002
+          }
         }
       ],
       "gateway_per_seed": [

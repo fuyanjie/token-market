@@ -17,9 +17,11 @@ from .gateway import CrossBorderGateway
 from .logging_schema import TransactionLogger
 from .matching import candidate_sellers, sealed_bid_select
 from .metrics import aggregate, run_metrics
-from .portfolio import SINGLE_POLICIES, Purchase, is_hard, run_policy
+from .baselines import PilotRouter, StageRouteRouter
+from .portfolio import AUDITED_POLICIES, ROUTER_POLICIES, SINGLE_POLICIES, Purchase, is_hard, run_policy
 from .precompute import local_cfg, local_models, model_stats, precompute, render_model_accuracy_md
 from .sellers import Reputation, load_sellers
+from .strategic import IdentityCheckDetector, TrustModel, fraud_cfg, make_strategy
 from .tasks import build_task_pool, sample_run_tasks
 from .verification import TrustingVerifier
 
@@ -36,7 +38,17 @@ def _base_record(run_id, mechanism, policy, seed, rnd, buyer, task) -> Dict:
             "latency_ms": 0.0, "answer": None, "gold": task.gold, "correct": None, "confidence": None,
             "status": "unfilled", "violation": False, "rule_id": None, "final": False, "final_answer": None,
             "final_correct": None, "buyer_surplus": 0.0, "seller_profit": 0.0,
-            "verification_status": "unverified"}
+            "verification_status": "unverified",
+            "audited": False, "audit_cost": 0.0, "swap_detected": None, "swap_prob": None}
+
+
+def policy_audit_rate(cfg: Dict, policy: str) -> float:
+    """Fraction of purchases the buyers audit: market.audited.audit_rate for our audited policy (D3),
+    market.audit.rate (default 0) for every other policy."""
+    m = cfg["market"]
+    if policy in AUDITED_POLICIES:
+        return float(m.get("audited", {}).get("audit_rate", 0.1))
+    return float(m.get("audit", {}).get("rate", 0.0))
 
 
 def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict, rep: Reputation,
@@ -46,7 +58,19 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
     n_tasks = int(n_tasks or run_cfg["n_tasks"])
     n_rounds = max(1, int(run_cfg.get("n_rounds", 1)))
     sellers, buyers = load_sellers(cfg, backend_override), load_buyers(cfg)
+    bmult = float(mcfg.get("budget_multiplier", 1.0))
+    for b in buyers:
+        b.budget *= bmult
     buyer_by_id = {b.id: b for b in buyers}
+    a_rate = policy_audit_rate(cfg, policy)
+    fcfg = fraud_cfg(cfg)
+    audit_cost = float(mcfg.get("audit", {}).get("cost", 0.0))
+    penalty = float(fcfg.get("penalty", 0.0))
+    rep_rounds = int(fcfg.get("reputation_rounds", 0))
+    detector = IdentityCheckDetector(float(fcfg.get("detect_prob", 0.9)))
+    trust = TrustModel(rep, detector.d) if policy in AUDITED_POLICIES else None
+    for scfg, s in zip(cfg["sellers"], sellers):
+        s.strategy = make_strategy(scfg, cfg, a_rate, rep)
     engine = ComplianceEngine.from_config(cfg)
     hard = is_hard(policy)
     gw_mode = "enforce" if hard else mcfg.get("unaware_gateway_mode", "audit_only")
@@ -59,18 +83,31 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
     rng_backend = random.Random(f"backend-{seed}")
     rng_market = random.Random(f"market-{seed}")
     rng_latency = random.Random(f"latency-{seed}")
+    rng_strategy = random.Random(f"strategy-{seed}")   # separate streams: v2 draws are unchanged
+    rng_swap = random.Random(f"swap-{seed}")
+    rng_audit = random.Random(f"audit-{seed}")
 
     tasks = sample_run_tasks(pool, buyers, n_tasks, seed)
     per_round = -(-n_tasks // n_rounds)
     records: List[Dict] = []
     filtered_total, filtered_by_rule, audit_violations = 0, {}, 0
     stop_reasons: Dict[str, int] = {}
+    horizon: Dict[str, int] = {}
+    for t in tasks:
+        horizon[t.buyer_id] = horizon.get(t.buyer_id, 0) + 1
+    router = None
+    if policy.startswith("pilot"):
+        router = PilotRouter(sellers, rep, buyers, horizon, cfg)
+    elif policy.startswith("stageroute"):
+        router = StageRouteRouter(sellers, buyers, horizon, cfg, per_round, random.Random(f"router-{seed}"))
 
     for i, task in enumerate(tasks):
         rnd = i // per_round
         if i % per_round == 0:
             for s in sellers:
                 s.reset_round()
+                if s.strategy is not None:
+                    s.strategy.start_epoch(rng_strategy)
         buyer = buyer_by_id[task.buyer_id]
         base = _base_record(run_id, mechanism, policy, seed, rnd, buyer, task)
         lines: List[Dict] = []
@@ -79,9 +116,12 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
             return gateway.corridor_params(buyer.jurisdiction, s.jurisdiction)[1]
 
         def quality(s):
+            if trust is not None:
+                return trust.quality(s, task.difficulty)
             return rep.accuracy(s.claimed_model, task.difficulty)
 
-        cands = candidate_sellers(buyer, sellers, task, hard, gateway.would_allow)
+        listed = [s for s in sellers if s.banned_until_round <= rnd]
+        cands = candidate_sellers(buyer, listed, task, hard, gateway.would_allow)
         filtered_total += cands.filtered
         for k, v in cands.filtered_by_rule.items():
             filtered_by_rule[k] = filtered_by_rule.get(k, 0) + v
@@ -112,6 +152,8 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
                        claimed_model=s.claimed_model, actual_model=s.actual_model, backend=s.backend,
                        cross_border=s.jurisdiction != buyer.jurisdiction, price_per_1k=price,
                        expected_cost=expected, ts=time.time())
+            q_now = s.strategy.q if s.strategy is not None else (1.0 if s.is_model_swap else 0.0)
+            rec["swap_prob"] = float(q_now)
             gw = gateway.route(buyer, s, task)
             if not gw.allowed:
                 rec.update(status="blocked", rule_id=gw.rule_id, budget_remaining=buyer.remaining,
@@ -119,13 +161,35 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
                 lines.append(rec)
                 return Purchase(s, None, None, quality(s), served=False)
             s.used_this_round += 1
-            res = backends[s.backend].solve(task, s.actual_model, models[s.actual_model], s.reasoning_effort,
-                                            rng_backend)
+            if s.strategy is not None:
+                swapped = rng_swap.random() < s.strategy.q
+            else:
+                swapped = s.is_model_swap
+            served = s.actual_model if swapped else (s.honest_model or s.actual_model)
+            serve_cost = s.cost_per_1k if (swapped or s.strategy is None) else s.honest_cost_per_1k
+            rec["actual_model"] = served
+            res = backends[s.backend].solve(task, served, models[served], s.reasoning_effort, rng_backend)
             tx = dict(rec, reasoning_tokens=res.reasoning_tokens, fee_rate=gw.fee_rate)
             st = verifier.settle(tx)
             actual = st.buyer_pays + st.fee
             buyer.spent += actual
             correct = res.answer is not None and int(res.answer) == task.gold
+            # v3 audit: identity check on a fraction a of purchases, fee charged to the buyer budget
+            audited, detected, a_cost, slashed = False, None, 0.0, 0.0
+            if a_rate > 0 and rng_audit.random() < a_rate and buyer.remaining >= audit_cost:
+                audited, a_cost = True, audit_cost
+                buyer.spent += audit_cost
+                detected = detector.detect(swapped, rng_audit)
+                if trust is not None:
+                    trust.record(s.id, detected, served)
+                if detected:
+                    slashed = penalty
+                    s.stake_slashed += penalty
+                    if rep_rounds > 0:
+                        s.banned_until_round = rnd + 1 + rep_rounds
+            profit = st.seller_receives - serve_cost * res.reasoning_tokens / 1000.0 - slashed
+            if s.strategy is not None:
+                s.strategy.observe(swapped, profit)
             if res.gen_time_s is not None:   # real model: measured gen time + jurisdiction overhead/noise
                 lat = s.latency_mean_ms + res.gen_time_s * 1000.0 * lat_scale + rng_latency.gauss(0, s.latency_std_ms)
             else:
@@ -140,17 +204,19 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
                        answer=None if res.answer is None else int(res.answer), correct=bool(correct),
                        confidence=None if res.confidence is None else round(float(res.confidence), 4),
                        status="allowed", violation=violation, rule_id=gw.rule_id if violation else None,
-                       buyer_surplus=-actual,
-                       seller_profit=st.seller_receives - s.cost_per_1k * res.reasoning_tokens / 1000.0,
-                       verification_status=verifier.verify_model_identity(tx))
+                       buyer_surplus=-actual - a_cost, seller_profit=profit,
+                       verification_status=verifier.verify_model_identity(tx),
+                       audited=audited, audit_cost=a_cost, swap_detected=detected)
             lines.append(rec)
-            return Purchase(s, rec["answer"], res.confidence, quality(s))
+            return Purchase(s, rec["answer"], res.confidence, quality(s), correct=bool(correct),
+                            actual_cost=actual)
 
         if reason:
             dec = None
         else:
-            dec = run_policy(policy, cands.sellers, lambda s: prices[s.id], exp_cost, quality, buy, mcfg)
-            if policy.startswith(("cascade", "vote")):
+            dec = run_policy(policy, cands.sellers, lambda s: prices[s.id], exp_cost, quality, buy, mcfg,
+                             router=router, task=task, buyer=buyer)
+            if policy.startswith(("cascade", "vote", "audited")):
                 stop_reasons[dec.stop_reason] = stop_reasons.get(dec.stop_reason, 0) + 1
             if not lines:
                 reason = "MKT-BUDGET-EXHAUSTED"
@@ -170,6 +236,14 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
     m.update(filtered_candidates=filtered_total, filtered_by_rule=filtered_by_rule,
              blocked_or_filtered=filtered_total + m["blocked_at_gateway"],
              audit_violations_enforced=audit_violations, stop_reasons=stop_reasons)
+    strat = {s.id: s.strategy for s in sellers if s.strategy is not None}
+    m.update(audit_rate=a_rate, total_stake_slashed=sum(s.stake_slashed for s in sellers),
+             learned_swap_q={k: v.learned_q() for k, v in strat.items()},
+             swap_q_history={k: list(v.history) for k, v in strat.items()},
+             swap_gain_analytic={k: v.gain() for k, v in strat.items()},
+             swap_cost_saving={k: v.cost_saving for k, v in strat.items()})
+    if trust is not None:
+        m["trust_q_hat"] = {s.id: trust.q_hat(s.id) for s in sellers}
     m["gateway"] = gateway.stats()
     return m
 
@@ -177,7 +251,9 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
 def build_backends(cfg: Dict, sellers_cfg_backends, cache: Optional[OutputCache]) -> Dict:
     out = {"mock": MockLLM(cfg["market"].get("mock_confidence"))}
     if "local_hf" in sellers_cfg_backends:
-        out["local_hf"] = CachedLocalBackend(cache, int(local_cfg(cfg).get("max_new_tokens", 256)))
+        lc = local_cfg(cfg)
+        out["local_hf"] = CachedLocalBackend(cache, int(lc.get("max_new_tokens", 256)),
+                                             int(lc.get("long_max_new_tokens", lc.get("max_new_tokens", 256))))
     if "real" in sellers_cfg_backends:
         out["real"] = make_backend("real", cfg)
     return out
@@ -194,7 +270,8 @@ def prepare(cfg: Dict, backend_override: Optional[str] = None, cache_path: Optio
     cache = OutputCache(cache_path or cfg["run"].get("cache_file", "cache/llm_outputs.jsonl"))
     report = precompute(cfg, cache, pool, runner_factory=runner_factory, log=log)
     mnt = int(local_cfg(cfg).get("max_new_tokens", 256))
-    stats = {m: model_stats(cache, pool, m, mnt) for m in local_models(cfg)}
+    lmnt = int(local_cfg(cfg).get("long_max_new_tokens", mnt))
+    stats = {m: model_stats(cache, pool, m, mnt, lmnt) for m in local_models(cfg)}
     return pool, cache, {m: s for m, s in stats.items() if s}, report
 
 
@@ -257,7 +334,7 @@ def run_all(cfg: Dict, seeds: Optional[List[int]] = None, backend_name: Optional
         "market_sim_s": round(time.time() - t1, 3),
         "elapsed_s": round(time.time() - t0, 3),
         "reputation": {m: {"source": rep.source(m), "tokens_mean": rep.tokens_mean(m),
-                           "accuracy": {d: rep.accuracy(m, d) for d in (1, 2, 3)}}
+                           "accuracy": {d: rep.accuracy(m, d) for d in sorted({t.difficulty for t in pool})}}
                        for m in sorted({s["claimed_model"] for s in cfg["sellers"]})},
         "model_stats": stats,
         "combos": combos,
@@ -267,6 +344,16 @@ def run_all(cfg: Dict, seeds: Optional[List[int]] = None, backend_name: Optional
     with open(os.path.join(results_dir, "summary.md"), "w", encoding="utf-8") as fh:
         fh.write(render_markdown(summary, cfg, model_md))
     return summary
+
+
+REAL_VS_SIM = [
+    "## What is real vs simulated", "",
+    "- **Real**: Qwen2.5-1.5B / 0.5B-Instruct outputs (local CPU inference, cached), their correctness against gold, "
+    "reasoning-token counts and measured generation times on CPU; the GSM8K / MATH-500 long-task problems and golds.",
+    "- **Simulated**: prices, serving costs (and the swap cost gap), latency noise and corridor penalties/fees, "
+    "jurisdictions and the (simplified, NOT legal advice) compliance rules, buyers / budgets / sensitivities / "
+    "consent, audits and swap detection (identity check succeeding with prob d), penalties / stake slashing / "
+    "delisting, the strategic seller's learning rule, the mock seller (seller_br, MockLLM) and its confidence.", ""]
 
 
 def _f(a: Dict, k: str, fmt: str = "{:.3f}") -> str:
@@ -343,15 +430,18 @@ def render_markdown(summary: Dict, cfg: Dict, model_md: str = "") -> str:
             cells = [f"{d[a]['mean']:.3f} ± {d[a]['std']:.3f}" if a in d else "0" for a in agents]
             L.append(f"| {name} | " + " | ".join(cells) + " |")
 
+    diffs = sorted(next(iter(summary["reputation"].values()))["accuracy"]) if summary["reputation"] else []
     L += ["", "## Model reputation used for routing (by CLAIMED model)", "",
-          "| claimed model | source | advertised tokens | acc d1 | acc d2 | acc d3 |", "|---|---|---|---|---|---|"]
+          "| claimed model | source | advertised tokens | " + " | ".join(f"acc d{d}" for d in diffs) + " |",
+          "|---|---|---|" + "---|" * len(diffs)]
     for m, r in summary["reputation"].items():
         L.append(f"| {m} | {r['source']} | {r['tokens_mean']:.1f} | " +
-                 " | ".join(f"{r['accuracy'][d]:.3f}" for d in (1, 2, 3)) + " |")
+                 " | ".join(f"{r['accuracy'][d]:.3f}" for d in diffs) + " |")
 
     L += ["", "## Measured local model accuracy", "", model_md.split("\n", 2)[-1] if model_md else "_n/a_"]
 
     swap = [s for s in cfg["sellers"] if s["claimed_model"] != s["actual_model"]]
+    L += REAL_VS_SIM
     L += ["## Metric definitions", "",
           "- task accuracy = share of tasks whose FINAL portfolio answer equals gold (tasks with no answer count as wrong).",
           "- total cost = Σ actual_cost over purchases (actual_cost = price × actual reasoning tokens / 1000 × (1 + corridor fee rate)); "

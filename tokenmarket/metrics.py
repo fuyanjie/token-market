@@ -32,7 +32,7 @@ def run_metrics(records: List[Dict], buyers, seller_ids: List[str], rep, policy:
     by_task = defaultdict(list)
     for r in served:
         by_task[r["task_id"]].append(r["latency_ms"])
-    agg = sum if policy.startswith("cascade") else max
+    agg = sum if policy.startswith(("cascade", "audited")) else max
     task_lat = [agg(v) for v in by_task.values()]
 
     buyer_surplus = {b.id: 0.0 for b in buyers}
@@ -42,7 +42,7 @@ def run_metrics(records: List[Dict], buyers, seller_ids: List[str], rep, policy:
     viol_by_rule, blocked_by_rule = defaultdict(int), defaultdict(int)
     for r in records:
         buyer_surplus[r["buyer_id"]] += r["buyer_surplus"]
-        spend[r["buyer_id"]] += r["actual_cost"]
+        spend[r["buyer_id"]] += r["actual_cost"] + r.get("audit_cost", 0.0)
         if r["status"] == "allowed":
             seller_profit[r["seller_id"]] += r["seller_profit"]
             seller_correct[r["seller_id"]].append(1.0 if r["correct"] else 0.0)
@@ -55,6 +55,8 @@ def run_metrics(records: List[Dict], buyers, seller_ids: List[str], rep, policy:
     exp_claimed = [rep.accuracy(r["claimed_model"], r["difficulty"]) for r in swapped]
     acc_swapped = _mean(1.0 if r["correct"] else 0.0 for r in swapped)
     total_cost = sum(r["actual_cost"] for r in served)
+    audited = [r for r in served if r["audited"]]
+    audit_cost = sum(r["audit_cost"] for r in records)
     total_exp = sum(r["expected_cost"] for r in served)
     n_bv = sum(1 for r in served if r["budget_overrun"])
     return {
@@ -70,6 +72,12 @@ def run_metrics(records: List[Dict], buyers, seller_ids: List[str], rep, policy:
         "total_cost": total_cost,
         "total_fee": sum(r["fee"] for r in served),
         "mean_cost_per_task": total_cost / n_tasks if n_tasks else 0.0,
+        "total_audit_cost": audit_cost,
+        "total_cost_incl_audit": total_cost + audit_cost,
+        "mean_cost_per_task_incl_audit": (total_cost + audit_cost) / n_tasks if n_tasks else 0.0,
+        "n_audits": len(audited),
+        "swaps_detected": sum(1 for r in audited if r["swap_detected"]),
+        "swaps_served": len(swapped),
         "mean_price_per_1k": _mean(r["price_per_1k"] for r in served),
         "total_expected_cost": total_exp,
         "total_cost_gap": total_cost - total_exp,
@@ -97,6 +105,12 @@ def run_metrics(records: List[Dict], buyers, seller_ids: List[str], rep, policy:
         "seller_profit": seller_profit,
         "budget_utilisation": {b: spend[b] / budgets[b] if budgets[b] else 0.0 for b in budgets},
         "seller_accuracy": {s: _mean(v) for s, v in seller_correct.items()},
+        "seller_purchases": {s: sum(1 for r in served if r["seller_id"] == s) for s in seller_ids},
+        "seller_swap_rate": {s: _mean(1.0 if r["claimed_model"] != r["actual_model"] else 0.0
+                                      for r in served if r["seller_id"] == s) for s in seller_ids},
+        "overrun_purchases": sum(1 for r in served if r["cost_overrun"] > 1e-12),
+        "max_rel_cost_overrun": max((r["actual_cost"] / r["expected_cost"] - 1.0 for r in served
+                                     if r["expected_cost"] > 0), default=0.0),
     }
 
 
@@ -113,6 +127,9 @@ def aggregate(per_seed: List[Dict]) -> Dict:
         keys += [k for k in m if k not in keys]
     for k in keys:
         vals = [m.get(k) for m in per_seed]
+        if any(isinstance(v, (list, str)) for v in vals) or \
+                any(isinstance(vv, list) for v in vals if isinstance(v, dict) for vv in v.values()):
+            continue                     # per-epoch histories etc. stay in per_seed only
         if any(isinstance(v, dict) for v in vals):
             sub = sorted({kk for v in vals if isinstance(v, dict) for kk in v})
             out[k] = {kk: _ms([(v or {}).get(kk, 0) for v in vals]) for kk in sub}

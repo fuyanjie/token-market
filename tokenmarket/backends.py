@@ -22,8 +22,24 @@ PROMPT_V2 = ("Solve the following problem. Reason briefly in a few short steps, 
              "line of the form \"Answer: <number>\".\n\nProblem: {q}")
 
 
+# v3 prompt for LONG tasks (GSM8K / MATH-500 subset); generated with backends.local_hf.long_max_new_tokens.
+PROMPT_LONG = ("Solve the following math problem step by step. At the end, write the final answer as a single "
+               "integer on its own line in the form \"Answer: <integer>\".\n\nProblem: {q}")
+
+
 def render_prompt(question: str) -> str:
     return PROMPT_V2.format(q=question)
+
+
+def render_task_prompt(task) -> str:
+    """Prompt for a pool task: v2 short prompt for synthetic tasks, PROMPT_LONG for long math tasks."""
+    if getattr(task, "source", "synthetic") != "synthetic":
+        return PROMPT_LONG.format(q=task.question)
+    return render_prompt(task.question)
+
+
+def task_max_new_tokens(task, max_new_tokens: int, long_max_new_tokens: int) -> int:
+    return int(long_max_new_tokens) if getattr(task, "source", "synthetic") != "synthetic" else int(max_new_tokens)
 
 
 def prompt_sha256(prompt: str) -> str:
@@ -128,9 +144,10 @@ class LocalHFRunner:
     """Batched greedy generation with a local HF causal LM on CPU (fp32, left padding, chat template).
     transformers / torch are imported lazily so mock-only runs need neither."""
 
-    def __init__(self, model_name: str, num_threads: int = 8):
+    def __init__(self, model_name: str, num_threads: int = 8, dtype: str = "float32"):
         self.model_name = model_name
         self.num_threads = num_threads
+        self.dtype = dtype
         self._tok = None
         self._model = None
 
@@ -142,7 +159,7 @@ class LocalHFRunner:
             self._tok = AutoTokenizer.from_pretrained(self.model_name, padding_side="left")
             if self._tok.pad_token is None:
                 self._tok.pad_token = self._tok.eos_token
-            self._model = AutoModelForCausalLM.from_pretrained(self.model_name, dtype=torch.float32)
+            self._model = AutoModelForCausalLM.from_pretrained(self.model_name, dtype=getattr(torch, self.dtype))
             self._model.eval()
         return self
 
@@ -180,18 +197,20 @@ class CachedLocalBackend(Backend):
     an error (run the precompute stage first)."""
     name = "local_hf"
 
-    def __init__(self, cache, max_new_tokens: int):
+    def __init__(self, cache, max_new_tokens: int, long_max_new_tokens: Optional[int] = None):
         self.cache = cache
         self.max_new_tokens = int(max_new_tokens)
+        self.long_max_new_tokens = int(long_max_new_tokens or max_new_tokens)
 
     def solve(self, task, model_name, model_profile, effort, rng):
-        rec = self.cache.get(model_name, render_prompt(task.question), self.max_new_tokens)
+        mnt = task_max_new_tokens(task, self.max_new_tokens, self.long_max_new_tokens)
+        rec = self.cache.get(model_name, render_task_prompt(task), mnt)
         if rec is None:
             raise KeyError(f"no cached output for {model_name} on {task.task_id}; run --precompute-only first")
         ans = rec["parsed_answer"]
         return BackendResult(ans, int(rec["reasoning_tokens"]), rec["raw_text"],
                              confidence=format_confidence(rec["raw_text"], ans, int(rec["reasoning_tokens"]),
-                                                          self.max_new_tokens),
+                                                          mnt),
                              gen_time_s=float(rec["gen_time_s"]))
 
 
@@ -232,7 +251,9 @@ def make_backend(name: str, cfg: Dict, cache=None) -> Backend:
     if name == "local_hf":
         if cache is None:
             raise ValueError("local_hf backend needs an OutputCache")
-        return CachedLocalBackend(cache, int(bcfg.get("local_hf", {}).get("max_new_tokens", 256)))
+        lc = bcfg.get("local_hf", {})
+        return CachedLocalBackend(cache, int(lc.get("max_new_tokens", 256)),
+                                  int(lc.get("long_max_new_tokens", lc.get("max_new_tokens", 256))))
     if name == "real":
         r = bcfg["real"]
         return RealLLMBackend(r["base_url"], r["api_key_env"], r.get("model_map", {}), r.get("timeout_s", 60))

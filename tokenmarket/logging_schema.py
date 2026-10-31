@@ -1,4 +1,4 @@
-"""Unified transaction log schema (v2).
+"""Unified transaction log schema (v2 + v3 audit fields).
 
 Exactly ONE JSONL line per transaction = one individual seller purchase attempt (allowed or blocked), or one
 `unfilled` line for a task where no purchase was made. Inside a cascade / vote portfolio every seller purchase is
@@ -58,6 +58,11 @@ SCHEMA: Dict[str, tuple] = {
     "buyer_surplus": (NUM, False),
     "seller_profit": (NUM, False),
     "verification_status": (str, False),
+    # v3: buyer audits / strategic model-swap seller
+    "audited": (bool, False),           # this purchase was audited (identity check) by the buyer
+    "audit_cost": (NUM, False),         # audit fee charged to the buyer budget (0 if not audited)
+    "swap_detected": (bool, True),      # audit outcome; null if not audited
+    "swap_prob": (NUM, True),           # seller's current swap probability q (0 honest; null if unfilled)
 }
 FIELDS: List[str] = list(SCHEMA)
 

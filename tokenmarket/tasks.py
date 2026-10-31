@@ -20,6 +20,11 @@ class Task:
     buyer_id: str = ""
     sensitivity: str = "public"
     flags: List[str] = field(default_factory=list)
+    source: str = "synthetic"        # synthetic | gsm8k | math500 (v3)
+
+    @property
+    def is_long(self) -> bool:
+        return self.source != "synthetic"
 
 
 def _arithmetic(rng: random.Random, d: int):
@@ -117,8 +122,22 @@ def generate_stream(cfg: Dict, buyers, n_tasks: int, seed: int) -> List[Task]:
 # ---------------------------------------------------------------------------
 
 def build_task_pool(cfg: Dict) -> List[Task]:
+    """task_pool.kind: synthetic (v2 default) | long_math (data/long_tasks.jsonl) | mixed (both)."""
+    kind = pool_kind(cfg)
+    pcfg = cfg.get("task_pool", {})
+    pcfg = {} if isinstance(pcfg, str) else pcfg
+    out: List[Task] = []
+    if kind in ("synthetic", "mixed"):
+        out += build_synthetic_pool(cfg)
+    if kind in ("long_math", "mixed"):
+        out += load_long_tasks(pcfg.get("long_path", "data/long_tasks.jsonl"))
+    return out
+
+
+def build_synthetic_pool(cfg: Dict) -> List[Task]:
     """Balanced pool: types cycle, difficulty cycles 1..3 -> ~equal cells per (type, difficulty)."""
     pcfg = cfg.get("task_pool", {})
+    pcfg = {} if isinstance(pcfg, str) else pcfg
     size = int(pcfg.get("size", 80))
     rng = random.Random(f"task-pool-{pcfg.get('task_seed', 1234)}")
     types = cfg.get("tasks", {}).get("types", list(GENERATORS))
@@ -145,9 +164,79 @@ def sample_run_tasks(pool: List[Task], buyers, n_tasks: int, seed: int) -> List[
     for i, p in enumerate(order[:n_tasks]):
         b = buyers[i % len(buyers)]
         t = Task(task_id=f"t{i:04d}_{p.task_id}", task_type=p.task_type, difficulty=p.difficulty,
-                 question=p.question, gold=p.gold, buyer_id=b.id)
+                 question=p.question, gold=p.gold, buyer_id=b.id, source=p.source)
         t.sensitivity = _weighted(rng, b.sensitivity_mix)
         if rng.random() < b.consent_rate:
             t.flags.append("specific_consent")
         out.append(t)
     return out
+
+
+# ---------------------------------------------------------------------------
+# v3: LONG reasoning tasks (real public benchmarks, MIT licensed - see LICENSES/DATA_LICENSES.md).
+# A fixed subset (data/long_tasks.jsonl) of the hardest GSM8K test items + MATH-500 items with plain integer
+# answers. Long tasks get difficulty 4 (gsm8k_hard) / 5 (math500_L3+) so that reputation-by-difficulty,
+# PILOT's one-hot context and the mock profile can tell them apart from the synthetic pool (difficulty 1-3).
+# ---------------------------------------------------------------------------
+import json as _json
+import re as _re
+
+LONG_SOURCES = {"gsm8k": 4, "math500": 5}           # source -> difficulty level used in the market
+_INT_RE = _re.compile(r"^-?\d+$")
+TASK_POOL_KINDS = ("synthetic", "long_math", "mixed")
+
+
+def gsm8k_gold(answer_field: str) -> int:
+    """GSM8K reference solutions end with '#### <number>' (may contain commas)."""
+    g = answer_field.split("####")[-1].strip().replace(",", "")
+    return int(g)
+
+
+def gsm8k_steps(answer_field: str) -> int:
+    """Number of reasoning lines before the '####' gold line."""
+    return sum(1 for ln in answer_field.split("####")[0].splitlines() if ln.strip())
+
+
+def build_long_subset(gsm8k_path: str, math500_path: str, n_gsm8k: int = 28, n_math: int = 20,
+                      seed: int = 2024, min_level: int = 3) -> List[Dict]:
+    """Deterministic long-task subset.
+    GSM8K: rank test items by (#solution steps, solution length) descending, keep the top 3*n_gsm8k as the
+    'hardest' candidates and draw n_gsm8k of them with random.Random(seed).
+    MATH-500: keep items whose answer matches ^-?\\d+$ and level >= min_level, draw n_math with the same seed."""
+    rng = random.Random(f"long-subset-{seed}")
+    with open(gsm8k_path, encoding="utf-8") as fh:
+        gsm = [_json.loads(l) for l in fh if l.strip()]
+    ranked = sorted(range(len(gsm)), key=lambda i: (-gsm8k_steps(gsm[i]["answer"]), -len(gsm[i]["answer"]), i))
+    pick = sorted(rng.sample(ranked[:3 * n_gsm8k], n_gsm8k))
+    out = [{"id": f"gsm8k_{i:04d}", "source": "gsm8k", "index": i, "level": gsm8k_steps(gsm[i]["answer"]),
+            "question": gsm[i]["question"], "gold": gsm8k_gold(gsm[i]["answer"])} for i in pick]
+    with open(math500_path, encoding="utf-8") as fh:
+        mth = [_json.loads(l) for l in fh if l.strip()]
+    ok = [i for i, r in enumerate(mth) if _INT_RE.match(str(r["answer"]).strip()) and int(r["level"]) >= min_level]
+    for i in sorted(rng.sample(ok, min(n_math, len(ok)))):
+        r = mth[i]
+        out.append({"id": f"math500_{i:03d}", "source": "math500", "index": i, "level": int(r["level"]),
+                    "unique_id": r.get("unique_id"), "subject": r.get("subject"),
+                    "question": r["problem"], "gold": int(str(r["answer"]).strip())})
+    return out
+
+
+def load_long_tasks(path: str) -> List[Task]:
+    """data/long_tasks.jsonl -> pool Tasks (task_type = source, difficulty 4 | 5)."""
+    out = []
+    with open(path, encoding="utf-8") as fh:
+        for line in fh:
+            if not line.strip():
+                continue
+            r = _json.loads(line)
+            out.append(Task(task_id=r["id"], task_type=r["source"], difficulty=LONG_SOURCES[r["source"]],
+                            question=r["question"], gold=int(r["gold"]), source=r["source"]))
+    return out
+
+
+def pool_kind(cfg: Dict) -> str:
+    tp = cfg.get("task_pool", {})
+    kind = tp if isinstance(tp, str) else tp.get("kind", "synthetic")
+    if kind not in TASK_POOL_KINDS:
+        raise ValueError(f"unknown task_pool kind {kind}")
+    return kind

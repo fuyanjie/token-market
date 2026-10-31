@@ -1,0 +1,17 @@
+# token-market v3 — market on LONG real math tasks (data/long_tasks.jsonl: 28 GSM8K-hard + 20 MATH-500 L3+).
+# Everything not listed here is inherited from default.yaml (deep merge; lists replace).
+extends: default.yaml
+
+run:
+  n_tasks: 144              # 3 permutations of the 48-item long pool
+  results_dir: results/long_math
+
+task_pool:
+  kind: long_math
+
+market:
+  # long answers are ~3x longer than the synthetic ones: scale every buyer budget so that the same
+  # policies are affordable (the tight-budget variant in run_experiments.py lowers this until the budget binds)
+  budget_multiplier: 3.0
+  policies: [single_cheapest_compliant, single_best_compliant, cascade_compliant, vote_k_compliant,
+             compliance_unaware_cheapest, pilot_compliant, stageroute_compliant, audited_compliance_cascade]

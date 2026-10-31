@@ -1,0 +1,767 @@
+{
+ "seeds": [
+  0,
+  1,
+  2
+ ],
+ "variants": {
+  "normal": {
+   "budget_multiplier": 3.0,
+   "results_dir": "results/long_math",
+   "policies": {
+    "single_cheapest_compliant": {
+     "task_accuracy": {
+      "mean": 0.28935185185185186,
+      "std": 0.05118829719327773
+     },
+     "total_cost": {
+      "mean": 3.9985734666666666,
+      "std": 0.39317325426383387
+     },
+     "total_expected_cost": {
+      "mean": 3.263042577777778,
+      "std": 0.3625330512723268
+     },
+     "total_cost_gap": {
+      "mean": 0.735530888888889,
+      "std": 0.04415164129488975
+     },
+     "cost_gap_rel": {
+      "mean": 0.22657497731239962,
+      "std": 0.018137935402335797
+     },
+     "budget_violations": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "buyers_over_budget": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "budget_exhausted_tasks": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "overruns": {
+      "purchases": 432,
+      "overrun_purchases": 394,
+      "rel_overrun_mean": 0.7208418253329756,
+      "rel_overrun_p95": 1.5234999999999996,
+      "rel_overrun_max": 2.19,
+      "budget_violations": 0,
+      "max_budget_overshoot": 0.0
+     }
+    },
+    "single_best_compliant": {
+     "task_accuracy": {
+      "mean": 0.19212962962962962,
+      "std": 0.010607814108694078
+     },
+     "total_cost": {
+      "mean": 10.524937066666666,
+      "std": 0.07044869271784494
+     },
+     "total_expected_cost": {
+      "mean": 10.219893777777777,
+      "std": 0.06011683163993034
+     },
+     "total_cost_gap": {
+      "mean": 0.3050432888888892,
+      "std": 0.06933840778332029
+     },
+     "cost_gap_rel": {
+      "mean": 0.029859660056759208,
+      "std": 0.00683679455076864
+     },
+     "budget_violations": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "buyers_over_budget": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "budget_exhausted_tasks": {
+      "mean": 5.333333333333333,
+      "std": 0.5773502691896257
+     },
+     "overruns": {
+      "purchases": 416,
+      "overrun_purchases": 245,
+      "rel_overrun_mean": 0.07151898709697382,
+      "rel_overrun_p95": 0.23572003218020932,
+      "rel_overrun_max": 1.7299999999999995,
+      "budget_violations": 0,
+      "max_budget_overshoot": 0.0
+     }
+    },
+    "cascade_compliant": {
+     "task_accuracy": {
+      "mean": 0.3634259259259259,
+      "std": 0.058239563080597814
+     },
+     "total_cost": {
+      "mean": 15.748104266666667,
+      "std": 0.7381524321333178
+     },
+     "total_expected_cost": {
+      "mean": 14.889310444444446,
+      "std": 0.7240235595685772
+     },
+     "total_cost_gap": {
+      "mean": 0.8587938222222219,
+      "std": 0.026657971102619204
+     },
+     "cost_gap_rel": {
+      "mean": 0.057741755678101137,
+      "std": 0.0024923261821597396
+     },
+     "budget_violations": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "buyers_over_budget": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "budget_exhausted_tasks": {
+      "mean": 0.3333333333333333,
+      "std": 0.5773502691896257
+     },
+     "overruns": {
+      "purchases": 866,
+      "overrun_purchases": 626,
+      "rel_overrun_mean": 0.36445165443806327,
+      "rel_overrun_p95": 1.3399999999999999,
+      "rel_overrun_max": 2.19,
+      "budget_violations": 0,
+      "max_budget_overshoot": 0.0
+     }
+    },
+    "vote_k_compliant": {
+     "task_accuracy": {
+      "mean": 0.2199074074074074,
+      "std": 0.010607814108694064
+     },
+     "total_cost": {
+      "mean": 18.243850733333336,
+      "std": 0.1940621779534942
+     },
+     "total_expected_cost": {
+      "mean": 17.456273333333332,
+      "std": 0.18374937765133603
+     },
+     "total_cost_gap": {
+      "mean": 0.7875774000000012,
+      "std": 0.0719234113050832
+     },
+     "cost_gap_rel": {
+      "mean": 0.04512178887316284,
+      "std": 0.004189192853894155
+     },
+     "budget_violations": {
+      "mean": 0.3333333333333333,
+      "std": 0.5773502691896257
+     },
+     "buyers_over_budget": {
+      "mean": 0.3333333333333333,
+      "std": 0.5773502691896257
+     },
+     "budget_exhausted_tasks": {
+      "mean": 4.666666666666667,
+      "std": 2.516611478423583
+     },
+     "overruns": {
+      "purchases": 950,
+      "overrun_purchases": 660,
+      "rel_overrun_mean": 0.318101308379557,
+      "rel_overrun_p95": 1.3154999999999994,
+      "rel_overrun_max": 1.9899999999999993,
+      "budget_violations": 1,
+      "max_budget_overshoot": 0.0044615999999999545
+     }
+    },
+    "compliance_unaware_cheapest": {
+     "task_accuracy": {
+      "mean": 0.26851851851851855,
+      "std": 0.021215628217388156
+     },
+     "total_cost": {
+      "mean": 1.707224,
+      "std": 0.003412596214028328
+     },
+     "total_expected_cost": {
+      "mean": 0.88992,
+      "std": 0.0
+     },
+     "total_cost_gap": {
+      "mean": 0.8173039999999999,
+      "std": 0.003412596214028328
+     },
+     "cost_gap_rel": {
+      "mean": 0.9184016540812655,
+      "std": 0.003834722462725113
+     },
+     "budget_violations": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "buyers_over_budget": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "budget_exhausted_tasks": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "overruns": {
+      "purchases": 432,
+      "overrun_purchases": 429,
+      "rel_overrun_mean": 0.918634259259259,
+      "rel_overrun_p95": 1.5199999999999998,
+      "rel_overrun_max": 2.05,
+      "budget_violations": 0,
+      "max_budget_overshoot": 0.0
+     }
+    },
+    "pilot_compliant": {
+     "task_accuracy": {
+      "mean": 0.3773148148148148,
+      "std": 0.03563612110727004
+     },
+     "total_cost": {
+      "mean": 9.054608400000001,
+      "std": 0.822168365438904
+     },
+     "total_expected_cost": {
+      "mean": 8.787484888888889,
+      "std": 0.7821353752555499
+     },
+     "total_cost_gap": {
+      "mean": 0.26712351111111116,
+      "std": 0.11411933128676809
+     },
+     "cost_gap_rel": {
+      "mean": 0.030329843812541567,
+      "std": 0.011898528024673597
+     },
+     "budget_violations": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "buyers_over_budget": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "budget_exhausted_tasks": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "overruns": {
+      "purchases": 432,
+      "overrun_purchases": 294,
+      "rel_overrun_mean": 0.2587558475611572,
+      "rel_overrun_p95": 1.2244999999999995,
+      "rel_overrun_max": 1.7799999999999998,
+      "budget_violations": 0,
+      "max_budget_overshoot": 0.0
+     }
+    },
+    "stageroute_compliant": {
+     "task_accuracy": {
+      "mean": 0.3796296296296296,
+      "std": 0.039487782660259214
+     },
+     "total_cost": {
+      "mean": 8.639161333333334,
+      "std": 0.9139468930959246
+     },
+     "total_expected_cost": {
+      "mean": 8.374113733333333,
+      "std": 0.9419541716382974
+     },
+     "total_cost_gap": {
+      "mean": 0.2650476000000002,
+      "std": 0.14048475513887887
+     },
+     "cost_gap_rel": {
+      "mean": 0.032344261815408136,
+      "std": 0.018166571285320347
+     },
+     "budget_violations": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "buyers_over_budget": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "budget_exhausted_tasks": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "overruns": {
+      "purchases": 432,
+      "overrun_purchases": 300,
+      "rel_overrun_mean": 0.29398641652513324,
+      "rel_overrun_p95": 1.2344999999999995,
+      "rel_overrun_max": 1.92,
+      "budget_violations": 0,
+      "max_budget_overshoot": 0.0
+     }
+    },
+    "audited_compliance_cascade": {
+     "task_accuracy": {
+      "mean": 0.36574074074074076,
+      "std": 0.056559220939215823
+     },
+     "total_cost": {
+      "mean": 11.885300666666666,
+      "std": 0.8639963010766272
+     },
+     "total_expected_cost": {
+      "mean": 11.259841644444444,
+      "std": 0.8369008753393001
+     },
+     "total_cost_gap": {
+      "mean": 0.6254590222222228,
+      "std": 0.07780135129572885
+     },
+     "cost_gap_rel": {
+      "mean": 0.055657941112681124,
+      "std": 0.007152470923816538
+     },
+     "budget_violations": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "buyers_over_budget": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "budget_exhausted_tasks": {
+      "mean": 0.0,
+      "std": 0.0
+     },
+     "overruns": {
+      "purchases": 724,
+      "overrun_purchases": 533,
+      "rel_overrun_mean": 0.42443735748923245,
+      "rel_overrun_p95": 1.3699999999999997,
+      "rel_overrun_max": 2.19,
+      "budget_violations": 0,
+      "max_budget_overshoot": 0.0
+     }
+    }
+   }
+  },
+  "tight": {
+   "budget_multiplier": 0.5,
+   "results_dir": "results/long_math_tight",
+   "policies": {
+    "single_cheapest_compliant": {
+     "task_accuracy": {
+      "mean": 0.26851851851851855,
+      "std": 0.05613127617121361
+     },
+     "total_cost": {
+      "mean": 3.4985869333333333,
+      "std": 0.028878043206791677
+     },
+     "total_expected_cost": {
+      "mean": 2.809327111111111,
+      "std": 0.05738053556007889
+     },
+     "total_cost_gap": {
+      "mean": 0.6892598222222223,
+      "std": 0.02853756979502513
+     },
+     "cost_gap_rel": {
+      "mean": 0.24555251980614548,
+      "std": 0.015098576183258942
+     },
+     "budget_violations": {
+      "mean": 1.0,
+      "std": 0.0
+     },
+     "buyers_over_budget": {
+      "mean": 1.0,
+      "std": 0.0
+     },
+     "budget_exhausted_tasks": {
+      "mean": 8.666666666666666,
+      "std": 5.131601439446884
+     },
+     "overruns": {
+      "purchases": 406,
+      "overrun_purchases": 373,
+      "rel_overrun_mean": 0.7439038120866011,
+      "rel_overrun_p95": 1.5325,
+      "rel_overrun_max": 2.19,
+      "budget_violations": 3,
+      "max_budget_overshoot": 0.0019711999999999508
+     }
+    },
+    "single_best_compliant": {
+     "task_accuracy": {
+      "mean": 0.11342592592592593,
+      "std": 0.017476468600163775
+     },
+     "total_cost": {
+      "mean": 5.8535705333333325,
+      "std": 0.07166987721193159
+     },
+     "total_expected_cost": {
+      "mean": 5.655166266666666,
+      "std": 0.08756120459665763
+     },
+     "total_cost_gap": {
+      "mean": 0.19840426666666686,
+      "std": 0.0832020101937711
+     },
+     "cost_gap_rel": {
+      "mean": 0.035186596455329636,
+      "std": 0.015029101555684373
+     },
+     "budget_violations": {
+      "mean": 1.6666666666666667,
+      "std": 1.1547005383792515
+     },
+     "buyers_over_budget": {
+      "mean": 1.6666666666666667,
+      "std": 1.1547005383792515
+     },
+     "budget_exhausted_tasks": {
+      "mean": 66.0,
+      "std": 1.0
+     },
+     "overruns": {
+      "purchases": 234,
+      "overrun_purchases": 143,
+      "rel_overrun_mean": 0.09381249527267227,
+      "rel_overrun_p95": 0.7029999999999988,
+      "rel_overrun_max": 1.7299999999999995,
+      "budget_violations": 5,
+      "max_budget_overshoot": 0.018180800000000108
+     }
+    },
+    "cascade_compliant": {
+     "task_accuracy": {
+      "mean": 0.1574074074074074,
+      "std": 0.05303907054347038
+     },
+     "total_cost": {
+      "mean": 5.988881800000001,
+      "std": 0.04660432661159232
+     },
+     "total_expected_cost": {
+      "mean": 5.550948622222222,
+      "std": 0.06682526300419074
+     },
+     "total_cost_gap": {
+      "mean": 0.4379331777777778,
+      "std": 0.08205728153767065
+     },
+     "cost_gap_rel": {
+      "mean": 0.07899782678485383,
+      "std": 0.015476667380778342
+     },
+     "budget_violations": {
+      "mean": 3.0,
+      "std": 1.7320508075688772
+     },
+     "buyers_over_budget": {
+      "mean": 3.0,
+      "std": 1.7320508075688772
+     },
+     "budget_exhausted_tasks": {
+      "mean": 71.66666666666667,
+      "std": 7.505553499465135
+     },
+     "overruns": {
+      "purchases": 375,
+      "overrun_purchases": 290,
+      "rel_overrun_mean": 0.4637877607937784,
+      "rel_overrun_p95": 1.3859999999999997,
+      "rel_overrun_max": 1.819999999999999,
+      "budget_violations": 9,
+      "max_budget_overshoot": 0.01794439999999997
+     }
+    },
+    "vote_k_compliant": {
+     "task_accuracy": {
+      "mean": 0.11805555555555554,
+      "std": 0.0069444444444444475
+     },
+     "total_cost": {
+      "mean": 5.978795533333333,
+      "std": 0.031101876310173467
+     },
+     "total_expected_cost": {
+      "mean": 5.6087587999999995,
+      "std": 0.06639262355667068
+     },
+     "total_cost_gap": {
+      "mean": 0.3700367333333334,
+      "std": 0.043838462160730354
+     },
+     "cost_gap_rel": {
+      "mean": 0.06603824401587362,
+      "std": 0.008599534329310656
+     },
+     "budget_violations": {
+      "mean": 2.6666666666666665,
+      "std": 1.1547005383792515
+     },
+     "buyers_over_budget": {
+      "mean": 2.6666666666666665,
+      "std": 1.1547005383792515
+     },
+     "budget_exhausted_tasks": {
+      "mean": 76.33333333333333,
+      "std": 2.516611478423583
+     },
+     "overruns": {
+      "purchases": 367,
+      "overrun_purchases": 276,
+      "rel_overrun_mean": 0.43532720564863503,
+      "rel_overrun_p95": 1.3769999999999993,
+      "rel_overrun_max": 2.05,
+      "budget_violations": 8,
+      "max_budget_overshoot": 0.010119800000000234
+     }
+    },
+    "compliance_unaware_cheapest": {
+     "task_accuracy": {
+      "mean": 0.26157407407407407,
+      "std": 0.02232326565044666
+     },
+     "total_cost": {
+      "mean": 1.6691348,
+      "std": 0.00963506566454012
+     },
+     "total_expected_cost": {
+      "mean": 0.8712000000000001,
+      "std": 0.0
+     },
+     "total_cost_gap": {
+      "mean": 0.7979347999999997,
+      "std": 0.00963506566454012
+     },
+     "cost_gap_rel": {
+      "mean": 0.9159031221303945,
+      "std": 0.011059533591069952
+     },
+     "budget_violations": {
+      "mean": 1.0,
+      "std": 0.0
+     },
+     "buyers_over_budget": {
+      "mean": 1.0,
+      "std": 0.0
+     },
+     "budget_exhausted_tasks": {
+      "mean": 3.0,
+      "std": 0.0
+     },
+     "overruns": {
+      "purchases": 423,
+      "overrun_purchases": 420,
+      "rel_overrun_mean": 0.9159101654846334,
+      "rel_overrun_p95": 1.52,
+      "rel_overrun_max": 2.05,
+      "budget_violations": 3,
+      "max_budget_overshoot": 0.0049664000000000375
+     }
+    },
+    "pilot_compliant": {
+     "task_accuracy": {
+      "mean": 0.24074074074074073,
+      "std": 0.010607814108694078
+     },
+     "total_cost": {
+      "mean": 5.5087534666666675,
+      "std": 0.17167147395142085
+     },
+     "total_expected_cost": {
+      "mean": 5.0545867555555555,
+      "std": 0.07190367913446821
+     },
+     "total_cost_gap": {
+      "mean": 0.4541667111111112,
+      "std": 0.1079351797425832
+     },
+     "cost_gap_rel": {
+      "mean": 0.08969819338012108,
+      "std": 0.020368902097242108
+     },
+     "budget_violations": {
+      "mean": 0.6666666666666666,
+      "std": 0.5773502691896257
+     },
+     "buyers_over_budget": {
+      "mean": 0.6666666666666666,
+      "std": 0.5773502691896257
+     },
+     "budget_exhausted_tasks": {
+      "mean": 24.333333333333332,
+      "std": 4.725815626252609
+     },
+     "overruns": {
+      "purchases": 359,
+      "overrun_purchases": 285,
+      "rel_overrun_mean": 0.48043633764120847,
+      "rel_overrun_p95": 1.3609999999999995,
+      "rel_overrun_max": 1.75,
+      "budget_violations": 2,
+      "max_budget_overshoot": 0.0031519999999999326
+     }
+    },
+    "stageroute_compliant": {
+     "task_accuracy": {
+      "mean": 0.25,
+      "std": 0.03182344232608222
+     },
+     "total_cost": {
+      "mean": 5.620091333333334,
+      "std": 0.21880394813406226
+     },
+     "total_expected_cost": {
+      "mean": 5.344863733333334,
+      "std": 0.29335793860218706
+     },
+     "total_cost_gap": {
+      "mean": 0.27522759999999974,
+      "std": 0.11931910980729121
+     },
+     "cost_gap_rel": {
+      "mean": 0.052237346537885365,
+      "std": 0.024966113022313864
+     },
+     "budget_violations": {
+      "mean": 1.0,
+      "std": 1.0
+     },
+     "buyers_over_budget": {
+      "mean": 1.0,
+      "std": 1.0
+     },
+     "budget_exhausted_tasks": {
+      "mean": 44.333333333333336,
+      "std": 12.503332889007368
+     },
+     "overruns": {
+      "purchases": 299,
+      "overrun_purchases": 221,
+      "rel_overrun_mean": 0.35865018013921424,
+      "rel_overrun_p95": 1.2309999999999992,
+      "rel_overrun_max": 1.6199999999999997,
+      "budget_violations": 3,
+      "max_budget_overshoot": 0.008852000000000304
+     }
+    },
+    "audited_compliance_cascade": {
+     "task_accuracy": {
+      "mean": 0.1574074074074074,
+      "std": 0.024388087390862817
+     },
+     "total_cost": {
+      "mean": 5.960341933333333,
+      "std": 0.03447659345372383
+     },
+     "total_expected_cost": {
+      "mean": 5.554072355555555,
+      "std": 0.0858880022396434
+     },
+     "total_cost_gap": {
+      "mean": 0.4062695777777779,
+      "std": 0.07494408444553322
+     },
+     "cost_gap_rel": {
+      "mean": 0.07328835339901298,
+      "std": 0.01466526855236171
+     },
+     "budget_violations": {
+      "mean": 3.3333333333333335,
+      "std": 1.1547005383792515
+     },
+     "buyers_over_budget": {
+      "mean": 3.3333333333333335,
+      "std": 1.1547005383792515
+     },
+     "budget_exhausted_tasks": {
+      "mean": 66.66666666666667,
+      "std": 13.203534880225574
+     },
+     "overruns": {
+      "purchases": 382,
+      "overrun_purchases": 294,
+      "rel_overrun_mean": 0.4677187222266682,
+      "rel_overrun_p95": 1.3989999999999991,
+      "rel_overrun_max": 2.05,
+      "budget_violations": 10,
+      "max_budget_overshoot": 0.01803240000000006
+     }
+    }
+   }
+  }
+ },
+ "model_stats": {
+  "Qwen/Qwen2.5-0.5B-Instruct": {
+   "model": "Qwen/Qwen2.5-0.5B-Instruct",
+   "n": 48,
+   "max_new_tokens": 256,
+   "long_max_new_tokens": 512,
+   "tokens_p95": 512.0,
+   "tokens_max": 512,
+   "accuracy": 0.14583333333333334,
+   "by_difficulty": {
+    "4": {
+     "n": 28,
+     "accuracy": 0.21428571428571427,
+     "tokens_mean": 394.0357142857143
+    },
+    "5": {
+     "n": 20,
+     "accuracy": 0.05,
+     "tokens_mean": 469.15
+    }
+   },
+   "tokens_mean": 425.3333333333333,
+   "tokens_std": 90.73068244859978,
+   "gen_time_mean_s": 3.0216270833333336,
+   "gen_time_std_s": 0.6111518698116621,
+   "gen_time_total_s": 145.03810000000001,
+   "explicit_answer_rate": 0.0,
+   "truncated_rate": 0.4166666666666667
+  },
+  "Qwen/Qwen2.5-1.5B-Instruct": {
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "n": 48,
+   "max_new_tokens": 256,
+   "long_max_new_tokens": 512,
+   "tokens_p95": 512.0,
+   "tokens_max": 512,
+   "accuracy": 0.4375,
+   "by_difficulty": {
+    "4": {
+     "n": 28,
+     "accuracy": 0.5357142857142857,
+     "tokens_mean": 366.35714285714283
+    },
+    "5": {
+     "n": 20,
+     "accuracy": 0.3,
+     "tokens_mean": 481.5
+    }
+   },
+   "tokens_mean": 414.3333333333333,
+   "tokens_std": 90.36600126373393,
+   "gen_time_mean_s": 13.8964875,
+   "gen_time_std_s": 9.864108428758705,
+   "gen_time_total_s": 667.0314,
+   "explicit_answer_rate": 0.3125,
+   "truncated_rate": 0.2916666666666667
+  }
+ }
+}
