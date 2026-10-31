@@ -107,3 +107,47 @@ def generate_stream(cfg: Dict, buyers, n_tasks: int, seed: int) -> List[Task]:
             t.flags.append("specific_consent")
         out.append(t)
     return out
+
+
+# ---------------------------------------------------------------------------
+# v2: FIXED task pool for real (local_hf) models.
+# The pool depends only on `task_pool.task_seed`, never on the run seed, so cached model outputs
+# (keyed by prompt hash) always hit. Run seeds only change which pool items are drawn, in which
+# order, for which buyer, and with which sensitivity / consent flags.
+# ---------------------------------------------------------------------------
+
+def build_task_pool(cfg: Dict) -> List[Task]:
+    """Balanced pool: types cycle, difficulty cycles 1..3 -> ~equal cells per (type, difficulty)."""
+    pcfg = cfg.get("task_pool", {})
+    size = int(pcfg.get("size", 80))
+    rng = random.Random(f"task-pool-{pcfg.get('task_seed', 1234)}")
+    types = cfg.get("tasks", {}).get("types", list(GENERATORS))
+    pool = []
+    for i in range(size):
+        ttype = types[i % len(types)]
+        difficulty = 1 + (i // len(types)) % 3
+        q, gold = GENERATORS[ttype](rng, difficulty)
+        pool.append(Task(task_id=f"p{i:03d}", task_type=ttype, difficulty=difficulty, question=q, gold=int(gold)))
+    return pool
+
+
+def sample_run_tasks(pool: List[Task], buyers, n_tasks: int, seed: int) -> List[Task]:
+    """Per-seed task instances drawn from the fixed pool: concatenated independent permutations
+    (each pool item appears ~n_tasks/len(pool) times), with seed-dependent buyer, sensitivity, consent.
+    Instance task_id = 't<k>_<pool id>'."""
+    rng = random.Random(f"tasks-{seed}")
+    order: List[Task] = []
+    while len(order) < n_tasks:
+        perm = list(pool)
+        rng.shuffle(perm)
+        order.extend(perm)
+    out = []
+    for i, p in enumerate(order[:n_tasks]):
+        b = buyers[i % len(buyers)]
+        t = Task(task_id=f"t{i:04d}_{p.task_id}", task_type=p.task_type, difficulty=p.difficulty,
+                 question=p.question, gold=p.gold, buyer_id=b.id)
+        t.sensitivity = _weighted(rng, b.sensitivity_mix)
+        if rng.random() < b.consent_rate:
+            t.flags.append("specific_consent")
+        out.append(t)
+    return out

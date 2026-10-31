@@ -1,4 +1,10 @@
-"""Unified transaction log schema: exactly one JSONL line per transaction (allowed, blocked or unfilled)."""
+"""Unified transaction log schema (v2).
+
+Exactly ONE JSONL line per transaction = one individual seller purchase attempt (allowed or blocked), or one
+`unfilled` line for a task where no purchase was made. Inside a cascade / vote portfolio every seller purchase is
+its own line (portfolio_step = 0, 1, 2 ...). The LAST line of every task has final=true and carries the
+portfolio's final decision (final_answer / final_correct); all other lines have final=false and null finals.
+Summing buyer_surplus over a task's lines gives the task's surplus (value is credited on the final line)."""
 from __future__ import annotations
 
 import json
@@ -17,7 +23,9 @@ SCHEMA: Dict[str, tuple] = {
     "seed": (int, False),
     "buyer_id": (str, False),
     "buyer_jurisdiction": (str, False),
-    "task_id": (str, False),
+    "task_id": (str, False),            # task instance id, unique within a run: t<k>_<pool id>
+    "pool_task_id": (str, False),       # id in the fixed task pool (cache key is the prompt hash)
+    "portfolio_step": (int, False),     # 0-based index of this purchase within the task's portfolio
     "task_type": (str, False),
     "difficulty": (int, False),
     "sensitivity": (str, False),
@@ -25,17 +33,28 @@ SCHEMA: Dict[str, tuple] = {
     "seller_jurisdiction": (str, True),
     "claimed_model": (str, True),
     "actual_model": (str, True),
+    "backend": (str, True),             # seller backend that served it: local_hf | mock | real (null if unfilled)
     "cross_border": (bool, False),
     "price_per_1k": (NUM, False),
     "reasoning_tokens": (int, False),
     "cost": (NUM, False),               # buyer payment to seller = price_per_1k * tokens / 1000
     "fee": (NUM, False),                # gateway corridor fee/tariff, paid by buyer
+    "expected_cost": (NUM, False),      # pre-purchase: price * advertised tokens (claimed model) / 1000 * (1+fee_rate)
+    "actual_cost": (NUM, False),        # realised buyer outlay = cost + fee (0 if not served)
+    "cost_overrun": (NUM, False),       # actual_cost - expected_cost (0 if not served)
+    "budget_remaining": (NUM, False),   # buyer budget - realised spend AFTER this line (may be < 0)
+    "budget_overrun": (bool, False),    # realised spend exceeds the buyer's budget after this line
     "latency_ms": (NUM, False),
     "answer": (int, True),
     "gold": (int, False),
     "correct": (bool, True),            # null when not served
+    "confidence": (NUM, True),          # seller-side confidence signal of this answer (null if not served)
     "status": (str, False),
-    "rule_id": (str, True),             # compliance rule (blocked) or MKT-* reason (unfilled); null if allowed
+    "violation": (bool, False),         # flow crossed a border in breach of a rule (only possible in audit_only mode)
+    "rule_id": (str, True),             # blocked: blocking rule; allowed+violation: breached rule; unfilled: MKT-*
+    "final": (bool, False),             # last line of the task: carries the portfolio decision
+    "final_answer": (int, True),        # final==true only (null if no answer)
+    "final_correct": (bool, True),      # final==true only; false if the task got no answer
     "buyer_surplus": (NUM, False),
     "seller_profit": (NUM, False),
     "verification_status": (str, False),
@@ -65,10 +84,16 @@ def validate_record(rec: Dict) -> List[str]:
         errs.append(f"unexpected fields {sorted(extra)}")
     if rec.get("status") not in STATUSES:
         errs.append(f"bad status {rec.get('status')}")
-    if rec.get("status") == "allowed" and rec.get("rule_id") is not None:
-        errs.append("allowed tx must have rule_id null")
+    if rec.get("status") == "allowed" and not rec.get("violation") and rec.get("rule_id") is not None:
+        errs.append("allowed non-violating tx must have rule_id null")
+    if rec.get("violation") and (rec.get("status") != "allowed" or rec.get("rule_id") is None):
+        errs.append("violation=true requires status allowed and the breached rule_id")
     if rec.get("status") in ("blocked", "unfilled") and rec.get("rule_id") is None:
         errs.append("blocked/unfilled tx must have rule_id")
+    if not rec.get("final") and (rec.get("final_answer") is not None or rec.get("final_correct") is not None):
+        errs.append("final_answer/final_correct only allowed on final=true lines")
+    if rec.get("final") and rec.get("final_correct") is None:
+        errs.append("final line must set final_correct")
     return errs
 
 

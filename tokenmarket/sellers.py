@@ -1,9 +1,9 @@
-"""Seller agents: jurisdiction, claimed vs. actual model, pricing, latency, capacity."""
+"""Seller agents (jurisdiction, claimed vs. actual model, backend, pricing, latency, capacity) and model reputation."""
 from __future__ import annotations
 
 import random
 from dataclasses import dataclass, field
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 
 @dataclass
@@ -17,7 +17,7 @@ class Seller:
     latency_mean_ms: float
     latency_std_ms: float
     capacity_per_round: int
-    advertised_accuracy: float
+    backend: str = "mock"            # mock | local_hf | real
     reasoning_effort: float = 1.0
     flags: List[str] = field(default_factory=list)
     used_this_round: int = 0
@@ -35,7 +35,7 @@ class Seller:
             latency_mean_ms=float(d["latency"]["mean_ms"]),
             latency_std_ms=float(d["latency"]["std_ms"]),
             capacity_per_round=int(d["capacity_per_round"]),
-            advertised_accuracy=float(qp.get("advertised_accuracy", 0.5)),
+            backend=str(d.get("backend", "mock")),
             reasoning_effort=float(qp.get("reasoning_effort", 1.0)),
             flags=list(d.get("flags", [])),
         )
@@ -58,5 +58,36 @@ class Seller:
         return self.cost_per_1k * rng.uniform(markup_low, markup_high)
 
 
-def load_sellers(cfg: Dict) -> List[Seller]:
-    return [Seller.from_config(s) for s in cfg["sellers"]]
+def load_sellers(cfg: Dict, backend_override: Optional[str] = None) -> List[Seller]:
+    sellers = [Seller.from_config(s) for s in cfg["sellers"]]
+    if backend_override:
+        for s in sellers:
+            s.backend = backend_override
+    return sellers
+
+
+class Reputation:
+    """Public model reputation used by buyers for routing and expected-cost estimates. Indexed by the
+    CLAIMED model, so a model-swap seller inherits the claimed model's reputation (links C2 to B2).
+    Measured stats (from the precompute stage) override config priors when available."""
+
+    def __init__(self, models: Dict, measured: Optional[Dict[str, Dict]] = None):
+        self.models = models
+        self.measured = measured or {}
+
+    def accuracy(self, model: str, difficulty: int) -> float:
+        m = self.measured.get(model)
+        if m and difficulty in m["by_difficulty"]:
+            return float(m["by_difficulty"][difficulty]["accuracy"])
+        return float(self.models[model]["accuracy"][difficulty])
+
+    def tokens_mean(self, model: str) -> float:
+        """Advertised expected reasoning tokens per request (difficulty-agnostic)."""
+        m = self.measured.get(model)
+        if m:
+            return float(m["tokens_mean"])
+        p = self.models[model]
+        return float(p.get("advertised_tokens", p["tokens_mean"]))
+
+    def source(self, model: str) -> str:
+        return "measured" if model in self.measured else "config_prior"

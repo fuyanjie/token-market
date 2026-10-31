@@ -1,735 +1,209 @@
 {
   "disclaimer": "Simplified simulation of data-transfer rules; NOT legal advice.",
-  "backend": "mock",
+  "backend_override": null,
+  "seller_backends": {
+    "seller_cn": "local_hf",
+    "seller_sg": "local_hf",
+    "seller_br": "mock"
+  },
   "seeds": [
     0,
     1,
     2
   ],
-  "n_tasks_per_run": 300,
+  "n_tasks_per_run": 240,
+  "task_pool": {
+    "size": 80,
+    "task_seed": 1234
+  },
   "auction_format": "second_price",
   "log_file": "results/transactions.jsonl",
-  "log_lines": 5400,
-  "elapsed_s": 0.19,
+  "log_lines": 7031,
+  "precompute_s": 0.0,
+  "precompute": {
+    "Qwen/Qwen2.5-0.5B-Instruct": {
+      "n_new": 0,
+      "elapsed_s": 0.0
+    },
+    "Qwen/Qwen2.5-1.5B-Instruct": {
+      "n_new": 0,
+      "elapsed_s": 0.0
+    }
+  },
+  "market_sim_s": 0.41,
+  "elapsed_s": 0.412,
+  "reputation": {
+    "Qwen/Qwen2.5-1.5B-Instruct": {
+      "source": "measured",
+      "tokens_mean": 142.3375,
+      "accuracy": {
+        "1": 0.9285714285714286,
+        "2": 1.0,
+        "3": 0.8333333333333334
+      }
+    },
+    "sim-fast-mock": {
+      "source": "config_prior",
+      "tokens_mean": 100.0,
+      "accuracy": {
+        "1": 0.82,
+        "2": 0.62,
+        "3": 0.4
+      }
+    }
+  },
+  "model_stats": {
+    "Qwen/Qwen2.5-0.5B-Instruct": {
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "n": 80,
+      "max_new_tokens": 256,
+      "accuracy": 0.6625,
+      "by_difficulty": {
+        "1": {
+          "n": 28,
+          "accuracy": 0.7857142857142857,
+          "tokens_mean": 100.32142857142857
+        },
+        "2": {
+          "n": 28,
+          "accuracy": 0.75,
+          "tokens_mean": 159.71428571428572
+        },
+        "3": {
+          "n": 24,
+          "accuracy": 0.4166666666666667,
+          "tokens_mean": 194.75
+        }
+      },
+      "tokens_mean": 149.4375,
+      "tokens_std": 63.689882301625715,
+      "gen_time_mean_s": 4.40220375,
+      "gen_time_std_s": 7.0808085689229445,
+      "gen_time_total_s": 352.1763,
+      "explicit_answer_rate": 0.5125,
+      "truncated_rate": 0.075
+    },
+    "Qwen/Qwen2.5-1.5B-Instruct": {
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "n": 80,
+      "max_new_tokens": 256,
+      "accuracy": 0.925,
+      "by_difficulty": {
+        "1": {
+          "n": 28,
+          "accuracy": 0.9285714285714286,
+          "tokens_mean": 115.46428571428571
+        },
+        "2": {
+          "n": 28,
+          "accuracy": 1.0,
+          "tokens_mean": 123.53571428571429
+        },
+        "3": {
+          "n": 24,
+          "accuracy": 0.8333333333333334,
+          "tokens_mean": 195.625
+        }
+      },
+      "tokens_mean": 142.3375,
+      "tokens_std": 47.15016242236813,
+      "gen_time_mean_s": 2.5311174999999997,
+      "gen_time_std_s": 0.768184512344742,
+      "gen_time_total_s": 202.4894,
+      "explicit_answer_rate": 0.9,
+      "truncated_rate": 0.0375
+    }
+  },
   "combos": {
-    "posted_price/cheapest": {
+    "posted_price/single_cheapest_compliant": {
       "mechanism": "posted_price",
-      "policy": "cheapest",
+      "policy": "single_cheapest_compliant",
       "aggregate": {
-        "n_tx": {
-          "mean": 300.0,
+        "n_tasks": {
+          "mean": 240.0,
           "std": 0.0
         },
-        "n_allowed": {
-          "mean": 238.33333333333334,
-          "std": 5.131601439446884
-        },
-        "n_blocked": {
-          "mean": 61.0,
-          "std": 5.291502622129181
-        },
-        "n_unfilled": {
-          "mean": 0.6666666666666666,
-          "std": 0.5773502691896257
-        },
-        "fill_rate": {
-          "mean": 0.7944444444444444,
-          "std": 0.01710533813148961
-        },
-        "accuracy": {
-          "mean": 0.7554721665014257,
-          "std": 0.01948039759139335
-        },
-        "total_cost": {
-          "mean": 2.294341333333333,
-          "std": 0.05497099153492989
-        },
-        "total_fee": {
-          "mean": 0.06019778666666667,
-          "std": 0.001665945178609827
-        },
-        "mean_latency_ms": {
-          "mean": 1014.5429321730193,
-          "std": 3.1047276258281347
-        },
-        "p95_latency_ms": {
-          "mean": 1704.2407303774005,
-          "std": 21.64082516556772
-        },
-        "blocked_attempts": {
-          "mean": 61.0,
-          "std": 5.291502622129181
-        },
-        "violating_flows_through": {
-          "mean": 0.0,
+        "n_purchases": {
+          "mean": 240.0,
           "std": 0.0
         },
-        "compliance_violations": {
-          "mean": 61.0,
-          "std": 5.291502622129181
-        },
-        "blocked_by_rule": {
-          "BR-LGPD-33-VIII": {
-            "mean": 7.666666666666667,
-            "std": 3.7859388972001824
-          },
-          "CN-DSL-31": {
-            "mean": 25.0,
-            "std": 4.58257569495584
-          },
-          "CN-PIPL-38": {
-            "mean": 15.666666666666666,
-            "std": 2.516611478423583
-          },
-          "CN-PIPL-40": {
-            "mean": 12.666666666666666,
-            "std": 2.0816659994661326
-          }
-        },
-        "cross_border_share": {
-          "mean": 0.6308087821887366,
-          "std": 0.010390380782304509
-        },
-        "fraud_exposure": {
-          "mean": 0.4754623052506431,
-          "std": 0.004850309541864808
-        },
-        "fraud_accuracy_claimed": {
-          "mean": 0.9228485146449747,
-          "std": 0.0015456219234167116
-        },
-        "fraud_accuracy_actual": {
-          "mean": 0.6450520636361344,
-          "std": 0.04878334632544971
-        },
-        "fraud_accuracy_gap": {
-          "mean": 0.2777964510088404,
-          "std": 0.048041211953005356
-        },
-        "honest_accuracy": {
-          "mean": 0.8559182118364236,
-          "std": 0.009728791438156782
-        },
-        "total_buyer_surplus": {
-          "mean": 10.888794213333332,
-          "std": 0.16218697061533097
-        },
-        "total_seller_profit": {
-          "mean": 1.1066820000000002,
-          "std": 0.023451663416482953
-        },
-        "buyer_surplus": {
-          "buyer_br_1": {
-            "mean": 2.12883776,
-            "std": 0.13922620634714986
-          },
-          "buyer_br_2": {
-            "mean": 2.11196964,
-            "std": 0.03190059718633511
-          },
-          "buyer_cn_1": {
-            "mean": 1.267963093333333,
-            "std": 0.42085934393132535
-          },
-          "buyer_cn_2": {
-            "mean": 1.4511375866666665,
-            "std": 0.2242114094231784
-          },
-          "buyer_sg_1": {
-            "mean": 2.1513650666666666,
-            "std": 0.1253102188475198
-          },
-          "buyer_sg_2": {
-            "mean": 1.7775210666666663,
-            "std": 0.24923290627173098
-          }
-        },
-        "seller_profit": {
-          "seller_br": {
-            "mean": 0.5376013333333334,
-            "std": 0.007388009023636548
-          },
-          "seller_cn": {
-            "mean": 0.060381333333333335,
-            "std": 0.01681681507697975
-          },
-          "seller_sg": {
-            "mean": 0.5086993333333334,
-            "std": 0.004000488261866776
-          }
-        }
-      },
-      "per_seed": [
-        {
-          "n_tx": 300,
-          "n_allowed": 244,
-          "n_blocked": 55,
-          "n_unfilled": 1,
-          "fill_rate": 0.8133333333333334,
-          "accuracy": 0.7418032786885246,
-          "total_cost": 2.357071,
-          "total_fee": 0.06201404,
-          "mean_latency_ms": 1018.0260281755423,
-          "p95_latency_ms": 1719.6783900682444,
-          "blocked_attempts": 55,
-          "violating_flows_through": 0,
-          "compliance_violations": 55,
-          "blocked_by_rule": {
-            "CN-PIPL-40": 11,
-            "CN-DSL-31": 26,
-            "CN-PIPL-38": 13,
-            "BR-LGPD-33-VIII": 5
-          },
-          "cross_border_share": 0.6311475409836066,
-          "fraud_exposure": 0.47950819672131145,
-          "fraud_accuracy_claimed": 0.9211111111111111,
-          "fraud_accuracy_actual": 0.6068376068376068,
-          "fraud_accuracy_gap": 0.3142735042735043,
-          "honest_accuracy": 0.8661417322834646,
-          "total_buyer_surplus": 10.910914959999998,
-          "total_seller_profit": 1.1334890000000002,
-          "buyer_surplus": {
-            "buyer_cn_1": 1.7372807599999995,
-            "buyer_cn_2": 1.20661928,
-            "buyer_sg_1": 2.2382082,
-            "buyer_sg_2": 1.6301491999999993,
-            "buyer_br_1": 2.01787604,
-            "buyer_br_2": 2.0807814799999997
-          },
-          "seller_profit": {
-            "seller_cn": 0.079392,
-            "seller_sg": 0.5133170000000001,
-            "seller_br": 0.54078
-          }
-        },
-        {
-          "n_tx": 300,
-          "n_allowed": 237,
-          "n_blocked": 63,
-          "n_unfilled": 0,
-          "fill_rate": 0.79,
-          "accuracy": 0.7468354430379747,
-          "total_cost": 2.254577,
-          "total_fee": 0.05874076,
-          "mean_latency_ms": 1013.5364796135112,
-          "p95_latency_ms": 1713.5390774805483,
-          "blocked_attempts": 63,
-          "violating_flows_through": 0,
-          "compliance_violations": 63,
-          "blocked_by_rule": {
-            "CN-PIPL-40": 12,
-            "CN-DSL-31": 29,
-            "CN-PIPL-38": 16,
-            "BR-LGPD-33-VIII": 6
-          },
-          "cross_border_share": 0.620253164556962,
-          "fraud_exposure": 0.4767932489451477,
-          "fraud_accuracy_claimed": 0.924070796460177,
-          "fraud_accuracy_actual": 0.6283185840707964,
-          "fraud_accuracy_gap": 0.29575221238938054,
-          "honest_accuracy": 0.8548387096774194,
-          "total_buyer_surplus": 10.716682239999999,
-          "total_seller_profit": 1.089959,
-          "buyer_surplus": {
-            "buyer_cn_1": 1.1425209399999998,
-            "buyer_cn_2": 1.49971598,
-            "buyer_sg_1": 2.007712,
-            "buyer_sg_2": 1.6371318,
-            "buyer_br_1": 2.2850636399999997,
-            "buyer_br_2": 2.14453788
-          },
-          "seller_profit": {
-            "seller_cn": 0.054304000000000005,
-            "seller_sg": 0.506499,
-            "seller_br": 0.529156
-          }
-        },
-        {
-          "n_tx": 300,
-          "n_allowed": 234,
-          "n_blocked": 65,
-          "n_unfilled": 1,
-          "fill_rate": 0.78,
-          "accuracy": 0.7777777777777778,
-          "total_cost": 2.271376,
-          "total_fee": 0.05983856,
-          "mean_latency_ms": 1012.0662887300043,
-          "p95_latency_ms": 1679.5047235834086,
-          "blocked_attempts": 65,
-          "violating_flows_through": 0,
-          "compliance_violations": 65,
-          "blocked_by_rule": {
-            "CN-PIPL-38": 18,
-            "CN-DSL-31": 20,
-            "CN-PIPL-40": 15,
-            "BR-LGPD-33-VIII": 12
-          },
-          "cross_border_share": 0.6410256410256411,
-          "fraud_exposure": 0.4700854700854701,
-          "fraud_accuracy_claimed": 0.9233636363636363,
-          "fraud_accuracy_actual": 0.7,
-          "fraud_accuracy_gap": 0.22336363636363632,
-          "honest_accuracy": 0.8467741935483871,
-          "total_buyer_surplus": 11.03878544,
-          "total_seller_profit": 1.0965980000000002,
-          "buyer_surplus": {
-            "buyer_cn_1": 0.9240875799999998,
-            "buyer_cn_2": 1.6470775,
-            "buyer_sg_1": 2.208175,
-            "buyer_sg_2": 2.0652822,
-            "buyer_br_1": 2.0835736000000002,
-            "buyer_br_2": 2.11058956
-          },
-          "seller_profit": {
-            "seller_cn": 0.04744799999999999,
-            "seller_sg": 0.506282,
-            "seller_br": 0.5428680000000002
-          }
-        }
-      ],
-      "gateway_per_seed": [
-        {
-          "allowed": {
-            "SG->BR": 53,
-            "BR->BR": 44,
-            "CN->BR": 23,
-            "BR->SG": 44,
-            "CN->SG": 27,
-            "SG->SG": 46,
-            "BR->CN": 7
-          },
-          "blocked": {
-            "CN->BR": 35,
-            "CN->SG": 15,
-            "BR->SG": 5
-          },
-          "allowed_total": 244,
-          "blocked_total": 55
-        },
-        {
-          "allowed": {
-            "SG->BR": 54,
-            "BR->BR": 44,
-            "CN->BR": 22,
-            "BR->SG": 46,
-            "CN->SG": 21,
-            "SG->SG": 46,
-            "BR->CN": 4
-          },
-          "blocked": {
-            "CN->BR": 37,
-            "CN->SG": 20,
-            "BR->SG": 5,
-            "BR->CN": 1
-          },
-          "allowed_total": 237,
-          "blocked_total": 63
-        },
-        {
-          "allowed": {
-            "CN->BR": 21,
-            "SG->BR": 57,
-            "BR->BR": 42,
-            "BR->SG": 42,
-            "CN->SG": 26,
-            "SG->SG": 42,
-            "BR->CN": 4
-          },
-          "blocked": {
-            "CN->BR": 39,
-            "CN->SG": 14,
-            "BR->SG": 12
-          },
-          "allowed_total": 234,
-          "blocked_total": 65
-        }
-      ]
-    },
-    "posted_price/quality_per_cost": {
-      "mechanism": "posted_price",
-      "policy": "quality_per_cost",
-      "aggregate": {
-        "n_tx": {
-          "mean": 300.0,
+        "n_lines": {
+          "mean": 240.0,
           "std": 0.0
-        },
-        "n_allowed": {
-          "mean": 245.66666666666666,
-          "std": 0.5773502691896257
-        },
-        "n_blocked": {
-          "mean": 53.666666666666664,
-          "std": 0.5773502691896257
-        },
-        "n_unfilled": {
-          "mean": 0.6666666666666666,
-          "std": 0.5773502691896257
-        },
-        "fill_rate": {
-          "mean": 0.8188888888888889,
-          "std": 0.001924500897298733
-        },
-        "accuracy": {
-          "mean": 0.7367346938775511,
-          "std": 0.023771522656702643
-        },
-        "total_cost": {
-          "mean": 2.4163383333333335,
-          "std": 0.023850048141111545
-        },
-        "total_fee": {
-          "mean": 0.05970181333333333,
-          "std": 0.002829876766951757
-        },
-        "mean_latency_ms": {
-          "mean": 988.0274067210704,
-          "std": 2.215410928674234
-        },
-        "p95_latency_ms": {
-          "mean": 1676.98084085902,
-          "std": 60.979364566481536
-        },
-        "blocked_attempts": {
-          "mean": 53.666666666666664,
-          "std": 0.5773502691896257
-        },
-        "violating_flows_through": {
-          "mean": 0.0,
-          "std": 0.0
-        },
-        "compliance_violations": {
-          "mean": 53.666666666666664,
-          "std": 0.5773502691896257
-        },
-        "blocked_by_rule": {
-          "BR-LGPD-33-VIII": {
-            "mean": 6.333333333333333,
-            "std": 3.2145502536643185
-          },
-          "CN-DSL-31": {
-            "mean": 25.0,
-            "std": 4.58257569495584
-          },
-          "CN-PIPL-38": {
-            "mean": 9.666666666666666,
-            "std": 2.8867513459481287
-          },
-          "CN-PIPL-40": {
-            "mean": 12.666666666666666,
-            "std": 2.0816659994661326
-          }
-        },
-        "cross_border_share": {
-          "mean": 0.598379514407389,
-          "std": 0.005340107980002442
-        },
-        "fraud_exposure": {
-          "mean": 0.4884685581549693,
-          "std": 0.0011495276638917385
-        },
-        "fraud_accuracy_claimed": {
-          "mean": 0.9282499999999999,
-          "std": 0.002322893310794413
-        },
-        "fraud_accuracy_actual": {
-          "mean": 0.6611111111111111,
-          "std": 0.03849001794597504
-        },
-        "fraud_accuracy_gap": {
-          "mean": 0.26713888888888887,
-          "std": 0.0391321065016855
-        },
-        "honest_accuracy": {
-          "mean": 0.808994708994709,
-          "std": 0.014226803872749952
-        },
-        "total_buyer_surplus": {
-          "mean": 10.967293186666668,
-          "std": 0.5506055353569719
-        },
-        "total_seller_profit": {
-          "mean": 1.1595463333333331,
-          "std": 0.012009022039006209
-        },
-        "buyer_surplus": {
-          "buyer_br_1": {
-            "mean": 2.0453756533333336,
-            "std": 0.16476034886334215
-          },
-          "buyer_br_2": {
-            "mean": 1.8723565466666672,
-            "std": 0.06603491556149152
-          },
-          "buyer_cn_1": {
-            "mean": 1.4519188466666668,
-            "std": 0.3125160585739742
-          },
-          "buyer_cn_2": {
-            "mean": 1.6570636066666669,
-            "std": 0.45334506145768255
-          },
-          "buyer_sg_1": {
-            "mean": 2.3215830000000004,
-            "std": 0.23962199566350315
-          },
-          "buyer_sg_2": {
-            "mean": 1.6189955333333337,
-            "std": 0.17764579080589937
-          }
-        },
-        "seller_profit": {
-          "seller_br": {
-            "mean": 0.5478746666666666,
-            "std": 0.0031946112961255195
-          },
-          "seller_cn": {
-            "mean": 0.09202666666666666,
-            "std": 0.00839116233506022
-          },
-          "seller_sg": {
-            "mean": 0.5196449999999998,
-            "std": 0.007895034958757324
-          }
-        }
-      },
-      "per_seed": [
-        {
-          "n_tx": 300,
-          "n_allowed": 245,
-          "n_blocked": 54,
-          "n_unfilled": 1,
-          "fill_rate": 0.8166666666666667,
-          "accuracy": 0.710204081632653,
-          "total_cost": 2.432402,
-          "total_fee": 0.06296042,
-          "mean_latency_ms": 989.8648492990328,
-          "p95_latency_ms": 1698.750090670262,
-          "blocked_attempts": 54,
-          "violating_flows_through": 0,
-          "compliance_violations": 54,
-          "blocked_by_rule": {
-            "CN-PIPL-40": 11,
-            "CN-DSL-31": 26,
-            "CN-PIPL-38": 13,
-            "BR-LGPD-33-VIII": 4
-          },
-          "cross_border_share": 0.6040816326530613,
-          "fraud_exposure": 0.4897959183673469,
-          "fraud_accuracy_claimed": 0.9289166666666666,
-          "fraud_accuracy_actual": 0.6166666666666667,
-          "fraud_accuracy_gap": 0.3122499999999999,
-          "honest_accuracy": 0.8,
-          "total_buyer_surplus": 10.36463758,
-          "total_seller_profit": 1.1658860000000002,
-          "buyer_surplus": {
-            "buyer_cn_1": 1.7241857,
-            "buyer_cn_2": 1.23958964,
-            "buyer_sg_1": 2.137515,
-            "buyer_sg_2": 1.4177234,
-            "buyer_br_1": 1.9128905600000004,
-            "buyer_br_2": 1.9327332800000006
-          },
-          "seller_profit": {
-            "seller_cn": 0.101648,
-            "seller_sg": 0.5194140000000002,
-            "seller_br": 0.5448240000000001
-          }
-        },
-        {
-          "n_tx": 300,
-          "n_allowed": 246,
-          "n_blocked": 54,
-          "n_unfilled": 0,
-          "fill_rate": 0.82,
-          "accuracy": 0.7439024390243902,
-          "total_cost": 2.388934,
-          "total_fee": 0.057862000000000004,
-          "mean_latency_ms": 988.6500806320323,
-          "p95_latency_ms": 1608.1043395833103,
-          "blocked_attempts": 54,
-          "violating_flows_through": 0,
-          "compliance_violations": 54,
-          "blocked_by_rule": {
-            "CN-PIPL-40": 12,
-            "CN-DSL-31": 29,
-            "BR-LGPD-33-VIII": 5,
-            "CN-PIPL-38": 8
-          },
-          "cross_border_share": 0.5975609756097561,
-          "fraud_exposure": 0.4878048780487805,
-          "fraud_accuracy_claimed": 0.9301666666666667,
-          "fraud_accuracy_actual": 0.6833333333333333,
-          "fraud_accuracy_gap": 0.24683333333333335,
-          "honest_accuracy": 0.8015873015873016,
-          "total_buyer_surplus": 11.093204000000002,
-          "total_seller_profit": 1.1456959999999996,
-          "buyer_surplus": {
-            "buyer_cn_1": 1.1106772600000003,
-            "buyer_cn_2": 1.5922894200000004,
-            "buyer_sg_1": 2.5925246,
-            "buyer_sg_2": 1.6853508,
-            "buyer_br_1": 2.229862640000001,
-            "buyer_br_2": 1.8824992800000002
-          },
-          "seller_profit": {
-            "seller_cn": 0.08622400000000001,
-            "seller_sg": 0.5118679999999995,
-            "seller_br": 0.547604
-          }
-        },
-        {
-          "n_tx": 300,
-          "n_allowed": 246,
-          "n_blocked": 53,
-          "n_unfilled": 1,
-          "fill_rate": 0.82,
-          "accuracy": 0.7560975609756098,
-          "total_cost": 2.427679,
-          "total_fee": 0.058283020000000005,
-          "mean_latency_ms": 985.5672902321462,
-          "p95_latency_ms": 1724.0880923234881,
-          "blocked_attempts": 53,
-          "violating_flows_through": 0,
-          "compliance_violations": 53,
-          "blocked_by_rule": {
-            "BR-LGPD-33-VIII": 10,
-            "CN-DSL-31": 20,
-            "CN-PIPL-40": 15,
-            "CN-PIPL-38": 8
-          },
-          "cross_border_share": 0.5934959349593496,
-          "fraud_exposure": 0.4878048780487805,
-          "fraud_accuracy_claimed": 0.9256666666666666,
-          "fraud_accuracy_actual": 0.6833333333333333,
-          "fraud_accuracy_gap": 0.2423333333333333,
-          "honest_accuracy": 0.8253968253968254,
-          "total_buyer_surplus": 11.444037980000003,
-          "total_seller_profit": 1.1670569999999996,
-          "buyer_surplus": {
-            "buyer_cn_1": 1.5208935800000003,
-            "buyer_cn_2": 2.1393117600000005,
-            "buyer_sg_1": 2.2347094000000007,
-            "buyer_sg_2": 1.7539124000000004,
-            "buyer_br_1": 1.9933737600000003,
-            "buyer_br_2": 1.8018370800000008
-          },
-          "seller_profit": {
-            "seller_cn": 0.08820800000000001,
-            "seller_sg": 0.5276529999999996,
-            "seller_br": 0.5511959999999999
-          }
-        }
-      ],
-      "gateway_per_seed": [
-        {
-          "allowed": {
-            "SG->SG": 48,
-            "BR->SG": 39,
-            "CN->SG": 33,
-            "BR->BR": 49,
-            "CN->BR": 17,
-            "SG->BR": 51,
-            "BR->CN": 8
-          },
-          "blocked": {
-            "CN->SG": 21,
-            "CN->BR": 29,
-            "BR->SG": 3,
-            "BR->CN": 1
-          },
-          "allowed_total": 245,
-          "blocked_total": 54
-        },
-        {
-          "allowed": {
-            "SG->SG": 47,
-            "BR->SG": 36,
-            "CN->SG": 37,
-            "SG->BR": 53,
-            "BR->BR": 52,
-            "CN->BR": 14,
-            "BR->CN": 7
-          },
-          "blocked": {
-            "CN->SG": 19,
-            "CN->BR": 30,
-            "BR->SG": 4,
-            "BR->CN": 1
-          },
-          "allowed_total": 246,
-          "blocked_total": 54
-        },
-        {
-          "allowed": {
-            "CN->SG": 38,
-            "SG->SG": 49,
-            "BR->SG": 33,
-            "SG->BR": 49,
-            "BR->BR": 51,
-            "CN->BR": 19,
-            "BR->CN": 6,
-            "SG->CN": 1
-          },
-          "blocked": {
-            "BR->SG": 7,
-            "CN->SG": 21,
-            "CN->BR": 22,
-            "BR->CN": 3
-          },
-          "allowed_total": 246,
-          "blocked_total": 53
-        }
-      ]
-    },
-    "posted_price/compliance_aware": {
-      "mechanism": "posted_price",
-      "policy": "compliance_aware",
-      "aggregate": {
-        "n_tx": {
-          "mean": 300.0,
-          "std": 0.0
-        },
-        "n_allowed": {
-          "mean": 296.0,
-          "std": 2.6457513110645907
         },
         "n_blocked": {
           "mean": 0.0,
           "std": 0.0
         },
         "n_unfilled": {
-          "mean": 4.0,
-          "std": 2.6457513110645907
-        },
-        "fill_rate": {
-          "mean": 0.9866666666666667,
-          "std": 0.00881917103688194
-        },
-        "accuracy": {
-          "mean": 0.7791643262739917,
-          "std": 0.01937307059299771
-        },
-        "total_cost": {
-          "mean": 3.995351,
-          "std": 0.1979328760640839
-        },
-        "total_fee": {
-          "mean": 0.060956586666666666,
-          "std": 0.0005792504678749361
-        },
-        "mean_latency_ms": {
-          "mean": 978.521636043574,
-          "std": 12.52872296991144
-        },
-        "p95_latency_ms": {
-          "mean": 1637.6917908292398,
-          "std": 15.44381648299715
-        },
-        "blocked_attempts": {
           "mean": 0.0,
           "std": 0.0
         },
-        "violating_flows_through": {
+        "purchases_per_task": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "fill_rate": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "task_accuracy": {
+          "mean": 0.6652777777777777,
+          "std": 0.010485881160098277
+        },
+        "purchase_accuracy": {
+          "mean": 0.6652777777777777,
+          "std": 0.010485881160098277
+        },
+        "total_cost": {
+          "mean": 2.8121206666666665,
+          "std": 0.07419802751403401
+        },
+        "total_fee": {
+          "mean": 0.047234,
+          "std": 0.004046112904999068
+        },
+        "mean_cost_per_task": {
+          "mean": 0.011717169444444444,
+          "std": 0.0003091584479751416
+        },
+        "mean_price_per_1k": {
+          "mean": 0.09044444444444444,
+          "std": 0.0012481467743700532
+        },
+        "total_expected_cost": {
+          "mean": 2.665627476666667,
+          "std": 0.042392088596425945
+        },
+        "total_cost_gap": {
+          "mean": 0.14649318999999972,
+          "std": 0.03259209494015245
+        },
+        "cost_gap_rel": {
+          "mean": 0.054841970004787695,
+          "std": 0.011380007830479596
+        },
+        "mean_abs_cost_overrun": {
+          "mean": 0.003626411583333334,
+          "std": 0.00011172412289066854
+        },
+        "budget_violations": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "budget_violation_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "buyers_over_budget": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "budget_exhausted_tasks": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "no_compliant_seller_tasks": {
           "mean": 0.0,
           "std": 0.0
         },
@@ -737,961 +211,524 @@
           "mean": 0.0,
           "std": 0.0
         },
+        "blocked_at_gateway": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "violations_by_rule": {},
         "blocked_by_rule": {},
         "cross_border_share": {
-          "mean": 0.5000076609860455,
-          "std": 0.0016950061472423392
+          "mean": 0.5597222222222222,
+          "std": 0.03182344232608222
         },
-        "fraud_exposure": {
-          "mean": 0.40542709393065574,
-          "std": 0.003639700463102845
+        "fraud_seller_share": {
+          "mean": 0.12083333333333335,
+          "std": 0.01816207893141947
         },
         "fraud_accuracy_claimed": {
-          "mean": 0.9282499999999999,
-          "std": 0.002322893310794413
+          "mean": 0.9327663637139444,
+          "std": 0.01618335761196444
         },
         "fraud_accuracy_actual": {
-          "mean": 0.6305555555555555,
-          "std": 0.04882887730901931
+          "mean": 0.7143817204301075,
+          "std": 0.11996108926611117
         },
         "fraud_accuracy_gap": {
-          "mean": 0.29769444444444443,
-          "std": 0.046518390429465074
+          "mean": 0.21838464328383686,
+          "std": 0.11165511621500428
         },
-        "honest_accuracy": {
-          "mean": 0.8807072500610643,
-          "std": 0.0044902886670395315
+        "mean_task_latency_ms": {
+          "mean": 1135.653756443394,
+          "std": 83.81974785790338
+        },
+        "p95_task_latency_ms": {
+          "mean": 2904.1580015238305,
+          "std": 130.1743231542245
         },
         "total_buyer_surplus": {
-          "mean": 13.837025746666669,
-          "std": 0.4439855497292515
+          "mean": 9.544546,
+          "std": 0.30227770667655934
         },
         "total_seller_profit": {
-          "mean": 1.7931169999999998,
-          "std": 0.08082613288411128
+          "mean": 1.4695700000000003,
+          "std": 0.013770798814883658
         },
         "buyer_surplus": {
           "buyer_br_1": {
-            "mean": 2.2237786933333337,
-            "std": 0.3387287720629291
+            "mean": 1.518386666666667,
+            "std": 0.04849053240925839
           },
           "buyer_br_2": {
-            "mean": 1.9406045866666666,
-            "std": 0.0994756457551803
+            "mean": 1.4623717333333335,
+            "std": 0.11440992936023202
           },
           "buyer_cn_1": {
-            "mean": 2.439792093333334,
-            "std": 0.3824370110557716
+            "mean": 1.547352133333333,
+            "std": 0.1425822359652609
           },
           "buyer_cn_2": {
-            "mean": 3.2863835733333335,
-            "std": 0.22256556889785106
+            "mean": 2.0109208000000005,
+            "std": 0.24946291730283268
           },
           "buyer_sg_1": {
-            "mean": 2.3847916666666666,
-            "std": 0.4528318542623221
+            "mean": 1.8137402666666664,
+            "std": 0.18602623955531994
           },
           "buyer_sg_2": {
-            "mean": 1.561675133333333,
-            "std": 0.10843911859644245
+            "mean": 1.1917744,
+            "std": 0.09944164950522501
           }
         },
         "seller_profit": {
           "seller_br": {
-            "mean": 0.532308,
-            "std": 0.0059279932523578945
+            "mean": 0.6492800000000003,
+            "std": 0.005610106950852187
           },
           "seller_cn": {
-            "mean": 0.7358720000000002,
-            "std": 0.07109017462350203
+            "mean": 0.2963466666666667,
+            "std": 0.07479073026340456
           },
           "seller_sg": {
-            "mean": 0.5249369999999999,
-            "std": 0.009018045963511198
-          }
-        }
-      },
-      "per_seed": [
-        {
-          "n_tx": 300,
-          "n_allowed": 297,
-          "n_blocked": 0,
-          "n_unfilled": 3,
-          "fill_rate": 0.99,
-          "accuracy": 0.7845117845117845,
-          "total_cost": 4.149253,
-          "total_fee": 0.061323880000000004,
-          "mean_latency_ms": 982.3369784044384,
-          "p95_latency_ms": 1640.3203093756267,
-          "blocked_attempts": 0,
-          "violating_flows_through": 0,
-          "compliance_violations": 0,
-          "blocked_by_rule": {},
-          "cross_border_share": 0.4983164983164983,
-          "fraud_exposure": 0.40404040404040403,
-          "fraud_accuracy_claimed": 0.9289166666666666,
-          "fraud_accuracy_actual": 0.65,
-          "fraud_accuracy_gap": 0.2789166666666666,
-          "honest_accuracy": 0.8757062146892656,
-          "total_buyer_surplus": 13.949423120000002,
-          "total_seller_profit": 1.853409,
-          "buyer_surplus": {
-            "buyer_cn_1": 2.091916320000001,
-            "buyer_cn_2": 3.4543578800000003,
-            "buyer_sg_1": 2.7339891999999995,
-            "buyer_sg_2": 1.4983385999999999,
-            "buyer_br_1": 2.136499040000001,
-            "buyer_br_2": 2.03432208
-          },
-          "seller_profit": {
-            "seller_cn": 0.7933200000000002,
-            "seller_sg": 0.5215209999999998,
-            "seller_br": 0.538568
+            "mean": 0.5239433333333333,
+            "std": 0.08183005214059999
           }
         },
-        {
-          "n_tx": 300,
-          "n_allowed": 298,
-          "n_blocked": 0,
-          "n_unfilled": 2,
-          "fill_rate": 0.9933333333333333,
-          "accuracy": 0.7953020134228188,
-          "total_cost": 4.064732,
-          "total_fee": 0.06125704,
-          "mean_latency_ms": 988.6991322702914,
-          "p95_latency_ms": 1651.6526628238612,
-          "blocked_attempts": 0,
-          "violating_flows_through": 0,
-          "compliance_violations": 0,
-          "blocked_by_rule": {},
-          "cross_border_share": 0.5,
-          "fraud_exposure": 0.40268456375838924,
-          "fraud_accuracy_claimed": 0.9301666666666667,
-          "fraud_accuracy_actual": 0.6666666666666666,
-          "fraud_accuracy_gap": 0.26350000000000007,
-          "honest_accuracy": 0.8820224719101124,
-          "total_buyer_surplus": 14.214010960000003,
-          "total_seller_profit": 1.8246680000000002,
-          "buyer_surplus": {
-            "buyer_cn_1": 2.8493035400000015,
-            "buyer_cn_2": 3.3708419800000002,
-            "buyer_sg_1": 1.8731432000000003,
-            "buyer_sg_2": 1.6868869999999996,
-            "buyer_br_1": 2.5976061600000007,
-            "buyer_br_2": 1.83622908
+        "budget_utilisation": {
+          "buyer_br_1": {
+            "mean": 0.13914,
+            "std": 0.004690373119486357
           },
-          "seller_profit": {
-            "seller_cn": 0.7579280000000002,
-            "seller_sg": 0.535164,
-            "seller_br": 0.531576
+          "buyer_br_2": {
+            "mean": 0.1554808,
+            "std": 0.017426148476355825
+          },
+          "buyer_cn_1": {
+            "mean": 0.2877258133333334,
+            "std": 0.012009156592223047
+          },
+          "buyer_cn_2": {
+            "mean": 0.36896501333333337,
+            "std": 0.04208665430765121
+          },
+          "buyer_sg_1": {
+            "mean": 0.11717055999999998,
+            "std": 0.0037176437647521085
+          },
+          "buyer_sg_2": {
+            "mean": 0.5764512,
+            "std": 0.028597178624472752
           }
         },
-        {
-          "n_tx": 300,
-          "n_allowed": 293,
-          "n_blocked": 0,
-          "n_unfilled": 7,
-          "fill_rate": 0.9766666666666667,
-          "accuracy": 0.757679180887372,
-          "total_cost": 3.772068,
-          "total_fee": 0.06028884,
-          "mean_latency_ms": 964.5287974559922,
-          "p95_latency_ms": 1621.1024002882318,
-          "blocked_attempts": 0,
-          "violating_flows_through": 0,
-          "compliance_violations": 0,
-          "blocked_by_rule": {},
-          "cross_border_share": 0.5017064846416383,
-          "fraud_exposure": 0.40955631399317405,
-          "fraud_accuracy_claimed": 0.9256666666666666,
-          "fraud_accuracy_actual": 0.575,
-          "fraud_accuracy_gap": 0.3506666666666667,
-          "honest_accuracy": 0.884393063583815,
-          "total_buyer_surplus": 13.34764316,
-          "total_seller_profit": 1.701274,
-          "buyer_surplus": {
-            "buyer_cn_1": 2.3781564200000003,
-            "buyer_cn_2": 3.0339508600000005,
-            "buyer_sg_1": 2.5472425999999997,
-            "buyer_sg_2": 1.4997997999999997,
-            "buyer_br_1": 1.9372308800000004,
-            "buyer_br_2": 1.9512626
+        "seller_accuracy": {
+          "seller_br": {
+            "mean": 0.6242622340448428,
+            "std": 0.013208561047718413
           },
-          "seller_profit": {
-            "seller_cn": 0.6563680000000001,
-            "seller_sg": 0.518126,
-            "seller_br": 0.5267799999999999
+          "seller_cn": {
+            "mean": 0.8976982097186701,
+            "std": 0.09153723871188381
+          },
+          "seller_sg": {
+            "mean": 0.7143817204301075,
+            "std": 0.11996108926611117
           }
-        }
-      ],
-      "gateway_per_seed": [
-        {
-          "allowed": {
-            "CN->CN": 50,
-            "SG->SG": 48,
-            "BR->SG": 39,
-            "CN->SG": 33,
-            "BR->BR": 51,
-            "CN->BR": 17,
-            "SG->BR": 50,
-            "BR->CN": 9
-          },
-          "blocked": {},
-          "allowed_total": 297,
-          "blocked_total": 0
         },
-        {
-          "allowed": {
-            "CN->CN": 49,
-            "SG->SG": 47,
-            "BR->SG": 36,
-            "CN->SG": 37,
-            "SG->BR": 52,
-            "BR->BR": 53,
-            "CN->BR": 14,
-            "BR->CN": 10
-          },
-          "blocked": {},
-          "allowed_total": 298,
-          "blocked_total": 0
+        "filtered_candidates": {
+          "mean": 123.33333333333333,
+          "std": 10.066445913694333
         },
-        {
-          "allowed": {
-            "CN->SG": 38,
-            "SG->SG": 49,
-            "BR->SG": 33,
-            "BR->BR": 54,
-            "CN->CN": 43,
-            "SG->BR": 47,
-            "CN->BR": 19,
-            "BR->CN": 9,
-            "SG->CN": 1
-          },
-          "blocked": {},
-          "allowed_total": 293,
-          "blocked_total": 0
-        }
-      ]
-    },
-    "sealed_bid/cheapest": {
-      "mechanism": "sealed_bid",
-      "policy": "cheapest",
-      "aggregate": {
-        "n_tx": {
-          "mean": 300.0,
-          "std": 0.0
-        },
-        "n_allowed": {
-          "mean": 227.0,
-          "std": 4.358898943540674
-        },
-        "n_blocked": {
-          "mean": 54.0,
-          "std": 0.0
-        },
-        "n_unfilled": {
-          "mean": 19.0,
-          "std": 4.358898943540674
-        },
-        "fill_rate": {
-          "mean": 0.7566666666666667,
-          "std": 0.014529663145135558
-        },
-        "accuracy": {
-          "mean": 0.7135917259624156,
-          "std": 0.0296401988462477
-        },
-        "total_cost": {
-          "mean": 3.068653454252653,
-          "std": 0.1055913286325887
-        },
-        "total_fee": {
-          "mean": 0.07680192651351296,
-          "std": 0.002570190396668715
-        },
-        "mean_latency_ms": {
-          "mean": 965.5794542826767,
-          "std": 10.250885660730514
-        },
-        "p95_latency_ms": {
-          "mean": 1642.3951090617757,
-          "std": 67.23026515110583
-        },
-        "blocked_attempts": {
-          "mean": 54.0,
-          "std": 0.0
-        },
-        "violating_flows_through": {
-          "mean": 0.0,
-          "std": 0.0
-        },
-        "compliance_violations": {
-          "mean": 54.0,
-          "std": 0.0
-        },
-        "blocked_by_rule": {
+        "filtered_by_rule": {
           "BR-LGPD-33-VIII": {
-            "mean": 7.0,
-            "std": 3.605551275463989
+            "mean": 20.0,
+            "std": 2.0
           },
           "CN-DSL-31": {
-            "mean": 25.0,
-            "std": 4.58257569495584
+            "mean": 35.333333333333336,
+            "std": 13.316656236958785
           },
           "CN-PIPL-38": {
-            "mean": 9.333333333333334,
-            "std": 1.5275252316519468
-          },
-          "CN-PIPL-40": {
-            "mean": 12.666666666666666,
-            "std": 2.0816659994661326
-          }
-        },
-        "cross_border_share": {
-          "mean": 0.5965765827403758,
-          "std": 0.03152894297299987
-        },
-        "fraud_exposure": {
-          "mean": 0.5287629994526547,
-          "std": 0.010048782592326758
-        },
-        "fraud_accuracy_claimed": {
-          "mean": 0.9259166666666667,
-          "std": 0.004630064794362985
-        },
-        "fraud_accuracy_actual": {
-          "mean": 0.6222222222222222,
-          "std": 0.0375770812735241
-        },
-        "fraud_accuracy_gap": {
-          "mean": 0.30369444444444443,
-          "std": 0.03443193097069016
-        },
-        "honest_accuracy": {
-          "mean": 0.8170177045177045,
-          "std": 0.05233919729539408
-        },
-        "total_buyer_surplus": {
-          "mean": 9.081211285900501,
-          "std": 0.4646810204255449
-        },
-        "total_seller_profit": {
-          "mean": 1.9797667875859866,
-          "std": 0.06851045384657635
-        },
-        "buyer_surplus": {
-          "buyer_br_1": {
-            "mean": 1.6175824515356954,
-            "std": 0.24280340176793297
-          },
-          "buyer_br_2": {
-            "mean": 1.8009213278652612,
-            "std": 0.16254515882881074
-          },
-          "buyer_cn_1": {
-            "mean": 1.2990041824182768,
-            "std": 0.2146032598849984
-          },
-          "buyer_cn_2": {
-            "mean": 1.4509867297939003,
-            "std": 0.31167045276915456
-          },
-          "buyer_sg_1": {
-            "mean": 2.345708070989834,
-            "std": 0.14961267889605062
-          },
-          "buyer_sg_2": {
-            "mean": 0.567008523297534,
-            "std": 0.2844118361559462
-          }
-        },
-        "seller_profit": {
-          "seller_br": {
-            "mean": 1.4841057763054624,
-            "std": 0.09263909473556364
-          },
-          "seller_cn": {
-            "mean": 0.139938,
-            "std": 0.02545447159145128
-          },
-          "seller_sg": {
-            "mean": 0.35572301128052436,
-            "std": 0.017678858102492027
-          }
-        }
-      },
-      "per_seed": [
-        {
-          "n_tx": 300,
-          "n_allowed": 224,
-          "n_blocked": 54,
-          "n_unfilled": 22,
-          "fill_rate": 0.7466666666666667,
-          "accuracy": 0.6830357142857143,
-          "total_cost": 2.9630802679268773,
-          "total_fee": 0.07772788219818401,
-          "mean_latency_ms": 971.7919885878979,
-          "p95_latency_ms": 1719.817678790873,
-          "blocked_attempts": 54,
-          "violating_flows_through": 0,
-          "compliance_violations": 54,
-          "blocked_by_rule": {
-            "CN-PIPL-40": 11,
-            "CN-DSL-31": 26,
-            "CN-PIPL-38": 11,
-            "BR-LGPD-33-VIII": 6
-          },
-          "cross_border_share": 0.6116071428571429,
-          "fraud_exposure": 0.5357142857142857,
-          "fraud_accuracy_claimed": 0.9241666666666667,
-          "fraud_accuracy_actual": 0.5833333333333334,
-          "fraud_accuracy_gap": 0.3408333333333333,
-          "honest_accuracy": 0.7980769230769231,
-          "total_buyer_surplus": 8.58919184987494,
-          "total_seller_profit": 1.9180602679268772,
-          "buyer_surplus": {
-            "buyer_cn_1": 1.511367398873971,
-            "buyer_cn_2": 1.3989512124754568,
-            "buyer_sg_1": 2.1741964277479595,
-            "buyer_sg_2": 0.24635325637915864,
-            "buyer_br_1": 1.347359873328826,
-            "buyer_br_2": 1.9109636810695674
-          },
-          "seller_profit": {
-            "seller_cn": 0.13122,
-            "seller_sg": 0.34852371211124344,
-            "seller_br": 1.4383165558156337
-          }
-        },
-        {
-          "n_tx": 300,
-          "n_allowed": 232,
-          "n_blocked": 54,
-          "n_unfilled": 14,
-          "fill_rate": 0.7733333333333333,
-          "accuracy": 0.7155172413793104,
-          "total_cost": 3.174262915845442,
-          "total_fee": 0.07389705734934365,
-          "mean_latency_ms": 971.1986653381193,
-          "p95_latency_ms": 1598.7626632879217,
-          "blocked_attempts": 54,
-          "violating_flows_through": 0,
-          "compliance_violations": 54,
-          "blocked_by_rule": {
-            "CN-PIPL-40": 12,
-            "CN-DSL-31": 29,
-            "BR-LGPD-33-VIII": 4,
-            "CN-PIPL-38": 9
-          },
-          "cross_border_share": 0.5603448275862069,
-          "fraud_exposure": 0.5172413793103449,
-          "fraud_accuracy_claimed": 0.9311666666666666,
-          "fraud_accuracy_actual": 0.6583333333333333,
-          "fraud_accuracy_gap": 0.27283333333333326,
-          "honest_accuracy": 0.7767857142857143,
-          "total_buyer_surplus": 9.141840026805216,
-          "total_seller_profit": 2.0534909158454417,
-          "buyer_surplus": {
-            "buyer_cn_1": 1.3034162330308532,
-            "buyer_cn_2": 1.1686091255950186,
-            "buyer_sg_1": 2.449401865205431,
-            "buyer_sg_2": 0.7887791579344461,
-            "buyer_br_1": 1.8174108989551792,
-            "buyer_br_2": 1.6142227460842873
-          },
-          "seller_profit": {
-            "seller_cn": 0.119988,
-            "seller_sg": 0.3427796988446728,
-            "seller_br": 1.590723217000769
-          }
-        },
-        {
-          "n_tx": 300,
-          "n_allowed": 225,
-          "n_blocked": 54,
-          "n_unfilled": 21,
-          "fill_rate": 0.75,
-          "accuracy": 0.7422222222222222,
-          "total_cost": 3.068617178985641,
-          "total_fee": 0.0787808399930112,
-          "mean_latency_ms": 953.7477089220132,
-          "p95_latency_ms": 1608.604985106532,
-          "blocked_attempts": 54,
-          "violating_flows_through": 0,
-          "compliance_violations": 54,
-          "blocked_by_rule": {
-            "BR-LGPD-33-VIII": 11,
-            "CN-DSL-31": 20,
-            "CN-PIPL-40": 15,
-            "CN-PIPL-38": 8
-          },
-          "cross_border_share": 0.6177777777777778,
-          "fraud_exposure": 0.5333333333333333,
-          "fraud_accuracy_claimed": 0.9224166666666667,
-          "fraud_accuracy_actual": 0.625,
-          "fraud_accuracy_gap": 0.29741666666666666,
-          "honest_accuracy": 0.8761904761904762,
-          "total_buyer_surplus": 9.51260198102135,
-          "total_seller_profit": 1.9677491789856414,
-          "buyer_surplus": {
-            "buyer_cn_1": 1.0822289153500055,
-            "buyer_cn_2": 1.7853998513112255,
-            "buyer_sg_1": 2.413525920016111,
-            "buyer_sg_2": 0.6658931555789974,
-            "buyer_br_1": 1.6879765823230803,
-            "buyer_br_2": 1.877577556441929
-          },
-          "seller_profit": {
-            "seller_cn": 0.168606,
-            "seller_sg": 0.37586562288565684,
-            "seller_br": 1.4232775560999846
-          }
-        }
-      ],
-      "gateway_per_seed": [
-        {
-          "allowed": {
-            "SG->SG": 41,
-            "BR->SG": 43,
-            "CN->SG": 36,
-            "BR->BR": 46,
-            "CN->BR": 16,
-            "SG->BR": 37,
-            "BR->CN": 5
-          },
-          "blocked": {
-            "CN->SG": 22,
-            "CN->BR": 26,
-            "BR->SG": 5,
-            "BR->CN": 1
-          },
-          "allowed_total": 224,
-          "blocked_total": 54
-        },
-        {
-          "allowed": {
-            "SG->SG": 48,
-            "BR->SG": 38,
-            "CN->SG": 34,
-            "SG->BR": 38,
-            "BR->BR": 54,
-            "CN->BR": 16,
-            "BR->CN": 4
-          },
-          "blocked": {
-            "CN->SG": 19,
-            "CN->BR": 31,
-            "BR->SG": 4
-          },
-          "allowed_total": 232,
-          "blocked_total": 54
-        },
-        {
-          "allowed": {
-            "CN->SG": 38,
-            "SG->SG": 42,
-            "BR->SG": 40,
-            "SG->BR": 36,
-            "BR->BR": 44,
-            "CN->BR": 19,
-            "BR->CN": 5,
-            "SG->CN": 1
-          },
-          "blocked": {
-            "BR->SG": 10,
-            "CN->SG": 23,
-            "CN->BR": 20,
-            "BR->CN": 1
-          },
-          "allowed_total": 225,
-          "blocked_total": 54
-        }
-      ]
-    },
-    "sealed_bid/quality_per_cost": {
-      "mechanism": "sealed_bid",
-      "policy": "quality_per_cost",
-      "aggregate": {
-        "n_tx": {
-          "mean": 300.0,
-          "std": 0.0
-        },
-        "n_allowed": {
-          "mean": 226.0,
-          "std": 4.0
-        },
-        "n_blocked": {
-          "mean": 52.666666666666664,
-          "std": 0.5773502691896257
-        },
-        "n_unfilled": {
-          "mean": 21.333333333333332,
-          "std": 4.509249752822894
-        },
-        "fill_rate": {
-          "mean": 0.7533333333333333,
-          "std": 0.013333333333333364
-        },
-        "accuracy": {
-          "mean": 0.7132801135109715,
-          "std": 0.05281489431296362
-        },
-        "total_cost": {
-          "mean": 2.9957859639146496,
-          "std": 0.04525215684846751
-        },
-        "total_fee": {
-          "mean": 0.07543090325586178,
-          "std": 0.00556849550207043
-        },
-        "mean_latency_ms": {
-          "mean": 963.5732907155945,
-          "std": 7.353827123941148
-        },
-        "p95_latency_ms": {
-          "mean": 1642.8023100572927,
-          "std": 51.80890897874285
-        },
-        "blocked_attempts": {
-          "mean": 52.666666666666664,
-          "std": 0.5773502691896257
-        },
-        "violating_flows_through": {
-          "mean": 0.0,
-          "std": 0.0
-        },
-        "compliance_violations": {
-          "mean": 52.666666666666664,
-          "std": 0.5773502691896257
-        },
-        "blocked_by_rule": {
-          "BR-LGPD-33-VIII": {
-            "mean": 6.666666666666667,
+            "mean": 27.333333333333332,
             "std": 3.0550504633038935
           },
-          "CN-DSL-31": {
-            "mean": 25.0,
-            "std": 4.58257569495584
-          },
-          "CN-PIPL-38": {
-            "mean": 8.333333333333334,
-            "std": 0.5773502691896257
-          },
           "CN-PIPL-40": {
-            "mean": 12.666666666666666,
-            "std": 2.0816659994661326
+            "mean": 19.333333333333332,
+            "std": 2.309401076758503
+          },
+          "SG-PDPA-26": {
+            "mean": 21.333333333333332,
+            "std": 2.309401076758503
           }
         },
-        "cross_border_share": {
-          "mean": 0.5976018727461591,
-          "std": 0.024713543004931858
+        "blocked_or_filtered": {
+          "mean": 123.33333333333333,
+          "std": 10.066445913694333
         },
-        "fraud_exposure": {
-          "mean": 0.5310843741009189,
-          "std": 0.009401195848799384
+        "audit_violations_enforced": {
+          "mean": 0.0,
+          "std": 0.0
         },
-        "fraud_accuracy_claimed": {
-          "mean": 0.9266111111111112,
-          "std": 0.001958481081896987
-        },
-        "fraud_accuracy_actual": {
-          "mean": 0.625,
-          "std": 0.06614378277661476
-        },
-        "fraud_accuracy_gap": {
-          "mean": 0.3016111111111111,
-          "std": 0.06577805344349139
-        },
-        "honest_accuracy": {
-          "mean": 0.8133443200035875,
-          "std": 0.045654595769002285
-        },
-        "total_buyer_surplus": {
-          "mean": 9.145449799496156,
-          "std": 1.0659266326921848
-        },
-        "total_seller_profit": {
-          "mean": 1.9079506305813163,
-          "std": 0.018723977224155534
-        },
-        "buyer_surplus": {
-          "buyer_br_1": {
-            "mean": 1.7811293010764704,
-            "std": 0.30405192080012056
-          },
-          "buyer_br_2": {
-            "mean": 1.6627562902156594,
-            "std": 0.04812446982489587
-          },
-          "buyer_cn_1": {
-            "mean": 1.4411457415921936,
-            "std": 0.17540691341731227
-          },
-          "buyer_cn_2": {
-            "mean": 1.53488664263281,
-            "std": 0.38782123114253064
-          },
-          "buyer_sg_1": {
-            "mean": 2.2190334291205467,
-            "std": 0.2562253012058512
-          },
-          "buyer_sg_2": {
-            "mean": 0.5064983948584757,
-            "std": 0.3426592605556921
-          }
-        },
-        "seller_profit": {
-          "seller_br": {
-            "mean": 1.3302894491628814,
-            "std": 0.040276609765223
-          },
-          "seller_cn": {
-            "mean": 0.142008,
-            "std": 0.02334394131246908
-          },
-          "seller_sg": {
-            "mean": 0.4356531814184348,
-            "std": 0.004975630207520477
-          }
-        }
+        "stop_reasons": {}
       },
       "per_seed": [
         {
-          "n_tx": 300,
-          "n_allowed": 222,
-          "n_blocked": 52,
-          "n_unfilled": 26,
-          "fill_rate": 0.74,
-          "accuracy": 0.6531531531531531,
-          "total_cost": 2.9673754716283867,
-          "total_fee": 0.08150752791661398,
-          "mean_latency_ms": 971.3994500046937,
-          "p95_latency_ms": 1666.6262428556338,
-          "blocked_attempts": 52,
-          "violating_flows_through": 0,
-          "compliance_violations": 52,
-          "blocked_by_rule": {
-            "CN-PIPL-40": 11,
-            "CN-DSL-31": 26,
-            "CN-PIPL-38": 9,
-            "BR-LGPD-33-VIII": 6
-          },
-          "cross_border_share": 0.6261261261261262,
-          "fraud_exposure": 0.5405405405405406,
-          "fraud_accuracy_claimed": 0.9265833333333333,
-          "fraud_accuracy_actual": 0.55,
-          "fraud_accuracy_gap": 0.37658333333333327,
-          "honest_accuracy": 0.7745098039215687,
-          "total_buyer_surplus": 7.961117000455,
-          "total_seller_profit": 1.8910254716283865,
+          "n_tasks": 240,
+          "n_purchases": 240,
+          "n_lines": 240,
+          "n_blocked": 0,
+          "n_unfilled": 0,
+          "purchases_per_task": 1.0,
+          "fill_rate": 1.0,
+          "task_accuracy": 0.6666666666666666,
+          "purchase_accuracy": 0.6666666666666666,
+          "total_cost": 2.8007277999999998,
+          "total_fee": 0.048187799999999996,
+          "mean_cost_per_task": 0.011669699166666665,
+          "mean_price_per_1k": 0.09008333333333333,
+          "total_expected_cost": 2.65302803,
+          "total_cost_gap": 0.14769976999999956,
+          "cost_gap_rel": 0.05567214832630304,
+          "mean_abs_cost_overrun": 0.0037356564166666664,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 0,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 0,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {},
+          "blocked_by_rule": {},
+          "cross_border_share": 0.5666666666666667,
+          "fraud_seller_share": 0.12916666666666668,
+          "fraud_accuracy_claimed": 0.9185867895545315,
+          "fraud_accuracy_actual": 0.5806451612903226,
+          "fraud_accuracy_gap": 0.3379416282642089,
+          "mean_task_latency_ms": 1193.0187341125202,
+          "p95_task_latency_ms": 2775.553115376468,
+          "total_buyer_surplus": 9.5992722,
+          "total_seller_profit": 1.4854500000000004,
           "buyer_surplus": {
-            "buyer_cn_1": 1.6006396992758687,
-            "buyer_cn_2": 1.1805894835807067,
-            "buyer_sg_1": 1.9278796833861809,
-            "buyer_sg_2": 0.1254607991428137,
-            "buyer_br_1": 1.4368932790742546,
-            "buyer_br_2": 1.6896540559951758
+            "buyer_cn_1": 1.4066935999999997,
+            "buyer_cn_2": 2.0174258000000007,
+            "buyer_sg_1": 2.0282799999999996,
+            "buyer_sg_2": 1.0888415999999999,
+            "buyer_br_1": 1.5410000000000006,
+            "buyer_br_2": 1.5170312
           },
           "seller_profit": {
-            "seller_cn": 0.16648200000000002,
-            "seller_sg": 0.4407589931207677,
-            "seller_br": 1.2837844785076187
-          }
+            "seller_cn": 0.26248000000000005,
+            "seller_sg": 0.5680999999999998,
+            "seller_br": 0.6548700000000005
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.30132256000000013,
+            "buyer_cn_2": 0.35302968,
+            "buyer_sg_1": 0.11668799999999997,
+            "buyer_sg_2": 0.5823168000000001,
+            "buyer_br_1": 0.13950000000000004,
+            "buyer_br_2": 0.15148440000000002
+          },
+          "seller_accuracy": {
+            "seller_br": 0.6358695652173914,
+            "seller_sg": 0.5806451612903226,
+            "seller_cn": 1.0
+          },
+          "filtered_candidates": 122,
+          "filtered_by_rule": {
+            "CN-PIPL-38": 30,
+            "SG-PDPA-26": 20,
+            "CN-PIPL-40": 18,
+            "CN-DSL-31": 32,
+            "BR-LGPD-33-VIII": 22
+          },
+          "blocked_or_filtered": 122,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {}
         },
         {
-          "n_tx": 300,
-          "n_allowed": 226,
-          "n_blocked": 53,
-          "n_unfilled": 21,
-          "fill_rate": 0.7533333333333333,
-          "accuracy": 0.7345132743362832,
-          "total_cost": 2.9720123916786183,
-          "total_fee": 0.07057211936409497,
-          "mean_latency_ms": 962.513664497167,
-          "p95_latency_ms": 1583.3668945084366,
-          "blocked_attempts": 53,
-          "violating_flows_through": 0,
-          "compliance_violations": 53,
-          "blocked_by_rule": {
-            "CN-PIPL-40": 12,
-            "CN-DSL-31": 29,
-            "BR-LGPD-33-VIII": 4,
-            "CN-PIPL-38": 8
-          },
-          "cross_border_share": 0.584070796460177,
-          "fraud_exposure": 0.5309734513274337,
-          "fraud_accuracy_claimed": 0.9285833333333334,
-          "fraud_accuracy_actual": 0.675,
-          "fraud_accuracy_gap": 0.2535833333333334,
-          "honest_accuracy": 0.8018867924528302,
-          "total_buyer_surplus": 9.447415488957287,
-          "total_seller_profit": 1.9047623916786183,
+          "n_tasks": 240,
+          "n_purchases": 240,
+          "n_lines": 240,
+          "n_blocked": 0,
+          "n_unfilled": 0,
+          "purchases_per_task": 1.0,
+          "fill_rate": 1.0,
+          "task_accuracy": 0.675,
+          "purchase_accuracy": 0.675,
+          "total_cost": 2.744278,
+          "total_fee": 0.050718,
+          "mean_cost_per_task": 0.011434491666666666,
+          "mean_price_per_1k": 0.08941666666666667,
+          "total_expected_cost": 2.6309634400000004,
+          "total_cost_gap": 0.11331455999999962,
+          "cost_gap_rel": 0.043069606470852215,
+          "mean_abs_cost_overrun": 0.003512363125,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 0,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 0,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {},
+          "blocked_by_rule": {},
+          "cross_border_share": 0.5875,
+          "fraud_seller_share": 0.13333333333333333,
+          "fraud_accuracy_claimed": 0.9293154761904762,
+          "fraud_accuracy_actual": 0.8125,
+          "fraud_accuracy_gap": 0.11681547619047616,
+          "mean_task_latency_ms": 1174.481967751312,
+          "p95_task_latency_ms": 2901.07393368525,
+          "total_buyer_surplus": 9.815722000000001,
+          "total_seller_profit": 1.4623400000000004,
           "buyer_surplus": {
-            "buyer_cn_1": 1.2532838083204205,
-            "buyer_cn_2": 1.4748423688925487,
-            "buyer_sg_1": 2.410146301336216,
-            "buyer_sg_2": 0.6046963833990434,
-            "buyer_br_1": 2.013028090002513,
-            "buyer_br_2": 1.691418537006545
+            "buyer_cn_1": 1.6917831999999997,
+            "buyer_cn_2": 2.2570676000000005,
+            "buyer_sg_1": 1.6972352000000002,
+            "buyer_sg_2": 1.287312,
+            "buyer_br_1": 1.5514400000000002,
+            "buyer_br_2": 1.3308840000000002
           },
           "seller_profit": {
-            "seller_cn": 0.119988,
-            "seller_sg": 0.4308188481397067,
-            "seller_br": 1.3539555435389115
-          }
+            "seller_cn": 0.24448,
+            "seller_sg": 0.57421,
+            "seller_br": 0.6436500000000005
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.28328672000000005,
+            "buyer_cn_2": 0.33717296,
+            "buyer_sg_1": 0.12110592000000002,
+            "buyer_sg_2": 0.545376,
+            "buyer_br_1": 0.13427999999999998,
+            "buyer_br_2": 0.17455799999999996
+          },
+          "seller_accuracy": {
+            "seller_sg": 0.8125,
+            "seller_cn": 0.8695652173913043,
+            "seller_br": 0.6270270270270271
+          },
+          "filtered_candidates": 114,
+          "filtered_by_rule": {
+            "CN-PIPL-38": 28,
+            "CN-PIPL-40": 22,
+            "SG-PDPA-26": 20,
+            "BR-LGPD-33-VIII": 20,
+            "CN-DSL-31": 24
+          },
+          "blocked_or_filtered": 114,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {}
         },
         {
-          "n_tx": 300,
-          "n_allowed": 230,
-          "n_blocked": 53,
-          "n_unfilled": 17,
-          "fill_rate": 0.7666666666666667,
-          "accuracy": 0.7521739130434782,
-          "total_cost": 3.047970028436944,
-          "total_fee": 0.07421306248687644,
-          "mean_latency_ms": 956.8067576449229,
-          "p95_latency_ms": 1678.413792807808,
-          "blocked_attempts": 53,
-          "violating_flows_through": 0,
-          "compliance_violations": 53,
-          "blocked_by_rule": {
-            "BR-LGPD-33-VIII": 10,
-            "CN-DSL-31": 20,
-            "CN-PIPL-40": 15,
-            "CN-PIPL-38": 8
-          },
-          "cross_border_share": 0.5826086956521739,
-          "fraud_exposure": 0.5217391304347826,
-          "fraud_accuracy_claimed": 0.9246666666666666,
-          "fraud_accuracy_actual": 0.65,
-          "fraud_accuracy_gap": 0.2746666666666666,
-          "honest_accuracy": 0.8636363636363636,
-          "total_buyer_surplus": 10.02781690907618,
-          "total_seller_profit": 1.9280640284369441,
+          "n_tasks": 240,
+          "n_purchases": 240,
+          "n_lines": 240,
+          "n_blocked": 0,
+          "n_unfilled": 0,
+          "purchases_per_task": 1.0,
+          "fill_rate": 1.0,
+          "task_accuracy": 0.6541666666666667,
+          "purchase_accuracy": 0.6541666666666667,
+          "total_cost": 2.8913562,
+          "total_fee": 0.0427962,
+          "mean_cost_per_task": 0.0120473175,
+          "mean_price_per_1k": 0.09183333333333334,
+          "total_expected_cost": 2.71289096,
+          "total_cost_gap": 0.17846523999999997,
+          "cost_gap_rel": 0.06578415521720783,
+          "mean_abs_cost_overrun": 0.003631215208333334,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 0,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 0,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {},
+          "blocked_by_rule": {},
+          "cross_border_share": 0.525,
+          "fraud_seller_share": 0.1,
+          "fraud_accuracy_claimed": 0.9503968253968255,
+          "fraud_accuracy_actual": 0.75,
+          "fraud_accuracy_gap": 0.20039682539682546,
+          "mean_task_latency_ms": 1039.4605674663499,
+          "p95_task_latency_ms": 3035.846955509774,
+          "total_buyer_surplus": 9.2186438,
+          "total_seller_profit": 1.4609200000000002,
           "buyer_surplus": {
-            "buyer_cn_1": 1.4695137171802912,
-            "buyer_cn_2": 1.9492280754251745,
-            "buyer_sg_1": 2.319074302639243,
-            "buyer_sg_2": 0.78933800203357,
-            "buyer_br_1": 1.8934665341526433,
-            "buyer_br_2": 1.607196277645257
+            "buyer_cn_1": 1.5435796,
+            "buyer_cn_2": 1.7582690000000007,
+            "buyer_sg_1": 1.7157055999999995,
+            "buyer_sg_2": 1.1991696,
+            "buyer_br_1": 1.4627200000000002,
+            "buyer_br_2": 1.5391999999999997
           },
           "seller_profit": {
-            "seller_cn": 0.13955399999999998,
-            "seller_sg": 0.43538170299482987,
-            "seller_br": 1.3531283254421143
-          }
+            "seller_cn": 0.3820800000000001,
+            "seller_sg": 0.4295200000000001,
+            "seller_br": 0.6493199999999999
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.27856816000000006,
+            "buyer_cn_2": 0.4166924000000001,
+            "buyer_sg_1": 0.11371775999999996,
+            "buyer_sg_2": 0.6016608,
+            "buyer_br_1": 0.14364000000000002,
+            "buyer_br_2": 0.14040000000000005
+          },
+          "seller_accuracy": {
+            "seller_br": 0.6098901098901099,
+            "seller_cn": 0.8235294117647058,
+            "seller_sg": 0.75
+          },
+          "filtered_candidates": 134,
+          "filtered_by_rule": {
+            "CN-DSL-31": 50,
+            "CN-PIPL-38": 24,
+            "SG-PDPA-26": 24,
+            "CN-PIPL-40": 18,
+            "BR-LGPD-33-VIII": 18
+          },
+          "blocked_or_filtered": 134,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {}
         }
       ],
       "gateway_per_seed": [
         {
           "allowed": {
-            "SG->SG": 39,
-            "BR->SG": 44,
-            "CN->SG": 37,
-            "BR->BR": 44,
-            "CN->BR": 17,
-            "SG->BR": 35,
-            "BR->CN": 6
+            "CN->BR": 25,
+            "CN->SG": 30,
+            "SG->BR": 80,
+            "BR->BR": 79,
+            "CN->CN": 25,
+            "BR->SG": 1
           },
-          "blocked": {
-            "CN->SG": 23,
-            "CN->BR": 23,
-            "BR->SG": 5,
-            "BR->CN": 1
-          },
-          "allowed_total": 222,
-          "blocked_total": 52
+          "blocked": {},
+          "allowed_total": 240,
+          "blocked_total": 0,
+          "violations": {},
+          "violations_total": 0
         },
         {
           "allowed": {
-            "SG->SG": 42,
-            "BR->SG": 40,
-            "CN->SG": 38,
-            "SG->BR": 37,
-            "BR->BR": 52,
-            "CN->BR": 13,
-            "BR->CN": 4
-          },
-          "blocked": {
-            "CN->SG": 22,
-            "CN->BR": 27,
+            "CN->SG": 28,
+            "CN->CN": 23,
+            "SG->BR": 80,
+            "BR->BR": 76,
+            "CN->BR": 29,
             "BR->SG": 4
           },
-          "allowed_total": 226,
-          "blocked_total": 53
+          "blocked": {},
+          "allowed_total": 240,
+          "blocked_total": 0,
+          "violations": {},
+          "violations_total": 0
         },
         {
           "allowed": {
-            "CN->SG": 38,
-            "SG->SG": 46,
-            "BR->SG": 36,
-            "SG->BR": 36,
-            "BR->BR": 50,
-            "CN->BR": 19,
-            "BR->CN": 4,
-            "SG->CN": 1
-          },
-          "blocked": {
-            "BR->SG": 8,
-            "CN->SG": 21,
             "CN->BR": 22,
-            "BR->CN": 2
+            "CN->CN": 34,
+            "SG->BR": 80,
+            "BR->BR": 80,
+            "CN->SG": 24
           },
-          "allowed_total": 230,
-          "blocked_total": 53
+          "blocked": {},
+          "allowed_total": 240,
+          "blocked_total": 0,
+          "violations": {},
+          "violations_total": 0
         }
       ]
     },
-    "sealed_bid/compliance_aware": {
-      "mechanism": "sealed_bid",
-      "policy": "compliance_aware",
+    "posted_price/single_best_compliant": {
+      "mechanism": "posted_price",
+      "policy": "single_best_compliant",
       "aggregate": {
-        "n_tx": {
-          "mean": 300.0,
+        "n_tasks": {
+          "mean": 240.0,
           "std": 0.0
         },
-        "n_allowed": {
-          "mean": 278.3333333333333,
-          "std": 2.516611478423583
+        "n_purchases": {
+          "mean": 220.0,
+          "std": 2.0
+        },
+        "n_lines": {
+          "mean": 240.0,
+          "std": 0.0
         },
         "n_blocked": {
           "mean": 0.0,
           "std": 0.0
         },
         "n_unfilled": {
-          "mean": 21.666666666666668,
-          "std": 2.516611478423583
+          "mean": 20.0,
+          "std": 2.0
+        },
+        "purchases_per_task": {
+          "mean": 0.9166666666666666,
+          "std": 0.00833333333333336
         },
         "fill_rate": {
-          "mean": 0.9277777777777777,
-          "std": 0.008388704928078585
+          "mean": 0.9166666666666666,
+          "std": 0.00833333333333336
         },
-        "accuracy": {
-          "mean": 0.7533796574066756,
-          "std": 0.0237214629359371
+        "task_accuracy": {
+          "mean": 0.638888888888889,
+          "std": 0.012729376930432905
+        },
+        "purchase_accuracy": {
+          "mean": 0.6970906686503017,
+          "std": 0.02011871821441343
         },
         "total_cost": {
-          "mean": 5.801923103425918,
-          "std": 0.19076912128173923
+          "mean": 5.843271466666667,
+          "std": 0.04255848624438276
         },
         "total_fee": {
-          "mean": 0.08574573817575337,
-          "std": 0.0028900317941531846
+          "mean": 0.10459146666666667,
+          "std": 0.005950485645166569
         },
-        "mean_latency_ms": {
-          "mean": 960.1345963316904,
-          "std": 7.829459013100684
+        "mean_cost_per_task": {
+          "mean": 0.024346964444444442,
+          "std": 0.00017732702601826048
         },
-        "p95_latency_ms": {
-          "mean": 1636.5902112067295,
-          "std": 25.807333470858612
+        "mean_price_per_1k": {
+          "mean": 0.17693892558112742,
+          "std": 0.0007653696553014606
         },
-        "blocked_attempts": {
-          "mean": 0.0,
-          "std": 0.0
+        "total_expected_cost": {
+          "mean": 5.613709341666667,
+          "std": 0.05905045448340789
         },
-        "violating_flows_through": {
+        "total_cost_gap": {
+          "mean": 0.2295621249999996,
+          "std": 0.06472042173885816
+        },
+        "cost_gap_rel": {
+          "mean": 0.040958663519794034,
+          "std": 0.011903926906994692
+        },
+        "mean_abs_cost_overrun": {
+          "mean": 0.009197902245655164,
+          "std": 0.00023049176898359478
+        },
+        "budget_violations": {
+          "mean": 0.3333333333333333,
+          "std": 0.5773502691896257
+        },
+        "budget_violation_rate": {
+          "mean": 0.0015015015015015015,
+          "std": 0.0026006768882415577
+        },
+        "buyers_over_budget": {
+          "mean": 0.3333333333333333,
+          "std": 0.5773502691896257
+        },
+        "budget_exhausted_tasks": {
+          "mean": 20.0,
+          "std": 2.0
+        },
+        "no_compliant_seller_tasks": {
           "mean": 0.0,
           "std": 0.0
         },
@@ -1699,239 +736,3638 @@
           "mean": 0.0,
           "std": 0.0
         },
+        "blocked_at_gateway": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "violations_by_rule": {},
         "blocked_by_rule": {},
         "cross_border_share": {
-          "mean": 0.49106068696025695,
-          "std": 0.01122532052892734
+          "mean": 0.5605825174632514,
+          "std": 0.021330867602420533
         },
-        "fraud_exposure": {
-          "mean": 0.4311611827666136,
-          "std": 0.003891710641305138
+        "fraud_seller_share": {
+          "mean": 0.8136404962093037,
+          "std": 0.0196977801559846
         },
         "fraud_accuracy_claimed": {
-          "mean": 0.926138888888889,
-          "std": 0.0021316616714389357
+          "mean": 0.9228593461964483,
+          "std": 0.0031721025469359935
         },
         "fraud_accuracy_actual": {
-          "mean": 0.5944444444444444,
-          "std": 0.04194352464039301
+          "mean": 0.6575591985428051,
+          "std": 0.015774597518842186
         },
         "fraud_accuracy_gap": {
-          "mean": 0.33169444444444446,
-          "std": 0.040108735309756914
+          "mean": 0.2653001476536431,
+          "std": 0.01432596111320111
         },
-        "honest_accuracy": {
-          "mean": 0.873741619476347,
-          "std": 0.011485368617141445
+        "mean_task_latency_ms": {
+          "mean": 4456.448458038875,
+          "std": 203.43608853972023
+        },
+        "p95_task_latency_ms": {
+          "mean": 19516.70273643348,
+          "std": 28.706575680699334
         },
         "total_buyer_surplus": {
-          "mean": 10.552331158398328,
-          "std": 0.254446513190149
+          "mean": 6.210061866666667,
+          "std": 0.3333392997403899
         },
         "total_seller_profit": {
-          "mean": 3.744630436759252,
-          "std": 0.10979131766599179
+          "mean": 3.8662066666666663,
+          "std": 0.07572151763754628
         },
         "buyer_surplus": {
           "buyer_br_1": {
-            "mean": 1.8557406135717505,
-            "std": 0.3178334497561412
+            "mean": 1.1910533333333335,
+            "std": 0.05719488991066707
           },
           "buyer_br_2": {
-            "mean": 1.6015723287146788,
-            "std": 0.1568076131951803
+            "mean": 0.6477244000000001,
+            "std": 0.08499840215251099
           },
           "buyer_cn_1": {
-            "mean": 2.002366094561754,
-            "std": 0.12729275580287003
+            "mean": 1.2297508,
+            "std": 0.21647796740398303
           },
           "buyer_cn_2": {
-            "mean": 2.525977832559667,
-            "std": 0.08139277423771389
+            "mean": 1.9593221333333337,
+            "std": 0.14524155811686013
           },
           "buyer_sg_1": {
-            "mean": 1.900278781629746,
-            "std": 0.3165658986713916
+            "mean": 0.8531000000000001,
+            "std": 0.16080526981414517
           },
           "buyer_sg_2": {
-            "mean": 0.6663955073607313,
-            "std": 0.15696772356556046
+            "mean": 0.32911119999999994,
+            "std": 0.14312884554218966
           }
         },
         "seller_profit": {
           "seller_br": {
-            "mean": 1.6492678176986562,
-            "std": 0.024830115632092
+            "mean": 0.03653,
+            "std": 0.0034118763166328344
           },
           "seller_cn": {
-            "mean": 1.5838019999999995,
-            "std": 0.13755514851869374
+            "mean": 0.32544000000000006,
+            "std": 0.0657693910569347
           },
           "seller_sg": {
-            "mean": 0.5115606190605965,
-            "std": 0.011532662224534146
+            "mean": 3.504236666666666,
+            "std": 0.14028273034601646
+          }
+        },
+        "budget_utilisation": {
+          "buyer_br_1": {
+            "mean": 0.46614,
+            "std": 0.021596400733455527
+          },
+          "buyer_br_2": {
+            "mean": 0.5511378000000001,
+            "std": 0.0290678876446157
+          },
+          "buyer_cn_1": {
+            "mean": 0.4254330133333333,
+            "std": 0.02181726180690258
+          },
+          "buyer_cn_2": {
+            "mean": 0.44293781333333343,
+            "std": 0.021780395604169646
+          },
+          "buyer_sg_1": {
+            "mean": 0.45876,
+            "std": 0.043737278927706506
+          },
+          "buyer_sg_2": {
+            "mean": 0.9817776,
+            "std": 0.025676948902858442
+          }
+        },
+        "seller_accuracy": {
+          "seller_br": {
+            "mean": 0.7818181818181819,
+            "std": 0.04810456929208348
+          },
+          "seller_cn": {
+            "mean": 0.9087301587301587,
+            "std": 0.08445951053092364
+          },
+          "seller_sg": {
+            "mean": 0.6575591985428051,
+            "std": 0.015774597518842186
+          }
+        },
+        "filtered_candidates": {
+          "mean": 123.0,
+          "std": 9.539392014169456
+        },
+        "filtered_by_rule": {
+          "BR-LGPD-33-VIII": {
+            "mean": 19.666666666666668,
+            "std": 2.516611478423583
+          },
+          "CN-DSL-31": {
+            "mean": 35.333333333333336,
+            "std": 13.316656236958785
+          },
+          "CN-PIPL-38": {
+            "mean": 27.333333333333332,
+            "std": 3.0550504633038935
+          },
+          "CN-PIPL-40": {
+            "mean": 19.333333333333332,
+            "std": 2.309401076758503
+          },
+          "SG-PDPA-26": {
+            "mean": 21.333333333333332,
+            "std": 2.309401076758503
+          }
+        },
+        "blocked_or_filtered": {
+          "mean": 123.0,
+          "std": 9.539392014169456
+        },
+        "audit_violations_enforced": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "stop_reasons": {}
+      },
+      "per_seed": [
+        {
+          "n_tasks": 240,
+          "n_purchases": 218,
+          "n_lines": 240,
+          "n_blocked": 0,
+          "n_unfilled": 22,
+          "purchases_per_task": 0.9083333333333333,
+          "fill_rate": 0.9083333333333333,
+          "task_accuracy": 0.65,
+          "purchase_accuracy": 0.7155963302752294,
+          "total_cost": 5.838455199999999,
+          "total_fee": 0.1102752,
+          "mean_cost_per_task": 0.024326896666666663,
+          "mean_price_per_1k": 0.17642201834862387,
+          "total_expected_cost": 5.546050685,
+          "total_cost_gap": 0.2924045149999994,
+          "cost_gap_rel": 0.052723015278393445,
+          "mean_abs_cost_overrun": 0.009014621674311926,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 22,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 0,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {},
+          "blocked_by_rule": {},
+          "cross_border_share": 0.5688073394495413,
+          "fraud_seller_share": 0.8256880733944955,
+          "fraud_accuracy_claimed": 0.9211640211640213,
+          "fraud_accuracy_actual": 0.6666666666666666,
+          "fraud_accuracy_gap": 0.25449735449735467,
+          "mean_task_latency_ms": 4486.755732072995,
+          "p95_task_latency_ms": 19536.03546412052,
+          "total_buyer_surplus": 6.4615448,
+          "total_seller_profit": 3.893509999999999,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.4777031999999997,
+            "buyer_cn_2": 1.9302952000000007,
+            "buyer_sg_1": 0.9671600000000001,
+            "buyer_sg_2": 0.17328000000000002,
+            "buyer_br_1": 1.1900896,
+            "buyer_br_2": 0.7230168
+          },
+          "seller_profit": {
+            "seller_cn": 0.2840800000000001,
+            "seller_sg": 3.576429999999999,
+            "seller_br": 0.032999999999999995
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.40091872000000006,
+            "buyer_cn_2": 0.46788192000000006,
+            "buyer_sg_1": 0.413136,
+            "buyer_sg_2": 0.97344,
+            "buyer_br_1": 0.4899552,
+            "buyer_br_2": 0.5834916000000001
+          },
+          "seller_accuracy": {
+            "seller_sg": 0.6666666666666666,
+            "seller_cn": 1.0,
+            "seller_br": 0.8181818181818182
+          },
+          "filtered_candidates": 122,
+          "filtered_by_rule": {
+            "CN-PIPL-38": 30,
+            "SG-PDPA-26": 20,
+            "CN-PIPL-40": 18,
+            "CN-DSL-31": 32,
+            "BR-LGPD-33-VIII": 22
+          },
+          "blocked_or_filtered": 122,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {}
+        },
+        {
+          "n_tasks": 240,
+          "n_purchases": 222,
+          "n_lines": 240,
+          "n_blocked": 0,
+          "n_unfilled": 18,
+          "purchases_per_task": 0.925,
+          "fill_rate": 0.925,
+          "task_accuracy": 0.625,
+          "purchase_accuracy": 0.6756756756756757,
+          "total_cost": 5.8880332,
+          "total_fee": 0.1050932,
+          "mean_cost_per_task": 0.024533471666666664,
+          "mean_price_per_1k": 0.17657657657657655,
+          "total_expected_cost": 5.65486573,
+          "total_cost_gap": 0.2331674699999997,
+          "cost_gap_rel": 0.04123306920675546,
+          "mean_abs_cost_overrun": 0.00945667310810811,
+          "budget_violations": 1,
+          "budget_violation_rate": 0.0045045045045045045,
+          "buyers_over_budget": 1,
+          "budget_exhausted_tasks": 18,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 0,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {},
+          "blocked_by_rule": {},
+          "cross_border_share": 0.5765765765765766,
+          "fraud_seller_share": 0.8243243243243243,
+          "fraud_accuracy_claimed": 0.9208951340098881,
+          "fraud_accuracy_actual": 0.639344262295082,
+          "fraud_accuracy_gap": 0.2815508717148061,
+          "mean_task_latency_ms": 4643.030648221167,
+          "p95_task_latency_ms": 19530.354857048555,
+          "total_buyer_surplus": 5.8319668,
+          "total_seller_profit": 3.924489999999999,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.0783443999999998,
+            "buyer_cn_2": 1.8307860000000005,
+            "buyer_sg_1": 0.66918,
+            "buyer_sg_2": 0.4547063999999999,
+            "buyer_br_1": 1.1343464000000003,
+            "buyer_br_2": 0.6646036
+          },
+          "seller_profit": {
+            "seller_cn": 0.29096,
+            "seller_sg": 3.5937199999999994,
+            "seller_br": 0.039810000000000005
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.43266223999999986,
+            "buyer_cn_2": 0.42768560000000005,
+            "buyer_sg_1": 0.500328,
+            "buyer_sg_2": 1.0105872,
+            "buyer_br_1": 0.4478268000000001,
+            "buyer_br_2": 0.5426982000000001
+          },
+          "seller_accuracy": {
+            "seller_sg": 0.639344262295082,
+            "seller_cn": 0.8928571428571429,
+            "seller_br": 0.7272727272727273
+          },
+          "filtered_candidates": 114,
+          "filtered_by_rule": {
+            "CN-PIPL-38": 28,
+            "CN-PIPL-40": 22,
+            "SG-PDPA-26": 20,
+            "BR-LGPD-33-VIII": 20,
+            "CN-DSL-31": 24
+          },
+          "blocked_or_filtered": 114,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {}
+        },
+        {
+          "n_tasks": 240,
+          "n_purchases": 220,
+          "n_lines": 240,
+          "n_blocked": 0,
+          "n_unfilled": 20,
+          "purchases_per_task": 0.9166666666666666,
+          "fill_rate": 0.9166666666666666,
+          "task_accuracy": 0.6416666666666667,
+          "purchase_accuracy": 0.7,
+          "total_cost": 5.803326,
+          "total_fee": 0.098406,
+          "mean_cost_per_task": 0.024180525,
+          "mean_price_per_1k": 0.17781818181818182,
+          "total_expected_cost": 5.640211610000001,
+          "total_cost_gap": 0.1631143899999996,
+          "cost_gap_rel": 0.028919906074233195,
+          "mean_abs_cost_overrun": 0.009122411954545455,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 20,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 0,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {},
+          "blocked_by_rule": {},
+          "cross_border_share": 0.5363636363636364,
+          "fraud_seller_share": 0.7909090909090909,
+          "fraud_accuracy_claimed": 0.9265188834154352,
+          "fraud_accuracy_actual": 0.6666666666666666,
+          "fraud_accuracy_gap": 0.25985221674876857,
+          "mean_task_latency_ms": 4239.558993822465,
+          "p95_task_latency_ms": 19483.717888131363,
+          "total_buyer_surplus": 6.336674,
+          "total_seller_profit": 3.7806200000000003,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.1332048000000001,
+            "buyer_cn_2": 2.1168852,
+            "buyer_sg_1": 0.9229600000000002,
+            "buyer_sg_2": 0.35934719999999987,
+            "buyer_br_1": 1.2487240000000002,
+            "buyer_br_2": 0.5555528000000002
+          },
+          "seller_profit": {
+            "seller_cn": 0.4012800000000001,
+            "seller_sg": 3.34256,
+            "seller_br": 0.03678000000000001
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.44271807999999996,
+            "buyer_cn_2": 0.4332459200000002,
+            "buyer_sg_1": 0.46281599999999995,
+            "buyer_sg_2": 0.9613055999999999,
+            "buyer_br_1": 0.46063799999999994,
+            "buyer_br_2": 0.5272236
+          },
+          "seller_accuracy": {
+            "seller_sg": 0.6666666666666666,
+            "seller_cn": 0.8333333333333334,
+            "seller_br": 0.8
+          },
+          "filtered_candidates": 133,
+          "filtered_by_rule": {
+            "CN-DSL-31": 50,
+            "CN-PIPL-38": 24,
+            "SG-PDPA-26": 24,
+            "CN-PIPL-40": 18,
+            "BR-LGPD-33-VIII": 17
+          },
+          "blocked_or_filtered": 133,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {}
+        }
+      ],
+      "gateway_per_seed": [
+        {
+          "allowed": {
+            "CN->SG": 55,
+            "SG->SG": 58,
+            "BR->SG": 67,
+            "CN->CN": 25,
+            "BR->BR": 11,
+            "BR->CN": 2
+          },
+          "blocked": {},
+          "allowed_total": 218,
+          "blocked_total": 0,
+          "violations": {},
+          "violations_total": 0
+        },
+        {
+          "allowed": {
+            "CN->SG": 57,
+            "CN->CN": 23,
+            "SG->SG": 61,
+            "BR->BR": 10,
+            "BR->SG": 65,
+            "SG->BR": 1,
+            "BR->CN": 5
+          },
+          "blocked": {},
+          "allowed_total": 222,
+          "blocked_total": 0,
+          "violations": {},
+          "violations_total": 0
+        },
+        {
+          "allowed": {
+            "CN->SG": 46,
+            "CN->CN": 34,
+            "SG->SG": 59,
+            "BR->SG": 69,
+            "BR->BR": 9,
+            "SG->BR": 1,
+            "BR->CN": 2
+          },
+          "blocked": {},
+          "allowed_total": 220,
+          "blocked_total": 0,
+          "violations": {},
+          "violations_total": 0
+        }
+      ]
+    },
+    "posted_price/cascade_compliant": {
+      "mechanism": "posted_price",
+      "policy": "cascade_compliant",
+      "aggregate": {
+        "n_tasks": {
+          "mean": 240.0,
+          "std": 0.0
+        },
+        "n_purchases": {
+          "mean": 379.0,
+          "std": 13.74772708486752
+        },
+        "n_lines": {
+          "mean": 395.3333333333333,
+          "std": 13.428824718989125
+        },
+        "n_blocked": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "n_unfilled": {
+          "mean": 16.333333333333332,
+          "std": 2.516611478423583
+        },
+        "purchases_per_task": {
+          "mean": 1.5791666666666666,
+          "std": 0.05728219618694801
+        },
+        "fill_rate": {
+          "mean": 0.9319444444444445,
+          "std": 0.010485881160098284
+        },
+        "task_accuracy": {
+          "mean": 0.7777777777777778,
+          "std": 0.02774303382699748
+        },
+        "purchase_accuracy": {
+          "mean": 0.6940620037960726,
+          "std": 0.005625326233679877
+        },
+        "total_cost": {
+          "mean": 7.362087266666666,
+          "std": 0.3714038665245335
+        },
+        "total_fee": {
+          "mean": 0.14510726666666665,
+          "std": 0.014902573917727539
+        },
+        "mean_cost_per_task": {
+          "mean": 0.030675363611111114,
+          "std": 0.0015475161105188901
+        },
+        "mean_price_per_1k": {
+          "mean": 0.131282982716279,
+          "std": 0.0012063056154084334
+        },
+        "total_expected_cost": {
+          "mean": 6.787482958333334,
+          "std": 0.32561280904506545
+        },
+        "total_cost_gap": {
+          "mean": 0.574604308333333,
+          "std": 0.11920266702391474
+        },
+        "cost_gap_rel": {
+          "mean": 0.08464751920075553,
+          "std": 0.01677863866050707
+        },
+        "mean_abs_cost_overrun": {
+          "mean": 0.006119451861296139,
+          "std": 0.00016203747006741744
+        },
+        "budget_violations": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "budget_violation_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "buyers_over_budget": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "budget_exhausted_tasks": {
+          "mean": 16.333333333333332,
+          "std": 2.516611478423583
+        },
+        "no_compliant_seller_tasks": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "compliance_violations": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "blocked_at_gateway": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "violations_by_rule": {},
+        "blocked_by_rule": {},
+        "cross_border_share": {
+          "mean": 0.5544367635863465,
+          "std": 0.023352157121599645
+        },
+        "fraud_seller_share": {
+          "mean": 0.33121813399929656,
+          "std": 0.015615788563950695
+        },
+        "fraud_accuracy_claimed": {
+          "mean": 0.9173686658649065,
+          "std": 0.0011368051655994784
+        },
+        "fraud_accuracy_actual": {
+          "mean": 0.6503373819163293,
+          "std": 0.016347120004203426
+        },
+        "fraud_accuracy_gap": {
+          "mean": 0.26703128394857717,
+          "std": 0.016748658899192824
+        },
+        "mean_task_latency_ms": {
+          "mean": 4609.370837676836,
+          "std": 416.73181523959244
+        },
+        "p95_task_latency_ms": {
+          "mean": 21198.2792185221,
+          "std": 860.6682277800264
+        },
+        "total_buyer_surplus": {
+          "mean": 7.247912733333334,
+          "std": 0.6133938735179653
+        },
+        "total_seller_profit": {
+          "mean": 4.1283166666666675,
+          "std": 0.26819564525423095
+        },
+        "buyer_surplus": {
+          "buyer_br_1": {
+            "mean": 1.182119466666667,
+            "std": 0.17807604521499623
+          },
+          "buyer_br_2": {
+            "mean": 0.7655228000000002,
+            "std": 0.18963647540660525
+          },
+          "buyer_cn_1": {
+            "mean": 1.4663112666666667,
+            "std": 0.2526238916160018
+          },
+          "buyer_cn_2": {
+            "mean": 2.0136789333333334,
+            "std": 0.16528421311671984
+          },
+          "buyer_sg_1": {
+            "mean": 1.2374930666666668,
+            "std": 0.45256482389179725
+          },
+          "buyer_sg_2": {
+            "mean": 0.5827872,
+            "std": 0.06008631789417634
+          }
+        },
+        "seller_profit": {
+          "seller_br": {
+            "mean": 0.5941900000000001,
+            "std": 0.00973523497405158
+          },
+          "seller_cn": {
+            "mean": 1.0177600000000002,
+            "std": 0.010840221399952932
+          },
+          "seller_sg": {
+            "mean": 2.516366666666667,
+            "std": 0.28052570244691166
+          }
+        },
+        "budget_utilisation": {
+          "buyer_br_1": {
+            "mean": 0.5872736,
+            "std": 0.05275041361468181
+          },
+          "buyer_br_2": {
+            "mean": 0.7372386,
+            "std": 0.10629817120327138
+          },
+          "buyer_cn_1": {
+            "mean": 0.5654754933333332,
+            "std": 0.024634176633980157
+          },
+          "buyer_cn_2": {
+            "mean": 0.5811950933333333,
+            "std": 0.058212783620937805
+          },
+          "buyer_sg_1": {
+            "mean": 0.5396694400000001,
+            "std": 0.13773395484970583
+          },
+          "buyer_sg_2": {
+            "mean": 0.9944256,
+            "std": 0.0058779581761015925
+          }
+        },
+        "seller_accuracy": {
+          "seller_br": {
+            "mean": 0.617223947089264,
+            "std": 0.018948366464035492
+          },
+          "seller_cn": {
+            "mean": 0.9096976721723172,
+            "std": 0.038947160473612595
+          },
+          "seller_sg": {
+            "mean": 0.6503373819163293,
+            "std": 0.016347120004203426
+          }
+        },
+        "filtered_candidates": {
+          "mean": 123.33333333333333,
+          "std": 10.066445913694333
+        },
+        "filtered_by_rule": {
+          "BR-LGPD-33-VIII": {
+            "mean": 20.0,
+            "std": 2.0
+          },
+          "CN-DSL-31": {
+            "mean": 35.333333333333336,
+            "std": 13.316656236958785
+          },
+          "CN-PIPL-38": {
+            "mean": 27.333333333333332,
+            "std": 3.0550504633038935
+          },
+          "CN-PIPL-40": {
+            "mean": 19.333333333333332,
+            "std": 2.309401076758503
+          },
+          "SG-PDPA-26": {
+            "mean": 21.333333333333332,
+            "std": 2.309401076758503
+          }
+        },
+        "blocked_or_filtered": {
+          "mean": 123.33333333333333,
+          "std": 10.066445913694333
+        },
+        "audit_violations_enforced": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "stop_reasons": {
+          "budget": {
+            "mean": 18.0,
+            "std": 2.6457513110645907
+          },
+          "confident": {
+            "mean": 190.0,
+            "std": 4.0
+          },
+          "exhausted": {
+            "mean": 32.0,
+            "std": 1.7320508075688772
           }
         }
       },
       "per_seed": [
         {
-          "n_tx": 300,
-          "n_allowed": 276,
+          "n_tasks": 240,
+          "n_purchases": 391,
+          "n_lines": 405,
           "n_blocked": 0,
-          "n_unfilled": 24,
-          "fill_rate": 0.92,
-          "accuracy": 0.7536231884057971,
-          "total_cost": 5.920773713666521,
-          "total_fee": 0.0889394682507557,
-          "mean_latency_ms": 959.809005263242,
-          "p95_latency_ms": 1623.521554564078,
-          "blocked_attempts": 0,
-          "violating_flows_through": 0,
+          "n_unfilled": 14,
+          "purchases_per_task": 1.6291666666666667,
+          "fill_rate": 0.9416666666666667,
+          "task_accuracy": 0.8083333333333333,
+          "purchase_accuracy": 0.690537084398977,
+          "total_cost": 7.5554974,
+          "total_fee": 0.1599574,
+          "mean_cost_per_task": 0.03148123916666667,
+          "mean_price_per_1k": 0.1319693094629156,
+          "total_expected_cost": 7.0534204250000005,
+          "total_cost_gap": 0.5020769749999996,
+          "cost_gap_rel": 0.07118205703724226,
+          "mean_abs_cost_overrun": 0.0059323624424552435,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 14,
+          "no_compliant_seller_tasks": 0,
           "compliance_violations": 0,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {},
           "blocked_by_rule": {},
-          "cross_border_share": 0.5036231884057971,
-          "fraud_exposure": 0.43478260869565216,
-          "fraud_accuracy_claimed": 0.9251666666666666,
-          "fraud_accuracy_actual": 0.6,
-          "fraud_accuracy_gap": 0.3251666666666666,
-          "honest_accuracy": 0.8717948717948718,
-          "total_buyer_surplus": 10.440286818082722,
-          "total_seller_profit": 3.80434771366652,
+          "cross_border_share": 0.5677749360613811,
+          "fraud_seller_share": 0.340153452685422,
+          "fraud_accuracy_claimed": 0.9176512710347297,
+          "fraud_accuracy_actual": 0.631578947368421,
+          "fraud_accuracy_gap": 0.28607232366630864,
+          "mean_task_latency_ms": 4567.505576562036,
+          "p95_task_latency_ms": 20293.004062127824,
+          "total_buyer_surplus": 7.7145026,
+          "total_seller_profit": 4.26159,
           "buyer_surplus": {
-            "buyer_cn_1": 2.1168623216878895,
-            "buyer_cn_2": 2.613296460406634,
-            "buyer_sg_1": 1.8349533837203857,
-            "buyer_sg_2": 0.487754269273451,
-            "buyer_br_1": 1.7993950615086616,
-            "buyer_br_2": 1.5880253214857003
+            "buyer_cn_1": 1.6971360000000002,
+            "buyer_cn_2": 2.180519,
+            "buyer_sg_1": 1.6200968,
+            "buyer_sg_2": 0.5210759999999999,
+            "buyer_br_1": 1.1054332000000004,
+            "buyer_br_2": 0.5902416000000001
           },
           "seller_profit": {
-            "seller_cn": 1.664063999999999,
-            "seller_sg": 0.516614582467889,
-            "seller_br": 1.623669131198632
+            "seller_cn": 1.0077600000000004,
+            "seller_sg": 2.6512199999999995,
+            "seller_br": 0.6026100000000001
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.5371455999999999,
+            "buyer_cn_2": 0.6477923999999999,
+            "buyer_sg_1": 0.4399612800000002,
+            "buyer_sg_2": 0.9978480000000001,
+            "buyer_br_1": 0.6372833999999999,
+            "buyer_br_2": 0.8598792
+          },
+          "seller_accuracy": {
+            "seller_br": 0.6023391812865497,
+            "seller_sg": 0.631578947368421,
+            "seller_cn": 0.9540229885057471
+          },
+          "filtered_candidates": 122,
+          "filtered_by_rule": {
+            "CN-PIPL-38": 30,
+            "SG-PDPA-26": 20,
+            "CN-PIPL-40": 18,
+            "CN-DSL-31": 32,
+            "BR-LGPD-33-VIII": 22
+          },
+          "blocked_or_filtered": 122,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {
+            "confident": 190,
+            "exhausted": 33,
+            "budget": 17
           }
         },
         {
-          "n_tx": 300,
-          "n_allowed": 278,
-          "n_blocked": 0,
-          "n_unfilled": 22,
-          "fill_rate": 0.9266666666666666,
-          "accuracy": 0.7769784172661871,
-          "total_cost": 5.903117712913627,
-          "total_fee": 0.0833108099382276,
-          "mean_latency_ms": 968.1217717953361,
-          "p95_latency_ms": 1666.317773908871,
-          "blocked_attempts": 0,
-          "violating_flows_through": 0,
-          "compliance_violations": 0,
-          "blocked_by_rule": {},
-          "cross_border_share": 0.48201438848920863,
-          "fraud_exposure": 0.4316546762589928,
-          "fraud_accuracy_claimed": 0.9285833333333334,
-          "fraud_accuracy_actual": 0.6333333333333333,
-          "fraud_accuracy_gap": 0.2952500000000001,
-          "honest_accuracy": 0.8860759493670886,
-          "total_buyer_surplus": 10.843571477148146,
-          "total_seller_profit": 3.8116197129136267,
-          "buyer_surplus": {
-            "buyer_cn_1": 2.0249390694421505,
-            "buyer_cn_2": 2.452212429197274,
-            "buyer_sg_1": 1.6214717188215648,
-            "buyer_sg_2": 0.7822556682681063,
-            "buyer_br_1": 2.197978646923997,
-            "buyer_br_2": 1.764713944495053
-          },
-          "seller_profit": {
-            "seller_cn": 1.6623719999999993,
-            "seller_sg": 0.4983638019133499,
-            "seller_br": 1.6508839110002773
-          }
-        },
-        {
-          "n_tx": 300,
-          "n_allowed": 281,
+          "n_tasks": 240,
+          "n_purchases": 382,
+          "n_lines": 401,
           "n_blocked": 0,
           "n_unfilled": 19,
-          "fill_rate": 0.9366666666666666,
-          "accuracy": 0.7295373665480427,
-          "total_cost": 5.581877883697608,
-          "total_fee": 0.0849869363382768,
-          "mean_latency_ms": 952.4730119364932,
-          "p95_latency_ms": 1619.931305147239,
-          "blocked_attempts": 0,
-          "violating_flows_through": 0,
+          "purchases_per_task": 1.5916666666666666,
+          "fill_rate": 0.9208333333333333,
+          "task_accuracy": 0.7541666666666667,
+          "purchase_accuracy": 0.6910994764397905,
+          "total_cost": 7.5968716,
+          "total_fee": 0.1452116,
+          "mean_cost_per_task": 0.03165363166666667,
+          "mean_price_per_1k": 0.13198952879581152,
+          "total_expected_cost": 6.884691655,
+          "total_cost_gap": 0.7121799449999999,
+          "cost_gap_rel": 0.10344398568420707,
+          "mean_abs_cost_overrun": 0.006210922028795811,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 19,
+          "no_compliant_seller_tasks": 0,
           "compliance_violations": 0,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {},
           "blocked_by_rule": {},
-          "cross_border_share": 0.4875444839857651,
-          "fraud_exposure": 0.42704626334519574,
-          "fraud_accuracy_claimed": 0.9246666666666666,
-          "fraud_accuracy_actual": 0.55,
-          "fraud_accuracy_gap": 0.3746666666666666,
-          "honest_accuracy": 0.8633540372670807,
-          "total_buyer_surplus": 10.373135179964116,
-          "total_seller_profit": 3.6179238836976086,
+          "cross_border_share": 0.5680628272251309,
+          "fraud_seller_share": 0.3403141361256545,
+          "fraud_accuracy_claimed": 0.9161172161172162,
+          "fraud_accuracy_actual": 0.6615384615384615,
+          "fraud_accuracy_gap": 0.2545787545787547,
+          "mean_task_latency_ms": 5045.455104105671,
+          "p95_task_latency_ms": 21295.800665402305,
+          "total_buyer_surplus": 6.5531284,
+          "total_seller_profit": 4.303770000000001,
           "buyer_surplus": {
-            "buyer_cn_1": 1.8652968925552216,
-            "buyer_cn_2": 2.512424608075094,
-            "buyer_sg_1": 2.2444112423472875,
-            "buyer_sg_2": 0.7291765845406365,
-            "buyer_br_1": 1.5698481322825928,
-            "buyer_br_2": 1.451977720163283
+            "buyer_cn_1": 1.1964359999999998,
+            "buyer_cn_2": 2.010522000000001,
+            "buyer_sg_1": 0.7379287999999998,
+            "buyer_sg_2": 0.5861808,
+            "buyer_br_1": 1.0552340000000002,
+            "buyer_br_2": 0.9668268000000001
           },
           "seller_profit": {
-            "seller_cn": 1.4249699999999998,
-            "seller_sg": 0.5197034728005503,
-            "seller_br": 1.6732504108970585
+            "seller_cn": 1.0162400000000003,
+            "seller_sg": 2.7040000000000006,
+            "seller_br": 0.5835300000000003
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.5774256,
+            "buyer_cn_2": 0.5557911999999999,
+            "buyer_sg_1": 0.6968284800000001,
+            "buyer_sg_2": 0.9876384,
+            "buyer_br_1": 0.592383,
+            "buyer_br_2": 0.6715865999999999
+          },
+          "seller_accuracy": {
+            "seller_sg": 0.6615384615384615,
+            "seller_cn": 0.8941176470588236,
+            "seller_br": 0.6107784431137725
+          },
+          "filtered_candidates": 114,
+          "filtered_by_rule": {
+            "CN-PIPL-38": 28,
+            "CN-PIPL-40": 22,
+            "SG-PDPA-26": 20,
+            "BR-LGPD-33-VIII": 20,
+            "CN-DSL-31": 24
+          },
+          "blocked_or_filtered": 114,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {
+            "exhausted": 33,
+            "confident": 186,
+            "budget": 21
+          }
+        },
+        {
+          "n_tasks": 240,
+          "n_purchases": 364,
+          "n_lines": 380,
+          "n_blocked": 0,
+          "n_unfilled": 16,
+          "purchases_per_task": 1.5166666666666666,
+          "fill_rate": 0.9333333333333333,
+          "task_accuracy": 0.7708333333333334,
+          "purchase_accuracy": 0.7005494505494505,
+          "total_cost": 6.9338928,
+          "total_fee": 0.1301528,
+          "mean_cost_per_task": 0.02889122,
+          "mean_price_per_1k": 0.1298901098901099,
+          "total_expected_cost": 6.424336795,
+          "total_cost_gap": 0.5095560049999994,
+          "cost_gap_rel": 0.07931651488081727,
+          "mean_abs_cost_overrun": 0.006215071112637364,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 16,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 0,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {},
+          "blocked_by_rule": {},
+          "cross_border_share": 0.5274725274725275,
+          "fraud_seller_share": 0.3131868131868132,
+          "fraud_accuracy_claimed": 0.9183375104427736,
+          "fraud_accuracy_actual": 0.6578947368421053,
+          "fraud_accuracy_gap": 0.26044277360066825,
+          "mean_task_latency_ms": 4215.151832362802,
+          "p95_task_latency_ms": 22006.032928036166,
+          "total_buyer_surplus": 7.476107200000001,
+          "total_seller_profit": 3.8195900000000007,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.5053618000000002,
+            "buyer_cn_2": 1.8499958000000003,
+            "buyer_sg_1": 1.3544536000000003,
+            "buyer_sg_2": 0.6411048000000001,
+            "buyer_br_1": 1.3856912000000006,
+            "buyer_br_2": 0.7395
+          },
+          "seller_profit": {
+            "seller_cn": 1.0292800000000002,
+            "seller_sg": 2.1938800000000005,
+            "seller_br": 0.5964299999999999
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.5818552799999999,
+            "buyer_cn_2": 0.5400016800000002,
+            "buyer_sg_1": 0.4822185599999999,
+            "buyer_sg_2": 0.9977903999999999,
+            "buyer_br_1": 0.5321543999999998,
+            "buyer_br_2": 0.6802500000000001
+          },
+          "seller_accuracy": {
+            "seller_br": 0.6385542168674698,
+            "seller_sg": 0.6578947368421053,
+            "seller_cn": 0.8809523809523809
+          },
+          "filtered_candidates": 134,
+          "filtered_by_rule": {
+            "CN-DSL-31": 50,
+            "CN-PIPL-38": 24,
+            "SG-PDPA-26": 24,
+            "CN-PIPL-40": 18,
+            "BR-LGPD-33-VIII": 18
+          },
+          "blocked_or_filtered": 134,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {
+            "exhausted": 30,
+            "confident": 194,
+            "budget": 16
           }
         }
       ],
       "gateway_per_seed": [
         {
           "allowed": {
+            "CN->BR": 25,
+            "CN->SG": 47,
+            "SG->BR": 66,
+            "SG->SG": 37,
+            "BR->BR": 80,
+            "BR->SG": 49,
+            "BR->CN": 30,
+            "CN->CN": 52,
+            "SG->CN": 5
+          },
+          "blocked": {},
+          "allowed_total": 391,
+          "blocked_total": 0,
+          "violations": {},
+          "violations_total": 0
+        },
+        {
+          "allowed": {
+            "CN->SG": 46,
             "CN->CN": 47,
+            "SG->BR": 61,
             "SG->SG": 41,
+            "BR->BR": 77,
             "BR->SG": 43,
-            "CN->SG": 36,
-            "BR->BR": 49,
-            "CN->BR": 17,
-            "SG->BR": 36,
-            "BR->CN": 7
+            "BR->CN": 23,
+            "CN->BR": 29,
+            "SG->CN": 15
           },
           "blocked": {},
-          "allowed_total": 276,
-          "blocked_total": 0
+          "allowed_total": 382,
+          "blocked_total": 0,
+          "violations": {},
+          "violations_total": 0
         },
         {
           "allowed": {
-            "CN->CN": 49,
-            "SG->SG": 42,
+            "CN->BR": 22,
+            "CN->SG": 38,
+            "CN->CN": 56,
+            "SG->BR": 64,
+            "SG->SG": 36,
+            "SG->CN": 7,
+            "BR->BR": 80,
             "BR->SG": 40,
-            "CN->SG": 38,
-            "SG->BR": 36,
-            "BR->BR": 53,
-            "CN->BR": 13,
-            "BR->CN": 7
+            "BR->CN": 21
           },
           "blocked": {},
-          "allowed_total": 278,
-          "blocked_total": 0
+          "allowed_total": 364,
+          "blocked_total": 0,
+          "violations": {},
+          "violations_total": 0
+        }
+      ]
+    },
+    "posted_price/vote_k_compliant": {
+      "mechanism": "posted_price",
+      "policy": "vote_k_compliant",
+      "aggregate": {
+        "n_tasks": {
+          "mean": 240.0,
+          "std": 0.0
+        },
+        "n_purchases": {
+          "mean": 476.0,
+          "std": 12.165525060596439
+        },
+        "n_lines": {
+          "mean": 508.3333333333333,
+          "std": 9.29157324317757
+        },
+        "n_blocked": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "n_unfilled": {
+          "mean": 32.333333333333336,
+          "std": 3.511884584284246
+        },
+        "purchases_per_task": {
+          "mean": 1.9833333333333332,
+          "std": 0.05068968775248511
+        },
+        "fill_rate": {
+          "mean": 0.8652777777777777,
+          "std": 0.0146328524345177
+        },
+        "task_accuracy": {
+          "mean": 0.6888888888888888,
+          "std": 0.004811252243246864
+        },
+        "purchase_accuracy": {
+          "mean": 0.7347758343199073,
+          "std": 0.010687723279109688
+        },
+        "total_cost": {
+          "mean": 10.407375866666667,
+          "std": 0.30865532434904375
+        },
+        "total_fee": {
+          "mean": 0.21661586666666668,
+          "std": 0.006345275487583915
+        },
+        "mean_cost_per_task": {
+          "mean": 0.043364066111111106,
+          "std": 0.0012860638514543494
+        },
+        "mean_price_per_1k": {
+          "mean": 0.14857447055927298,
+          "std": 0.00017939646223821636
+        },
+        "total_expected_cost": {
+          "mean": 9.88628547,
+          "std": 0.24058884940419512
+        },
+        "total_cost_gap": {
+          "mean": 0.5210903966666661,
+          "std": 0.12172313630742311
+        },
+        "cost_gap_rel": {
+          "mean": 0.05265373834977879,
+          "std": 0.011985500229109037
+        },
+        "mean_abs_cost_overrun": {
+          "mean": 0.006843790945261538,
+          "std": 9.477081252420703e-05
+        },
+        "budget_violations": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "budget_violation_rate": {
+          "mean": 0.002101742679250278,
+          "std": 5.2959267498835195e-05
+        },
+        "buyers_over_budget": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "budget_exhausted_tasks": {
+          "mean": 32.333333333333336,
+          "std": 3.511884584284246
+        },
+        "no_compliant_seller_tasks": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "compliance_violations": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "blocked_at_gateway": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "violations_by_rule": {},
+        "blocked_by_rule": {},
+        "cross_border_share": {
+          "mean": 0.5685035498105407,
+          "std": 0.010201603333370014
+        },
+        "fraud_seller_share": {
+          "mean": 0.35081127923073213,
+          "std": 0.003475399236876947
+        },
+        "fraud_accuracy_claimed": {
+          "mean": 0.9212586366315222,
+          "std": 0.0035604098453522874
+        },
+        "fraud_accuracy_actual": {
+          "mean": 0.6570225822894358,
+          "std": 0.021480755275485017
+        },
+        "fraud_accuracy_gap": {
+          "mean": 0.2642360543420865,
+          "std": 0.021587267469063417
+        },
+        "mean_task_latency_ms": {
+          "mean": 5160.039355913791,
+          "std": 348.2657287489602
+        },
+        "p95_task_latency_ms": {
+          "mean": 19441.713180995943,
+          "std": 224.331903611198
+        },
+        "total_buyer_surplus": {
+          "mean": 2.659290800000001,
+          "std": 0.334052690328457
+        },
+        "total_seller_profit": {
+          "mean": 5.653326666666668,
+          "std": 0.18994615824841876
+        },
+        "buyer_surplus": {
+          "buyer_br_1": {
+            "mean": 0.4115989333333336,
+            "std": 0.15423966968757843
+          },
+          "buyer_br_2": {
+            "mean": -0.2963790666666665,
+            "std": 0.1101744097404354
+          },
+          "buyer_cn_1": {
+            "mean": 0.5073464666666666,
+            "std": 0.11403275833063628
+          },
+          "buyer_cn_2": {
+            "mean": 1.4615458000000003,
+            "std": 0.20666108846872971
+          },
+          "buyer_sg_1": {
+            "mean": 0.43351386666666675,
+            "std": 0.1618097746908182
+          },
+          "buyer_sg_2": {
+            "mean": 0.14166480000000004,
+            "std": 0.12023413861162731
+          }
+        },
+        "seller_profit": {
+          "seller_br": {
+            "mean": 0.5395099999999999,
+            "std": 0.026291270414341032
+          },
+          "seller_cn": {
+            "mean": 1.8209600000000021,
+            "std": 0.03848049895726429
+          },
+          "seller_sg": {
+            "mean": 3.2928566666666668,
+            "std": 0.1513814322608067
+          }
+        },
+        "budget_utilisation": {
+          "buyer_br_1": {
+            "mean": 0.9958672000000001,
+            "std": 0.005160968223114357
+          },
+          "buyer_br_2": {
+            "mean": 0.9998562,
+            "std": 0.0018481902174831563
+          },
+          "buyer_cn_1": {
+            "mean": 0.8423947466666668,
+            "std": 0.04099957067578819
+          },
+          "buyer_cn_2": {
+            "mean": 0.69538168,
+            "std": 0.08266443538749169
+          },
+          "buyer_sg_1": {
+            "mean": 0.8292611200000003,
+            "std": 0.055642720066021244
+          },
+          "buyer_sg_2": {
+            "mean": 0.9966704000000001,
+            "std": 0.009477570929304539
+          }
+        },
+        "seller_accuracy": {
+          "seller_br": {
+            "mean": 0.6381858110046029,
+            "std": 0.028540110009025822
+          },
+          "seller_cn": {
+            "mean": 0.9093430622377664,
+            "std": 0.015424371765442417
+          },
+          "seller_sg": {
+            "mean": 0.6570225822894358,
+            "std": 0.021480755275485017
+          }
+        },
+        "filtered_candidates": {
+          "mean": 123.33333333333333,
+          "std": 10.066445913694333
+        },
+        "filtered_by_rule": {
+          "BR-LGPD-33-VIII": {
+            "mean": 20.0,
+            "std": 2.0
+          },
+          "CN-DSL-31": {
+            "mean": 35.333333333333336,
+            "std": 13.316656236958785
+          },
+          "CN-PIPL-38": {
+            "mean": 27.333333333333332,
+            "std": 3.0550504633038935
+          },
+          "CN-PIPL-40": {
+            "mean": 19.333333333333332,
+            "std": 2.309401076758503
+          },
+          "SG-PDPA-26": {
+            "mean": 21.333333333333332,
+            "std": 2.309401076758503
+          }
+        },
+        "blocked_or_filtered": {
+          "mean": 123.33333333333333,
+          "std": 10.066445913694333
+        },
+        "audit_violations_enforced": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "stop_reasons": {
+          "budget": {
+            "mean": 36.0,
+            "std": 3.605551275463989
+          },
+          "vote": {
+            "mean": 204.0,
+            "std": 3.605551275463989
+          }
+        }
+      },
+      "per_seed": [
+        {
+          "n_tasks": 240,
+          "n_purchases": 468,
+          "n_lines": 504,
+          "n_blocked": 0,
+          "n_unfilled": 36,
+          "purchases_per_task": 1.95,
+          "fill_rate": 0.85,
+          "task_accuracy": 0.6833333333333333,
+          "purchase_accuracy": 0.7414529914529915,
+          "total_cost": 10.3188328,
+          "total_fee": 0.21833280000000002,
+          "mean_cost_per_task": 0.04299513666666666,
+          "mean_price_per_1k": 0.14867521367521366,
+          "total_expected_cost": 9.72407218,
+          "total_cost_gap": 0.5947606199999989,
+          "cost_gap_rel": 0.061163739736863905,
+          "mean_abs_cost_overrun": 0.006761619572649573,
+          "budget_violations": 1,
+          "budget_violation_rate": 0.002136752136752137,
+          "buyers_over_budget": 1,
+          "budget_exhausted_tasks": 36,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 0,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {},
+          "blocked_by_rule": {},
+          "cross_border_share": 0.5705128205128205,
+          "fraud_seller_share": 0.3525641025641026,
+          "fraud_accuracy_claimed": 0.9194805194805196,
+          "fraud_accuracy_actual": 0.6787878787878788,
+          "fraud_accuracy_gap": 0.24069264069264074,
+          "mean_task_latency_ms": 5193.449124482367,
+          "p95_task_latency_ms": 19529.57945738801,
+          "total_buyer_surplus": 2.6511672,
+          "total_seller_profit": 5.626830000000002,
+          "buyer_surplus": {
+            "buyer_cn_1": 0.5700281999999999,
+            "buyer_cn_2": 1.3213202000000002,
+            "buyer_sg_1": 0.5069576000000001,
+            "buyer_sg_2": 0.1040616,
+            "buyer_br_1": 0.5399796000000001,
+            "buyer_br_2": -0.39117999999999997
+          },
+          "seller_profit": {
+            "seller_cn": 1.780240000000002,
+            "seller_sg": 3.3203300000000002,
+            "seller_br": 0.52626
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.7959887199999999,
+            "buyer_cn_2": 0.75147192,
+            "buyer_sg_1": 0.7892169600000002,
+            "buyer_sg_2": 0.9918768,
+            "buyer_br_1": 0.9900102000000004,
+            "buyer_br_2": 1.00059
+          },
+          "seller_accuracy": {
+            "seller_sg": 0.6787878787878788,
+            "seller_cn": 0.9225806451612903,
+            "seller_br": 0.6216216216216216
+          },
+          "filtered_candidates": 122,
+          "filtered_by_rule": {
+            "CN-PIPL-38": 30,
+            "SG-PDPA-26": 20,
+            "CN-PIPL-40": 18,
+            "CN-DSL-31": 32,
+            "BR-LGPD-33-VIII": 22
+          },
+          "blocked_or_filtered": 122,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {
+            "vote": 200,
+            "budget": 40
+          }
+        },
+        {
+          "n_tasks": 240,
+          "n_purchases": 490,
+          "n_lines": 519,
+          "n_blocked": 0,
+          "n_unfilled": 29,
+          "purchases_per_task": 2.0416666666666665,
+          "fill_rate": 0.8791666666666667,
+          "task_accuracy": 0.6916666666666667,
+          "purchase_accuracy": 0.7224489795918367,
+          "total_cost": 10.750626,
+          "total_fee": 0.221926,
+          "mean_cost_per_task": 0.044794275,
+          "mean_price_per_1k": 0.1483673469387755,
+          "total_expected_cost": 10.162707580000001,
+          "total_cost_gap": 0.5879184199999994,
+          "cost_gap_rel": 0.057850569385368394,
+          "mean_abs_cost_overrun": 0.0069474658163265314,
+          "budget_violations": 1,
+          "budget_violation_rate": 0.0020408163265306124,
+          "buyers_over_budget": 1,
+          "budget_exhausted_tasks": 29,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 0,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {},
+          "blocked_by_rule": {},
+          "cross_border_share": 0.5775510204081633,
+          "fraud_seller_share": 0.35306122448979593,
+          "fraud_accuracy_claimed": 0.9189375172034132,
+          "fraud_accuracy_actual": 0.6358381502890174,
+          "fraud_accuracy_gap": 0.28309936691439586,
+          "mean_task_latency_ms": 5490.3962216743475,
+          "p95_task_latency_ms": 19608.811891302852,
+          "total_buyer_surplus": 2.329374000000001,
+          "total_seller_profit": 5.855130000000002,
+          "buyer_surplus": {
+            "buyer_cn_1": 0.3757224000000002,
+            "buyer_cn_2": 1.3644420000000002,
+            "buyer_sg_1": 0.2480072000000001,
+            "buyer_sg_2": 0.2762064000000001,
+            "buyer_br_1": 0.24050360000000032,
+            "buyer_br_2": -0.17550759999999985
+          },
+          "seller_profit": {
+            "seller_cn": 1.8567200000000026,
+            "seller_sg": 3.428619999999999,
+            "seller_br": 0.56979
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.8737110400000002,
+            "buyer_cn_2": 0.7342232,
+            "buyer_sg_1": 0.8927971200000002,
+            "buyer_sg_2": 1.0075872,
+            "buyer_br_1": 0.9997481999999996,
+            "buyer_br_2": 0.9977537999999999
+          },
+          "seller_accuracy": {
+            "seller_sg": 0.6358381502890174,
+            "seller_cn": 0.9130434782608695,
+            "seller_br": 0.6217948717948718
+          },
+          "filtered_candidates": 114,
+          "filtered_by_rule": {
+            "CN-PIPL-38": 28,
+            "CN-PIPL-40": 22,
+            "SG-PDPA-26": 20,
+            "BR-LGPD-33-VIII": 20,
+            "CN-DSL-31": 24
+          },
+          "blocked_or_filtered": 114,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {
+            "vote": 207,
+            "budget": 33
+          }
+        },
+        {
+          "n_tasks": 240,
+          "n_purchases": 470,
+          "n_lines": 502,
+          "n_blocked": 0,
+          "n_unfilled": 32,
+          "purchases_per_task": 1.9583333333333333,
+          "fill_rate": 0.8666666666666667,
+          "task_accuracy": 0.6916666666666667,
+          "purchase_accuracy": 0.7404255319148936,
+          "total_cost": 10.1526688,
+          "total_fee": 0.20958880000000002,
+          "mean_cost_per_task": 0.04230278666666667,
+          "mean_price_per_1k": 0.14868085106382978,
+          "total_expected_cost": 9.77207665,
+          "total_cost_gap": 0.38059215,
+          "cost_gap_rel": 0.03894690592710404,
+          "mean_abs_cost_overrun": 0.006822287446808511,
+          "budget_violations": 1,
+          "budget_violation_rate": 0.002127659574468085,
+          "buyers_over_budget": 1,
+          "budget_exhausted_tasks": 32,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 0,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {},
+          "blocked_by_rule": {},
+          "cross_border_share": 0.5574468085106383,
+          "fraud_seller_share": 0.3468085106382979,
+          "fraud_accuracy_claimed": 0.925357873210634,
+          "fraud_accuracy_actual": 0.656441717791411,
+          "fraud_accuracy_gap": 0.268916155419223,
+          "mean_task_latency_ms": 4796.272721584659,
+          "p95_task_latency_ms": 19186.748194296968,
+          "total_buyer_surplus": 2.997331200000001,
+          "total_seller_profit": 5.478020000000002,
+          "buyer_surplus": {
+            "buyer_cn_1": 0.5762887999999999,
+            "buyer_cn_2": 1.6988752000000007,
+            "buyer_sg_1": 0.5455768000000002,
+            "buyer_sg_2": 0.0447264,
+            "buyer_br_1": 0.45431360000000015,
+            "buyer_br_2": -0.32244959999999984
+          },
+          "seller_profit": {
+            "seller_cn": 1.8259200000000018,
+            "seller_sg": 3.12962,
+            "seller_br": 0.5224799999999998
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.8574844800000003,
+            "buyer_cn_2": 0.6004499200000001,
+            "buyer_sg_1": 0.8057692800000001,
+            "buyer_sg_2": 0.9905472000000001,
+            "buyer_br_1": 0.9978431999999999,
+            "buyer_br_2": 1.0012248000000001
+          },
+          "seller_accuracy": {
+            "seller_sg": 0.656441717791411,
+            "seller_cn": 0.8924050632911392,
+            "seller_br": 0.6711409395973155
+          },
+          "filtered_candidates": 134,
+          "filtered_by_rule": {
+            "CN-DSL-31": 50,
+            "CN-PIPL-38": 24,
+            "SG-PDPA-26": 24,
+            "CN-PIPL-40": 18,
+            "BR-LGPD-33-VIII": 18
+          },
+          "blocked_or_filtered": 134,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {
+            "vote": 205,
+            "budget": 35
+          }
+        }
+      ],
+      "gateway_per_seed": [
+        {
+          "allowed": {
+            "CN->SG": 55,
+            "CN->CN": 80,
+            "CN->BR": 25,
+            "SG->SG": 54,
+            "SG->BR": 56,
+            "BR->SG": 56,
+            "BR->CN": 55,
+            "BR->BR": 67,
+            "SG->CN": 20
+          },
+          "blocked": {},
+          "allowed_total": 468,
+          "blocked_total": 0,
+          "violations": {},
+          "violations_total": 0
         },
         {
           "allowed": {
-            "CN->SG": 38,
-            "SG->SG": 47,
-            "BR->SG": 35,
-            "BR->BR": 54,
-            "CN->CN": 43,
-            "SG->BR": 37,
-            "CN->BR": 19,
-            "BR->CN": 7,
-            "SG->CN": 1
+            "CN->SG": 57,
+            "CN->CN": 80,
+            "SG->SG": 56,
+            "SG->BR": 56,
+            "BR->BR": 71,
+            "BR->SG": 60,
+            "BR->CN": 61,
+            "CN->BR": 29,
+            "SG->CN": 20
           },
           "blocked": {},
-          "allowed_total": 281,
-          "blocked_total": 0
+          "allowed_total": 490,
+          "blocked_total": 0,
+          "violations": {},
+          "violations_total": 0
+        },
+        {
+          "allowed": {
+            "CN->SG": 46,
+            "CN->CN": 80,
+            "CN->BR": 22,
+            "SG->SG": 55,
+            "SG->CN": 16,
+            "SG->BR": 54,
+            "BR->SG": 62,
+            "BR->CN": 62,
+            "BR->BR": 73
+          },
+          "blocked": {},
+          "allowed_total": 470,
+          "blocked_total": 0,
+          "violations": {},
+          "violations_total": 0
+        }
+      ]
+    },
+    "posted_price/compliance_unaware_cheapest": {
+      "mechanism": "posted_price",
+      "policy": "compliance_unaware_cheapest",
+      "aggregate": {
+        "n_tasks": {
+          "mean": 240.0,
+          "std": 0.0
+        },
+        "n_purchases": {
+          "mean": 239.33333333333334,
+          "std": 1.1547005383792515
+        },
+        "n_lines": {
+          "mean": 240.0,
+          "std": 0.0
+        },
+        "n_blocked": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "n_unfilled": {
+          "mean": 0.6666666666666666,
+          "std": 1.1547005383792515
+        },
+        "purchases_per_task": {
+          "mean": 0.9972222222222222,
+          "std": 0.004811252243246864
+        },
+        "fill_rate": {
+          "mean": 0.9972222222222222,
+          "std": 0.004811252243246864
+        },
+        "task_accuracy": {
+          "mean": 0.6527777777777778,
+          "std": 0.02774303382699748
+        },
+        "purchase_accuracy": {
+          "mean": 0.6546918767507003,
+          "std": 0.030921292390167828
+        },
+        "total_cost": {
+          "mean": 2.5395898,
+          "std": 0.03326297325435603
+        },
+        "total_fee": {
+          "mean": 0.0667698,
+          "std": 0.001823726328153431
+        },
+        "mean_cost_per_task": {
+          "mean": 0.010581624166666666,
+          "std": 0.00013859572189314998
+        },
+        "mean_price_per_1k": {
+          "mean": 0.07971988795518208,
+          "std": 0.00048516829343665856
+        },
+        "total_expected_cost": {
+          "mean": 2.2666461000000004,
+          "std": 0.029584293818680045
+        },
+        "total_cost_gap": {
+          "mean": 0.2729436999999999,
+          "std": 0.056459687132236154
+        },
+        "cost_gap_rel": {
+          "mean": 0.12062450863979873,
+          "std": 0.026435692364233997
+        },
+        "mean_abs_cost_overrun": {
+          "mean": 0.003534141366246498,
+          "std": 9.852577183031614e-05
+        },
+        "budget_violations": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "budget_violation_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "buyers_over_budget": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "budget_exhausted_tasks": {
+          "mean": 0.6666666666666666,
+          "std": 1.1547005383792515
+        },
+        "no_compliant_seller_tasks": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "compliance_violations": {
+          "mean": 56.666666666666664,
+          "std": 3.511884584284246
+        },
+        "blocked_at_gateway": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "violations_by_rule": {
+          "BR-LGPD-33-VIII": {
+            "mean": 2.0,
+            "std": 0.0
+          },
+          "CN-DSL-31": {
+            "mean": 17.666666666666668,
+            "std": 6.6583281184793925
+          },
+          "CN-PIPL-38": {
+            "mean": 27.333333333333332,
+            "std": 3.0550504633038935
+          },
+          "CN-PIPL-40": {
+            "mean": 9.666666666666666,
+            "std": 1.1547005383792515
+          }
+        },
+        "blocked_by_rule": {},
+        "cross_border_share": {
+          "mean": 0.6685340802987861,
+          "std": 0.003234455289577788
+        },
+        "fraud_seller_share": {
+          "mean": 0.16433239962651727,
+          "std": 0.004043069111972171
+        },
+        "fraud_accuracy_claimed": {
+          "mean": 0.9196950710108606,
+          "std": 0.0011939063715913027
+        },
+        "fraud_accuracy_actual": {
+          "mean": 0.6701754385964912,
+          "std": 0.042966789124652585
+        },
+        "fraud_accuracy_gap": {
+          "mean": 0.24951963241436934,
+          "std": 0.042210495667025255
+        },
+        "mean_task_latency_ms": {
+          "mean": 1320.6446002729754,
+          "std": 118.4427273469112
+        },
+        "p95_task_latency_ms": {
+          "mean": 1857.6675319772974,
+          "std": 342.18914352609136
+        },
+        "total_buyer_surplus": {
+          "mean": 9.5704102,
+          "std": 0.5192264066760468
+        },
+        "total_seller_profit": {
+          "mean": 1.475703333333333,
+          "std": 0.020840111164131148
+        },
+        "buyer_surplus": {
+          "buyer_br_1": {
+            "mean": 1.4013144000000004,
+            "std": 0.05420149582585333
+          },
+          "buyer_br_2": {
+            "mean": 1.195582666666667,
+            "std": 0.1757021512015532
+          },
+          "buyer_cn_1": {
+            "mean": 1.7705053333333332,
+            "std": 0.2689398849191643
+          },
+          "buyer_cn_2": {
+            "mean": 2.6122789999999996,
+            "std": 0.3691374855633063
+          },
+          "buyer_sg_1": {
+            "mean": 1.6083408,
+            "std": 0.23732266038488622
+          },
+          "buyer_sg_2": {
+            "mean": 0.9823879999999998,
+            "std": 0.12764351483972858
+          }
+        },
+        "seller_profit": {
+          "seller_br": {
+            "mean": 0.6979999999999998,
+            "std": 0.006744353193598319
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 0.7777033333333332,
+            "std": 0.017344812865330444
+          }
+        },
+        "budget_utilisation": {
+          "buyer_br_1": {
+            "mean": 0.2443428,
+            "std": 0.02985452289754432
+          },
+          "buyer_br_2": {
+            "mean": 0.265542,
+            "std": 0.0037296314670487093
+          },
+          "buyer_cn_1": {
+            "mean": 0.11313119999999999,
+            "std": 0.004826068660928892
+          },
+          "buyer_cn_2": {
+            "mean": 0.1150884,
+            "std": 0.004713949477879448
+          },
+          "buyer_sg_1": {
+            "mean": 0.18866368,
+            "std": 0.015375643763615238
+          },
+          "buyer_sg_2": {
+            "mean": 0.9552239999999999,
+            "std": 0.03062775738705
+          }
+        },
+        "seller_accuracy": {
+          "seller_br": {
+            "mean": 0.6516666666666667,
+            "std": 0.03253203549323859
+          },
+          "seller_sg": {
+            "mean": 0.6701754385964912,
+            "std": 0.042966789124652585
+          }
+        },
+        "filtered_candidates": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "filtered_by_rule": {},
+        "blocked_or_filtered": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "audit_violations_enforced": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "stop_reasons": {}
+      },
+      "per_seed": [
+        {
+          "n_tasks": 240,
+          "n_purchases": 240,
+          "n_lines": 240,
+          "n_blocked": 0,
+          "n_unfilled": 0,
+          "purchases_per_task": 1.0,
+          "fill_rate": 1.0,
+          "task_accuracy": 0.6458333333333334,
+          "purchase_accuracy": 0.6458333333333334,
+          "total_cost": 2.5541076,
+          "total_fee": 0.0665676,
+          "mean_cost_per_task": 0.010642115,
+          "mean_price_per_1k": 0.08,
+          "total_expected_cost": 2.2837266,
+          "total_cost_gap": 0.270381,
+          "cost_gap_rel": 0.11839464496319305,
+          "mean_abs_cost_overrun": 0.0035638259999999995,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 0,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 57,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {
+            "CN-PIPL-38": 30,
+            "CN-PIPL-40": 9,
+            "CN-DSL-31": 16,
+            "BR-LGPD-33-VIII": 2
+          },
+          "blocked_by_rule": {},
+          "cross_border_share": 0.6666666666666666,
+          "fraud_seller_share": 0.16666666666666666,
+          "fraud_accuracy_claimed": 0.918452380952381,
+          "fraud_accuracy_actual": 0.625,
+          "fraud_accuracy_gap": 0.293452380952381,
+          "mean_task_latency_ms": 1337.2659263365374,
+          "p95_task_latency_ms": 2086.57991252921,
+          "total_buyer_surplus": 9.5758924,
+          "total_seller_profit": 1.4875699999999998,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.797319,
+            "buyer_cn_2": 3.0190829999999997,
+            "buyer_sg_1": 1.5523688,
+            "buyer_sg_2": 0.8445479999999997,
+            "buyer_br_1": 1.3495920000000003,
+            "buyer_br_2": 1.0129816
+          },
+          "seller_profit": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.7923499999999998,
+            "seller_br": 0.6952200000000002
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.11307239999999999,
+            "buyer_cn_2": 0.11236679999999999,
+            "buyer_sg_1": 0.17905248,
+            "buyer_sg_2": 0.9509039999999999,
+            "buyer_br_1": 0.270204,
+            "buyer_br_2": 0.2635092
+          },
+          "seller_accuracy": {
+            "seller_br": 0.65,
+            "seller_sg": 0.625
+          },
+          "filtered_candidates": 0,
+          "filtered_by_rule": {},
+          "blocked_or_filtered": 0,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {}
+        },
+        {
+          "n_tasks": 240,
+          "n_purchases": 240,
+          "n_lines": 240,
+          "n_blocked": 0,
+          "n_unfilled": 0,
+          "purchases_per_task": 1.0,
+          "fill_rate": 1.0,
+          "task_accuracy": 0.6291666666666667,
+          "purchase_accuracy": 0.6291666666666667,
+          "total_cost": 2.5015356,
+          "total_fee": 0.0650556,
+          "mean_cost_per_task": 0.010423065,
+          "mean_price_per_1k": 0.08,
+          "total_expected_cost": 2.2837266,
+          "total_cost_gap": 0.21780899999999992,
+          "cost_gap_rel": 0.09537437624976647,
+          "mean_abs_cost_overrun": 0.00342418625,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 0,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 53,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {
+            "CN-PIPL-38": 28,
+            "CN-PIPL-40": 11,
+            "CN-DSL-31": 12,
+            "BR-LGPD-33-VIII": 2
+          },
+          "blocked_by_rule": {},
+          "cross_border_share": 0.6666666666666666,
+          "fraud_seller_share": 0.16666666666666666,
+          "fraud_accuracy_claimed": 0.9208333333333334,
+          "fraud_accuracy_actual": 0.675,
+          "fraud_accuracy_gap": 0.24583333333333335,
+          "mean_task_latency_ms": 1194.769153818218,
+          "p95_task_latency_ms": 1464.297822004532,
+          "total_buyer_surplus": 9.0484644,
+          "total_seller_profit": 1.4516399999999994,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.4891629999999998,
+            "buyer_cn_2": 2.2986709999999992,
+            "buyer_sg_1": 1.4040072000000001,
+            "buyer_sg_2": 1.0965071999999998,
+            "buyer_br_1": 1.3966568000000004,
+            "buyer_br_2": 1.3634592000000008
+          },
+          "seller_profit": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.7585499999999998,
+            "seller_br": 0.6930899999999997
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.10833479999999998,
+            "buyer_cn_2": 0.12053159999999999,
+            "buyer_sg_1": 0.20639712000000002,
+            "buyer_sg_2": 0.9269855999999999,
+            "buyer_br_1": 0.21167160000000004,
+            "buyer_br_2": 0.2632704
+          },
+          "seller_accuracy": {
+            "seller_br": 0.62,
+            "seller_sg": 0.675
+          },
+          "filtered_candidates": 0,
+          "filtered_by_rule": {},
+          "blocked_or_filtered": 0,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {}
+        },
+        {
+          "n_tasks": 240,
+          "n_purchases": 238,
+          "n_lines": 240,
+          "n_blocked": 0,
+          "n_unfilled": 2,
+          "purchases_per_task": 0.9916666666666667,
+          "fill_rate": 0.9916666666666667,
+          "task_accuracy": 0.6833333333333333,
+          "purchase_accuracy": 0.6890756302521008,
+          "total_cost": 2.5631262,
+          "total_fee": 0.0686862,
+          "mean_cost_per_task": 0.0106796925,
+          "mean_price_per_1k": 0.07915966386554622,
+          "total_expected_cost": 2.2324851000000003,
+          "total_cost_gap": 0.3306410999999998,
+          "cost_gap_rel": 0.14810450470643668,
+          "mean_abs_cost_overrun": 0.0036144118487394955,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 2,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 60,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {
+            "CN-DSL-31": 25,
+            "CN-PIPL-38": 24,
+            "CN-PIPL-40": 9,
+            "BR-LGPD-33-VIII": 2
+          },
+          "blocked_by_rule": {},
+          "cross_border_share": 0.6722689075630253,
+          "fraud_seller_share": 0.15966386554621848,
+          "fraud_accuracy_claimed": 0.9197994987468673,
+          "fraud_accuracy_actual": 0.7105263157894737,
+          "fraud_accuracy_gap": 0.2092731829573936,
+          "mean_task_latency_ms": 1429.8987206641705,
+          "p95_task_latency_ms": 2022.1248613981495,
+          "total_buyer_surplus": 10.0868738,
+          "total_seller_profit": 1.4878999999999998,
+          "buyer_surplus": {
+            "buyer_cn_1": 2.025034,
+            "buyer_cn_2": 2.5190829999999997,
+            "buyer_sg_1": 1.8686464000000003,
+            "buyer_sg_2": 1.0061088,
+            "buyer_br_1": 1.4576944000000003,
+            "buyer_br_2": 1.2103072000000001
+          },
+          "seller_profit": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.7822099999999998,
+            "seller_br": 0.7056899999999998
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.11798639999999998,
+            "buyer_cn_2": 0.11236680000000002,
+            "buyer_sg_1": 0.18054144,
+            "buyer_sg_2": 0.9877823999999997,
+            "buyer_br_1": 0.25115279999999995,
+            "buyer_br_2": 0.2698464
+          },
+          "seller_accuracy": {
+            "seller_br": 0.685,
+            "seller_sg": 0.7105263157894737
+          },
+          "filtered_candidates": 0,
+          "filtered_by_rule": {},
+          "blocked_or_filtered": 0,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {}
+        }
+      ],
+      "gateway_per_seed": [
+        {
+          "allowed": {
+            "CN->BR": 80,
+            "SG->BR": 60,
+            "BR->BR": 60,
+            "SG->SG": 20,
+            "BR->SG": 20
+          },
+          "blocked": {},
+          "allowed_total": 240,
+          "blocked_total": 0,
+          "violations": {
+            "CN->BR": 55,
+            "BR->SG": 2
+          },
+          "violations_total": 57
+        },
+        {
+          "allowed": {
+            "CN->BR": 80,
+            "SG->BR": 60,
+            "BR->BR": 60,
+            "SG->SG": 20,
+            "BR->SG": 20
+          },
+          "blocked": {},
+          "allowed_total": 240,
+          "blocked_total": 0,
+          "violations": {
+            "CN->BR": 51,
+            "BR->SG": 2
+          },
+          "violations_total": 53
+        },
+        {
+          "allowed": {
+            "CN->BR": 80,
+            "SG->BR": 60,
+            "BR->BR": 60,
+            "SG->SG": 18,
+            "BR->SG": 20
+          },
+          "blocked": {},
+          "allowed_total": 238,
+          "blocked_total": 0,
+          "violations": {
+            "CN->BR": 58,
+            "BR->SG": 2
+          },
+          "violations_total": 60
+        }
+      ]
+    },
+    "sealed_bid/single_cheapest_compliant": {
+      "mechanism": "sealed_bid",
+      "policy": "single_cheapest_compliant",
+      "aggregate": {
+        "n_tasks": {
+          "mean": 240.0,
+          "std": 0.0
+        },
+        "n_purchases": {
+          "mean": 240.0,
+          "std": 0.0
+        },
+        "n_lines": {
+          "mean": 240.0,
+          "std": 0.0
+        },
+        "n_blocked": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "n_unfilled": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "purchases_per_task": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "fill_rate": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "task_accuracy": {
+          "mean": 0.6652777777777777,
+          "std": 0.010485881160098277
+        },
+        "purchase_accuracy": {
+          "mean": 0.6652777777777777,
+          "std": 0.010485881160098277
+        },
+        "total_cost": {
+          "mean": 3.6836145578473336,
+          "std": 0.18597472760897038
+        },
+        "total_fee": {
+          "mean": 0.05316599329002253,
+          "std": 0.004358787348127937
+        },
+        "mean_cost_per_task": {
+          "mean": 0.015348393991030556,
+          "std": 0.00077489469837071
+        },
+        "mean_price_per_1k": {
+          "mean": 0.1202467983510793,
+          "std": 0.0033393239577663046
+        },
+        "total_expected_cost": {
+          "mean": 3.496335377283112,
+          "std": 0.12012496016251518
+        },
+        "total_cost_gap": {
+          "mean": 0.18727918056422097,
+          "std": 0.06595279890692939
+        },
+        "cost_gap_rel": {
+          "mean": 0.05317812090290441,
+          "std": 0.016943306516588586
+        },
+        "mean_abs_cost_overrun": {
+          "mean": 0.00470443858272009,
+          "std": 0.00022958631873314772
+        },
+        "budget_violations": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "budget_violation_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "buyers_over_budget": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "budget_exhausted_tasks": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "no_compliant_seller_tasks": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "compliance_violations": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "blocked_at_gateway": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "violations_by_rule": {},
+        "blocked_by_rule": {},
+        "cross_border_share": {
+          "mean": 0.5597222222222222,
+          "std": 0.03182344232608222
+        },
+        "fraud_seller_share": {
+          "mean": 0.12083333333333335,
+          "std": 0.01816207893141947
+        },
+        "fraud_accuracy_claimed": {
+          "mean": 0.9327663637139444,
+          "std": 0.01618335761196444
+        },
+        "fraud_accuracy_actual": {
+          "mean": 0.7143817204301075,
+          "std": 0.11996108926611117
+        },
+        "fraud_accuracy_gap": {
+          "mean": 0.21838464328383686,
+          "std": 0.11165511621500428
+        },
+        "mean_task_latency_ms": {
+          "mean": 1135.653756443394,
+          "std": 83.81974785790338
+        },
+        "p95_task_latency_ms": {
+          "mean": 2904.1580015238305,
+          "std": 130.1743231542245
+        },
+        "total_buyer_surplus": {
+          "mean": 8.673052108819332,
+          "std": 0.4140350560057692
+        },
+        "total_seller_profit": {
+          "mean": 2.3351318978906446,
+          "std": 0.11020816911490441
+        },
+        "buyer_surplus": {
+          "buyer_br_1": {
+            "mean": 1.2480681246190708,
+            "std": 0.06539180866224446
+          },
+          "buyer_br_2": {
+            "mean": 1.367064000533677,
+            "std": 0.12392046148432936
+          },
+          "buyer_cn_1": {
+            "mean": 1.4202725181927607,
+            "std": 0.16216117457162474
+          },
+          "buyer_cn_2": {
+            "mean": 1.7547480297378961,
+            "std": 0.31596523922523934
+          },
+          "buyer_sg_1": {
+            "mean": 1.7523743421728024,
+            "std": 0.18065074385871266
+          },
+          "buyer_sg_2": {
+            "mean": 1.1305250935631264,
+            "std": 0.10448011101571453
+          }
+        },
+        "seller_profit": {
+          "seller_br": {
+            "mean": 1.1656287880366676,
+            "std": 0.03431471607561843
+          },
+          "seller_cn": {
+            "mean": 0.6667799999999998,
+            "std": 0.16827914309266004
+          },
+          "seller_sg": {
+            "mean": 0.502723109853977,
+            "std": 0.07080445217247586
+          }
+        },
+        "budget_utilisation": {
+          "buyer_br_1": {
+            "mean": 0.27429927102379786,
+            "std": 0.025724834514013584
+          },
+          "buyer_br_2": {
+            "mean": 0.20313466639982827,
+            "std": 0.022986016898320177
+          },
+          "buyer_cn_1": {
+            "mean": 0.3385576593895623,
+            "std": 0.01624414096484256
+          },
+          "buyer_cn_2": {
+            "mean": 0.471434121438175,
+            "std": 0.07205486129688421
+          },
+          "buyer_sg_1": {
+            "mean": 0.1417169297975457,
+            "std": 0.005706885771802116
+          },
+          "buyer_sg_2": {
+            "mean": 0.6989498128737469,
+            "std": 0.03575957816848555
+          }
+        },
+        "seller_accuracy": {
+          "seller_br": {
+            "mean": 0.6242622340448428,
+            "std": 0.013208561047718413
+          },
+          "seller_cn": {
+            "mean": 0.8976982097186701,
+            "std": 0.09153723871188381
+          },
+          "seller_sg": {
+            "mean": 0.7143817204301075,
+            "std": 0.11996108926611117
+          }
+        },
+        "filtered_candidates": {
+          "mean": 123.33333333333333,
+          "std": 10.066445913694333
+        },
+        "filtered_by_rule": {
+          "BR-LGPD-33-VIII": {
+            "mean": 20.0,
+            "std": 2.0
+          },
+          "CN-DSL-31": {
+            "mean": 35.333333333333336,
+            "std": 13.316656236958785
+          },
+          "CN-PIPL-38": {
+            "mean": 27.333333333333332,
+            "std": 3.0550504633038935
+          },
+          "CN-PIPL-40": {
+            "mean": 19.333333333333332,
+            "std": 2.309401076758503
+          },
+          "SG-PDPA-26": {
+            "mean": 21.333333333333332,
+            "std": 2.309401076758503
+          }
+        },
+        "blocked_or_filtered": {
+          "mean": 123.33333333333333,
+          "std": 10.066445913694333
+        },
+        "audit_violations_enforced": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "stop_reasons": {}
+      },
+      "per_seed": [
+        {
+          "n_tasks": 240,
+          "n_purchases": 240,
+          "n_lines": 240,
+          "n_blocked": 0,
+          "n_unfilled": 0,
+          "purchases_per_task": 1.0,
+          "fill_rate": 1.0,
+          "task_accuracy": 0.6666666666666666,
+          "purchase_accuracy": 0.6666666666666666,
+          "total_cost": 3.65477356953256,
+          "total_fee": 0.05484044542117485,
+          "mean_cost_per_task": 0.015228223206385666,
+          "mean_price_per_1k": 0.1199747879694054,
+          "total_expected_cost": 3.4743234421413085,
+          "total_cost_gap": 0.18045012739125132,
+          "cost_gap_rel": 0.051938206213764486,
+          "mean_abs_cost_overrun": 0.004884518965911571,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 0,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 0,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {},
+          "blocked_by_rule": {},
+          "cross_border_share": 0.5666666666666667,
+          "fraud_seller_share": 0.12916666666666668,
+          "fraud_accuracy_claimed": 0.9185867895545315,
+          "fraud_accuracy_actual": 0.5806451612903226,
+          "fraud_accuracy_gap": 0.3379416282642089,
+          "mean_task_latency_ms": 1193.0187341125202,
+          "p95_task_latency_ms": 2775.553115376468,
+          "total_buyer_surplus": 8.74522643046744,
+          "total_seller_profit": 2.332843124111385,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.2726086190771084,
+            "buyer_cn_2": 1.8123791769054876,
+            "buyer_sg_1": 1.9603883146179961,
+            "buyer_sg_2": 1.0224670674567407,
+            "buyer_br_1": 1.2199210084798033,
+            "buyer_br_2": 1.4574622439303038
+          },
+          "seller_profit": {
+            "seller_cn": 0.59058,
+            "seller_sg": 0.542410580318529,
+            "seller_br": 1.1998525437928562
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.3549565523691568,
+            "buyer_cn_2": 0.435048329237805,
+            "buyer_sg_1": 0.14384467415280144,
+            "buyer_sg_2": 0.7150658650865181,
+            "buyer_br_1": 0.30003949576009825,
+            "buyer_br_2": 0.18126887803484804
+          },
+          "seller_accuracy": {
+            "seller_br": 0.6358695652173914,
+            "seller_sg": 0.5806451612903226,
+            "seller_cn": 1.0
+          },
+          "filtered_candidates": 122,
+          "filtered_by_rule": {
+            "CN-PIPL-38": 30,
+            "SG-PDPA-26": 20,
+            "CN-PIPL-40": 18,
+            "CN-DSL-31": 32,
+            "BR-LGPD-33-VIII": 22
+          },
+          "blocked_or_filtered": 122,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {}
+        },
+        {
+          "n_tasks": 240,
+          "n_purchases": 240,
+          "n_lines": 240,
+          "n_blocked": 0,
+          "n_unfilled": 0,
+          "purchases_per_task": 1.0,
+          "fill_rate": 1.0,
+          "task_accuracy": 0.675,
+          "purchase_accuracy": 0.675,
+          "total_cost": 3.513745205963217,
+          "total_fee": 0.056439264115524114,
+          "mean_cost_per_task": 0.014640605024846737,
+          "mean_price_per_1k": 0.11705179884976882,
+          "total_expected_cost": 3.3887385957816147,
+          "total_cost_gap": 0.12500661018160208,
+          "cost_gap_rel": 0.03688883242195588,
+          "mean_abs_cost_overrun": 0.0044459105000412055,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 0,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 0,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {},
+          "blocked_by_rule": {},
+          "cross_border_share": 0.5875,
+          "fraud_seller_share": 0.13333333333333333,
+          "fraud_accuracy_claimed": 0.9293154761904762,
+          "fraud_accuracy_actual": 0.8125,
+          "fraud_accuracy_gap": 0.11681547619047616,
+          "mean_task_latency_ms": 1174.481967751312,
+          "p95_task_latency_ms": 2901.07393368525,
+          "total_buyer_surplus": 9.046254794036782,
+          "total_seller_profit": 2.2260859418476926,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.5938179383146025,
+            "buyer_cn_2": 2.037930886527994,
+            "buyer_sg_1": 1.6348643300899106,
+            "buyer_sg_2": 1.2310158203530055,
+            "buyer_br_1": 1.322820291192044,
+            "buyer_br_2": 1.2258055275592263
+          },
+          "seller_profit": {
+            "seller_cn": 0.55008,
+            "seller_sg": 0.5447821125541898,
+            "seller_br": 1.1312238292935028
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.3224728246741587,
+            "buyer_cn_2": 0.4248276453888026,
+            "buyer_sg_1": 0.14605426796403562,
+            "buyer_sg_2": 0.6579683592939883,
+            "buyer_br_1": 0.24858985440397785,
+            "buyer_br_2": 0.22709723622038713
+          },
+          "seller_accuracy": {
+            "seller_sg": 0.8125,
+            "seller_cn": 0.8695652173913043,
+            "seller_br": 0.6270270270270271
+          },
+          "filtered_candidates": 114,
+          "filtered_by_rule": {
+            "CN-PIPL-38": 28,
+            "CN-PIPL-40": 22,
+            "SG-PDPA-26": 20,
+            "BR-LGPD-33-VIII": 20,
+            "CN-DSL-31": 24
+          },
+          "blocked_or_filtered": 114,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {}
+        },
+        {
+          "n_tasks": 240,
+          "n_purchases": 240,
+          "n_lines": 240,
+          "n_blocked": 0,
+          "n_unfilled": 0,
+          "purchases_per_task": 1.0,
+          "fill_rate": 1.0,
+          "task_accuracy": 0.6541666666666667,
+          "purchase_accuracy": 0.6541666666666667,
+          "total_cost": 3.8823248980462237,
+          "total_fee": 0.04821827033336863,
+          "mean_cost_per_task": 0.016176353741859266,
+          "mean_price_per_1k": 0.1237138082340637,
+          "total_expected_cost": 3.6259440939264143,
+          "total_cost_gap": 0.25638080411980946,
+          "cost_gap_rel": 0.07070732407299286,
+          "mean_abs_cost_overrun": 0.0047828862822074944,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 0,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 0,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {},
+          "blocked_by_rule": {},
+          "cross_border_share": 0.525,
+          "fraud_seller_share": 0.1,
+          "fraud_accuracy_claimed": 0.9503968253968255,
+          "fraud_accuracy_actual": 0.75,
+          "fraud_accuracy_gap": 0.20039682539682546,
+          "mean_task_latency_ms": 1039.4605674663499,
+          "p95_task_latency_ms": 3035.846955509774,
+          "total_buyer_surplus": 8.227675101953777,
+          "total_seller_profit": 2.4464666277128555,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.3943909971865716,
+            "buyer_cn_2": 1.4139340257802069,
+            "buyer_sg_1": 1.6618703818104998,
+            "buyer_sg_2": 1.1380923928796327,
+            "buyer_br_1": 1.2014630741853651,
+            "buyer_br_2": 1.4179242301115007
+          },
+          "seller_profit": {
+            "seller_cn": 0.8596799999999998,
+            "seller_sg": 0.420976636689212,
+            "seller_br": 1.1658099910236437
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.3382436011253714,
+            "buyer_cn_2": 0.5544263896879175,
+            "buyer_sg_1": 0.13525184727579997,
+            "buyer_sg_2": 0.7238152142407344,
+            "buyer_br_1": 0.27426846290731755,
+            "buyer_br_2": 0.2010378849442497
+          },
+          "seller_accuracy": {
+            "seller_br": 0.6098901098901099,
+            "seller_cn": 0.8235294117647058,
+            "seller_sg": 0.75
+          },
+          "filtered_candidates": 134,
+          "filtered_by_rule": {
+            "CN-DSL-31": 50,
+            "CN-PIPL-38": 24,
+            "SG-PDPA-26": 24,
+            "CN-PIPL-40": 18,
+            "BR-LGPD-33-VIII": 18
+          },
+          "blocked_or_filtered": 134,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {}
+        }
+      ],
+      "gateway_per_seed": [
+        {
+          "allowed": {
+            "CN->BR": 25,
+            "CN->SG": 30,
+            "SG->BR": 80,
+            "BR->BR": 79,
+            "CN->CN": 25,
+            "BR->SG": 1
+          },
+          "blocked": {},
+          "allowed_total": 240,
+          "blocked_total": 0,
+          "violations": {},
+          "violations_total": 0
+        },
+        {
+          "allowed": {
+            "CN->SG": 28,
+            "CN->CN": 23,
+            "SG->BR": 80,
+            "BR->BR": 76,
+            "CN->BR": 29,
+            "BR->SG": 4
+          },
+          "blocked": {},
+          "allowed_total": 240,
+          "blocked_total": 0,
+          "violations": {},
+          "violations_total": 0
+        },
+        {
+          "allowed": {
+            "CN->BR": 22,
+            "CN->CN": 34,
+            "SG->BR": 80,
+            "BR->BR": 80,
+            "CN->SG": 24
+          },
+          "blocked": {},
+          "allowed_total": 240,
+          "blocked_total": 0,
+          "violations": {},
+          "violations_total": 0
+        }
+      ]
+    },
+    "sealed_bid/single_best_compliant": {
+      "mechanism": "sealed_bid",
+      "policy": "single_best_compliant",
+      "aggregate": {
+        "n_tasks": {
+          "mean": 240.0,
+          "std": 0.0
+        },
+        "n_purchases": {
+          "mean": 240.0,
+          "std": 0.0
+        },
+        "n_lines": {
+          "mean": 240.0,
+          "std": 0.0
+        },
+        "n_blocked": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "n_unfilled": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "purchases_per_task": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "fill_rate": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "task_accuracy": {
+          "mean": 0.6652777777777777,
+          "std": 0.027110029577698813
+        },
+        "purchase_accuracy": {
+          "mean": 0.6652777777777777,
+          "std": 0.027110029577698813
+        },
+        "total_cost": {
+          "mean": 3.9612535935011537,
+          "std": 0.19419306535224196
+        },
+        "total_fee": {
+          "mean": 0.04940650386737292,
+          "std": 0.0006429227499041734
+        },
+        "mean_cost_per_task": {
+          "mean": 0.01650522330625481,
+          "std": 0.0008091377723010069
+        },
+        "mean_price_per_1k": {
+          "mean": 0.11761827676291942,
+          "std": 0.005287947955926966
+        },
+        "total_expected_cost": {
+          "mean": 3.6996906329620938,
+          "std": 0.20579954716956242
+        },
+        "total_cost_gap": {
+          "mean": 0.2615629605390601,
+          "std": 0.08060754211642868
+        },
+        "cost_gap_rel": {
+          "mean": 0.0711293969398822,
+          "std": 0.024190889780799685
+        },
+        "mean_abs_cost_overrun": {
+          "mean": 0.005074370772700129,
+          "std": 0.0001232947731894759
+        },
+        "budget_violations": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "budget_violation_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "buyers_over_budget": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "budget_exhausted_tasks": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "no_compliant_seller_tasks": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "compliance_violations": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "blocked_at_gateway": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "violations_by_rule": {},
+        "blocked_by_rule": {},
+        "cross_border_share": {
+          "mean": 0.5388888888888889,
+          "std": 0.002405626121623432
+        },
+        "fraud_seller_share": {
+          "mean": 0.43333333333333335,
+          "std": 0.01502313031443329
+        },
+        "fraud_accuracy_claimed": {
+          "mean": 0.903757638050028,
+          "std": 0.004455537977591959
+        },
+        "fraud_accuracy_actual": {
+          "mean": 0.5698931909212283,
+          "std": 0.04079853190797843
+        },
+        "fraud_accuracy_gap": {
+          "mean": 0.33386444712879965,
+          "std": 0.03659200163977965
+        },
+        "mean_task_latency_ms": {
+          "mean": 3704.0967493215235,
+          "std": 48.672536741655506
+        },
+        "p95_task_latency_ms": {
+          "mean": 19249.69500082685,
+          "std": 281.55480929654783
+        },
+        "total_buyer_surplus": {
+          "mean": 8.39207973983218,
+          "std": 0.28088626928612026
+        },
+        "total_seller_profit": {
+          "mean": 2.240733756300447,
+          "std": 0.09817785614465178
+        },
+        "buyer_surplus": {
+          "buyer_br_1": {
+            "mean": 1.2808618797594082,
+            "std": 0.25235989603639536
+          },
+          "buyer_br_2": {
+            "mean": 1.336475343512805,
+            "std": 0.06709951318544319
+          },
+          "buyer_cn_1": {
+            "mean": 1.3296022444491535,
+            "std": 0.19331756953052948
+          },
+          "buyer_cn_2": {
+            "mean": 1.8058750502756522,
+            "std": 0.1011418360371619
+          },
+          "buyer_sg_1": {
+            "mean": 1.5591112054017715,
+            "std": 0.18772496118269785
+          },
+          "buyer_sg_2": {
+            "mean": 1.0801540164333898,
+            "std": 0.2912823748355228
+          }
+        },
+        "seller_profit": {
+          "seller_br": {
+            "mean": 0.5767341771872708,
+            "std": 0.08216868909828862
+          },
+          "seller_cn": {
+            "mean": 0.6667799999999998,
+            "std": 0.16827914309266004
+          },
+          "seller_sg": {
+            "mean": 0.9972195791131763,
+            "std": 0.011256579929154078
+          }
+        },
+        "budget_utilisation": {
+          "buyer_br_1": {
+            "mean": 0.31623572678696266,
+            "std": 0.015030731190958515
+          },
+          "buyer_br_2": {
+            "mean": 0.21842899491026432,
+            "std": 0.02604611899447705
+          },
+          "buyer_cn_1": {
+            "mean": 0.353492435553672,
+            "std": 0.013353895231630712
+          },
+          "buyer_cn_2": {
+            "mean": 0.4776499798897393,
+            "std": 0.06523694310359604
+          },
+          "buyer_sg_1": {
+            "mean": 0.16568885117262463,
+            "std": 0.009764572462294079
+          },
+          "buyer_sg_2": {
+            "mean": 0.7996919671332203,
+            "std": 0.04235946982037545
+          }
+        },
+        "seller_accuracy": {
+          "seller_br": {
+            "mean": 0.6997409997409997,
+            "std": 0.04701505367218387
+          },
+          "seller_cn": {
+            "mean": 0.8976982097186701,
+            "std": 0.09153723871188381
+          },
+          "seller_sg": {
+            "mean": 0.5698931909212283,
+            "std": 0.04079853190797843
+          }
+        },
+        "filtered_candidates": {
+          "mean": 123.33333333333333,
+          "std": 10.066445913694333
+        },
+        "filtered_by_rule": {
+          "BR-LGPD-33-VIII": {
+            "mean": 20.0,
+            "std": 2.0
+          },
+          "CN-DSL-31": {
+            "mean": 35.333333333333336,
+            "std": 13.316656236958785
+          },
+          "CN-PIPL-38": {
+            "mean": 27.333333333333332,
+            "std": 3.0550504633038935
+          },
+          "CN-PIPL-40": {
+            "mean": 19.333333333333332,
+            "std": 2.309401076758503
+          },
+          "SG-PDPA-26": {
+            "mean": 21.333333333333332,
+            "std": 2.309401076758503
+          }
+        },
+        "blocked_or_filtered": {
+          "mean": 123.33333333333333,
+          "std": 10.066445913694333
+        },
+        "audit_violations_enforced": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "stop_reasons": {}
+      },
+      "per_seed": [
+        {
+          "n_tasks": 240,
+          "n_purchases": 240,
+          "n_lines": 240,
+          "n_blocked": 0,
+          "n_unfilled": 0,
+          "purchases_per_task": 1.0,
+          "fill_rate": 1.0,
+          "task_accuracy": 0.6375,
+          "purchase_accuracy": 0.6375,
+          "total_cost": 3.8336736645209144,
+          "total_fee": 0.048813892556873406,
+          "mean_cost_per_task": 0.015973640268837144,
+          "mean_price_per_1k": 0.11658757323056097,
+          "total_expected_cost": 3.6516581160495476,
+          "total_cost_gap": 0.1820155484713668,
+          "cost_gap_rel": 0.049844630216444155,
+          "mean_abs_cost_overrun": 0.004952042995906153,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 0,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 0,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {},
+          "blocked_by_rule": {},
+          "cross_border_share": 0.5375,
+          "fraud_seller_share": 0.4375,
+          "fraud_accuracy_claimed": 0.9022675736961452,
+          "fraud_accuracy_actual": 0.5428571428571428,
+          "fraud_accuracy_gap": 0.35941043083900237,
+          "mean_task_latency_ms": 3648.057301125737,
+          "p95_task_latency_ms": 19438.83901897349,
+          "total_buyer_surplus": 8.096326335479088,
+          "total_seller_profit": 2.1615697719640408,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.528205829614342,
+            "buyer_cn_2": 1.9167228431363705,
+            "buyer_sg_1": 1.3441797166101854,
+            "buyer_sg_2": 0.7810529045002339,
+            "buyer_br_1": 1.1620763605420226,
+            "buyer_br_2": 1.364088681075933
+          },
+          "seller_profit": {
+            "seller_cn": 0.59058,
+            "seller_sg": 1.0095969476609015,
+            "seller_br": 0.5613928243031394
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.34871766815426336,
+            "buyer_cn_2": 0.43331086274545216,
+            "buyer_sg_1": 0.16632811335592587,
+            "buyer_sg_2": 0.8378941909995323,
+            "buyer_br_1": 0.328961819728989,
+            "buyer_br_2": 0.1929556594620337
+          },
+          "seller_accuracy": {
+            "seller_sg": 0.5428571428571428,
+            "seller_br": 0.6454545454545455,
+            "seller_cn": 1.0
+          },
+          "filtered_candidates": 122,
+          "filtered_by_rule": {
+            "CN-PIPL-38": 30,
+            "SG-PDPA-26": 20,
+            "CN-PIPL-40": 18,
+            "CN-DSL-31": 32,
+            "BR-LGPD-33-VIII": 22
+          },
+          "blocked_or_filtered": 122,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {}
+        },
+        {
+          "n_tasks": 240,
+          "n_purchases": 240,
+          "n_lines": 240,
+          "n_blocked": 0,
+          "n_unfilled": 0,
+          "purchases_per_task": 1.0,
+          "fill_rate": 1.0,
+          "task_accuracy": 0.6666666666666666,
+          "purchase_accuracy": 0.6666666666666666,
+          "total_cost": 3.8653455056488983,
+          "total_fee": 0.04931556471846726,
+          "mean_cost_per_task": 0.016105606273537076,
+          "mean_price_per_1k": 0.11292156259936596,
+          "total_expected_cost": 3.5221551322980815,
+          "total_cost_gap": 0.3431903733508168,
+          "cost_gap_rel": 0.0974376086401672,
+          "mean_abs_cost_overrun": 0.005072459013147001,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 0,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 0,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {},
+          "blocked_by_rule": {},
+          "cross_border_share": 0.5416666666666666,
+          "fraud_seller_share": 0.4166666666666667,
+          "fraud_accuracy_claimed": 0.9002380952380953,
+          "fraud_accuracy_actual": 0.55,
+          "fraud_accuracy_gap": 0.35023809523809524,
+          "mean_task_latency_ms": 3735.817961944537,
+          "p95_task_latency_ms": 19384.1241182519,
+          "total_buyer_surplus": 8.4246544943511,
+          "total_seller_profit": 2.2100399409304305,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.142044320867963,
+            "buyer_cn_2": 1.782298384657384,
+            "buyer_sg_1": 1.6422047854410768,
+            "buyer_sg_2": 1.3629311295125957,
+            "buyer_br_1": 1.1098137197255766,
+            "buyer_br_2": 1.3853621541465042
+          },
+          "seller_profit": {
+            "seller_cn": 0.55008,
+            "seller_sg": 0.9944676305837039,
+            "seller_br": 0.6654923103467267
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.34318227165281473,
+            "buyer_cn_2": 0.44708064613704623,
+            "buyer_sg_1": 0.175118085823569,
+            "buyer_sg_2": 0.7541377409748085,
+            "buyer_br_1": 0.32009314013721163,
+            "buyer_br_2": 0.21731892292674818
+          },
+          "seller_accuracy": {
+            "seller_sg": 0.55,
+            "seller_cn": 0.8695652173913043,
+            "seller_br": 0.7264957264957265
+          },
+          "filtered_candidates": 114,
+          "filtered_by_rule": {
+            "CN-PIPL-38": 28,
+            "CN-PIPL-40": 22,
+            "SG-PDPA-26": 20,
+            "BR-LGPD-33-VIII": 20,
+            "CN-DSL-31": 24
+          },
+          "blocked_or_filtered": 114,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {}
+        },
+        {
+          "n_tasks": 240,
+          "n_purchases": 240,
+          "n_lines": 240,
+          "n_blocked": 0,
+          "n_unfilled": 0,
+          "purchases_per_task": 1.0,
+          "fill_rate": 1.0,
+          "task_accuracy": 0.6916666666666667,
+          "purchase_accuracy": 0.6916666666666667,
+          "total_cost": 4.184741610333648,
+          "total_fee": 0.05009005432677811,
+          "mean_cost_per_task": 0.0174364233763902,
+          "mean_price_per_1k": 0.1233456944588313,
+          "total_expected_cost": 3.9252586505386518,
+          "total_cost_gap": 0.2594829597949966,
+          "cost_gap_rel": 0.06610595196303523,
+          "mean_abs_cost_overrun": 0.005198610309047231,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 0,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 0,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {},
+          "blocked_by_rule": {},
+          "cross_border_share": 0.5375,
+          "fraud_seller_share": 0.44583333333333336,
+          "fraud_accuracy_claimed": 0.9087672452158434,
+          "fraud_accuracy_actual": 0.616822429906542,
+          "fraud_accuracy_gap": 0.2919448153093014,
+          "mean_task_latency_ms": 3728.414984894298,
+          "p95_task_latency_ms": 18926.121865255158,
+          "total_buyer_surplus": 8.655258389666352,
+          "total_seller_profit": 2.3505915560068695,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.3185565828651553,
+            "buyer_cn_2": 1.718603923033202,
+            "buyer_sg_1": 1.6909491141540522,
+            "buyer_sg_2": 1.0964780152873395,
+            "buyer_br_1": 1.5706955590106253,
+            "buyer_br_2": 1.259975195315978
+          },
+          "seller_profit": {
+            "seller_cn": 0.8596799999999998,
+            "seller_sg": 0.9875941590949232,
+            "seller_br": 0.5033173969119463
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.36857736685393794,
+            "buyer_cn_2": 0.5525584307867195,
+            "buyer_sg_1": 0.15562035433837898,
+            "buyer_sg_2": 0.8070439694253203,
+            "buyer_br_1": 0.29965222049468737,
+            "buyer_br_2": 0.24501240234201102
+          },
+          "seller_accuracy": {
+            "seller_br": 0.7272727272727273,
+            "seller_cn": 0.8235294117647058,
+            "seller_sg": 0.616822429906542
+          },
+          "filtered_candidates": 134,
+          "filtered_by_rule": {
+            "CN-DSL-31": 50,
+            "CN-PIPL-38": 24,
+            "SG-PDPA-26": 24,
+            "CN-PIPL-40": 18,
+            "BR-LGPD-33-VIII": 18
+          },
+          "blocked_or_filtered": 134,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {}
+        }
+      ],
+      "gateway_per_seed": [
+        {
+          "allowed": {
+            "CN->SG": 39,
+            "SG->SG": 36,
+            "SG->BR": 44,
+            "BR->BR": 50,
+            "BR->SG": 30,
+            "CN->CN": 25,
+            "CN->BR": 16
+          },
+          "blocked": {},
+          "allowed_total": 240,
+          "blocked_total": 0,
+          "violations": {},
+          "violations_total": 0
+        },
+        {
+          "allowed": {
+            "CN->SG": 41,
+            "CN->CN": 23,
+            "SG->BR": 47,
+            "BR->BR": 54,
+            "BR->SG": 26,
+            "SG->SG": 33,
+            "CN->BR": 16
+          },
+          "blocked": {},
+          "allowed_total": 240,
+          "blocked_total": 0,
+          "violations": {},
+          "violations_total": 0
+        },
+        {
+          "allowed": {
+            "CN->BR": 6,
+            "CN->CN": 34,
+            "SG->SG": 32,
+            "SG->BR": 48,
+            "BR->BR": 45,
+            "CN->SG": 40,
+            "BR->SG": 35
+          },
+          "blocked": {},
+          "allowed_total": 240,
+          "blocked_total": 0,
+          "violations": {},
+          "violations_total": 0
+        }
+      ]
+    },
+    "sealed_bid/compliance_unaware_cheapest": {
+      "mechanism": "sealed_bid",
+      "policy": "compliance_unaware_cheapest",
+      "aggregate": {
+        "n_tasks": {
+          "mean": 240.0,
+          "std": 0.0
+        },
+        "n_purchases": {
+          "mean": 232.0,
+          "std": 3.605551275463989
+        },
+        "n_lines": {
+          "mean": 240.0,
+          "std": 0.0
+        },
+        "n_blocked": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "n_unfilled": {
+          "mean": 8.0,
+          "std": 3.605551275463989
+        },
+        "purchases_per_task": {
+          "mean": 0.9666666666666667,
+          "std": 0.015023130314433296
+        },
+        "fill_rate": {
+          "mean": 0.9666666666666667,
+          "std": 0.015023130314433296
+        },
+        "task_accuracy": {
+          "mean": 0.6333333333333333,
+          "std": 0.014433756729740658
+        },
+        "purchase_accuracy": {
+          "mean": 0.6554284075635166,
+          "std": 0.02507613402856392
+        },
+        "total_cost": {
+          "mean": 2.7129912806668983,
+          "std": 0.03651991016191898
+        },
+        "total_fee": {
+          "mean": 0.07178946898845052,
+          "std": 0.0014471080978819436
+        },
+        "mean_cost_per_task": {
+          "mean": 0.011304130336112073,
+          "std": 0.00015216629234132884
+        },
+        "mean_price_per_1k": {
+          "mean": 0.09014660444628138,
+          "std": 0.0015574618365460148
+        },
+        "total_expected_cost": {
+          "mean": 2.426390136050912,
+          "std": 0.10007764805945304
+        },
+        "total_cost_gap": {
+          "mean": 0.2866011446159864,
+          "std": 0.06615957597142738
+        },
+        "cost_gap_rel": {
+          "mean": 0.11901002004078537,
+          "std": 0.03268249358410376
+        },
+        "mean_abs_cost_overrun": {
+          "mean": 0.0038285961617347095,
+          "std": 0.0001858709896050164
+        },
+        "budget_violations": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "budget_violation_rate": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "buyers_over_budget": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "budget_exhausted_tasks": {
+          "mean": 8.0,
+          "std": 3.605551275463989
+        },
+        "no_compliant_seller_tasks": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "compliance_violations": {
+          "mean": 56.333333333333336,
+          "std": 3.0550504633038935
+        },
+        "blocked_at_gateway": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "violations_by_rule": {
+          "BR-LGPD-33-VIII": {
+            "mean": 1.6666666666666667,
+            "std": 0.5773502691896257
+          },
+          "CN-DSL-31": {
+            "mean": 17.666666666666668,
+            "std": 6.6583281184793925
+          },
+          "CN-PIPL-38": {
+            "mean": 27.333333333333332,
+            "std": 3.0550504633038935
+          },
+          "CN-PIPL-40": {
+            "mean": 9.666666666666666,
+            "std": 1.1547005383792515
+          }
+        },
+        "blocked_by_rule": {},
+        "cross_border_share": {
+          "mean": 0.6665876864565762,
+          "std": 0.007658531774533565
+        },
+        "fraud_seller_share": {
+          "mean": 0.13779136301472641,
+          "std": 0.013481086581211927
+        },
+        "fraud_accuracy_claimed": {
+          "mean": 0.9164003985432557,
+          "std": 0.008281090938295106
+        },
+        "fraud_accuracy_actual": {
+          "mean": 0.671067821067821,
+          "std": 0.07297304808724704
+        },
+        "fraud_accuracy_gap": {
+          "mean": 0.2453325774754347,
+          "std": 0.08124783980047241
+        },
+        "mean_task_latency_ms": {
+          "mean": 1233.2404591725633,
+          "std": 176.47188055107736
+        },
+        "p95_task_latency_ms": {
+          "mean": 1519.363167989198,
+          "std": 82.88092228618964
+        },
+        "total_buyer_surplus": {
+          "mean": 9.070342052666435,
+          "std": 0.28349491342126765
+        },
+        "total_seller_profit": {
+          "mean": 1.7049818116784474,
+          "std": 0.01874961619676646
+        },
+        "buyer_surplus": {
+          "buyer_br_1": {
+            "mean": 1.4008129633913342,
+            "std": 0.14811193516431775
+          },
+          "buyer_br_2": {
+            "mean": 1.2053906195158852,
+            "std": 0.17404471719311077
+          },
+          "buyer_cn_1": {
+            "mean": 1.7672200944848093,
+            "std": 0.22907313771771334
+          },
+          "buyer_cn_2": {
+            "mean": 2.4205358685798695,
+            "std": 0.31173740626889057
+          },
+          "buyer_sg_1": {
+            "mean": 1.5538158567141966,
+            "std": 0.28681363349267985
+          },
+          "buyer_sg_2": {
+            "mean": 0.722566649980341,
+            "std": 0.0910609537710777
+          }
+        },
+        "seller_profit": {
+          "seller_br": {
+            "mean": 0.9773050322910083,
+            "std": 0.012297074476391792
+          },
+          "seller_cn": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "seller_sg": {
+            "mean": 0.7276767793874392,
+            "std": 0.012617963644619522
+          }
+        },
+        "budget_utilisation": {
+          "buyer_br_1": {
+            "mean": 0.2562601849709996,
+            "std": 0.0290539012392736
+          },
+          "buyer_br_2": {
+            "mean": 0.2723046902420576,
+            "std": 0.005589190004685821
+          },
+          "buyer_cn_1": {
+            "mean": 0.13577862887274297,
+            "std": 0.006405131879108276
+          },
+          "buyer_cn_2": {
+            "mean": 0.13845231923471882,
+            "std": 0.0063128768933245274
+          },
+          "buyer_sg_1": {
+            "mean": 0.18914032398098804,
+            "std": 0.01749252297977523
+          },
+          "buyer_sg_2": {
+            "mean": 0.9948667000393181,
+            "std": 0.0030206736001846157
+          }
+        },
+        "seller_accuracy": {
+          "seller_br": {
+            "mean": 0.6533333333333333,
+            "std": 0.020207259421636918
+          },
+          "seller_sg": {
+            "mean": 0.671067821067821,
+            "std": 0.07297304808724704
+          }
+        },
+        "filtered_candidates": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "filtered_by_rule": {},
+        "blocked_or_filtered": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "audit_violations_enforced": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "stop_reasons": {}
+      },
+      "per_seed": [
+        {
+          "n_tasks": 240,
+          "n_purchases": 233,
+          "n_lines": 240,
+          "n_blocked": 0,
+          "n_unfilled": 7,
+          "purchases_per_task": 0.9708333333333333,
+          "fill_rate": 0.9708333333333333,
+          "task_accuracy": 0.625,
+          "purchase_accuracy": 0.6437768240343348,
+          "total_cost": 2.738900703752416,
+          "total_fee": 0.07181922881067808,
+          "mean_cost_per_task": 0.011412086265635066,
+          "mean_price_per_1k": 0.09099684893165987,
+          "total_expected_cost": 2.466728143037237,
+          "total_cost_gap": 0.27217256071517903,
+          "cost_gap_rel": 0.11033747739224233,
+          "mean_abs_cost_overrun": 0.004037290606727178,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 7,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 57,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {
+            "CN-PIPL-38": 30,
+            "CN-PIPL-40": 9,
+            "CN-DSL-31": 16,
+            "BR-LGPD-33-VIII": 2
+          },
+          "blocked_by_rule": {},
+          "cross_border_share": 0.6695278969957081,
+          "fraud_seller_share": 0.14163090128755365,
+          "fraud_accuracy_claimed": 0.9235209235209236,
+          "fraud_accuracy_actual": 0.6060606060606061,
+          "fraud_accuracy_gap": 0.31746031746031755,
+          "mean_task_latency_ms": 1137.7933389269592,
+          "p95_task_latency_ms": 1538.060436891037,
+          "total_buyer_surplus": 9.011099296247584,
+          "total_seller_profit": 1.718211474941738,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.8121234828693527,
+            "buyer_cn_2": 2.7658282264891825,
+            "buyer_sg_1": 1.4722037245320856,
+            "buyer_sg_2": 0.6441387243992395,
+            "buyer_br_1": 1.2424063643868868,
+            "buyer_br_2": 1.0743987735708382
+          },
+          "seller_profit": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.7269445299663951,
+            "seller_br": 0.9912669449753428
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.13915060685225902,
+            "buyer_cn_2": 0.13366870940432715,
+            "buyer_sg_1": 0.1791185101871659,
+            "buyer_sg_2": 0.9917225512015208,
+            "buyer_br_1": 0.2887968178065568,
+            "buyer_br_2": 0.26780061321458115
+          },
+          "seller_accuracy": {
+            "seller_br": 0.65,
+            "seller_sg": 0.6060606060606061
+          },
+          "filtered_candidates": 0,
+          "filtered_by_rule": {},
+          "blocked_or_filtered": 0,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {}
+        },
+        {
+          "n_tasks": 240,
+          "n_purchases": 235,
+          "n_lines": 240,
+          "n_blocked": 0,
+          "n_unfilled": 5,
+          "purchases_per_task": 0.9791666666666666,
+          "fill_rate": 0.9791666666666666,
+          "task_accuracy": 0.625,
+          "purchase_accuracy": 0.6382978723404256,
+          "total_cost": 2.728850284343915,
+          "total_fee": 0.0732214676526468,
+          "mean_cost_per_task": 0.011370209518099646,
+          "mean_price_per_1k": 0.09109388907059984,
+          "total_expected_cost": 2.5000036977572044,
+          "total_cost_gap": 0.22884658658671064,
+          "cost_gap_rel": 0.09153849923982624,
+          "mean_abs_cost_overrun": 0.0037676424439219234,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 5,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 53,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {
+            "CN-PIPL-38": 28,
+            "CN-PIPL-40": 11,
+            "CN-DSL-31": 12,
+            "BR-LGPD-33-VIII": 2
+          },
+          "blocked_by_rule": {},
+          "cross_border_share": 0.6723404255319149,
+          "fraud_seller_share": 0.14893617021276595,
+          "fraud_accuracy_claimed": 0.9183673469387756,
+          "fraud_accuracy_actual": 0.6571428571428571,
+          "fraud_accuracy_gap": 0.2612244897959185,
+          "mean_task_latency_ms": 1125.048304715822,
+          "p95_task_latency_ms": 1428.7307320725583,
+          "total_buyer_surplus": 8.821149715656086,
+          "total_seller_profit": 1.7132088166912678,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.5190201628519573,
+            "buyer_cn_2": 2.335981125896428,
+            "buyer_sg_1": 1.3166531201172698,
+            "buyer_sg_2": 0.8224344887268622,
+            "buyer_br_1": 1.424180276451102,
+            "buyer_br_2": 1.4028805416124663
+          },
+          "seller_profit": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.7406449223738557,
+            "seller_br": 0.9725638943174122
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.128391934859217,
+            "buyer_cn_2": 0.14560754964142872,
+            "buyer_sg_1": 0.20933875195309212,
+            "buyer_sg_2": 0.9951310225462758,
+            "buyer_br_1": 0.23290986177444917,
+            "buyer_br_2": 0.2785597291937672
+          },
+          "seller_accuracy": {
+            "seller_br": 0.635,
+            "seller_sg": 0.6571428571428571
+          },
+          "filtered_candidates": 0,
+          "filtered_by_rule": {},
+          "blocked_or_filtered": 0,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {}
+        },
+        {
+          "n_tasks": 240,
+          "n_purchases": 228,
+          "n_lines": 240,
+          "n_blocked": 0,
+          "n_unfilled": 12,
+          "purchases_per_task": 0.95,
+          "fill_rate": 0.95,
+          "task_accuracy": 0.65,
+          "purchase_accuracy": 0.6842105263157895,
+          "total_cost": 2.671222853904363,
+          "total_fee": 0.0703277105020267,
+          "mean_cost_per_task": 0.011130095224601512,
+          "mean_price_per_1k": 0.08834907533658444,
+          "total_expected_cost": 2.3124385673582935,
+          "total_cost_gap": 0.35878428654606953,
+          "cost_gap_rel": 0.15515408349028753,
+          "mean_abs_cost_overrun": 0.003680855434555028,
+          "budget_violations": 0,
+          "budget_violation_rate": 0.0,
+          "buyers_over_budget": 0,
+          "budget_exhausted_tasks": 12,
+          "no_compliant_seller_tasks": 0,
+          "compliance_violations": 59,
+          "blocked_at_gateway": 0,
+          "violations_by_rule": {
+            "CN-DSL-31": 25,
+            "CN-PIPL-38": 24,
+            "CN-PIPL-40": 9,
+            "BR-LGPD-33-VIII": 1
+          },
+          "blocked_by_rule": {},
+          "cross_border_share": 0.6578947368421053,
+          "fraud_seller_share": 0.12280701754385964,
+          "fraud_accuracy_claimed": 0.907312925170068,
+          "fraud_accuracy_actual": 0.75,
+          "fraud_accuracy_gap": 0.157312925170068,
+          "mean_task_latency_ms": 1436.8797338749087,
+          "p95_task_latency_ms": 1591.2983350039992,
+          "total_buyer_surplus": 9.378777146095638,
+          "total_seller_profit": 1.6835251434023366,
+          "buyer_surplus": {
+            "buyer_cn_1": 1.9705166377331178,
+            "buyer_cn_2": 2.159798253353998,
+            "buyer_sg_1": 1.8725907254932346,
+            "buyer_sg_2": 0.7011267368149212,
+            "buyer_br_1": 1.5358522493360145,
+            "buyer_br_2": 1.1388925433643513
+          },
+          "seller_profit": {
+            "seller_cn": 0.0,
+            "seller_sg": 0.715440885822067,
+            "seller_br": 0.9680842575802697
+          },
+          "budget_utilisation": {
+            "buyer_cn_1": 0.1397933449067529,
+            "buyer_cn_2": 0.13608069865840064,
+            "buyer_sg_1": 0.17896370980270612,
+            "buyer_sg_2": 0.9977465263701578,
+            "buyer_br_1": 0.24707387533199288,
+            "buyer_br_2": 0.2705537283178244
+          },
+          "seller_accuracy": {
+            "seller_br": 0.675,
+            "seller_sg": 0.75
+          },
+          "filtered_candidates": 0,
+          "filtered_by_rule": {},
+          "blocked_or_filtered": 0,
+          "audit_violations_enforced": 0,
+          "stop_reasons": {}
+        }
+      ],
+      "gateway_per_seed": [
+        {
+          "allowed": {
+            "CN->BR": 80,
+            "SG->BR": 58,
+            "BR->BR": 62,
+            "SG->SG": 15,
+            "BR->SG": 18
+          },
+          "blocked": {},
+          "allowed_total": 233,
+          "blocked_total": 0,
+          "violations": {
+            "CN->BR": 55,
+            "BR->SG": 2
+          },
+          "violations_total": 57
+        },
+        {
+          "allowed": {
+            "CN->BR": 80,
+            "SG->BR": 59,
+            "BR->BR": 61,
+            "SG->SG": 16,
+            "BR->SG": 19
+          },
+          "blocked": {},
+          "allowed_total": 235,
+          "blocked_total": 0,
+          "violations": {
+            "CN->BR": 51,
+            "BR->SG": 2
+          },
+          "violations_total": 53
+        },
+        {
+          "allowed": {
+            "CN->BR": 80,
+            "SG->BR": 55,
+            "BR->BR": 65,
+            "SG->SG": 13,
+            "BR->SG": 15
+          },
+          "blocked": {},
+          "allowed_total": 228,
+          "blocked_total": 0,
+          "violations": {
+            "CN->BR": 58,
+            "BR->SG": 1
+          },
+          "violations_total": 59
         }
       ]
     }
