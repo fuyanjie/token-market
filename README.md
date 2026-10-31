@@ -1,4 +1,4 @@
-# token-market v4：合规约束下的多模型组合采购 + 不完美审计下的策略性欺诈（Compliance-constrained Portfolio Purchasing under Strategic Fraud）
+# token-market v5：合规约束下的多模型组合采购 + 不完美审计下的策略性欺诈 + 延迟/稀疏结果反馈（Compliance-constrained Portfolio Purchasing under Strategic Fraud and Delayed / Sparse Outcome Feedback）
 
 一个**纯虚拟**的跨境推理 token 交易平台（cross-border reasoning-token marketplace）研究沙盒。
 CN / SG / BR 三个司法辖区（jurisdiction）的买方（buyers）向卖方（sellers）购买"推理 token"来解答有标准答案的推理题。
@@ -6,6 +6,61 @@ v2 的两个卖方是**真实运行的本地小模型**（Qwen2.5-1.5B / 0.5B-In
 
 > ⚠️ **免责声明（Disclaimer）**：合规规则仅为**简化模拟（simplified simulation）**，条款编号只作标签使用，
 > **不构成法律意见（NOT legal advice）**。价格、预算、通道费均为合成数据（synthetic）。默认不调用任何真实 API，不需要任何 API key。
+
+## v5 新增：延迟 / 稀疏结果反馈消融（v5: delayed / sparse outcome-feedback ablation, F）
+
+**研究定位更新（novelty framing）**：合规约束下的多模型组合采购 + 不完美审计下的策略性欺诈（swap + theft），
+**在延迟 / 稀疏结果反馈（delayed / sparse outcome feedback）下**——这正是审计（audits）起作用的场景。
+推理 token 长度不确定性仍然**降级**（不作为贡献点）。
+
+**动机 / 假设（hypothesis）**：在**即时、完整**的结果反馈（immediate full feedback）下，PILOT+合规 与 StageRoute+合规
+不付审计费也能逼近甚至超过 D3 的 J（v4 主表），因为 bandit 观察到正确性后学会避开欺诈卖方。
+假设：反馈越**延迟**（delay L）或越**稀疏**（reveal prob π），D3 在 J 与欺诈抑制上的优势越大。
+
+**反馈通道（feedback channel，`tokenmarket/feedback.py`）**：
+- 结果反馈（outcome feedback）= 所购答案是否正确（bandit 的 reward / label）。在全局步 t（= 任务序号）购买后，
+  标签以概率 π 被揭示（reveal），揭示的标签在步 t + L 交付（FIFO，按到期步排序，并在该步路由决策**之前**交付）；
+  回合结束时尚未交付的标签：L 有限则以真实标签冲刷（flush），L = ∞（never）则永不交付。
+- **只有标签被延迟 / 丢弃**：成本出现在买方自己的账单上，仍即时观测（PILOT 的预算分箱 budget bins、StageRoute 的成本估计）。
+  为此两个路由器的 `update` 被拆成 `observe_cost`（即时）+ `learn`（标签）；`update` = 两者之和 = v3/v4 行为。
+- **审计是独立信号（audits are a SEPARATE signal）**：D3 的审计（a = 0.1，identity + length，d_id = d_len = 0.9，P = 0.25）
+  在任何反馈制度下都**即时**运行、罚没（slash）/下架卖方并更新 TrustModel；D3 的路由从不使用正确性标签，
+  因此反馈通道只影响它的日志。两个 bandit **不审计**（audit rate = 0）。
+- 配置：`market.feedback: {mode: immediate|delayed|sparse|delayed_sparse|never, delay_L: 0, reveal_prob: 1.0}`，
+  默认 immediate（`run_sim.py` 默认指标与 v4 逐项一致；`joint_objective / baselines / cost_curves / imperfect_detection /
+  token_theft / fraud_audit_threshold` 的 results 重跑后逐字节相同）。揭示抽样使用独立随机流 `feedback-{seed}`。
+- 日志新增字段：`feedback_delay_L`（null = ∞）、`feedback_revealed`、`feedback_delivered_at`（交付步；= n_tasks 表示回合末冲刷；null = 永不）。
+
+**实验 F**（`experiments.F`，3 seeds，缓存命中约 8 秒）：同一个 swap+theft 学习型策略卖方（同 J），预算 ×2；
+延迟扫描 L ∈ {0, 5, 20, 50, ∞}（π = 1），稀疏扫描 π ∈ {1, 0.2, 0.05, 0}（L = 0），组合点 (20, 0.2)、(50, 0.05)。
+输出 `results/feedback_ablation.{md,json,png}`。
+
+| (L, π) | PILOT+合规 J / fraud | StageRoute+合规 J / fraud | **D3 J / fraud** | D3 − 最佳 bandit ΔJ |
+|---|---|---|---|---|
+| (0, 1) 即时 | 0.789 / 0.045 | 0.811 / 0.023 | 0.766 / 0.101 | −0.045 |
+| (5, 1) | 0.785 / 0.044 | 0.814 / 0.017 | 0.766 / 0.101 | −0.047 |
+| (20, 1) | 0.782 / 0.042 | 0.797 / 0.019 | 0.766 / 0.101 | −0.030 |
+| (50, 1) | 0.748 / 0.076 | 0.788 / 0.024 | 0.766 / 0.101 | −0.022 |
+| (∞, ·) never | −0.030 / 0.678 | 0.585 / 0.075 | 0.766 / 0.101 | **+0.181** |
+| (0, 0.2) | 0.780 / 0.058 | 0.803 / 0.018 | 0.766 / 0.101 | −0.037 |
+| (0, 0.05) | 0.673 / 0.135 | 0.681 / 0.097 | 0.766 / 0.101 | **+0.085** |
+| (0, 0) | −0.030 / 0.678 | 0.585 / 0.075 | 0.766 / 0.101 | **+0.181** |
+| (20, 0.2) | 0.747 / 0.070 | 0.752 / 0.048 | 0.766 / 0.101 | +0.014（在噪声内） |
+| (50, 0.05) | 0.634 / 0.166 | 0.672 / 0.084 | 0.766 / 0.101 | **+0.094** |
+
+卖方学到的攻击率 q_swap / q_theft：两个 bandit 下在所有制度中都保持 0.64–0.95（bandit **避开**攻击者，而不是**威慑**它）；
+D3 下所有制度都是 0.08 / 0.08（审计不依赖结果反馈）。
+
+**结论（verdict）：假设在方向上成立（HELD in direction）**。D3 相对最佳 bandit 的 J 优势随延迟 / 稀疏单调增大
+（L 扫描 −0.045 → +0.181，π 扫描 −0.045 → +0.181），但：
+1. 纯延迟（L ≤ 50，覆盖率 ≥ 0.90）和中度稀疏（π = 0.2）下 bandit 仍然胜出——480 个任务、3 个卖方，少量迟到标签已足够；
+   D3 只在标签几乎没有（π ≤ 0.05）、完全没有（L = ∞ / π = 0）或“延迟 **且** 稀疏”（(50, 0.05)；(20, 0.2) 仅 +0.014，在噪声内）时胜出。
+2. **欺诈份额（fraud_share）**上 D3（0.101）在任何制度下都不低于 StageRoute+合规：无标签时 StageRoute 的 LP 只剩成本信息，
+   退化为“最便宜卖方”（准确率 0.62），**碰巧**避开了 seller_sg；无标签的 PILOT 则按声誉先验把 71% 的购买送给 sg（fraud 0.68）。
+   D3 的优势体现在 J 和攻击率 q（威慑），而不是购买层面的欺诈份额。
+
+**真实 vs 模拟（v5）**：正确性标签本身来自**真实**缓存的 Qwen 输出（与 v2–v4 相同，无新生成）；
+反馈通道（延迟 L、揭示概率 π、冲刷规则）、审计、卖方学习规则、价格与预算均为**模拟**。
 
 ## v4 新增（v4 additions）
 
@@ -25,9 +80,10 @@ v2/v3 的行为、默认命令与测试保持不变：默认配置（`attack_mod
 
 ```bash
 PY=/workspace/tmvenv/bin/python
-$PY run_experiments.py                         # C, I, T, D, A, J, B 全部（缓存命中约 70 秒）
+$PY run_experiments.py                         # C, I, T, D, A, J, F, B 全部（缓存命中约 80 秒）
 $PY run_experiments.py --only I T J            # 只跑 v4 部分（约 45 秒）
-$PY -m pytest -q                               # 51 个测试（39 个 v2/v3 + 12 个 v4），约 1.3 秒
+$PY -m pytest -q                               # 63 个测试（39 个 v2/v3 + 12 个 v4 + 12 个 v5），约 1.8 秒
+$PY run_experiments.py --only F                # 只跑 v5 反馈消融（约 8 秒）
 ```
 
 ### 联合目标（Joint objective）
@@ -132,7 +188,7 @@ $PY run_experiments.py --only C D --backend-override mock --seeds 0   # 全 mock
 $PY run_sim.py --config configs/long_math.yaml        # 在长任务池上运行市场
 $PY run_sim.py --config configs/long_math.yaml --precompute-only     # 长任务预计算（本机 818 秒）
 $PY scripts/build_long_tasks.py                       # 从 data/raw 重建 data/long_tasks.jsonl（确定性）
-$PY -m pytest -q                                      # 51 个测试（v4），全部 mock / 假 runner，约 1.3 秒
+$PY -m pytest -q                                      # 63 个测试（v5），全部 mock / 假 runner，约 1.8 秒
 ```
 
 配置：`configs/default.yaml`（新增 `fraud:`、`market.audit / audited / pilot / stageroute / budget_multiplier`、
@@ -373,8 +429,9 @@ $PY -m pytest -q                                                 # 测试全部�
 | `tokenmarket/verification.py` | 验证与结算接口（B1 桩） |
 | `tokenmarket/strategic.py` | v3：策略性替换卖方（analytic / logit / learning）、模拟身份核验、D3 信任模型；v4：`AttackStrategy`（swap + theft）、`TokenLengthAuditor`、漏检率 |
 | `tokenmarket/baselines.py` | v3：PILOT 式（LinUCB + ZCL）与 StageRoute 式（每查询 LP）路由器 |
-| `tokenmarket/experiments.py` / `run_experiments.py` | v3：A/B/C/D 实验与报告；v4：I（不完美检测）、T（token 盗刷）、J（联合目标）|
+| `tokenmarket/experiments.py` / `run_experiments.py` | v3：A/B/C/D 实验与报告；v4：I（不完美检测）、T（token 盗刷）、J（联合目标）；v5：F（延迟/稀疏反馈消融）|
 | `tokenmarket/config.py` | v3：`extends:` 配置继承 |
+| `tokenmarket/feedback.py` | v5：`FeedbackBuffer`（延迟 L / 揭示概率 π，FIFO 交付，回合末冲刷）、`FeedbackRouter`（成本即时、标签经缓冲）、`feedback_params` |
 
 ## 局限（Limitations）
 
@@ -390,3 +447,6 @@ $PY -m pytest -q                                                 # 测试全部�
 - v4：两种检测都是概率模拟（零假阳性是建模假设）；盗刷对真实输出的截断是按字符比例近似 token 截断，而非真实地用更小的 max_new_tokens 重新生成；
   攻击者在 (q_swap, q_theft) 上独立随机，罚金每笔最多一次；D3 对盗刷的路由折扣（theft_quality_factor = 0.5）是先验而非估计值；
   J 的权重 (λ, μ) 是规范性选择，结论对其敏感（见敏感性表）。
+- v5：延迟以“任务步”计且为常数 L（无随机延迟分布）；揭示是独立伯努利（不依赖正确与否或卖方，非 missing-not-at-random）；
+  卖方的学习规则不知道买方的反馈制度（它只对利润与罚金做出反应），因此 bandit 下的 q 主要由 bandit 的路由份额决定；
+  480 个任务的短时域使中等延迟几乎无害，更长时域 / 更多卖方下的结论可能不同；D3 在所有制度下数值相同是设计使然（不使用标签）。

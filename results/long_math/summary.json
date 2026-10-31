@@ -30,8 +30,8 @@
       "elapsed_s": 0.0
     }
   },
-  "market_sim_s": 0.618,
-  "elapsed_s": 0.621,
+  "market_sim_s": 0.652,
+  "elapsed_s": 0.655,
   "reputation": {
     "Qwen/Qwen2.5-1.5B-Instruct": {
       "source": "measured",
@@ -471,6 +471,42 @@
           "mean": 1.9533333333333331,
           "std": 0.21221058723195999
         },
+        "feedback_delay_L": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_reveal_prob": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "feedback_purchases": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_revealed": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_delivered_online": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_flushed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_coverage": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "bandit_label_updates": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "bandit_label_updates_online": {
+          "mean": 0.0,
+          "std": 0.0
+        },
         "filtered_candidates": {
           "mean": 79.0,
           "std": 6.557438524302
@@ -668,6 +704,16 @@
           },
           "overrun_purchases": 133,
           "max_rel_cost_overrun": 1.7800000000000002,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 80,
           "filtered_by_rule": {
             "CN-DSL-31": 32,
@@ -835,6 +881,16 @@
           },
           "overrun_purchases": 131,
           "max_rel_cost_overrun": 1.8899999999999997,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 72,
           "filtered_by_rule": {
             "SG-PDPA-26": 15,
@@ -1002,6 +1058,16 @@
           },
           "overrun_purchases": 130,
           "max_rel_cost_overrun": 2.19,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 85,
           "filtered_by_rule": {
             "CN-PIPL-38": 15,
@@ -1473,6 +1539,42 @@
           "mean": 1.5366666666666664,
           "std": 0.19502136635080083
         },
+        "feedback_delay_L": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_reveal_prob": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "feedback_purchases": {
+          "mean": 138.66666666666666,
+          "std": 0.5773502691896257
+        },
+        "feedback_revealed": {
+          "mean": 138.66666666666666,
+          "std": 0.5773502691896257
+        },
+        "feedback_delivered_online": {
+          "mean": 138.66666666666666,
+          "std": 0.5773502691896257
+        },
+        "feedback_flushed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_coverage": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "bandit_label_updates": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "bandit_label_updates_online": {
+          "mean": 0.0,
+          "std": 0.0
+        },
         "filtered_candidates": {
           "mean": 79.0,
           "std": 6.557438524302
@@ -1670,6 +1772,16 @@
           },
           "overrun_purchases": 84,
           "max_rel_cost_overrun": 1.3399999999999999,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 139,
+          "feedback_revealed": 139,
+          "feedback_delivered_online": 139,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 80,
           "filtered_by_rule": {
             "CN-DSL-31": 32,
@@ -1837,6 +1949,16 @@
           },
           "overrun_purchases": 80,
           "max_rel_cost_overrun": 1.7299999999999995,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 139,
+          "feedback_revealed": 139,
+          "feedback_delivered_online": 139,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 72,
           "filtered_by_rule": {
             "SG-PDPA-26": 15,
@@ -2004,6 +2126,16 @@
           },
           "overrun_purchases": 81,
           "max_rel_cost_overrun": 1.54,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 138,
+          "feedback_revealed": 138,
+          "feedback_delivered_online": 138,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 85,
           "filtered_by_rule": {
             "CN-PIPL-38": 15,
@@ -2475,6 +2607,42 @@
           "mean": 1.9533333333333331,
           "std": 0.21221058723195999
         },
+        "feedback_delay_L": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_reveal_prob": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "feedback_purchases": {
+          "mean": 288.6666666666667,
+          "std": 4.041451884327381
+        },
+        "feedback_revealed": {
+          "mean": 288.6666666666667,
+          "std": 4.041451884327381
+        },
+        "feedback_delivered_online": {
+          "mean": 288.6666666666667,
+          "std": 4.041451884327381
+        },
+        "feedback_flushed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_coverage": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "bandit_label_updates": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "bandit_label_updates_online": {
+          "mean": 0.0,
+          "std": 0.0
+        },
         "filtered_candidates": {
           "mean": 79.0,
           "std": 6.557438524302
@@ -2685,6 +2853,16 @@
           },
           "overrun_purchases": 208,
           "max_rel_cost_overrun": 1.7800000000000002,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 291,
+          "feedback_revealed": 291,
+          "feedback_delivered_online": 291,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 80,
           "filtered_by_rule": {
             "CN-DSL-31": 32,
@@ -2856,6 +3034,16 @@
           },
           "overrun_purchases": 208,
           "max_rel_cost_overrun": 1.8899999999999997,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 284,
+          "feedback_revealed": 284,
+          "feedback_delivered_online": 284,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 72,
           "filtered_by_rule": {
             "SG-PDPA-26": 15,
@@ -3027,6 +3215,16 @@
           },
           "overrun_purchases": 210,
           "max_rel_cost_overrun": 2.19,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 291,
+          "feedback_revealed": 291,
+          "feedback_delivered_online": 291,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 85,
           "filtered_by_rule": {
             "CN-PIPL-38": 15,
@@ -3514,6 +3712,42 @@
           "mean": 1.843333333333333,
           "std": 0.12741009902410905
         },
+        "feedback_delay_L": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_reveal_prob": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "feedback_purchases": {
+          "mean": 316.6666666666667,
+          "std": 6.110100926607787
+        },
+        "feedback_revealed": {
+          "mean": 316.6666666666667,
+          "std": 6.110100926607787
+        },
+        "feedback_delivered_online": {
+          "mean": 316.6666666666667,
+          "std": 6.110100926607787
+        },
+        "feedback_flushed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_coverage": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "bandit_label_updates": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "bandit_label_updates_online": {
+          "mean": 0.0,
+          "std": 0.0
+        },
         "filtered_candidates": {
           "mean": 79.0,
           "std": 6.557438524302
@@ -3720,6 +3954,16 @@
           },
           "overrun_purchases": 224,
           "max_rel_cost_overrun": 1.7800000000000002,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 318,
+          "feedback_revealed": 318,
+          "feedback_delivered_online": 318,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 80,
           "filtered_by_rule": {
             "CN-DSL-31": 32,
@@ -3890,6 +4134,16 @@
           },
           "overrun_purchases": 223,
           "max_rel_cost_overrun": 1.9899999999999993,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 322,
+          "feedback_revealed": 322,
+          "feedback_delivered_online": 322,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 72,
           "filtered_by_rule": {
             "SG-PDPA-26": 15,
@@ -4060,6 +4314,16 @@
           },
           "overrun_purchases": 213,
           "max_rel_cost_overrun": 1.7599999999999993,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 310,
+          "feedback_revealed": 310,
+          "feedback_delivered_online": 310,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 85,
           "filtered_by_rule": {
             "CN-PIPL-38": 15,
@@ -4551,6 +4815,42 @@
           "mean": 1.9166666666666667,
           "std": 0.135030860670194
         },
+        "feedback_delay_L": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_reveal_prob": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "feedback_purchases": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_revealed": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_delivered_online": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_flushed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_coverage": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "bandit_label_updates": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "bandit_label_updates_online": {
+          "mean": 0.0,
+          "std": 0.0
+        },
         "filtered_candidates": {
           "mean": 0.0,
           "std": 0.0
@@ -4729,6 +5029,16 @@
           },
           "overrun_purchases": 144,
           "max_rel_cost_overrun": 1.7799999999999998,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 0,
           "filtered_by_rule": {},
           "blocked_or_filtered": 0,
@@ -4892,6 +5202,16 @@
           },
           "overrun_purchases": 143,
           "max_rel_cost_overrun": 2.05,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 0,
           "filtered_by_rule": {},
           "blocked_or_filtered": 0,
@@ -5055,6 +5375,16 @@
           },
           "overrun_purchases": 142,
           "max_rel_cost_overrun": 1.9200000000000004,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 0,
           "filtered_by_rule": {},
           "blocked_or_filtered": 0,
@@ -5520,6 +5850,42 @@
           "mean": 1.61,
           "std": 0.14798648586948737
         },
+        "feedback_delay_L": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_reveal_prob": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "feedback_purchases": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_revealed": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_delivered_online": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_flushed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_coverage": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "bandit_label_updates": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "bandit_label_updates_online": {
+          "mean": 144.0,
+          "std": 0.0
+        },
         "filtered_candidates": {
           "mean": 79.0,
           "std": 6.557438524302
@@ -5717,6 +6083,16 @@
           },
           "overrun_purchases": 99,
           "max_rel_cost_overrun": 1.54,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 144,
+          "bandit_label_updates_online": 144,
           "filtered_candidates": 80,
           "filtered_by_rule": {
             "CN-DSL-31": 32,
@@ -5884,6 +6260,16 @@
           },
           "overrun_purchases": 94,
           "max_rel_cost_overrun": 1.7799999999999998,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 144,
+          "bandit_label_updates_online": 144,
           "filtered_candidates": 72,
           "filtered_by_rule": {
             "SG-PDPA-26": 15,
@@ -6051,6 +6437,16 @@
           },
           "overrun_purchases": 101,
           "max_rel_cost_overrun": 1.5099999999999998,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 144,
+          "bandit_label_updates_online": 144,
           "filtered_candidates": 85,
           "filtered_by_rule": {
             "CN-PIPL-38": 15,
@@ -6531,6 +6927,42 @@
           "mean": 1.8133333333333326,
           "std": 0.11015141094572234
         },
+        "feedback_delay_L": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_reveal_prob": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "feedback_purchases": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_revealed": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_delivered_online": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_flushed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_coverage": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "bandit_label_updates": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "bandit_label_updates_online": {
+          "mean": 144.0,
+          "std": 0.0
+        },
         "filtered_candidates": {
           "mean": 79.0,
           "std": 6.557438524302
@@ -6728,6 +7160,16 @@
           },
           "overrun_purchases": 100,
           "max_rel_cost_overrun": 1.6999999999999993,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 144,
+          "bandit_label_updates_online": 144,
           "filtered_candidates": 80,
           "filtered_by_rule": {
             "CN-DSL-31": 32,
@@ -6895,6 +7337,16 @@
           },
           "overrun_purchases": 94,
           "max_rel_cost_overrun": 1.819999999999999,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 144,
+          "bandit_label_updates_online": 144,
           "filtered_candidates": 72,
           "filtered_by_rule": {
             "SG-PDPA-26": 15,
@@ -7062,6 +7514,16 @@
           },
           "overrun_purchases": 106,
           "max_rel_cost_overrun": 1.92,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 144,
+          "bandit_label_updates_online": 144,
           "filtered_candidates": 85,
           "filtered_by_rule": {
             "CN-PIPL-38": 15,
@@ -7539,6 +8001,42 @@
           "mean": 1.9533333333333331,
           "std": 0.21221058723195999
         },
+        "feedback_delay_L": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_reveal_prob": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "feedback_purchases": {
+          "mean": 241.33333333333334,
+          "std": 5.8594652770823155
+        },
+        "feedback_revealed": {
+          "mean": 241.33333333333334,
+          "std": 5.8594652770823155
+        },
+        "feedback_delivered_online": {
+          "mean": 241.33333333333334,
+          "std": 5.8594652770823155
+        },
+        "feedback_flushed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_coverage": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "bandit_label_updates": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "bandit_label_updates_online": {
+          "mean": 0.0,
+          "std": 0.0
+        },
         "filtered_candidates": {
           "mean": 79.0,
           "std": 6.557438524302
@@ -7773,6 +8271,16 @@
           },
           "overrun_purchases": 173,
           "max_rel_cost_overrun": 1.7800000000000002,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 239,
+          "feedback_revealed": 239,
+          "feedback_delivered_online": 239,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 80,
           "filtered_by_rule": {
             "CN-DSL-31": 32,
@@ -7953,6 +8461,16 @@
           },
           "overrun_purchases": 178,
           "max_rel_cost_overrun": 1.8899999999999997,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 237,
+          "feedback_revealed": 237,
+          "feedback_delivered_online": 237,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 72,
           "filtered_by_rule": {
             "SG-PDPA-26": 15,
@@ -8133,6 +8651,16 @@
           },
           "overrun_purchases": 182,
           "max_rel_cost_overrun": 2.19,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 248,
+          "feedback_revealed": 248,
+          "feedback_delivered_online": 248,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 85,
           "filtered_by_rule": {
             "CN-PIPL-38": 15,
@@ -8629,6 +9157,42 @@
           "mean": 1.9533333333333331,
           "std": 0.21221058723196018
         },
+        "feedback_delay_L": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_reveal_prob": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "feedback_purchases": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_revealed": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_delivered_online": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_flushed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_coverage": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "bandit_label_updates": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "bandit_label_updates_online": {
+          "mean": 0.0,
+          "std": 0.0
+        },
         "filtered_candidates": {
           "mean": 79.0,
           "std": 6.557438524302
@@ -8826,6 +9390,16 @@
           },
           "overrun_purchases": 133,
           "max_rel_cost_overrun": 1.7799999999999998,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 80,
           "filtered_by_rule": {
             "CN-DSL-31": 32,
@@ -8993,6 +9567,16 @@
           },
           "overrun_purchases": 131,
           "max_rel_cost_overrun": 1.8899999999999997,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 72,
           "filtered_by_rule": {
             "SG-PDPA-26": 15,
@@ -9160,6 +9744,16 @@
           },
           "overrun_purchases": 130,
           "max_rel_cost_overrun": 2.19,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 85,
           "filtered_by_rule": {
             "CN-PIPL-38": 15,
@@ -9631,6 +10225,42 @@
           "mean": 1.7233333333333327,
           "std": 0.1342882471898914
         },
+        "feedback_delay_L": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_reveal_prob": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "feedback_purchases": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_revealed": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_delivered_online": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_flushed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_coverage": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "bandit_label_updates": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "bandit_label_updates_online": {
+          "mean": 0.0,
+          "std": 0.0
+        },
         "filtered_candidates": {
           "mean": 79.0,
           "std": 6.557438524302
@@ -9828,6 +10458,16 @@
           },
           "overrun_purchases": 106,
           "max_rel_cost_overrun": 1.7799999999999994,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 80,
           "filtered_by_rule": {
             "CN-DSL-31": 32,
@@ -9995,6 +10635,16 @@
           },
           "overrun_purchases": 103,
           "max_rel_cost_overrun": 1.8199999999999998,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 72,
           "filtered_by_rule": {
             "SG-PDPA-26": 15,
@@ -10162,6 +10812,16 @@
           },
           "overrun_purchases": 106,
           "max_rel_cost_overrun": 1.5699999999999994,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 85,
           "filtered_by_rule": {
             "CN-PIPL-38": 15,
@@ -10644,6 +11304,42 @@
           "mean": 1.9166666666666667,
           "std": 0.13503086067019396
         },
+        "feedback_delay_L": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_reveal_prob": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "feedback_purchases": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_revealed": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_delivered_online": {
+          "mean": 144.0,
+          "std": 0.0
+        },
+        "feedback_flushed": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "feedback_coverage": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "bandit_label_updates": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "bandit_label_updates_online": {
+          "mean": 0.0,
+          "std": 0.0
+        },
         "filtered_candidates": {
           "mean": 0.0,
           "std": 0.0
@@ -10822,6 +11518,16 @@
           },
           "overrun_purchases": 144,
           "max_rel_cost_overrun": 1.7799999999999998,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 0,
           "filtered_by_rule": {},
           "blocked_or_filtered": 0,
@@ -10985,6 +11691,16 @@
           },
           "overrun_purchases": 143,
           "max_rel_cost_overrun": 2.05,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 0,
           "filtered_by_rule": {},
           "blocked_or_filtered": 0,
@@ -11148,6 +11864,16 @@
           },
           "overrun_purchases": 142,
           "max_rel_cost_overrun": 1.92,
+          "feedback_mode": "immediate",
+          "feedback_delay_L": 0,
+          "feedback_reveal_prob": 1.0,
+          "feedback_purchases": 144,
+          "feedback_revealed": 144,
+          "feedback_delivered_online": 144,
+          "feedback_flushed": 0,
+          "feedback_coverage": 1.0,
+          "bandit_label_updates": 0,
+          "bandit_label_updates_online": 0,
           "filtered_candidates": 0,
           "filtered_by_rule": {},
           "blocked_or_filtered": 0,

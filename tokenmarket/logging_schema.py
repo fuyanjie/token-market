@@ -1,4 +1,5 @@
-"""Unified transaction log schema (v2 + v3 audit fields + v4 token-theft / imperfect-detection fields).
+"""Unified transaction log schema (v2 + v3 audit fields + v4 token-theft / imperfect-detection fields
++ v5 outcome-feedback fields).
 
 Exactly ONE JSONL line per transaction = one individual seller purchase attempt (allowed or blocked), or one
 `unfilled` line for a task where no purchase was made. Inside a cascade / vote portfolio every seller purchase is
@@ -75,6 +76,10 @@ SCHEMA: Dict[str, tuple] = {
     "theft_detected": (bool, True),     # length-audit outcome; null if no length check ran
     "detect_prob_identity": (NUM, True),  # identity-check detection prob d of the buyer's audit regime (null: no such check)
     "detect_prob_length": (NUM, True),    # length-audit detection prob d_length (null: no such check)
+    # v5: outcome (correctness) feedback channel for online learners; audits are independent of it
+    "feedback_delay_L": (int, True),      # label delay L of the run's feedback regime (null: L = inf / never)
+    "feedback_revealed": (bool, False),   # this purchase's correctness label is ever revealed (prob pi; false if not served)
+    "feedback_delivered_at": (int, True),  # step (task index) the label is delivered; n_tasks = end-of-episode flush; null: never
 }
 FIELDS: List[str] = list(SCHEMA)
 
@@ -116,6 +121,8 @@ def validate_record(rec: Dict) -> List[str]:
     if isinstance(rec.get("billed_tokens"), int) and isinstance(rec.get("actual_tokens"), int) \
             and rec["billed_tokens"] < rec["actual_tokens"]:
         errs.append("billed_tokens < actual_tokens")
+    if rec.get("feedback_delivered_at") is not None and not rec.get("feedback_revealed"):
+        errs.append("feedback_delivered_at requires feedback_revealed")
     if rec.get("final") and rec.get("final_correct") is None:
         errs.append("final line must set final_correct")
     return errs

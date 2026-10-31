@@ -2,7 +2,7 @@
 
 > Simplified simulation of data-transfer rules; NOT legal advice.
 
-seller backends={'seller_cn': 'local_hf', 'seller_sg': 'local_hf', 'seller_br': 'mock'}, seeds=[0, 1, 2], tasks/run=144 (drawn from fixed pool of 48, task_seed=1234), auction=`second_price`, log lines=5224, precompute=0.0s, market sim=0.51s. Values are mean ± std over seeds.
+seller backends={'seller_cn': 'local_hf', 'seller_sg': 'local_hf', 'seller_br': 'mock'}, seeds=[0, 1, 2], tasks/run=144 (drawn from fixed pool of 48, task_seed=1234), auction=`second_price`, log lines=5224, precompute=0.0s, market sim=0.526s. Values are mean ± std over seeds.
 
 ## C2 baseline comparison (posted price)
 

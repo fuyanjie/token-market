@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import copy
 import json
+import math
 import os
 import statistics
 import time
@@ -942,3 +943,224 @@ def render_J(res: Dict) -> str:
     L += ["", "The v3 swap-only comparison (raw accuracy, now also with a J column) is kept in results/baselines.md; "
           "the v3 accuracy-vs-cost curves in results/cost_curves.md.", ""]
     return "\n".join(L)
+
+
+# --------------------------------------------------------------------------- F: delayed / sparse outcome feedback
+def feedback_over(L, pi) -> Dict:
+    """market.feedback override for label delay L (None / inf = never) and reveal probability pi."""
+    never = L is None or (isinstance(L, float) and math.isinf(L)) or str(L).lower() == "inf"
+    if never:
+        return {"mode": "never", "delay_L": None, "reveal_prob": float(pi)}
+    L, pi = int(L), float(pi)
+    mode = {(False, False): "immediate", (True, False): "delayed", (False, True): "sparse",
+            (True, True): "delayed_sparse"}[(L > 0, pi < 1.0)]
+    return {"mode": mode, "delay_L": L, "reveal_prob": pi}
+
+
+def _Lstr(L) -> str:
+    return "∞ (never)" if L is None else str(L)
+
+
+FMETRICS = ("joint_objective", "task_accuracy", "compliance_violation_rate", "fraud_share",
+            "mean_cost_per_task_incl_audit", "feedback_coverage", "fraud_seller_share", "theft_share",
+            "swaps_detected", "thefts_detected", "n_purchases", "bandit_label_updates_online")
+
+
+def experiment_F(ctx: Context, seeds: List[int], log=print) -> Dict:
+    ef = ctx.cfg["experiments"]["F"]
+    sid = fraud_seller_id(ctx.cfg)
+    delays = [None if (d is None or str(d).lower() == "inf") else int(d) for d in ef["delays"]]
+    probs = [float(p) for p in ef["reveal_probs"]]
+    regimes = []                           # (sweep, L, pi); the (0, 1.0) immediate point is shared by both sweeps
+    for L in delays:
+        regimes.append(("delay", L, 1.0))
+    for pi in probs:
+        if pi != 1.0:
+            regimes.append(("sparse", 0, pi))
+    for L, pi in ef.get("combined", []):
+        regimes.append(("combined", None if str(L).lower() == "inf" else int(L), float(pi)))
+    base_over = {"fraud": {"attack_modes_enabled": list(ef.get("attack_modes", ["swap", "theft"]))},
+                 "market": {"budget_multiplier": ef.get("budget_multiplier", 1.0)}}
+    rows = []
+    for pol in ef["policies"]:
+        for sweep, L, pi in regimes:
+            fo = feedback_over(L, pi)
+            r = run_point(ctx, deep_merge(base_over, {"market": {"feedback": fo}}), pol, seeds)
+            a, ps = r["aggregate"], r["per_seed"]
+            row = {"policy": pol, "sweep": sweep, "delay_L": L, "reveal_prob": pi, "mode": fo["mode"],
+                   "audit_rate": ps[0]["audit_rate"]}
+            for k in FMETRICS:
+                row[k], row[k + "_std"] = a[k]["mean"], a[k]["std"]
+            share = [m["seller_purchases"].get(sid, 0) / m["n_purchases"] if m["n_purchases"] else 0.0 for m in ps]
+            row["sg_purchase_share"], row["sg_purchase_share_std"] = _ms(share)
+            row["learned_q_swap"], row["learned_q_swap_std"] = _ms(m["learned_swap_q"][sid] for m in ps)
+            row["learned_q_theft"], row["learned_q_theft_std"] = _ms(m["learned_theft_q"][sid] for m in ps)
+            row["label_updates_per_purchase"] = statistics.fmean(
+                m["bandit_label_updates_online"] / m["n_purchases"] if m["n_purchases"] else 0.0 for m in ps)
+            rows.append(row)
+            log(f"[F] {pol:28s} {fo['mode']:15s} L={_Lstr(L):9s} pi={pi:<5} J={row['joint_objective']:.3f} "
+                f"acc={row['task_accuracy']:.3f} fraud={row['fraud_share']:.3f} q={row['learned_q_swap']:.2f}/"
+                f"{row['learned_q_theft']:.2f} cov={row['feedback_coverage']:.2f}")
+    lam, mu = joint_weights(ctx.cfg)
+    return {"seeds": seeds, "lambda": lam, "mu": mu, "rows": rows, "policies": list(ef["policies"]),
+            "ours": "audited_compliance_cascade", "delays": delays, "reveal_probs": probs,
+            "combined": [[None if str(L).lower() == "inf" else int(L), float(p)] for L, p in ef.get("combined", [])],
+            "attack_modes": base_over["fraud"]["attack_modes_enabled"], "budget_multiplier": ef.get("budget_multiplier"),
+            "d3_audit_rate": ctx.cfg["market"]["audited"]["audit_rate"],
+            "d3_audit_types": ctx.cfg["market"]["audited"].get("audit_types", ["identity", "length"]),
+            "penalty": ctx.cfg["fraud"]["penalty"], "detect_prob": ctx.cfg["fraud"]["detect_prob"],
+            "detect_prob_length": ctx.cfg["fraud"].get("detect_prob_length", 0.9), "fraud_seller": sid}
+
+
+def _frow(res: Dict, pol: str, L, pi) -> Optional[Dict]:
+    return next((r for r in res["rows"] if r["policy"] == pol and r["delay_L"] == L and r["reveal_prob"] == pi), None)
+
+
+def feedback_verdict(res: Dict) -> Dict:
+    """D3's J / fraud-share advantage over the best compliant bandit, per regime, and whether it grows from the
+    immediate regime to the least-informative ones (L = inf, pi = 0)."""
+    ours = res["ours"]
+    bandits = [p for p in res["policies"] if p != ours]
+    adv = []
+    pts = [(L, 1.0) for L in res["delays"]] + [(0, p) for p in res["reveal_probs"] if p != 1.0] + \
+        [tuple(c) for c in res["combined"]]
+    for L, pi in pts:
+        d3 = _frow(res, ours, L, pi)
+        bs = [r for r in (_frow(res, p, L, pi) for p in bandits) if r]
+        if not d3 or not bs:
+            continue
+        best = max(bs, key=lambda r: r["joint_objective"])
+        adv.append({"delay_L": L, "reveal_prob": pi, "best_bandit": best["policy"],
+                    "dJ": d3["joint_objective"] - best["joint_objective"],
+                    "d_fraud": min(r["fraud_share"] for r in bs) - d3["fraud_share"],
+                    "d_q_swap": min(r["learned_q_swap"] for r in bs) - d3["learned_q_swap"],
+                    "d_q_theft": min(r["learned_q_theft"] for r in bs) - d3["learned_q_theft"]})
+    get = lambda L, pi: next((a for a in adv if a["delay_L"] == L and a["reveal_prob"] == pi), None)  # noqa: E731
+    imm = get(0, 1.0)
+    worst_L, worst_pi = get(res["delays"][-1], 1.0), get(0, min(res["reveal_probs"]))
+    grows_L = bool(imm and worst_L and worst_L["dJ"] > imm["dJ"] and worst_L["d_fraud"] > imm["d_fraud"])
+    grows_pi = bool(imm and worst_pi and worst_pi["dJ"] > imm["dJ"] and worst_pi["d_fraud"] > imm["d_fraud"])
+    d_seq = [get(L, 1.0)["dJ"] for L in res["delays"] if get(L, 1.0)]
+    p_seq = [get(0, p)["dJ"] for p in res["reveal_probs"] if get(0, p)]
+    mono = lambda xs: all(b >= a - 0.01 for a, b in zip(xs, xs[1:]))  # noqa: E731  (0.01 slack for seed noise)
+    wins_J = [(a["delay_L"], a["reveal_prob"]) for a in adv if a["dJ"] > 0]
+    wins_fraud = [(a["delay_L"], a["reveal_prob"]) for a in adv if a["d_fraud"] > 0]
+    holds = grows_L and grows_pi
+    status = ("NOT supported" if not holds else
+              "HELD" if len(wins_J) == len(adv) - (1 if imm and imm["dJ"] <= 0 else 0) else "HELD in direction only")
+    return {"advantage": adv, "grows_with_delay": grows_L, "grows_with_sparsity": grows_pi,
+            "monotone_in_delay": mono(d_seq), "monotone_in_sparsity": mono(p_seq),
+            "holds": holds, "status": status, "d3_wins_J": wins_J, "d3_lower_fraud_share": wins_fraud}
+
+
+def render_F(res: Dict) -> str:
+    ours, pols = res["ours"], res["policies"]
+    v = feedback_verdict(res)
+    res["verdict"] = v
+    lab = {"pilot_compliant": "PILOT+compliance", "stageroute_compliant": "StageRoute+compliance",
+           ours: "**D3 (ours)**"}
+    L = ["# F — Delayed / sparse outcome feedback (v5 ablation)", "",
+         "**Setting.** Outcome feedback = whether a purchased answer was correct (the bandit reward). A purchase at "
+         "step t (task index) has its label revealed with probability π and, if revealed, delivered to the router at "
+         "step t + L (FIFO by due step, before that step's routing decision); labels still pending at the end of the "
+         "episode are flushed if L is finite, never delivered if L = ∞. Only the LABEL is delayed: the realised cost "
+         "is on the buyer's own bill and stays immediate (PILOT budget bins, StageRoute cost estimate).", "",
+         "**Audits are a separate signal.** D3's audits (rate "
+         f"{res['d3_audit_rate']}, checks {res['d3_audit_types']}, d_identity = {res['detect_prob']}, d_length = "
+         f"{res['detect_prob_length']}, P = {res['penalty']}) run, slash/delist the seller and update D3's TrustModel "
+         "IMMEDIATELY in every regime; D3's routing never uses correctness labels, so the feedback channel only "
+         "changes its logging. PILOT+compliance and StageRoute+compliance do NOT audit (audit rate 0).", "",
+         f"Market: strategic learning seller {res['fraud_seller']} with attack modes {res['attack_modes']} (same as "
+         f"section J), budget × {res['budget_multiplier']}, J = acc − {res['lambda']}·violation rate − "
+         f"{res['mu']}·fraud share. Mean ± std over seeds {res['seeds']}. q = seller's learned attack rate (mean over "
+         "the last half of epochs). coverage = labels delivered during the episode / purchases.", "",
+         "Real vs simulated: the correctness labels come from the REAL cached Qwen outputs (no new generation); the "
+         "feedback channel (delay L, reveal probability π, flush rule), audits, the seller's learning rule, prices and "
+         "budgets are SIMULATED.", ""]
+
+    def table(title, pts, key_name, key_fmt):
+        out = [f"## {title}", "",
+               f"| {key_name} | policy | J | accuracy | violation rate | fraud share | sg q_swap / q_theft "
+               "| share of purchases from sg | cost/task incl. audit | feedback coverage |",
+               "|---|---|---|---|---|---|---|---|---|---|"]
+        for (Lv, pi) in pts:
+            for p in pols:
+                r = _frow(res, p, Lv, pi)
+                if not r:
+                    continue
+                out.append(f"| {key_fmt(Lv, pi)} | {lab.get(p, p)} | {r['joint_objective']:.3f} ± "
+                           f"{r['joint_objective_std']:.3f} | {r['task_accuracy']:.3f} ± {r['task_accuracy_std']:.3f} "
+                           f"| {r['compliance_violation_rate']:.3f} | {r['fraud_share']:.3f} ± "
+                           f"{r['fraud_share_std']:.3f} | {r['learned_q_swap']:.2f} / {r['learned_q_theft']:.2f} "
+                           f"| {r['sg_purchase_share']:.3f} | {r['mean_cost_per_task_incl_audit']:.4f} "
+                           f"| {r['feedback_coverage']:.2f} |")
+        return out + [""]
+
+    L += table("Delay sweep (π = 1)", [(d, 1.0) for d in res["delays"]], "L", lambda Lv, pi: _Lstr(Lv))
+    L += table("Sparsity sweep (L = 0)", [(0, p) for p in res["reveal_probs"]], "π", lambda Lv, pi: f"{pi:g}")
+    if res["combined"]:
+        L += table("Combined points", [tuple(c) for c in res["combined"]], "(L, π)",
+                   lambda Lv, pi: f"({_Lstr(Lv)}, {pi:g})")
+    L += ["## D3 advantage over the best compliant bandit", "",
+          "ΔJ = J(D3) − max J(bandits); Δfraud = min fraud share(bandits) − fraud share(D3); Δq = min learned q over "
+          "bandits − D3's (positive = D3 better).", "",
+          "| (L, π) | best bandit | ΔJ | Δfraud share | Δq_swap | Δq_theft |", "|---|---|---|---|---|---|"]
+    for a in v["advantage"]:
+        L.append(f"| ({_Lstr(a['delay_L'])}, {a['reveal_prob']:g}) | {a['best_bandit']} | {a['dJ']:+.3f} "
+                 f"| {a['d_fraud']:+.3f} | {a['d_q_swap']:+.2f} | {a['d_q_theft']:+.2f} |")
+    pts = lambda xs: ", ".join(f"(L={_Lstr(a)}, π={b:g})" for a, b in xs) or "none"  # noqa: E731
+    L += ["", "## Hypothesis verdict", "",
+          "Hypothesis: D3's advantage (J and fraud suppression) over the compliant bandits GROWS as outcome feedback "
+          "becomes delayed or sparse.", "",
+          f"- grows from immediate to L = ∞: **{'yes' if v['grows_with_delay'] else 'no'}** "
+          f"(ΔJ non-decreasing along the L sweep within 0.01: {'yes' if v['monotone_in_delay'] else 'no'})",
+          f"- grows from immediate to π = {min(res['reveal_probs']):g}: "
+          f"**{'yes' if v['grows_with_sparsity'] else 'no'}** (ΔJ non-decreasing along the π sweep within 0.01: "
+          f"{'yes' if v['monotone_in_sparsity'] else 'no'})",
+          f"- regimes where D3 beats BOTH compliant bandits on J: {pts(v['d3_wins_J'])}",
+          f"- regimes where D3 has a lower fraud share than BOTH bandits: {pts(v['d3_lower_fraud_share'])}",
+          "- seller attack rates: the bandits never lower q (they avoid the attacker instead of deterring it), D3's "
+          "audits keep q low in every regime because audits do not depend on outcome feedback.",
+          f"- **verdict: hypothesis {v['status']}**"
+          + (" — D3's advantage grows as labels get delayed / sparse, but D3 overtakes the bandits on J only in "
+             "the regimes listed above." if v["status"] == "HELD in direction only" else ""), ""]
+    return "\n".join(L)
+
+
+def plot_F(res: Dict, path: str) -> bool:
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+    except ImportError:
+        return False
+    fig, axes = plt.subplots(2, 2, figsize=(10.5, 7.5))
+    ds = res["delays"]
+    xs_d = list(range(len(ds)))
+    ps = res["reveal_probs"]
+    for pol in res["policies"]:
+        rd = [_frow(res, pol, d, 1.0) for d in ds]
+        rp = [_frow(res, pol, 0, p) for p in ps]
+        axes[0, 0].errorbar(xs_d, [r["joint_objective"] for r in rd], [r["joint_objective_std"] for r in rd],
+                            marker="o", capsize=3, label=pol)
+        axes[0, 1].errorbar(range(len(ps)), [r["joint_objective"] for r in rp], [r["joint_objective_std"] for r in rp],
+                            marker="o", capsize=3, label=pol)
+        axes[1, 0].plot(xs_d, [r["learned_q_swap"] for r in rd], "o-", label=f"{pol} q_swap")
+        axes[1, 0].plot(xs_d, [r["learned_q_theft"] for r in rd], "x--", label=f"{pol} q_theft")
+        axes[1, 1].plot(range(len(ps)), [r["learned_q_swap"] for r in rp], "o-", label=f"{pol} q_swap")
+        axes[1, 1].plot(range(len(ps)), [r["learned_q_theft"] for r in rp], "x--", label=f"{pol} q_theft")
+    for ax in axes[:, 0]:
+        ax.set_xticks(xs_d, [_Lstr(d).replace(" (never)", "") for d in ds])
+        ax.set_xlabel("label delay L (π = 1)")
+    for ax in axes[:, 1]:
+        ax.set_xticks(range(len(ps)), [f"{p:g}" for p in ps])
+        ax.set_xlabel("reveal probability π (L = 0)")
+    axes[0, 0].set_ylabel("joint objective J")
+    axes[1, 0].set_ylabel("sg learned attack rate q")
+    axes[0, 0].legend(fontsize=7)
+    axes[1, 0].legend(fontsize=6)
+    fig.suptitle("v5: delayed / sparse outcome feedback (audits independent of feedback)")
+    fig.tight_layout()
+    fig.savefig(path, dpi=130, bbox_inches="tight")
+    plt.close(fig)
+    return True

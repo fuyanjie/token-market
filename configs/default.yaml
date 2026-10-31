@@ -43,6 +43,10 @@ market:
     theft_quality_factor: 0.5        # v4: D3 prior: a truncated answer is 0.5x as likely correct (routing)
     cascade: {confidence_threshold: 0.7, max_steps: 3}
   joint: {lambda: 1.0, mu: 0.5}      # v4 joint objective J = acc - lambda*violation_rate - mu*fraud_share
+  # v5 outcome (correctness-label) feedback for the online bandits (tokenmarket/feedback.py). Default immediate =
+  # v4. mode: immediate | delayed | sparse | delayed_sparse | never; delay_L in steps (null/inf = never);
+  # reveal_prob = pi. Costs stay immediate; audits are NOT affected (separate signal).
+  feedback: {mode: immediate, delay_L: 0, reveal_prob: 1.0}
   pilot: {alpha: 0.5, prior_lambda: 5.0, n_bins: 4}       # D1 (LinUCB + ON-MCKP ZCL); lb/ub: auto
   stageroute: {gamma: 0.5, budget_scale: 1.0}             # D2 (per-query LP, b = budget_scale * B / T)
   auction:

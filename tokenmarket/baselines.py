@@ -24,6 +24,9 @@ D2 `stageroute` / `stageroute_compliant` — budgeted bandit in the spirit of St
      f_rad(v, n) = sqrt(gamma * v / n) + gamma / n; unplayed arms: mu^U = 1, c^L = 0.
    * the stage-wise deployment MIP of the paper is SKIPPED (we only have 3 fixed sellers).
    * the LP is solved exactly by vertex enumeration (numpy only, no solver dependency).
+
+v5: both routers split `update` into `observe_cost` (immediate: it is on the buyer's own bill) and `learn` (the
+correctness label, which tokenmarket.feedback may delay or drop). `update` = observe_cost + learn = v3/v4 behaviour.
    * same omissions as D1; stageroute_compliant adds the compliance filter.
 """
 from __future__ import annotations
@@ -114,6 +117,7 @@ class PilotRouter:
             self.A[s.id] = self.lam * np.eye(dim)
             self.b[s.id] = self.lam * theta
         self.bins = {b.id: BudgetBins(b.budget, horizon.get(b.id, 1), self.n_bins) for b in buyers}
+        self.n_label_updates = 0
 
     def scores(self, task, s):
         x = context(task)
@@ -146,12 +150,21 @@ class PilotRouter:
         return max(elig, key=lambda s: (sc[s.id][1], -exp_cost(s), s.id))
 
     def update(self, task, buyer, seller, correct: Optional[bool], actual_cost: float):
+        """Immediate feedback (v3/v4): observe the cost, then learn from the label (skipped if None)."""
+        self.observe_cost(buyer, seller, actual_cost)
+        if correct is not None:
+            self.learn(task, seller, correct, actual_cost)
+
+    def observe_cost(self, buyer, seller, actual_cost: float, served: bool = True):
+        """v5: the realised cost is on the buyer's own bill -> always immediate (budget-bin accounting)."""
         self.bins[buyer.id].spend(actual_cost)
-        if correct is None:
-            return
+
+    def learn(self, task, seller, correct: bool, actual_cost: float = 0.0):
+        """v5: LinUCB update from a correctness label (possibly delayed by the FeedbackBuffer)."""
         x = context(task)
         self.A[seller.id] += np.outer(x, x)
         self.b[seller.id] += float(correct) * x
+        self.n_label_updates += 1
 
     def end_query(self, buyer):
         self.bins[buyer.id].next_query()
@@ -190,7 +203,9 @@ class StageRouteRouter:
         self.gamma = float(p.get("gamma", 0.5))
         self.b_scale = float(p.get("budget_scale", 1.0))
         self.rng = rng
-        self.n = {s.id: 0 for s in sellers}
+        self.n = {s.id: 0 for s in sellers}       # correctness labels received per arm
+        self.n_c = {s.id: 0 for s in sellers}     # v5: cost observations per arm (== n under immediate feedback)
+        self.n_label_updates = 0
         self.mu = {s.id: 0.0 for s in sellers}
         self.c = {s.id: 0.0 for s in sellers}
         self.alpha = {s.id: min(1.0, s.capacity_per_round / max(1.0, tasks_per_round)) for s in sellers}
@@ -198,11 +213,10 @@ class StageRouteRouter:
         self.last_p = None
 
     def bounds(self, s):
-        n = self.n[s.id]
-        if n == 0:
-            return 1.0, 0.0
-        return (min(1.0, self.mu[s.id] + f_rad(self.mu[s.id], n, self.gamma)),
-                max(0.0, self.c[s.id] - f_rad(self.c[s.id], n, self.gamma)))
+        n, nc = self.n[s.id], self.n_c[s.id]
+        mu_u = 1.0 if n == 0 else min(1.0, self.mu[s.id] + f_rad(self.mu[s.id], n, self.gamma))
+        c_l = 0.0 if nc == 0 else max(0.0, self.c[s.id] - f_rad(self.c[s.id], nc, self.gamma))
+        return mu_u, c_l
 
     def distribution(self, buyer, cands):
         ub = [self.bounds(s) for s in cands]
@@ -222,12 +236,26 @@ class StageRouteRouter:
         return self.rng.choices(cands, weights=list(p), k=1)[0]
 
     def update(self, task, buyer, seller, correct: Optional[bool], actual_cost: float):
+        """Immediate feedback (v3/v4): a served purchase (correct not None) updates cost and reward estimates."""
         if correct is None:
             return
+        self.observe_cost(buyer, seller, actual_cost)
+        self.learn(task, seller, correct, actual_cost)
+
+    def observe_cost(self, buyer, seller, actual_cost: float, served: bool = True):
+        """v5: realised cost is observed on the bill -> immediate (blocked purchases are skipped, as in v3)."""
+        if not served:
+            return
+        k = seller.id
+        self.n_c[k] += 1
+        self.c[k] += (actual_cost - self.c[k]) / self.n_c[k]
+
+    def learn(self, task, seller, correct: bool, actual_cost: float = 0.0):
+        """v5: reward-mean update from a correctness label (possibly delayed by the FeedbackBuffer)."""
         k = seller.id
         self.n[k] += 1
         self.mu[k] += (float(correct) - self.mu[k]) / self.n[k]
-        self.c[k] += (actual_cost - self.c[k]) / self.n[k]
+        self.n_label_updates += 1
 
     def end_query(self, buyer):
         pass

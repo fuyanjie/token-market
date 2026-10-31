@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """v3 + v4 experiments on cached model outputs (no model is loaded):
 
-  python run_experiments.py                       # C, I, T, A, D, J (+ B if the long-math cache is complete)
+  python run_experiments.py                       # C, I, T, A, D, J, F (+ B if the long-math cache is complete)
   python run_experiments.py --only C D            # subset
   python run_experiments.py --backend-override mock --seeds 0   # fast all-mock run (CI)
 
 Writes results/fraud_audit_threshold.{md,json}, results/baselines.{md,json}, results/cost_curves.{md,json,png},
 results/long_math.{md,json} (+ results/long_math*/summary.md), v4: results/imperfect_detection.{md,json,png},
-results/token_theft.{md,json}, results/joint_objective.{md,json}, and results/experiments_summary.md.
+results/token_theft.{md,json}, results/joint_objective.{md,json}, v5: results/feedback_ablation.{md,json,png},
+and results/experiments_summary.md.
 """
 import argparse
 import json
@@ -17,8 +18,9 @@ import time
 
 from tokenmarket.config import load_config
 from tokenmarket.experiments import (REAL_VS_SIM, Context, experiment_A, experiment_B, experiment_C, experiment_D,
-                                     experiment_I, experiment_J, experiment_T, plot_A, plot_C, plot_I, render_A,
-                                     render_B, render_C, render_D, render_I, render_J, render_T)
+                                     experiment_F, experiment_I, experiment_J, experiment_T, plot_A, plot_C, plot_F,
+                                     plot_I, render_A, render_B, render_C, render_D, render_F, render_I, render_J,
+                                     render_T)
 
 
 def _dump(results_dir, name, obj, md):
@@ -31,8 +33,8 @@ def _dump(results_dir, name, obj, md):
 def main(argv=None):
     ap = argparse.ArgumentParser(description="token-market v3 + v4 experiments")
     ap.add_argument("--config", default="configs/experiments.yaml")
-    ap.add_argument("--only", nargs="+", choices=["A", "B", "C", "D", "I", "T", "J"],
-                    default=["C", "I", "T", "D", "A", "J", "B"])
+    ap.add_argument("--only", nargs="+", choices=["A", "B", "C", "D", "I", "T", "J", "F"],
+                    default=["C", "I", "T", "D", "A", "J", "F", "B"])
     ap.add_argument("--seeds", type=int, nargs="+", default=None)
     ap.add_argument("--backend-override", choices=["mock", "local_hf"], default=None)
     ap.add_argument("--results-dir", default=None)
@@ -48,10 +50,12 @@ def main(argv=None):
     log_dir = os.path.join(rd, "experiments")
     log = lambda *a: print(*a, flush=True)  # noqa: E731
     ctx = Context(cfg, args.backend_override, args.cache_file, log)
-    md_parts = ["# token-market v4 — experiment summary", "",
+    md_parts = ["# token-market v5 — experiment summary", "",
                 "Novelty framing: compliance-constrained portfolio purchasing + strategic fraud (model swap AND token "
                 "theft) under IMPERFECT audits, compared with PILOT-style / StageRoute-style baselines on the JOINT "
-                "objective J = accuracy − λ·violation rate − μ·fraud share (headline: section J). Reasoning-token "
+                "objective J = accuracy − λ·violation rate − μ·fraud share (headline: section J). v5 (section F): the setting "
+                "where audits matter is DELAYED / SPARSE outcome feedback - audits are a separate, immediate signal, "
+                "while the bandits' correctness labels are delayed by L steps or revealed w.p. π. Reasoning-token "
                 "length uncertainty is NOT claimed as a contribution: the expected-vs-actual cost logging is "
                 "infrastructure and its finding is negative (overruns ≈ 0 under normal budgets, they only bind under "
                 "tight budgets; section B).", "",
@@ -72,6 +76,14 @@ def main(argv=None):
         md = render_J(out["J"])
         _dump(rd, "joint_objective", out["J"], md)
         jpart = md.split("## Appendix")[0].replace("# Joint objective —", "## J — Joint objective —", 1)
+    fpart = None
+    if "F" in args.only:   # v5: delayed / sparse outcome feedback; placed right after J in the summary
+        out["F"] = experiment_F(ctx, seeds, log)
+        md = render_F(out["F"])
+        _dump(rd, "feedback_ablation", out["F"], md)
+        if plot_F(out["F"], os.path.join(rd, "feedback_ablation.png")):
+            log(f"[F] wrote {rd}/feedback_ablation.png")
+        fpart = md.replace("# F —", "## F —", 1).replace("\n## ", "\n### ")
     if "I" in args.only:
         out["I"] = experiment_I(ctx, seeds, log)
         md = render_I(out["I"])
@@ -108,8 +120,7 @@ def main(argv=None):
             md = render_B(out["B"])
             _dump(rd, "long_math", out["B"], md)
             md_parts += [md.replace("# B —", "## B —", 1)]
-    if jpart:
-        md_parts[head:head] = [jpart]
+    md_parts[head:head] = [p for p in (jpart, fpart) if p]
     md_parts += REAL_VS_SIM + [f"_total experiment time {time.time() - t0:.1f}s_", ""]
     with open(os.path.join(rd, "experiments_summary.md"), "w", encoding="utf-8") as fh:
         fh.write("\n".join(md_parts))

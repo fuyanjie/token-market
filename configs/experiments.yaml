@@ -75,3 +75,11 @@ experiments:
                      audited_compliance_cascade]
     budget_multipliers: [0.2, 0.4, 0.6, 1.0, 1.5, 2.0, 3.0, 5.0]
     cost_levels: [0.005, 0.01, 0.015, 0.02, 0.0235, 0.0275]   # null: 20/40/60/80% quantiles of all curve costs
+  # ------------------------------------------------------------------ v5
+  F:                                    # delayed / sparse OUTCOME feedback (labels); audits stay immediate
+    attack_modes: [swap, theft]         # same strategic seller as J
+    policies: [pilot_compliant, stageroute_compliant, audited_compliance_cascade]   # bandits: audit rate 0
+    budget_multiplier: 2.0
+    delays: [0, 5, 20, 50, inf]         # pi = 1; inf = labels never delivered (mode never)
+    reveal_probs: [1.0, 0.2, 0.05, 0.0] # L = 0
+    combined: [[20, 0.2], [50, 0.05]]   # (L, pi)

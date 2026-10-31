@@ -18,6 +18,7 @@ from .logging_schema import TransactionLogger
 from .matching import candidate_sellers, sealed_bid_select
 from .metrics import aggregate, run_metrics
 from .baselines import PilotRouter, StageRouteRouter
+from .feedback import FeedbackBuffer, FeedbackRouter, delay_label, feedback_params
 from .portfolio import AUDITED_POLICIES, ROUTER_POLICIES, SINGLE_POLICIES, Purchase, is_hard, run_policy
 from .precompute import local_cfg, local_models, model_stats, precompute, render_model_accuracy_md
 from .sellers import Reputation, load_sellers
@@ -27,7 +28,7 @@ from .tasks import build_task_pool, sample_run_tasks
 from .verification import TrustingVerifier
 
 
-def _base_record(run_id, mechanism, policy, seed, rnd, buyer, task) -> Dict:
+def _base_record(run_id, mechanism, policy, seed, rnd, buyer, task, fb_L=0) -> Dict:
     return {"ts": time.time(), "round": rnd, "run_id": run_id, "mechanism": mechanism, "policy": policy,
             "seed": seed, "buyer_id": buyer.id, "buyer_jurisdiction": buyer.jurisdiction,
             "task_id": task.task_id, "pool_task_id": task.task_id.split("_", 1)[-1], "portfolio_step": 0,
@@ -43,7 +44,8 @@ def _base_record(run_id, mechanism, policy, seed, rnd, buyer, task) -> Dict:
             "audited": False, "audit_cost": 0.0, "swap_detected": None, "swap_prob": None,
             "billed_tokens": 0, "actual_tokens": 0, "token_inflation": None, "attack_mode": None,
             "theft_prob": None, "audit_type": "none", "theft_detected": None, "detect_prob_identity": None,
-            "detect_prob_length": None}
+            "detect_prob_length": None,
+            "feedback_delay_L": fb_L, "feedback_revealed": False, "feedback_delivered_at": None}
 
 
 def policy_audit_rate(cfg: Dict, policy: str) -> float:
@@ -139,6 +141,12 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
         router = PilotRouter(sellers, rep, buyers, horizon, cfg)
     elif policy.startswith("stageroute"):
         router = StageRouteRouter(sellers, buyers, horizon, cfg, per_round, random.Random(f"router-{seed}"))
+    # v5: outcome-feedback channel (labels delayed by L steps / revealed w.p. pi); audits are NOT routed through it
+    fb_mode, fb_L, fb_pi = feedback_params(cfg)
+    fb_buffer = FeedbackBuffer(fb_L, fb_pi, random.Random(f"feedback-{seed}"))
+    fb_L_log = delay_label(fb_L)
+    if router is not None:
+        router = FeedbackRouter(router, fb_buffer)
 
     for i, task in enumerate(tasks):
         rnd = i // per_round
@@ -147,8 +155,14 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
                 s.reset_round()
                 if s.strategy is not None:
                     s.strategy.start_epoch(rng_strategy)
+        # v5: deliver labels due by step i BEFORE this task's routing decision (non-bandit policies ignore them)
+        if router is not None:
+            router.step = i
+            router.deliver(i)
+        else:
+            fb_buffer.pop_ready(i)
         buyer = buyer_by_id[task.buyer_id]
-        base = _base_record(run_id, mechanism, policy, seed, rnd, buyer, task)
+        base = _base_record(run_id, mechanism, policy, seed, rnd, buyer, task, fb_L_log)
         lines: List[Dict] = []
 
         def fee_rate(s):
@@ -222,6 +236,7 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
             actual = st.buyer_pays + st.fee
             buyer.spent += actual
             correct = res.answer is not None and int(res.answer) == task.gold
+            fb_revealed, fb_at = fb_buffer.push(i, task, buyer, s, bool(correct), actual, len(tasks))
             # v3 audit: identity check on a fraction a of purchases, fee charged to the buyer budget
             audited, detected, t_detected, a_cost, slashed = False, None, None, 0.0, 0.0
             if a_rate > 0 and rng_audit.random() < a_rate and buyer.remaining >= audit_cost:
@@ -265,7 +280,8 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
                        token_inflation=billed / actual_tok if actual_tok else 1.0,
                        attack_mode=attack_mode(served != s.claimed_model, theft),
                        audit_type=audit_type(checks) if audited else "none", theft_detected=t_detected,
-                       detect_prob_identity=d_id_log, detect_prob_length=d_len_log)
+                       detect_prob_identity=d_id_log, detect_prob_length=d_len_log,
+                       feedback_revealed=fb_revealed, feedback_delivered_at=fb_at)
             lines.append(rec)
             return Purchase(s, rec["answer"], res.confidence, quality(s), correct=bool(correct),
                             actual_cost=actual)
@@ -291,7 +307,21 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
             logger.write(rec)
         records.extend(lines)
 
+    if router is not None:     # labels due by the last step count as online; the rest are flushed (finite L)
+        router.deliver(len(tasks) - 1)
+        router.flush()
+    else:
+        fb_buffer.pop_ready(len(tasks) - 1)
+        fb_buffer.flush_at_end()
+
     m = run_metrics(records, buyers, [s.id for s in sellers], rep, policy)
+    n_served = max(1, fb_buffer.n_pushed)
+    m.update(feedback_mode=fb_mode, feedback_delay_L=fb_L_log, feedback_reveal_prob=fb_pi,
+             feedback_purchases=fb_buffer.n_pushed, feedback_revealed=fb_buffer.n_revealed,
+             feedback_delivered_online=fb_buffer.n_delivered_online, feedback_flushed=fb_buffer.n_flushed,
+             feedback_coverage=fb_buffer.n_delivered_online / n_served if fb_buffer.n_pushed else 0.0,
+             bandit_label_updates=router.inner.n_label_updates if router is not None else 0,
+             bandit_label_updates_online=router.n_label_updates_online if router is not None else 0)
     m.update(filtered_candidates=filtered_total, filtered_by_rule=filtered_by_rule,
              blocked_or_filtered=filtered_total + m["blocked_at_gateway"],
              audit_violations_enforced=audit_violations, stop_reasons=stop_reasons)
