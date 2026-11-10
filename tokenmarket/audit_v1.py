@@ -25,10 +25,23 @@ from typing import Dict, List, Optional
 AUDIT_RULES = ("fixed", "random", "risk_adaptive")
 
 
+def audit_v11(cfg: Dict) -> Optional[Dict]:
+    """Explicit opt-in; disabled/missing blocks leave all legacy paths unchanged."""
+    block = cfg.get("market", {}).get("audit_v11", {})
+    return block if block.get("enabled", False) else None
+
+
+def trust_feedback_on(cfg: Dict, policy: str, audited_policies) -> bool:
+    block = audit_v11(cfg)
+    return bool(block.get("trust_feedback", False)) if block is not None else policy in audited_policies
+
+
 def audit_rule(cfg: Dict, policy: str, audited_policies) -> str:
-    if policy not in audited_policies:
+    block = audit_v11(cfg)
+    if block is None and policy not in audited_policies:
         return "fixed"
-    rule = str(cfg.get("market", {}).get("audited", {}).get("audit_rule", "fixed"))
+    source = block if block is not None else cfg.get("market", {}).get("audited", {})
+    rule = str(source.get("audit_rule", "fixed"))
     if rule not in AUDIT_RULES:
         raise ValueError(f"unknown audit_rule {rule}; choose from {AUDIT_RULES}")
     return rule
@@ -64,7 +77,9 @@ class RiskAdaptiveAudit:
 
     @classmethod
     def from_config(cls, cfg: Dict, checks, detect_prob: float, detect_prob_length: float) -> "RiskAdaptiveAudit":
-        r = cfg.get("market", {}).get("audited", {}).get("risk_adaptive", {})
+        block = audit_v11(cfg)
+        source = block if block is not None else cfg.get("market", {}).get("audited", {})
+        r = source.get("risk_adaptive", {})
         return cls(checks, detect_prob, detect_prob_length, float(r.get("a_min", 0.05)), float(r.get("a_max", 0.5)),
                    float(r.get("prior_a", 1.0)), float(r.get("prior_b", 9.0)))
 

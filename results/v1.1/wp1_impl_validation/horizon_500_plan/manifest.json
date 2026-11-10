@@ -1,0 +1,14 @@
+[
+  {
+    "router": "strongest",
+    "audit": "a0",
+    "penalty": 0.25,
+    "pi": 1.0,
+    "cell_id": "strongest__a0__P0.25__pi1",
+    "arm": "factorial",
+    "policy": "single_best_compliant",
+    "trust_feedback": false,
+    "penalty_label": "P",
+    "audit_efficacy_evidence_allowed": true
+  }
+]

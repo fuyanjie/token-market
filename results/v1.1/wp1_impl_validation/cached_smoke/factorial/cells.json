@@ -1,0 +1,43 @@
+[
+  {
+    "router": "pilot",
+    "audit": "risk_adaptive",
+    "penalty": 0.015625,
+    "pi": 0.1,
+    "cell_id": "pilot__risk_adaptive__P0.015625__pi0.1",
+    "arm": "factorial",
+    "policy": "pilot_v1_compliant",
+    "trust_feedback": false,
+    "penalty_label": "P/16",
+    "audit_efficacy_evidence_allowed": false,
+    "n_runs": 1,
+    "tail_trade_runs": 1,
+    "tail_trade_rate": 1.0,
+    "Q_identifiable": true,
+    "per_run_strategic_tail_counts": [
+      {
+        "seed": 0,
+        "tail_sales": 5,
+        "by_seller": {
+          "s07": 1,
+          "s12": 0,
+          "s13": 1,
+          "s15": 0,
+          "s25": 0,
+          "s28": 2,
+          "s35": 0,
+          "s36": 0,
+          "s38": 1
+        }
+      }
+    ],
+    "E": 0.25,
+    "E_tok": 0.28445586346118557,
+    "Q": 0.5222222222222223,
+    "q_swap": 0.7333333333333334,
+    "q_theft": 0.3666666666666667,
+    "q_downgrade": 0.46666666666666673,
+    "accuracy": 0.725,
+    "cost_per_task": 0.023913391125
+  }
+]

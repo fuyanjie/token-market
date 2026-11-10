@@ -1,0 +1,21 @@
+{
+  "pytest_command": [
+    "/workspace/tmvenv/bin/python",
+    "-m",
+    "pytest",
+    "-q"
+  ],
+  "pytest_returncode": 0,
+  "syntax_compiled": [
+    "tokenmarket/audit_v1.py",
+    "tokenmarket/sim.py",
+    "tokenmarket/wp1.py",
+    "scripts/v1.1/run_wp1.py",
+    "tests/test_wp1.py"
+  ],
+  "diff_check_returncode": 0,
+  "protected_changed_paths": [],
+  "protected_untracked_paths": [],
+  "protocol_sha256": "e9c84494a7031d7023d4861c02a5786a59fbc74541007978a13b9882f209c179",
+  "ruff_available": false
+}

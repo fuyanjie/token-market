@@ -26,7 +26,8 @@ from .strategic import (IdentityCheckDetector, TokenLengthAuditor, TrustModel, a
                         billed_tokens, fraud_cfg, make_strategy)
 from .audit_v6 import (AdaptiveAuditAllocator, EscrowBook, audit_trail_record, d3_adaptive_audit, d3_escrow,
                        d3_reputation_rounds, make_purchase_id)
-from .audit_v1 import RandomAuditRate, RiskAdaptiveAudit, audit_rule, compliance_filter_on
+from .audit_v1 import (RandomAuditRate, RiskAdaptiveAudit, audit_rule, audit_v11,
+                       compliance_filter_on, trust_feedback_on)
 from .tasks import build_task_pool, sample_run_tasks
 from .verification import TrustingVerifier
 
@@ -54,18 +55,22 @@ def _base_record(run_id, mechanism, policy, seed, rnd, buyer, task, fb_L=0) -> D
 
 
 def policy_audit_rate(cfg: Dict, policy: str) -> float:
-    """Fraction of purchases the buyers audit: market.audited.audit_rate for our audited policy (D3),
-    market.audit.rate (default 0) for every other policy."""
+    """Use the opt-in v1.1 rate for any policy; otherwise preserve legacy policy-specific rates."""
     m = cfg["market"]
+    block = audit_v11(cfg)
+    if block is not None:
+        return float(block.get("rate", 0.0))
     if policy in AUDITED_POLICIES:
         return float(m.get("audited", {}).get("audit_rate", 0.1))
     return float(m.get("audit", {}).get("rate", 0.0))
 
 
 def policy_audit_checks(cfg: Dict, policy: str) -> List[str]:
-    """v4: checks run on an audited purchase. D3: market.audited.audit_types (default identity + length);
-    every other policy: market.audit.types (default identity only = v3)."""
+    """Use opt-in v1.1 checks uniformly; legacy D3 defaults to both, other policies to identity only."""
     m = cfg["market"]
+    block = audit_v11(cfg)
+    if block is not None:
+        return list(block.get("types", ["identity", "length"]))
     if policy in AUDITED_POLICIES:
         return list(m.get("audited", {}).get("audit_types", ["identity", "length"]))
     return list(m.get("audit", {}).get("types", ["identity"]))
@@ -100,7 +105,8 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
     penalty = float(fcfg.get("penalty", 0.0))
     # v6: D3 delist rounds from market.audited.reputation_rounds (backward-compat default 0)
     rep_rounds = d3_reputation_rounds(cfg, policy, AUDITED_POLICIES)
-    use_adaptive = d3_adaptive_audit(cfg, policy, AUDITED_POLICIES) and a_rate > 0
+    use_adaptive = (audit_v11(cfg) is None
+                    and d3_adaptive_audit(cfg, policy, AUDITED_POLICIES) and a_rate > 0)
     use_escrow = d3_escrow(cfg, policy, AUDITED_POLICIES)
     detector = IdentityCheckDetector(float(fcfg.get("detect_prob", 0.9)))
     length_auditor = TokenLengthAuditor(float(fcfg.get("detect_prob_length", 0.9)),
@@ -115,7 +121,7 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
     d_len_log = length_auditor.d if ("length" in checks and a_rate > 0) else None
     trust = TrustModel(rep, detector.d, detect_prob_length=length_auditor.d,
                        theft_quality_factor=float(mcfg.get("audited", {}).get("theft_quality_factor", 0.5))) \
-        if policy in AUDITED_POLICIES else None
+        if trust_feedback_on(cfg, policy, AUDITED_POLICIES) else None
     for scfg, s in zip(cfg["sellers"], sellers):
         s.strategy = make_strategy(scfg, cfg, a_rate, rep, checks)
     engine = ComplianceEngine.from_config(cfg)
@@ -399,6 +405,7 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
     if escrow is not None:
         escrow.flush_end()
     m.update(audit_rate=a_rate, total_stake_slashed=sum(s.stake_slashed for s in sellers),
+             trust_feedback=trust is not None, audit_checks=checks,
              reputation_rounds=rep_rounds, adaptive_audit=bool(alloc is not None),
              escrow_enabled=bool(escrow is not None),
              escrow_held_total=escrow.held if escrow is not None else 0.0,

@@ -1,0 +1,43 @@
+[
+  {
+    "router": "cascade+trust",
+    "audit": "a0.1",
+    "penalty": 0.25,
+    "pi": 1.0,
+    "cell_id": "cascade+trust__a0.1__P0.25__pi1",
+    "arm": "control",
+    "policy": "audited_compliance_cascade",
+    "trust_feedback": true,
+    "penalty_label": "P",
+    "audit_efficacy_evidence_allowed": true,
+    "n_runs": 1,
+    "tail_trade_runs": 0,
+    "tail_trade_rate": 0.0,
+    "Q_identifiable": false,
+    "per_run_strategic_tail_counts": [
+      {
+        "seed": 0,
+        "tail_sales": 0,
+        "by_seller": {
+          "s07": 0,
+          "s12": 0,
+          "s13": 0,
+          "s15": 0,
+          "s25": 0,
+          "s28": 0,
+          "s35": 0,
+          "s36": 0,
+          "s38": 0
+        }
+      }
+    ],
+    "E": 0.013333333333333334,
+    "E_tok": 0.0019364392299806355,
+    "Q": 0.4222222222222222,
+    "q_swap": 0.43333333333333335,
+    "q_theft": 0.5,
+    "q_downgrade": 0.3333333333333333,
+    "accuracy": 0.9,
+    "cost_per_task": 0.014180464
+  }
+]
