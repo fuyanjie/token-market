@@ -1,0 +1,6 @@
+wrote results/v1.1/wp0_repro/per_seed.csv (513 rows) in 19.58s
+
+real	0m19.905s
+user	2m16.327s
+sys	0m0.351s
+exit=0

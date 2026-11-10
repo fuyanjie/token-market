@@ -129,8 +129,9 @@ def check_out(path: str) -> None:
     ap = os.path.abspath(path)
     res = os.path.join(ROOT, "results") + os.sep
     if ap.startswith(res) and not (ap.startswith(os.path.join(ROOT, "results", "v1.0") + os.sep)
+                                   or ap.startswith(os.path.join(ROOT, "results", "v1.1") + os.sep)
                                    or ap.startswith(os.path.join(ROOT, "results", "_smoke") + os.sep)):
-        raise SystemExit(f"refusing to write {path}: only results/v1.0/ or results/_smoke/ inside results/")
+        raise SystemExit(f"refusing to write {path}: only results/v1.0/, results/v1.1/ or results/_smoke/ inside results/")
 
 
 def _fmt(v):

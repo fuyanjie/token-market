@@ -1,0 +1,748 @@
+{
+ "fraud": {
+  "strategy": "learning",
+  "penalty": 0.25,
+  "detect_prob": 0.9,
+  "detect_prob_length": 0.9,
+  "reputation_rounds": 0,
+  "reputation_loss": 0.0,
+  "billed_token_policy": "claimed_mean",
+  "theft_max_new_tokens": 48,
+  "length_audit_tol": 0.1,
+  "cost_gap_per_1k": 0.07,
+  "downgrade_min_difficulty": 3,
+  "learning": {
+   "learner": "egreedy",
+   "epsilon": 0.1,
+   "eta": 1.0,
+   "exp3_gamma": 0.1,
+   "fp_temperature": 0.1
+  }
+ },
+ "market_audit": {
+  "rate": 0.0,
+  "cost": 0.004,
+  "types": [
+   "identity"
+  ]
+ },
+ "market_audited": {
+  "audit_rate": 0.1,
+  "audit_types": [
+   "identity",
+   "length"
+  ],
+  "theft_quality_factor": 0.5,
+  "cascade": {
+   "confidence_threshold": 0.7,
+   "max_steps": 3
+  },
+  "reputation_rounds": 0,
+  "adaptive_audit": false,
+  "escrow": false,
+  "audit_rule": "fixed",
+  "risk_adaptive": {
+   "a_min": 0.05,
+   "a_max": 0.5,
+   "prior_a": 1.0,
+   "prior_b": 9.0
+  }
+ },
+ "cascade": {
+  "confidence_threshold": 0.7,
+  "max_steps": 3
+ },
+ "n_tasks": 480,
+ "n_rounds": 48,
+ "per_round": 10,
+ "pool": {
+  "kind": "synthetic",
+  "size": 80,
+  "by_difficulty": {
+   "1": 28,
+   "2": 28,
+   "3": 24
+  }
+ },
+ "models": {
+  "Qwen/Qwen2.5-0.5B-Instruct": {
+   "source": "measured",
+   "tokens_mean": 149.4375,
+   "acc_by_d": {
+    "1": 0.7857142857142857,
+    "2": 0.75,
+    "3": 0.4166666666666667
+   }
+  },
+  "Qwen/Qwen2.5-1.5B-Instruct": {
+   "source": "measured",
+   "tokens_mean": 142.3375,
+   "acc_by_d": {
+    "1": 0.9285714285714286,
+    "2": 1.0,
+    "3": 0.8333333333333334
+   }
+  },
+  "sim-fast-mock": {
+   "source": "config_prior",
+   "tokens_mean": 100.0,
+   "acc_by_d": {
+    "1": 0.82,
+    "2": 0.62,
+    "3": 0.4
+   }
+  }
+ },
+ "tokens_pool": {
+  "H_mean": 142.3375,
+  "L_mean": 149.4375,
+  "H_le_48_share": 0.0
+ },
+ "sellers_by_exp_cost": [
+  {
+   "id": "s31",
+   "kind": "honest",
+   "claimed": "sim-fast-mock",
+   "price_per_1k": 0.0503,
+   "cost_per_1k": 0.0211,
+   "jurisdiction": "CN",
+   "exp_cost_nofee": 0.00503,
+   "cost_rank": 1
+  },
+  {
+   "id": "s23",
+   "kind": "honest",
+   "claimed": "sim-fast-mock",
+   "price_per_1k": 0.0509,
+   "cost_per_1k": 0.0217,
+   "jurisdiction": "BR",
+   "exp_cost_nofee": 0.00509,
+   "cost_rank": 2
+  },
+  {
+   "id": "s11",
+   "kind": "honest",
+   "claimed": "sim-fast-mock",
+   "price_per_1k": 0.0597,
+   "cost_per_1k": 0.0289,
+   "jurisdiction": "BR",
+   "exp_cost_nofee": 0.0059700000000000005,
+   "cost_rank": 3
+  },
+  {
+   "id": "s21",
+   "kind": "honest",
+   "claimed": "sim-fast-mock",
+   "price_per_1k": 0.0598,
+   "cost_per_1k": 0.0318,
+   "jurisdiction": "CN",
+   "exp_cost_nofee": 0.005979999999999999,
+   "cost_rank": 4
+  },
+  {
+   "id": "s09",
+   "kind": "honest",
+   "claimed": "sim-fast-mock",
+   "price_per_1k": 0.0624,
+   "cost_per_1k": 0.0322,
+   "jurisdiction": "SG",
+   "exp_cost_nofee": 0.006239999999999999,
+   "cost_rank": 5
+  },
+  {
+   "id": "s17",
+   "kind": "honest",
+   "claimed": "sim-fast-mock",
+   "price_per_1k": 0.0636,
+   "cost_per_1k": 0.0328,
+   "jurisdiction": "BR",
+   "exp_cost_nofee": 0.00636,
+   "cost_rank": 6
+  },
+  {
+   "id": "s29",
+   "kind": "honest",
+   "claimed": "sim-fast-mock",
+   "price_per_1k": 0.0646,
+   "cost_per_1k": 0.0381,
+   "jurisdiction": "CN",
+   "exp_cost_nofee": 0.0064600000000000005,
+   "cost_rank": 7
+  },
+  {
+   "id": "s01",
+   "kind": "honest",
+   "claimed": "sim-fast-mock",
+   "price_per_1k": 0.0651,
+   "cost_per_1k": 0.0376,
+   "jurisdiction": "BR",
+   "exp_cost_nofee": 0.006510000000000001,
+   "cost_rank": 8
+  },
+  {
+   "id": "s04",
+   "kind": "honest",
+   "claimed": "sim-fast-mock",
+   "price_per_1k": 0.0654,
+   "cost_per_1k": 0.0328,
+   "jurisdiction": "CN",
+   "exp_cost_nofee": 0.00654,
+   "cost_rank": 9
+  },
+  {
+   "id": "s22",
+   "kind": "honest",
+   "claimed": "sim-fast-mock",
+   "price_per_1k": 0.0672,
+   "cost_per_1k": 0.0329,
+   "jurisdiction": "CN",
+   "exp_cost_nofee": 0.006719999999999999,
+   "cost_rank": 10
+  },
+  {
+   "id": "s24",
+   "kind": "honest",
+   "claimed": "sim-fast-mock",
+   "price_per_1k": 0.0716,
+   "cost_per_1k": 0.0419,
+   "jurisdiction": "CN",
+   "exp_cost_nofee": 0.0071600000000000006,
+   "cost_rank": 11
+  },
+  {
+   "id": "s08",
+   "kind": "honest",
+   "claimed": "sim-fast-mock",
+   "price_per_1k": 0.0761,
+   "cost_per_1k": 0.033,
+   "jurisdiction": "SG",
+   "exp_cost_nofee": 0.0076100000000000004,
+   "cost_rank": 12
+  },
+  {
+   "id": "s39",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-0.5B-Instruct",
+   "price_per_1k": 0.083,
+   "cost_per_1k": 0.048,
+   "jurisdiction": "CN",
+   "exp_cost_nofee": 0.0124033125,
+   "cost_rank": 13
+  },
+  {
+   "id": "s37",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-0.5B-Instruct",
+   "price_per_1k": 0.0927,
+   "cost_per_1k": 0.039,
+   "jurisdiction": "SG",
+   "exp_cost_nofee": 0.01385285625,
+   "cost_rank": 14
+  },
+  {
+   "id": "s33",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-0.5B-Instruct",
+   "price_per_1k": 0.0961,
+   "cost_per_1k": 0.0506,
+   "jurisdiction": "SG",
+   "exp_cost_nofee": 0.01436094375,
+   "cost_rank": 15
+  },
+  {
+   "id": "s03",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-0.5B-Instruct",
+   "price_per_1k": 0.1079,
+   "cost_per_1k": 0.0506,
+   "jurisdiction": "CN",
+   "exp_cost_nofee": 0.01612430625,
+   "cost_rank": 16
+  },
+  {
+   "id": "s16",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-0.5B-Instruct",
+   "price_per_1k": 0.1198,
+   "cost_per_1k": 0.0699,
+   "jurisdiction": "CN",
+   "exp_cost_nofee": 0.0179026125,
+   "cost_rank": 17
+  },
+  {
+   "id": "s15",
+   "kind": "strategic:swap",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.1607,
+   "cost_per_1k": 0.05,
+   "jurisdiction": "BR",
+   "exp_cost_nofee": 0.02287363625,
+   "cost_rank": 18
+  },
+  {
+   "id": "s07",
+   "kind": "strategic:downgrade",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.1608,
+   "cost_per_1k": 0.05,
+   "jurisdiction": "BR",
+   "exp_cost_nofee": 0.02288787,
+   "cost_rank": 19
+  },
+  {
+   "id": "s28",
+   "kind": "strategic:downgrade",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.1643,
+   "cost_per_1k": 0.05,
+   "jurisdiction": "BR",
+   "exp_cost_nofee": 0.02338605125,
+   "cost_rank": 20
+  },
+  {
+   "id": "s32",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.1732,
+   "cost_per_1k": 0.0938,
+   "jurisdiction": "BR",
+   "exp_cost_nofee": 0.024652854999999998,
+   "cost_rank": 21
+  },
+  {
+   "id": "s35",
+   "kind": "strategic:theft",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.1753,
+   "cost_per_1k": 0.05,
+   "jurisdiction": "SG",
+   "exp_cost_nofee": 0.02495176375,
+   "cost_rank": 22
+  },
+  {
+   "id": "s34",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.1772,
+   "cost_per_1k": 0.0976,
+   "jurisdiction": "BR",
+   "exp_cost_nofee": 0.025222204999999998,
+   "cost_rank": 23
+  },
+  {
+   "id": "s13",
+   "kind": "strategic:swap",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.1781,
+   "cost_per_1k": 0.05,
+   "jurisdiction": "SG",
+   "exp_cost_nofee": 0.025350308750000005,
+   "cost_rank": 24
+  },
+  {
+   "id": "s05",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.1827,
+   "cost_per_1k": 0.1138,
+   "jurisdiction": "BR",
+   "exp_cost_nofee": 0.02600506125,
+   "cost_rank": 25
+  },
+  {
+   "id": "s12",
+   "kind": "strategic:downgrade",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.1846,
+   "cost_per_1k": 0.05,
+   "jurisdiction": "SG",
+   "exp_cost_nofee": 0.0262755025,
+   "cost_rank": 26
+  },
+  {
+   "id": "s20",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.1881,
+   "cost_per_1k": 0.0991,
+   "jurisdiction": "SG",
+   "exp_cost_nofee": 0.02677368375,
+   "cost_rank": 27
+  },
+  {
+   "id": "s14",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.1903,
+   "cost_per_1k": 0.103,
+   "jurisdiction": "CN",
+   "exp_cost_nofee": 0.02708682625,
+   "cost_rank": 28
+  },
+  {
+   "id": "s38",
+   "kind": "strategic:theft",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.1962,
+   "cost_per_1k": 0.05,
+   "jurisdiction": "CN",
+   "exp_cost_nofee": 0.027926617500000004,
+   "cost_rank": 29
+  },
+  {
+   "id": "s18",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.1963,
+   "cost_per_1k": 0.1205,
+   "jurisdiction": "SG",
+   "exp_cost_nofee": 0.027940851250000003,
+   "cost_rank": 30
+  },
+  {
+   "id": "s19",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.1971,
+   "cost_per_1k": 0.118,
+   "jurisdiction": "SG",
+   "exp_cost_nofee": 0.02805472125,
+   "cost_rank": 31
+  },
+  {
+   "id": "s25",
+   "kind": "strategic:swap",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.1971,
+   "cost_per_1k": 0.05,
+   "jurisdiction": "SG",
+   "exp_cost_nofee": 0.02805472125,
+   "cost_rank": 32
+  },
+  {
+   "id": "s02",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.2042,
+   "cost_per_1k": 0.1409,
+   "jurisdiction": "SG",
+   "exp_cost_nofee": 0.0290653175,
+   "cost_rank": 33
+  },
+  {
+   "id": "s36",
+   "kind": "strategic:theft",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.2068,
+   "cost_per_1k": 0.05,
+   "jurisdiction": "SG",
+   "exp_cost_nofee": 0.029435395000000003,
+   "cost_rank": 34
+  },
+  {
+   "id": "s27",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.217,
+   "cost_per_1k": 0.1423,
+   "jurisdiction": "BR",
+   "exp_cost_nofee": 0.0308872375,
+   "cost_rank": 35
+  },
+  {
+   "id": "s10",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.2176,
+   "cost_per_1k": 0.1341,
+   "jurisdiction": "SG",
+   "exp_cost_nofee": 0.03097264,
+   "cost_rank": 36
+  },
+  {
+   "id": "s30",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.2179,
+   "cost_per_1k": 0.127,
+   "jurisdiction": "CN",
+   "exp_cost_nofee": 0.03101534125,
+   "cost_rank": 37
+  },
+  {
+   "id": "s26",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.2182,
+   "cost_per_1k": 0.1325,
+   "jurisdiction": "BR",
+   "exp_cost_nofee": 0.031058042500000004,
+   "cost_rank": 38
+  },
+  {
+   "id": "s00",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.2295,
+   "cost_per_1k": 0.1429,
+   "jurisdiction": "BR",
+   "exp_cost_nofee": 0.03266645625,
+   "cost_rank": 39
+  },
+  {
+   "id": "s06",
+   "kind": "honest",
+   "claimed": "Qwen/Qwen2.5-1.5B-Instruct",
+   "price_per_1k": 0.238,
+   "cost_per_1k": 0.1509,
+   "jurisdiction": "SG",
+   "exp_cost_nofee": 0.033876325,
+   "cost_rank": 40
+  }
+ ],
+ "break_even": [
+  {
+   "id": "s07",
+   "modes": [
+    "downgrade"
+   ],
+   "price": 0.1608,
+   "swap_saving_code": 0.009963625000000002,
+   "swap_saving_realised_mean": 0.010750305,
+   "a_star_swap_code": 0.04428277777777779,
+   "a_star_swap_realised": 0.047779133333333335,
+   "theft_saving_code": 0.01126623,
+   "a_star_theft_code": 0.05007213333333333,
+   "scale": 0.02288787
+  },
+  {
+   "id": "s12",
+   "modes": [
+    "downgrade"
+   ],
+   "price": 0.1846,
+   "swap_saving_code": 0.009963625000000002,
+   "swap_saving_realised_mean": 0.010919285,
+   "a_star_swap_code": 0.04428277777777779,
+   "a_star_swap_realised": 0.04853015555555556,
+   "theft_saving_code": 0.011258197499999999,
+   "a_star_theft_code": 0.050036433333333324,
+   "scale": 0.0262755025
+  },
+  {
+   "id": "s13",
+   "modes": [
+    "swap"
+   ],
+   "price": 0.1781,
+   "swap_saving_code": 0.009963625000000002,
+   "swap_saving_realised_mean": 0.010873134999999994,
+   "a_star_swap_code": 0.04428277777777779,
+   "a_star_swap_realised": 0.048325044444444416,
+   "theft_saving_code": 0.01126039125,
+   "a_star_theft_code": 0.05004618333333333,
+   "scale": 0.025350308750000005
+  },
+  {
+   "id": "s15",
+   "modes": [
+    "swap"
+   ],
+   "price": 0.1607,
+   "swap_saving_code": 0.009963625000000002,
+   "swap_saving_realised_mean": 0.010749594999999999,
+   "a_star_swap_code": 0.04428277777777779,
+   "a_star_swap_realised": 0.04777597777777777,
+   "theft_saving_code": 0.01126626375,
+   "a_star_theft_code": 0.05007228333333333,
+   "scale": 0.02287363625
+  },
+  {
+   "id": "s25",
+   "modes": [
+    "swap"
+   ],
+   "price": 0.1971,
+   "swap_saving_code": 0.009963625000000002,
+   "swap_saving_realised_mean": 0.011008035000000001,
+   "a_star_swap_code": 0.04428277777777779,
+   "a_star_swap_realised": 0.048924600000000006,
+   "theft_saving_code": 0.01125397875,
+   "a_star_theft_code": 0.050017683333333327,
+   "scale": 0.02805472125
+  },
+  {
+   "id": "s28",
+   "modes": [
+    "downgrade"
+   ],
+   "price": 0.1643,
+   "swap_saving_code": 0.009963625000000002,
+   "swap_saving_realised_mean": 0.010775154999999998,
+   "a_star_swap_code": 0.04428277777777779,
+   "a_star_swap_realised": 0.04788957777777777,
+   "theft_saving_code": 0.01126504875,
+   "a_star_theft_code": 0.050066883333333326,
+   "scale": 0.02338605125
+  },
+  {
+   "id": "s35",
+   "modes": [
+    "theft"
+   ],
+   "price": 0.1753,
+   "swap_saving_code": 0.009963625000000002,
+   "swap_saving_realised_mean": 0.010853255000000003,
+   "a_star_swap_code": 0.04428277777777779,
+   "a_star_swap_realised": 0.0482366888888889,
+   "theft_saving_code": 0.01126133625,
+   "a_star_theft_code": 0.05005038333333333,
+   "scale": 0.02495176375
+  },
+  {
+   "id": "s36",
+   "modes": [
+    "theft"
+   ],
+   "price": 0.2068,
+   "swap_saving_code": 0.009963625000000002,
+   "swap_saving_realised_mean": 0.011076904999999996,
+   "a_star_swap_code": 0.04428277777777779,
+   "a_star_swap_realised": 0.049230688888888874,
+   "theft_saving_code": 0.011250705,
+   "a_star_theft_code": 0.05000313333333333,
+   "scale": 0.029435395000000003
+  },
+  {
+   "id": "s38",
+   "modes": [
+    "theft"
+   ],
+   "price": 0.1962,
+   "swap_saving_code": 0.009963625000000002,
+   "swap_saving_realised_mean": 0.011001644999999994,
+   "a_star_swap_code": 0.04428277777777779,
+   "a_star_swap_realised": 0.04889619999999997,
+   "theft_saving_code": 0.0112542825,
+   "a_star_theft_code": 0.05001903333333334,
+   "scale": 0.027926617500000004
+  }
+ ],
+ "break_even_note": "a* = saving / (d * P); attack profitable iff a < a*. Risk-adaptive a in [0.05, 0.5].",
+ "cache_inventory": [
+  {
+   "model": "Qwen/Qwen2.5-0.5B-Instruct",
+   "source": "gsm8k",
+   "max_new_tokens": 512,
+   "n": 28
+  },
+  {
+   "model": "Qwen/Qwen2.5-0.5B-Instruct",
+   "source": "math500",
+   "max_new_tokens": 512,
+   "n": 20
+  },
+  {
+   "model": "Qwen/Qwen2.5-0.5B-Instruct",
+   "source": "synthetic",
+   "max_new_tokens": 256,
+   "n": 77
+  },
+  {
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "source": "gsm8k",
+   "max_new_tokens": 512,
+   "n": 28
+  },
+  {
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "source": "math500",
+   "max_new_tokens": 512,
+   "n": 20
+  },
+  {
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "source": "synthetic",
+   "max_new_tokens": 256,
+   "n": 77
+  }
+ ],
+ "long_tasks_file": {
+  "gsm8k": 28,
+  "math500": 20
+ },
+ "v1_main_by_method": {
+  "pilot": {
+   "n": 380,
+   "tail_trade_rate": 1.0,
+   "mean_tail_sales": 38.49473684210526,
+   "E": 0.2362487623524496,
+   "Q": 0.892270955165692,
+   "n_audits": 0.0
+  },
+  "stageroute": {
+   "n": 380,
+   "tail_trade_rate": 0.9210526315789473,
+   "mean_tail_sales": 15.344736842105263,
+   "E": 0.10635592039666403,
+   "Q": 0.6672636452241716,
+   "n_audits": 0.0
+  },
+  "cheapest_fixed": {
+   "n": 380,
+   "tail_trade_rate": 0.0,
+   "mean_tail_sales": 0.0,
+   "E": 0.0,
+   "Q": 0.5076388888888889,
+   "n_audits": 0.0
+  },
+  "strongest_fixed": {
+   "n": 380,
+   "tail_trade_rate": 1.0,
+   "mean_tail_sales": 80.3,
+   "E": 0.4456464653285381,
+   "Q": 0.7916203703703704,
+   "n_audits": 0.0
+  },
+  "random_audit": {
+   "n": 380,
+   "tail_trade_rate": 0.65,
+   "mean_tail_sales": 1.0,
+   "E": 0.004740447386451988,
+   "Q": 0.5327777777777778,
+   "n_audits": 87.95
+  },
+  "fixed_audit_a0.05": {
+   "n": 380,
+   "tail_trade_rate": 0.65,
+   "mean_tail_sales": 1.1,
+   "E": 0.005122066851657814,
+   "Q": 0.5307407407407407,
+   "n_audits": 46.5
+  },
+  "fixed_audit_a0.10": {
+   "n": 380,
+   "tail_trade_rate": 0.65,
+   "mean_tail_sales": 0.9,
+   "E": 0.004726648776860977,
+   "Q": 0.5383333333333333,
+   "n_audits": 88.9
+  },
+  "fixed_audit_a0.20": {
+   "n": 380,
+   "tail_trade_rate": 0.65,
+   "mean_tail_sales": 0.9,
+   "E": 0.004314473957937038,
+   "Q": 0.5188888888888888,
+   "n_audits": 179.2
+  },
+  "risk_adaptive_audit": {
+   "n": 380,
+   "tail_trade_rate": 0.6,
+   "mean_tail_sales": 0.9,
+   "E": 0.004680670111146463,
+   "Q": 0.5358333333333334,
+   "n_audits": 75.3
+  }
+ }
+}

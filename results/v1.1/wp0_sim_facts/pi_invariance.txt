@@ -1,0 +1,10 @@
+results/v1.0/main/per_seed.csv: number of distinct rows (excluding pi, config_hash) per (method, seed), over 19 pi values
+pilot                  max distinct=19 min=18
+stageroute             max distinct=19 min=18
+cheapest_fixed         max distinct=1 min=1
+strongest_fixed        max distinct=1 min=1
+random_audit           max distinct=1 min=1
+fixed_audit_a0.05      max distinct=1 min=1
+fixed_audit_a0.10      max distinct=1 min=1
+fixed_audit_a0.20      max distinct=1 min=1
+risk_adaptive_audit    max distinct=1 min=1
