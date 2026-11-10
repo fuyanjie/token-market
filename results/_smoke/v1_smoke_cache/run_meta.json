@@ -1,0 +1,74 @@
+{
+ "config": "configs/v1.0/scale.yaml",
+ "seeds": [
+  0,
+  1
+ ],
+ "pi_grid": [
+  1.0,
+  0.1
+ ],
+ "methods": [
+  "pilot",
+  "stageroute",
+  "cheapest_fixed",
+  "strongest_fixed",
+  "random_audit",
+  "fixed_audit_a0.05",
+  "d3",
+  "fixed_audit_a0.20",
+  "risk_adaptive_audit"
+ ],
+ "labels": {
+  "pilot": "PILOT (Panda et al. 2025), faithful reimpl.",
+  "stageroute": "StageRoute (Li & Li 2025), faithful reimpl. incl. MIP",
+  "cheapest_fixed": "cheapest fixed router",
+  "strongest_fixed": "strongest fixed router (highest listed quality)",
+  "random_audit": "random-intensity audit (a_t ~ U(0, 0.2))",
+  "fixed_audit_a0.05": "fixed-rate audit reference baseline (a=0.05)",
+  "d3": "fixed-rate audit reference baseline (a=0.10)",
+  "fixed_audit_a0.20": "fixed-rate audit reference baseline (a=0.20)",
+  "risk_adaptive_audit": "risk-adaptive audit (a_s = 0.05 + 0.45 q_hat_s)"
+ },
+ "policies": {
+  "pilot": "pilot_v1_compliant",
+  "stageroute": "stageroute_v1_compliant",
+  "cheapest_fixed": "single_cheapest_compliant",
+  "strongest_fixed": "single_best_compliant",
+  "random_audit": "audited_compliance_cascade",
+  "fixed_audit_a0.05": "audited_compliance_cascade",
+  "d3": "audited_compliance_cascade",
+  "fixed_audit_a0.20": "audited_compliance_cascade",
+  "risk_adaptive_audit": "audited_compliance_cascade"
+ },
+ "learner": "egreedy",
+ "compliance_filter": true,
+ "resample_roster": false,
+ "backend_override": null,
+ "n_tasks": 480,
+ "n_rounds": 48,
+ "n_rows": 36,
+ "elapsed_s": 2.13,
+ "argv": [
+  "--seeds",
+  "0",
+  "1",
+  "--pi-grid",
+  "1.0",
+  "0.1",
+  "--methods",
+  "pilot",
+  "stageroute",
+  "cheapest_fixed",
+  "strongest_fixed",
+  "random_audit",
+  "fixed_audit_a0.05",
+  "d3",
+  "fixed_audit_a0.20",
+  "risk_adaptive_audit",
+  "--out",
+  "results/_smoke/v1_smoke_cache",
+  "--jobs",
+  "4"
+ ]
+}

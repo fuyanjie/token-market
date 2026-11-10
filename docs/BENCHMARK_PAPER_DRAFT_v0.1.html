@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>BENCHMARK_PAPER_DRAFT_v0.1</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+</head>
+<body>
+<h1
+id="a-compliance-constrained-reasoning-token-market-simulator-and-benchmark-for-procurement-under-sparse-audit-feedback">A
+Compliance-Constrained Reasoning-Token Market Simulator and Benchmark
+for Procurement under Sparse Audit Feedback</h1>
+<p><strong>Working draft (v0.1, camera-ready polish)</strong> — Datasets
+&amp; Benchmarks track (NeurIPS / ICLR or equivalent).<br />
+<strong>Companion paper.</strong> Deterrence-method novelty (platform
+audits as a strategic signal that compresses seller attack rates) is
+owned by a separate methods paper; this draft contributes the
+<strong>platform, publishable data schema, fixed evaluation protocol,
+and baselines</strong>.</p>
+<hr />
+<h2 id="abstract">Abstract</h2>
+<p>Cross-border procurement of LLM inference increasingly looks like a
+marketplace: buyers route tasks under jurisdiction constraints, sellers
+post prices and capacities, and quality—and fraud—are revealed only
+partially and late. Existing simulators either study exchange
+microstructure (limit-order books, high-frequency trading) or
+bandit-style routing under <em>immediate</em> correctness labels.
+Neither couples <strong>hard compliance filters</strong>,
+<strong>strategic seller fraud</strong> (model swap and token theft),
+<strong>escrow / slash settlement</strong>, and <strong>sparse or
+delayed outcome labels</strong> in one reproducible generator.</p>
+<p>We release a <strong>compliance-constrained reasoning-token market
+simulator</strong>—not a CLOB—together with a five-file JSONL schema,
+one-click export scripts, and a fixed benchmark protocol. The platform
+has five layers: admission/compliance, routing and portfolio
+procurement, escrow settlement, oversight audit, and feedback/audit
+trails. Primary leaderboard metrics are <strong>active trade attack
+rate</strong> (<code>active_attack_rate</code>) and <strong>realized
+fraud share</strong> (<code>fraud_share</code>); epoch-mean learned (q^)
+(<code>learned_q_swap</code> / <code>learned_q_theft</code>) are
+<strong>side columns</strong> (especially informative when delist is on;
+see §5), not co-primary. The joint objective (J) is secondary, and
+immediate-feedback (J) against PILOT / StageRoute is
+<strong>not</strong> the primary ranking. Protocol tasks cover
+fixed-rate audit deterrence (T1), sparse-label regime switches (T2), and
+equal-budget adaptive audit as an appendix efficiency check (T3). On a
+dense reveal-probability grid we document a regime crossover (^(0.10,
+0.12)) where sparse labels collapse bandit avoidance while fixed-rate
+audits keep (q^) stable near (0.08). We release seeds, config hashes,
+production paths under <code>exports/production/</code>, and
+Feature/Label hygiene rules so the downloadable board supports
+leaderboard submission without silently leaking supervision for fraud
+detectors. Deterrence <em>methods</em> are out of scope here (companion
+paper).</p>
+<hr />
+<h2 id="introduction">1. Introduction</h2>
+<p>Deployed LLM APIs are increasingly bought and sold across
+jurisdictions. A buyer in one country may be barred from shipping
+personal data to another; a seller may advertise a strong model and
+serve a weaker one (swap), or bill for more tokens than were generated
+(theft); correctness labels for purchased answers arrive sparsely and
+often with delay. Procurement therefore mixes
+<strong>compliance</strong>, <strong>strategic incentives</strong>, and
+<strong>incomplete feedback</strong>—yet public benchmarks for this
+setting are scarce.</p>
+<p>Two nearby literatures miss the coupling. Market-microstructure and
+exchange simulators emphasize continuous limit-order books, latency
+races, and circuit breakers—machinery that is orthogonal to posted-price
+reasoning services. Bandit and portfolio routers such as PILOT and
+StageRoute assume (or are evaluated under) rich, often immediate,
+outcome feedback and typically ignore strategic sellers and escrowed
+payments. Cloud-API SLA dispute stories and advertising-quality audits
+share the <em>economic</em> idea of sampling and penalties, but do not
+ship a joinable, seed-locked generator for multi-jurisdiction reasoning
+procurement.</p>
+<p><strong>This paper</strong> treats the research artifact as a
+<strong>platform that generates benchmarks</strong>. We ask: can one
+simulator expose a stable evaluation surface for (i) deterrence under
+fixed audit budgets, (ii) sparse/delayed labels, and (iii) audit-cost
+efficiency—without claiming a new “best router under full feedback”?</p>
+<p><strong>Contributions.</strong></p>
+<ol type="1">
+<li><strong>Five-layer trading platform</strong> for
+compliance-constrained reasoning-service trades: admission →
+routing/portfolio procurement → escrow settlement → oversight → feedback
+and trails. Design principle: borrow <em>audit economics</em> (sampling,
+slash, freeze); do <strong>not</strong> port CLOB, HFT, circuit
+breakers, or multi-CCP clearing.</li>
+<li><strong>Publishable five-file JSONL schema</strong>
+(<code>sellers</code>, <code>buyers</code>, <code>orders</code>,
+<code>audits</code>, <code>episodes</code>) with join keys, config
+hashes, and one-click scripts; optional held-out
+<code>labels.jsonl</code>.</li>
+<li><strong>Tasks T1–T3</strong> with frozen seeds; primary board =
+<code>active_attack_rate</code> + <code>fraud_share</code> only
+(<code>learned_q_*</code> side columns; (J)
+secondary—<strong>not</strong> “beat PILOT on (J)”); protocol result
+(^(0.10, 0.12)) as a sparse-label <em>regime switch</em> (bandit
+collapse), not a claim that audited routing dominates bandits under full
+feedback.</li>
+<li><strong>Baselines</strong>: PILOT+compliance, StageRoute+compliance,
+fixed-(a) audited cascade (D3), random audit; adaptive audit and
+post-catch delist as <strong>appendix</strong> switches (defaults off so
+legacy tables remain reproducible).</li>
+</ol>
+<p><strong>Claim ownership.</strong> Deterrence theory and method
+novelty live in a companion methods paper. Here the contribution is the
+generator, the protocol, and the leaderboard contract.</p>
+<hr />
+<h2 id="related-work">2. Related Work</h2>
+<p>We situate the artifact against five nearby literatures and a
+companion methods paper. The gap we target is the <em>coupling</em> of
+hard compliance filters, strategic seller fraud, sparse/delayed
+correctness labels, and escrow/audit settlement in one seed-locked
+generator—not incremental gains on any single line of work under dense
+feedback.</p>
+<p><strong>Cloud / API marketplaces and SLA disputes.</strong>
+Commercial LLM/API marketplaces and cloud SLAs document uptime credits,
+refunds, and support-case dispute flows (e.g., provider compute SLAs and
+marketplace terms <span class="citation"
+data-cites="aws2024compute_sla">(Amazon Web Services 2024)</span>), but
+they do not release multi-agent, seed-locked synthetic trade logs with
+jurisdiction hard filters and controllable strategic fraud knobs. Our
+contribution is a research generator and leaderboard contract, not a
+commercial marketplace replica.</p>
+<p><strong>Audit economics, inspection games, and advertising-quality
+sampling.</strong> Classical enforcement and audit theory treat random
+inspection plus penalties as a deterrent when full verification is
+costly <span class="citation"
+data-cites="becker1968crime avenhaus2002inspection">(Becker 1968;
+Avenhaus et al. 2002)</span>. Advertising and product-quality settings
+similarly motivate sampling audits, reputation holds, and disclosure
+costs rather than exhaustive checks <span class="citation"
+data-cites="daughety2008communicating bester2021signaling">(Daughety and
+Reinganum 2008; Bester et al. 2021)</span>. We borrow <em>sampling
+rate</em>, <em>slash/penalty</em>, and optional <em>freeze/delist</em>;
+we do <strong>not</strong> model ad auctions, click fraud scoring, or
+truth-in-advertising litigation.</p>
+<p><strong>Prediction-market dispute resolution and delayed
+labels.</strong> Prediction markets separate trading from outcome
+resolution: optimistic oracles and dispute bonds (e.g., UMA-style
+resolution used by Polymarket) delay settlement until a challenge window
+closes or a vote completes <span class="citation"
+data-cites="wolfers2004prediction hanson2003combinatorial uma2024optimistic polymarket2024resolution">(Wolfers
+and Zitzewitz 2004; Hanson 2003; UMA Protocol 2024; Polymarket
+2024)</span>. That is a useful <em>label-timing</em> analogy. In our
+platform the label channel ((, L)) is orthogonal to payment escrow:
+billed cost is observed immediately on the buyer side, while correctness
+may be delayed or dropped; audits update trust/slash on their own
+clock.</p>
+<p><strong>Bandit / portfolio LLM routing under immediate
+feedback.</strong> PILOT <span class="citation"
+data-cites="panda2025pilot">(Panda et al. 2025)</span> casts budgeted
+LLM routing as a preference-prior contextual bandit (LinUCB + online
+multi-choice knapsack). StageRoute <span class="citation"
+data-cites="li2026stageroute">(Li and Li 2026)</span> couples stage-wise
+deployment with per-query budget/throughput LPs and near-optimal
+((T^{2/3})) regret. Our <code>pilot_*</code> / <code>stageroute_*</code>
+baselines are <strong>simplified reimplementations</strong>
+(hand-crafted task features; StageRoute’s stage MIP skipped with a fixed
+seller set)—strong under dense correctness labels. Under sparse () they
+<em>avoid</em> the fraudulent seller rather than compress attack
+intensity (q^); we therefore treat their immediate-feedback (J) as
+<strong>secondary</strong>, not as the primary board.</p>
+<p><strong>Exchange surveillance vs. order-book microstructure.</strong>
+Market-surveillance practice and guidance emphasize monitoring,
+investigation, and temporary freezes on suspicious activity <span
+class="citation"
+data-cites="iosco2009surveillance cumming2008surveillance">(International
+Organization of Securities Commissions 2009; Cumming and Johan
+2008)</span>. Escrow, stake slash, and post-catch listing pauses in our
+oversight layer are inspired by that <em>enforcement</em> toolkit.
+Continuous limit-order books, maker–taker fees, HFT latency races, and
+circuit breakers are explicitly <strong>out of scope</strong>—the market
+is posted-price routing / portfolio procurement, not a CLOB.</p>
+<p><strong>Positioning vs. the companion methods paper.</strong> That
+paper owns deterrence <em>method</em> claims (fixed-(a) audits as a
+strategic signal that compresses seller (q^)). This paper owns the
+platform-as-benchmark-generator, five-file schema, Feature/Label
+hygiene, and the T1–T3 leaderboard contract. Cross-cite, do not absorb,
+the method novelty.</p>
+<hr />
+<h2 id="platform-design">3. Platform Design</h2>
+<p>The artifact is a <strong>posted-price reasoning-service
+market</strong> with jurisdiction-aware buyers and sellers. Buyers spend
+budget on tasks with gold answers; sellers advertise models, prices, and
+capacity. Matching is <strong>routing / portfolio procurement</strong>,
+not a limit-order book.</p>
+<h3 id="five-layers-figure-1">3.1 Five layers (Figure 1)</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Role</th>
+<th>Code map</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Admission / compliance</td>
+<td>Hard jurisdiction filters; blocked flows never become served
+purchases</td>
+<td><code>gateway.py</code>, <code>compliance.py</code></td>
+</tr>
+<tr>
+<td>2. Routing / portfolio procurement</td>
+<td>Policy plugins (cascade, PILOT, StageRoute, audited cascade, …)</td>
+<td><code>matching.py</code>, <code>portfolio.py</code>,
+<code>buyers.py</code>, <code>baselines.py</code></td>
+</tr>
+<tr>
+<td>3. Escrow settlement</td>
+<td>State machine
+<code>locked → delivered → audited? → settled/slashed</code> (default
+<strong>off</strong>)</td>
+<td><code>sim.py</code>, <code>audit_v6.py</code></td>
+</tr>
+<tr>
+<td>4. Oversight</td>
+<td>Fixed Bernoulli audit rate (a) (main path); optional adaptive boost
+&amp; delist</td>
+<td><code>strategic.py</code>, <code>audit_v6.py</code></td>
+</tr>
+<tr>
+<td>5. Feedback &amp; trails</td>
+<td>Label channel ((, L)) orthogonal to payment; structured audit
+fields</td>
+<td><code>feedback.py</code>, <code>logging_schema.py</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>External surface.</strong> Place order; delivery receipt;
+audit verdict; settlement; trail query (via joinable
+<code>orders</code>/<code>audits</code> exports).</p>
+<figure>
+<img src="figures/fig1_five_layers.png"
+alt="Figure 1. Five layers of the reasoning-token market platform" />
+<figcaption aria-hidden="true">Figure 1. Five layers of the
+reasoning-token market platform</figcaption>
+</figure>
+<p><strong>Figure 1.</strong> Five platform layers (admission →
+routing/portfolio procurement → escrow → oversight → feedback/trails).
+Posted-price market; not a CLOB. Source art:
+<code>docs/figures/fig1_five_layers.{png,svg}</code>.</p>
+<h3 id="market-primitives">3.2 Market primitives</h3>
+<p><strong>Jurisdictions.</strong> Synthetic CN / SG / BR corridors.
+Compliance profiles list allowed seller jurisdictions, sensitivity
+mixes, and consent rates. Rules are <em>simplified simulations</em>—not
+legal advice (see Ethics).</p>
+<p><strong>Sellers.</strong> Posted <code>list_price</code> (USD / 1k
+tokens), capacity per round, stake pool for slash. A strategic learning
+seller (<code>seller_sg</code> in the headline runs) chooses attack
+rates (q_{}) and (q_{}). Swap serves a weaker <code>actual_model</code>
+than <code>claimed_model</code>; theft bills more tokens than
+generated.</p>
+<p><strong>Buyers.</strong> Per-buyer budgets and strategy ids.
+Portfolio policies may purchase from multiple sellers per task under
+budget.</p>
+<p><strong>Audits.</strong> Default fixed rate (a=0.1) with identity and
+length checks (detection probabilities (d_{}=d_{}=0.9) in headline
+configs) and penalty (P=0.25). Audits update trust / slash / optional
+delist <strong>immediately</strong> and do not depend on the correctness
+label channel.</p>
+<p><strong>Escrow (optional).</strong> When enabled, seller proceeds are
+held until the audit decision; slash is taken from the hold. Escrow is
+<strong>orthogonal</strong> to label delay (L).</p>
+<p><strong>Delist (optional).</strong> After a catch,
+<code>reputation_rounds</code> freezes the seller from routing until a
+watermark round. Default <code>reputation_rounds=0</code> preserves
+legacy F/J reproducibility.</p>
+<h3 id="design-principles">3.3 Design principles</h3>
+<p>Borrow: sampling audits, stake slash, payment freeze, structured
+trails.<br />
+Do <strong>not</strong> build: CLOB, price–time priority matching, HFT
+makers, circuit breakers, multi-CCP. Multi-buyer congestion is deferred
+to Limitations.</p>
+<h3 id="joint-objective-secondary">3.4 Joint objective (secondary)</h3>
+<p>[ J = - - , ] with defaults (), (). Accuracy is task-level (portfolio
+answer vs gold). Violation rate is compliance breaches per task. Fraud
+share is attacked purchases / served purchases
+(<code>attack_mode ∈ {swap, theft, both}</code>). <strong>Primary board
+metrics remain</strong> <code>active_attack_rate</code> and
+<code>fraud_share</code>; (J) is reported for continuity with the
+methods paper and for T2’s regime narrative only.</p>
+<hr />
+<h2 id="data-release">4. Data Release</h2>
+<h3 id="five-jsonl-files-v1">4.1 Five JSONL files (v1)</h3>
+<p>Authoritative boards ship under <code>exports/production/</code>
+(schema dictionary and samples: <code>docs/DATA_SCHEMA.md</code>). Smoke
+under <code>exports/latest/</code> is illustrative only and is
+superseded by production.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>File</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sellers.jsonl</code></td>
+<td>Catalog: jurisdiction, claimed/actual model, listed quality, latent
+(q), stake, ban watermark</td>
+</tr>
+<tr>
+<td><code>buyers.jsonl</code></td>
+<td>Budget, strategy_id, compliance_profile</td>
+</tr>
+<tr>
+<td><code>orders.jsonl</code></td>
+<td>State-machine fact table; join key <code>order_id</code></td>
+</tr>
+<tr>
+<td><code>audits.jsonl</code></td>
+<td>Per served purchase: sampled checks, slash, delist, ()/(L) reveal
+fields</td>
+</tr>
+<tr>
+<td><code>episodes.jsonl</code></td>
+<td><strong>Primary board</strong> — one row per
+<code>(run_id, seed)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sample fields (production seed 0; truncated; no
+secrets).</strong> Full dictionaries and three-row samples:
+<code>docs/DATA_SCHEMA.md</code>.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>File</th>
+<th>Compact sample keys → values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sellers</code></td>
+<td><code>seller_id=seller_cn</code>, <code>jurisdiction=CN</code>,
+<code>claimed_model=Qwen/Qwen2.5-1.5B-Instruct</code>,
+<code>list_price=0.2</code>, <code>latent_q_swap=0.0</code>
+<em>(label)</em>, <code>seed=0</code></td>
+</tr>
+<tr>
+<td><code>buyers</code></td>
+<td><code>buyer_id=buyer_cn_1</code>, <code>jurisdiction=CN</code>,
+<code>budget_total=5.0</code>,
+<code>strategy_id=audited_compliance_cascade</code>,
+<code>seed=0</code></td>
+</tr>
+<tr>
+<td><code>orders</code></td>
+<td><code>order_id=…|t0000_p059|0|seller_br</code>,
+<code>state=settled</code>, <code>attack_mode=none</code>
+<em>(label)</em>, <code>correct=false</code> <em>(label)</em>,
+<code>config_hash=7b60ac28061d2907</code></td>
+</tr>
+<tr>
+<td><code>audits</code></td>
+<td><code>sampled=0</code>, <code>hit=0</code>,
+<code>slash_amount=0.0</code>, <code>reveal_pi=1.0</code>,
+<code>fraud_realized=0</code> <em>(label)</em></td>
+</tr>
+<tr>
+<td><code>episodes</code></td>
+<td><code>a=0.1</code>, <code>pi=1.0</code>,
+<code>active_attack_rate≈0.100</code>, <code>fraud_share≈0.100</code>,
+<code>learned_q_swap≈0.042</code> <em>(side)</em>, <code>J≈0.771</code>
+<em>(secondary)</em>, <code>config_hash=7b60ac28061d2907</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Join keys.</strong> <code>run_id</code>, <code>seed</code>,
+<code>order_id</code> (= <code>purchase_id</code> when served),
+<code>config_hash</code> (sha256 prefix of config).</p>
+<p><strong>Derived (not shipped).</strong> Ledger / full event timeline
+= <code>orders ⋈ audits</code>. Optional <code>events</code> /
+<code>ledger</code> views may appear in v1.1 without changing the
+primary board.</p>
+<p><strong>Smoke export scale (current
+<code>exports/latest/</code>).</strong> One illustrative episode with 3
+sellers, 6 buyers, 41 orders, 41 audit rows (<code>--n-tasks 48</code>).
+Full multi-seed boards used in §6 come from longer experiment configs
+(<code>results/pi_dense/</code>, <code>results/v6_*</code>).</p>
+<h3 id="feature-label-separation-application-constraint">4.2 Feature /
+Label separation (application constraint)</h3>
+<p>Several columns in the default five files are <strong>evaluation
+labels</strong>, not public training features. Using them as model
+inputs for fraud detection or routing ML <strong>leaks</strong> the
+supervision signal.</p>
+<table>
+<thead>
+<tr>
+<th>Location</th>
+<th>Label columns (do <strong>not</strong> train on)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sellers.jsonl</code></td>
+<td><code>actual_model</code>, <code>latent_q_swap</code>,
+<code>latent_q_theft</code></td>
+</tr>
+<tr>
+<td><code>orders.jsonl</code></td>
+<td><code>attack_mode</code>, <code>correct</code></td>
+</tr>
+<tr>
+<td><code>audits.jsonl</code></td>
+<td><code>fraud_realized</code>, <code>label_correct</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Safe public features (examples):</strong> jurisdictions,
+<code>claimed_model</code>, prices, capacity, stake*, budgets*, tokens
+billed/actual, amounts, <code>state</code>,
+<code>jurisdiction_path</code>, <code>route_policy</code>, audit
+mode/sampled/checks/hit/miss/slash/delist/auditor_cost, reveal timing
+(<code>label_revealed</code>, <code>label_delay_L</code>,
+<code>reveal_pi</code>).</p>
+<p><strong>Optional held-out file.</strong> <code>labels.jsonl</code>
+joined on <code>order_id</code> (<code>--with-labels</code>). Full
+public-pack stripping is deferred to <strong>v1.1</strong>. Until then:
+<strong>do not treat the default export as a clean supervised
+fraud-detection training set</strong> without dropping the label columns
+above.</p>
+<h3 id="one-click-scripts">4.3 One-click scripts</h3>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Smoke (illustrative only → exports/latest/)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/export_benchmark_layers.py <span class="at">--out</span> exports/latest <span class="at">--seed</span> 0 <span class="at">--n-tasks</span> 48 <span class="at">--learning</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Authoritative production board (→ exports/production/)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/export_benchmark_layers.py <span class="at">--full</span> <span class="at">--use-cache</span> <span class="at">--out</span> exports/production</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Protocol tasks T1–T3 (production scale)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/run_benchmark_tasks.py <span class="at">--full</span> <span class="at">--use-cache</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/run_leaderboard.py <span class="at">--smoke</span>   <span class="co"># optional smoke board</span></span></code></pre></div>
+<p>Default knobs keep <code>adaptive_audit=false</code>,
+<code>reputation_rounds=0</code>, <code>escrow=false</code> so legacy
+F/J tables stay reproducible. Test suite: <strong>76</strong> tests
+collected and passed in-repo (<code>pytest --collect-only</code>; freeze
+log <code>results/benchmark/pytest_after_draft.txt</code>, 2026-11-08
+Asia/Shanghai). See §6.5 for the reproducibility one-pager.</p>
+<h3 id="mechanism-vs.-model-cache">4.4 Mechanism vs. model cache</h3>
+<p>Correctness labels in headline ablations come from <strong>cached
+real Qwen outputs</strong> (no new generation in those runs). Feedback
+timing ((, L)), audits, seller learning, prices, and budgets are
+<strong>simulated</strong>. Publishable docs must keep this split
+explicit so downstream users do not mistake mechanism fields for organic
+production logs.</p>
+<hr />
+<h2 id="benchmark-protocol">5. Benchmark Protocol</h2>
+<p>Seeds for headline tables: ({0,1,2}). Budget multiplier (2.0).
+Strategic seller attack modes <code>{swap, theft}</code>. Audit rate
+(a=0.1) on audited arms.</p>
+<h3 id="t1-fixed-a-deterrence-primary">T1 — Fixed-(a) deterrence
+(primary)</h3>
+<p><strong>Goal.</strong> Measure whether fixed-rate oversight
+compresses seller attack intensity and realized fraud relative to
+non-auditing routers.</p>
+<p><strong>Primary metrics.</strong> Split attack-rate definitions so
+they stay consistent with §6.3 and production
+<code>episodes.jsonl</code>: (i)
+<strong><code>active_attack_rate</code></strong> = active trade attack
+rate = attacked / served purchases (<code>status=allowed</code>); (ii)
+<strong><code>learned_q_swap</code> /
+<code>learned_q_theft</code></strong> = epoch-mean learned (q) on the
+strategic seller (separate columns). Without delist the two are close
+(production T1 means ≈0.101 vs ≈0.083/0.081); with delist they can
+diverge (learned (q) may rise from missing observations while
+active-trade attack rate falls). Board also reports
+<code>fraud_share</code> (same formula as active_attack_rate in v1
+production). Always list both attack columns when
+<code>reputation_rounds&gt;0</code>.</p>
+<p><strong>Baselines.</strong> StageRoute+compliance, PILOT+compliance
+(audit rate 0); fixed-(a) D3 (<code>audited_compliance_cascade</code>);
+random audit on a simple compliant selector.</p>
+<p><strong>Reading rule.</strong> Rank primarily by attack/fraud, not by
+immediate-feedback (J).</p>
+<h3 id="t2-sparse-label-regime-primary-protocol-result">T2 —
+Sparse-label regime (primary protocol result)</h3>
+<p><strong>Goal.</strong> Sweep reveal probability () at delay (L=0) and
+locate where sparse labels flip the <em>secondary</em> (J) ordering
+between D3 and the best compliant bandit—interpreted as <strong>bandit
+collapse under missing labels</strong>, while deterrence ((q^)) stays
+audit-driven and ()-invariant.</p>
+<p><strong>Grid (dense, authoritative).</strong> ({1.0, 0.2, 0.18, 0.15,
+0.12, 0.10, 0.08, 0.06, 0.05, 0.0}) (<code>configs/pi_dense.yaml</code>;
+results in <code>results/pi_dense/</code>).</p>
+<p><strong>Claim-safe narrative.</strong> Report (^(0.10, 0.12)). Do
+<strong>not</strong> claim “D3 wins under full feedback.”</p>
+<h3 id="t3-audit-cost-efficiency-appendix-only">T3 — Audit-cost
+efficiency (appendix only)</h3>
+<p><strong>Goal.</strong> Same expected audit budget: fixed Bernoulli vs
+risk-targeted adaptive allocation; report fraud / (J) /
+<code>n_audits</code>. <strong>Not</strong> primary novelty;
+<strong>not</strong> a full comparison against instantaneous
+bandits.</p>
+<p><strong>Delist ablation (appendix).</strong> Sweep
+<code>reputation_rounds ∈ {0,5,20}</code>; always report
+<strong>both</strong> realized fraud share and learned (q) (delist can
+cut fraud while raising epoch-mean learned (q) via missing
+observations).</p>
+<hr />
+<h2 id="platform-capability-results">6. Platform Capability Results</h2>
+<p>Numbers below are taken from frozen experiment artifacts on disk and
+from the production one-click boards under
+<code>exports/production/</code> and
+<code>results/benchmark/production/</code> (seeds <code>{0,1,2}</code>,
+<code>n_tasks=480</code>). Smoke-scale paths
+(<code>results/benchmark/</code> top-level,
+<code>exports/latest/</code>) use short task counts and <strong>do
+not</strong> replace these tables.</p>
+<h3 id="t1-fixed-a-deterrence-from-joint-feedback-tables">6.1 T1 —
+Fixed-(a) deterrence (from joint / feedback tables)</h3>
+<p>Under immediate full feedback ((), (L=0)), seeds ({0,1,2}), budget
+(), swap+theft learning seller
+(<code>results/pi_dense/feedback_ablation.md</code>, consistent with
+<code>results/joint_objective.md</code>):</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Policy</th>
+<th>(J) (secondary)</th>
+<th>Fraud share</th>
+<th>Learned (q_{}/q_{})</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>StageRoute+compliance</td>
+<td>(0.811 )</td>
+<td>(0.023 )</td>
+<td>(0.80 / 0.77)</td>
+</tr>
+<tr>
+<td>PILOT+compliance</td>
+<td>(0.789 )</td>
+<td>(0.045 )</td>
+<td>(0.95 / 0.93)</td>
+</tr>
+<tr>
+<td><strong>D3 fixed (a=0.1)</strong></td>
+<td>(0.766 )</td>
+<td>(0.101 )</td>
+<td><strong>(0.08 / 0.08)</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Reading.</strong> Bandits achieve higher secondary (J) by
+<em>avoiding</em> the attacker (low purchase share from the fraud
+seller; attacker (q) stays high). Fixed-(a) D3 keeps (q^)—the primary
+deterrence signal—while still serving the attacker more often. Primary
+board therefore favors D3 on attack rate; fraud share remains a second
+primary column and should not be silently dropped.</p>
+<p><em>Production export.</em> One-click production board is at
+<code>exports/production/episodes.jsonl</code> (and
+<code>results/benchmark/production/T1_episodes.jsonl</code>): seeds
+<code>{0,1,2}</code>, <code>n_tasks=480</code>,
+<code>n_rounds=48</code>, learning swap+theft, v6 switches off,
+cache-backed sellers. Mean over seeds:
+<code>active_attack_rate=fraud_share≈0.101</code>,
+<code>learned_q_swap≈0.083</code>, <code>learned_q_theft≈0.081</code>,
+<code>J≈0.766</code>, <code>n_audits≈60.3</code>—aligned with
+<code>results/pi_dense/</code> / <code>results/v6_*</code>. Smoke
+<code>exports/latest/</code> (48-task mock) remains illustrative only
+and must not be cited as the board. Terminology:
+<code>active_attack_rate</code> is attacked/served purchases;
+<code>learned_q_*</code> are separate columns.</p>
+<h3 id="t2-sparse-regime-and">6.2 T2 — Sparse () regime and (^)</h3>
+<p>Dense (L=0) sweep (<code>results/pi_dense/SUMMARY_zh.txt</code>,
+<code>feedback_ablation.md</code>):</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr>
+<th>()</th>
+<th>PILOT (J)</th>
+<th>StageRoute (J)</th>
+<th>D3 (J)</th>
+<th>(J=) D3 − best bandit</th>
+<th>D3 (q_{}/q_{})</th>
+<th>Best-bandit (q_{}/q_{})</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>0.789</td>
+<td>0.811</td>
+<td>0.766</td>
+<td>−0.045</td>
+<td>0.08 / 0.08</td>
+<td>0.80 / 0.77</td>
+</tr>
+<tr>
+<td>0.20</td>
+<td>0.780</td>
+<td>0.803</td>
+<td>0.766</td>
+<td>−0.037</td>
+<td>0.08 / 0.08</td>
+<td>0.64 / 0.61</td>
+</tr>
+<tr>
+<td>0.18</td>
+<td>0.763</td>
+<td>0.799</td>
+<td>0.766</td>
+<td>−0.033</td>
+<td>0.08 / 0.08</td>
+<td>0.64 / 0.61</td>
+</tr>
+<tr>
+<td>0.15</td>
+<td>0.772</td>
+<td>0.798</td>
+<td>0.766</td>
+<td>−0.031</td>
+<td>0.08 / 0.08</td>
+<td>0.64 / 0.61</td>
+</tr>
+<tr>
+<td>0.12</td>
+<td>0.729</td>
+<td>0.789</td>
+<td>0.766</td>
+<td>−0.023</td>
+<td>0.08 / 0.08</td>
+<td>0.80 / 0.77</td>
+</tr>
+<tr>
+<td><strong>0.10</strong></td>
+<td>0.726</td>
+<td>0.747</td>
+<td>0.766</td>
+<td><strong>+0.019</strong></td>
+<td>0.08 / 0.08</td>
+<td>0.95 / 0.94</td>
+</tr>
+<tr>
+<td>0.08</td>
+<td>0.699</td>
+<td>0.737</td>
+<td>0.766</td>
+<td>+0.029</td>
+<td>0.08 / 0.08</td>
+<td>0.95 / 0.94</td>
+</tr>
+<tr>
+<td>0.06</td>
+<td>0.652</td>
+<td>0.714</td>
+<td>0.766</td>
+<td>+0.052</td>
+<td>0.08 / 0.08</td>
+<td>0.95 / 0.94</td>
+</tr>
+<tr>
+<td>0.05</td>
+<td>0.673</td>
+<td>0.681</td>
+<td>0.766</td>
+<td>+0.085</td>
+<td>0.08 / 0.08</td>
+<td>0.95 / 0.94</td>
+</tr>
+<tr>
+<td>0.0</td>
+<td>−0.030</td>
+<td>0.585</td>
+<td>0.766</td>
+<td>+0.181</td>
+<td>0.08 / 0.08</td>
+<td>0.95 / 0.94</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Crossover.</strong> On this grid, (J &lt; 0) at () and (J
+&gt; 0) at (), hence <strong>(^(0.10, 0.12))</strong>. D3’s (q^) is
+<strong>constant across ()</strong> (audits independent of outcome
+feedback). Compliant bandits never compress (q); under () their learned
+attack rates rise to (), i.e., avoidance fails when labels vanish.</p>
+<p><em>Production T2.</em>
+<code>results/benchmark/production/T2_crossover.json</code> (dense grid
+matching <code>configs/pi_dense.yaml</code>) reports (^_J (0.10, 0.12))
+with (J(0.12)) and (J(0.10)+0.019), matching
+<code>results/pi_dense/</code>. Coarse smoke under
+<code>results/benchmark/T2_crossover.json</code> must not be cited.</p>
+<figure>
+<img src="figures/fig2_pi_star_crossover.png"
+alt="Figure 2. Sparse-label regime / π* crossover" />
+<figcaption aria-hidden="true">Figure 2. Sparse-label regime / π*
+crossover</figcaption>
+</figure>
+<p><strong>Figure 2.</strong> T2 () sweep at (L=0). <strong>(a)</strong>
+Secondary (J): bandits dominate under dense labels; D3 overtakes between
+() and () ((^(0.10,0.12))). <strong>(b)</strong> Side-column learned
+(q_{}): fixed-(a) D3 stays near (0.08) across (); compliant bandits
+never compress (q^) (avoidance collapses as labels vanish).
+<strong>Not</strong> a claim that D3 beats PILOT/StageRoute on (J) under
+full feedback; primary board remains <code>active_attack_rate</code> +
+<code>fraud_share</code>. Data:
+<code>results/pi_dense/feedback_ablation.json</code> (seeds ({0,1,2});
+config <code>configs/pi_dense.yaml</code>); crossover confirmed by
+<code>results/benchmark/production/T2_crossover.json</code>. Art:
+<code>docs/figures/fig2_pi_star_crossover.{png,svg}</code>. Production
+<code>exports/production/episodes.jsonl</code> holds the fixed-(1) board
+rows (<code>config_hash=7b60ac28061d2907</code>); the full () grid lives
+in <code>pi_dense</code> / production T2 artifacts, not in a single
+episodes export.</p>
+<h3 id="appendix-delist-trade-off-v6">6.3 Appendix — Delist trade-off
+(v6)</h3>
+<p>Policy D3, (a=0.1), seeds ({0,1,2})
+(<code>results/v6_delist.md</code> / <code>.json</code>):</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th><code>reputation_rounds</code></th>
+<th>Learned (q_{})</th>
+<th>(J)</th>
+<th>Fraud share</th>
+<th>(n_{})</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>(0.083 )</td>
+<td>(0.766 )</td>
+<td>(0.101 )</td>
+<td>60.3</td>
+</tr>
+<tr>
+<td>5</td>
+<td>(0.181 )</td>
+<td>(0.787 )</td>
+<td>(0.063 )</td>
+<td>57.7</td>
+</tr>
+<tr>
+<td>20</td>
+<td>(0.439 )</td>
+<td>(0.807 )</td>
+<td>(0.041 )</td>
+<td>55.0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Honest reading.</strong> Longer delist <strong>cuts realized
+fraud</strong> and lifts (J), but epoch-mean learned (q) can
+<strong>rise</strong> because banned sellers contribute fewer post-slash
+observations. Report both metrics; do not claim delist alone drives
+(q^). Default remains <code>reputation_rounds=0</code>.</p>
+<h3 id="appendix-adaptive-audit-under-equal-expected-budget-v6">6.4
+Appendix — Adaptive audit under equal expected budget (v6)</h3>
+<p>Same target (a=0.1), escrow on
+(<code>results/v6_adaptive_audit.md</code> / <code>.json</code>):</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr>
+<th>Arm</th>
+<th>(q_{})</th>
+<th>(J)</th>
+<th>Fraud share</th>
+<th>(n_{})</th>
+<th>Realized (a)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fixed</td>
+<td>(0.083 )</td>
+<td>(0.766 )</td>
+<td>(0.101 )</td>
+<td>60.3</td>
+<td>0.087</td>
+</tr>
+<tr>
+<td>Adaptive</td>
+<td>(0.056 )</td>
+<td>(0.803 )</td>
+<td>(0.044 )</td>
+<td>66.0</td>
+<td>0.099</td>
+</tr>
+</tbody>
+</table>
+<p>Escrow flows (fixed / adaptive): held (12.26 / 11.47), slashed (0.15
+/ 0.23), released (12.11 / 11.24). <strong>Reading.</strong> Adaptive
+targeting is a cost/aiming improvement under a comparable audit
+count—not a claim of dominance over instantaneous bandits, and not
+primary novelty.</p>
+<h3 id="reproducibility-one-pager">6.5 Reproducibility one-pager</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value / path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>One-click smoke export</td>
+<td><code>python scripts/export_benchmark_layers.py --out exports/latest --seed 0 --n-tasks 48 --learning</code></td>
+</tr>
+<tr>
+<td>One-click production export</td>
+<td><code>python scripts/export_benchmark_layers.py --full --use-cache --out exports/production</code></td>
+</tr>
+<tr>
+<td>Protocol tasks</td>
+<td><code>python scripts/run_benchmark_tasks.py --full --use-cache</code></td>
+</tr>
+<tr>
+<td>Authoritative board path</td>
+<td><code>exports/production/{sellers,buyers,orders,audits,episodes,labels}.jsonl</code></td>
+</tr>
+<tr>
+<td>Illustrative only</td>
+<td><code>exports/latest/</code> (do not cite as board)</td>
+</tr>
+<tr>
+<td>Headline seeds</td>
+<td>({0,1,2}); production episodes use these three</td>
+</tr>
+<tr>
+<td>Production <code>config_hash</code></td>
+<td><code>7b60ac28061d2907</code> (on every <code>orders</code> /
+<code>episodes</code> row)</td>
+</tr>
+<tr>
+<td>Dense () grid config</td>
+<td><code>configs/pi_dense.yaml</code> →
+<code>results/pi_dense/</code></td>
+</tr>
+<tr>
+<td>Feature/Label rules</td>
+<td><code>docs/DATA_SCHEMA.md</code> §Feature/Label (+ draft §4.2)</td>
+</tr>
+<tr>
+<td>Default knobs</td>
+<td><code>adaptive_audit=false</code>, <code>reputation_rounds=0</code>,
+<code>escrow=false</code></td>
+</tr>
+<tr>
+<td>Test freeze</td>
+<td><strong>76</strong> collected / <strong>76 passed</strong>
+(<code>results/benchmark/pytest_after_draft.txt</code>, 2026-11-08
+Asia/Shanghai)</td>
+</tr>
+</tbody>
+</table>
+<p>Clone → export → read <code>episodes.jsonl</code> should recover
+Table 1 means and the (^) narrative without re-tuning. Deterrence
+<em>method</em> claims remain out of scope (companion paper).</p>
+<hr />
+<h2 id="limitations">7. Limitations</h2>
+<ol type="1">
+<li><strong>Single-platform auditor; no multi-buyer congestion.</strong>
+Multi-buyer competition for capacity and multi-auditor games are
+deferred (explicit limitation, not a silent omission). Congestion
+externalities are therefore out of the v1 leaderboard contract.</li>
+<li><strong>Not a CLOB.</strong> Posted prices + routing/portfolio
+procurement only; no price–time priority book, maker–taker fees, HFT
+makers, or circuit breakers. Exchange-microstructure claims are out of
+scope.</li>
+<li><strong>Synthetic jurisdictions and mechanism + cached model
+answers.</strong> Corridor tags (CN/SG/BR) and compliance profiles are
+simplified simulation devices—not legal advice and not real
+KYC/data-transfer regimes. Correctness may come from cached Qwen
+generations; prices, budgets, audits, and learning rules are simulated.
+Fields must not be treated as organic production telemetry.</li>
+<li><strong>Feature/Label hygiene for fraud detectors.</strong>
+<code>attack_mode</code> / <code>correct</code> /
+<code>actual_model</code> / <code>latent_q_*</code> ship in the default
+five files for leaderboard joins; they are <strong>evaluation
+labels</strong>, not public training features. Supervised
+fraud-detection or routing ML that trains on them silently leaks
+supervision. Prefer dropping those columns or joining the optional
+held-out <code>labels.jsonl</code> (full public-pack strip deferred to
+v1.1).</li>
+<li><strong>Adaptive audit &amp; long delist are optional
+knobs</strong>, not claimed SOTA over instantaneous bandits on secondary
+(J), and not primary novelty of this Datasets &amp; Benchmarks
+paper.</li>
+<li><strong>Smoke vs. full boards.</strong> Smoke under
+<code>exports/latest/</code> / top-level <code>results/benchmark/</code>
+is illustrative. Production boards live under
+<code>exports/production/</code> and
+<code>results/benchmark/production/</code> and match
+<code>pi_dense</code> / <code>v6</code> seed-mean tables.</li>
+<li><strong>Primary metrics ownership.</strong> Leaderboard ranking uses
+<code>active_attack_rate</code> + <code>fraud_share</code> only.
+<code>learned_q_*</code> are side columns; immediate-feedback (J)
+(incl. vs PILOT/StageRoute) is secondary and must not be read as the
+primary ranking. Deterrence-method novelty belongs to the companion
+paper.</li>
+</ol>
+<hr />
+<h2 id="conclusion">8. Conclusion</h2>
+<p>We release a <strong>compliance-constrained reasoning-token market
+simulator</strong>—a <strong>generator + protocol + downloadable
+board</strong>, not a new routing method—for procurement under strategic
+fraud and sparse audit feedback. The platform is deliberately
+<em>not</em> a CLOB: it exposes admission, routing, escrow, oversight,
+and feedback trails as a joinable five-file export. Primary leaderboard
+metrics are <strong><code>active_attack_rate</code> +
+<code>fraud_share</code></strong> only; <code>learned_q_*</code> remain
+side columns; immediate-feedback (J) (including comparisons to PILOT /
+StageRoute) is secondary and is <strong>not</strong> the primary
+ranking. Sparse-label regime structure ((^(0.10, 0.12))) is a protocol
+result about bandit collapse under missing labels, not a claim of
+beating PILOT on (J). Deterrence <em>methods</em> stay in the companion
+paper. We invite Datasets &amp; Benchmarks submissions and leaderboard
+entries on T1–T2, with T3 and delist kept as cost/ops appendices, and
+with Feature/Label hygiene enforced for downstream application
+analysis.</p>
+<hr />
+<h2 id="ethics-and-synthetic-data-statement">Ethics and synthetic-data
+statement</h2>
+<p>All market prices, budgets, stakes, corridor fees, and compliance
+rule identifiers are <strong>synthetic</strong>. Jurisdiction labels
+(CN/SG/BR) and rule tags are simplified simulation devices and
+<strong>do not constitute legal advice</strong>. Default runs do not
+call external commercial APIs or require API keys; optional local
+small-model backends and cached Qwen outputs are research fixtures. The
+benchmark is intended for studying procurement, audit, and feedback
+protocols—not for training systems to evade real-world marketplace
+detection. Users building fraud classifiers must respect the
+Feature/Label separation in §4.2 to avoid leakage and overstated
+detection performance.</p>
+<hr />
+<h2 id="appendix-a-schema-field-cheat-sheet">Appendix A — Schema field
+cheat-sheet</h2>
+<p>See <code>docs/DATA_SCHEMA.md</code> for full dictionaries and
+three-row samples. Minimal primary-board row
+(<code>episodes.jsonl</code>):</p>
+<p><code>run_id, seed, a, pi, L, reputation_rounds, active_attack_rate, learned_q_swap, learned_q_theft, fraud_share, J, n_audits, config_hash</code>.</p>
+<h2 id="appendix-b-companion-methods-paper">Appendix B — Companion
+methods paper</h2>
+<p>Cross-cite the deterrence methods paper for theory and for any claim
+that fixed-(a) audits are a <em>methodological</em> contribution beyond
+the benchmark generator. This draft must not absorb that novelty.</p>
+<h2 id="appendix-c-source-artifact-paths">Appendix C — Source artifact
+paths</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Claim / table</th>
+<th>Path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Outline / locked claims</td>
+<td><code>docs/BENCHMARK_PAPER_OUTLINE.md</code></td>
+</tr>
+<tr>
+<td>Schema + Feature/Label</td>
+<td><code>docs/DATA_SCHEMA.md</code></td>
+</tr>
+<tr>
+<td>Dense (^) tables</td>
+<td><code>results/pi_dense/feedback_ablation.md</code>,
+<code>SUMMARY_zh.txt</code></td>
+</tr>
+<tr>
+<td>Immediate-feedback (J) ranking</td>
+<td><code>results/joint_objective.md</code></td>
+</tr>
+<tr>
+<td>Delist appendix</td>
+<td><code>results/v6_delist.md</code>, <code>v6_delist.json</code></td>
+</tr>
+<tr>
+<td>Adaptive appendix</td>
+<td><code>results/v6_adaptive_audit.md</code>,
+<code>v6_adaptive_audit.json</code></td>
+</tr>
+<tr>
+<td>v6 claim-safe summary</td>
+<td><code>results/v6_SUMMARY_zh.txt</code></td>
+</tr>
+<tr>
+<td>Production export (authoritative)</td>
+<td><code>exports/production/*.jsonl</code></td>
+</tr>
+<tr>
+<td>Production T1–T3</td>
+<td><code>results/benchmark/production/</code></td>
+</tr>
+<tr>
+<td>Production summary</td>
+<td><code>results/benchmark/PRODUCTION_EXPORT_zh.txt</code></td>
+</tr>
+<tr>
+<td>Pytest freeze</td>
+<td><code>results/benchmark/pytest_after_draft.txt</code> (76
+passed)</td>
+</tr>
+<tr>
+<td>Smoke export (illustrative only)</td>
+<td><code>exports/latest/*.jsonl</code></td>
+</tr>
+<tr>
+<td>Smoke T1–T3 (illustrative only)</td>
+<td><code>results/benchmark/</code> (top-level)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="references">References</h2>
+<p>Bibliography source of truth: <a
+href="refs.bib"><code>docs/refs.bib</code></a>. Pandoc-style citations
+<code>[@key]</code> in §2 render from that file.</p>
+<p><strong>Key → short title map</strong> (human-readable; bib is
+authoritative):</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Key</th>
+<th>Entry</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>becker1968crime</code></td>
+<td>Becker (1968), Crime and Punishment</td>
+</tr>
+<tr>
+<td><code>avenhaus2002inspection</code></td>
+<td>Avenhaus, von Stengel &amp; Zamir (2002), Inspection Games</td>
+</tr>
+<tr>
+<td><code>daughety2008communicating</code></td>
+<td>Daughety &amp; Reinganum (2008), Communicating Quality</td>
+</tr>
+<tr>
+<td><code>bester2001strategic</code></td>
+<td>Bester &amp; Ritzberger (2001), Strategic Pricing… (lineage)</td>
+</tr>
+<tr>
+<td><code>bester2021signaling</code></td>
+<td>Bester, Lang &amp; Li (2021), Signaling versus Auditing</td>
+</tr>
+<tr>
+<td><code>hanson2003combinatorial</code></td>
+<td>Hanson (2003), Combinatorial Information Market Design</td>
+</tr>
+<tr>
+<td><code>wolfers2004prediction</code></td>
+<td>Wolfers &amp; Zitzewitz (2004), Prediction Markets</td>
+</tr>
+<tr>
+<td><code>uma2024optimistic</code></td>
+<td>UMA docs — How Does UMA Resolve Prediction Markets?</td>
+</tr>
+<tr>
+<td><code>polymarket2024resolution</code></td>
+<td>Polymarket docs — Resolution</td>
+</tr>
+<tr>
+<td><code>panda2025pilot</code></td>
+<td>Panda et al. (2025), Adaptive LLM Routing… (PILOT; EMNLP
+Findings)</td>
+</tr>
+<tr>
+<td><code>li2026stageroute</code></td>
+<td>Li &amp; Li (2026), Near-Optimal… Streaming LLMs (StageRoute;
+ICLR)</td>
+</tr>
+<tr>
+<td><code>iosco2009surveillance</code></td>
+<td>IOSCO (2009), Approaches to Market Surveillance…</td>
+</tr>
+<tr>
+<td><code>cumming2008surveillance</code></td>
+<td>Cumming &amp; Johan (2008), Global Market Surveillance</td>
+</tr>
+<tr>
+<td><code>cumming2019capital</code></td>
+<td>Cumming &amp; Johan (2019), Capital-Market Effects… (related)</td>
+</tr>
+<tr>
+<td><code>aws2024compute_sla</code></td>
+<td>AWS Compute SLA (industry-practice placeholder)</td>
+</tr>
+</tbody>
+</table>
+<p>Rendered from <code>docs/refs.bib</code>.</p>
+<hr />
+<h2 id="camera-ready-checklist">Camera-ready checklist</h2>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />BibTeX in
+<code>docs/refs.bib</code>; Related Work uses pandoc
+<code>[@key]</code></label></li>
+<li><label><input type="checkbox" checked="" />Abstract primary metrics
+= <code>active_attack_rate</code> + <code>fraud_share</code>;
+<code>learned_q_*</code> side columns; no “beat PILOT on (J)”
+ranking</label></li>
+<li><label><input type="checkbox" checked="" />Production boards cited
+(<code>exports/production/</code>,
+<code>results/benchmark/production/</code>);
+<code>exports/latest/</code> illustrative only</label></li>
+<li><label><input type="checkbox" checked="" />Companion methods paper
+kept separate (no deterrence-method novelty absorbed here)</label></li>
+<li><label><input type="checkbox" checked="" />Figure 1 (five layers) +
+Figure 2 ((^) crossover from <code>pi_dense</code> / production
+T2)</label></li>
+<li><label><input type="checkbox" checked="" />Schema sample table +
+Feature/Label pointer (<code>DATA_SCHEMA.md</code>)</label></li>
+<li><label><input type="checkbox" checked="" />Reproducibility one-pager
+(§6.5): export commands, seed, <code>config_hash</code>, test count
+(76)</label></li>
+<li><label><input type="checkbox" checked="" />Limitations expanded
+(multi-buyer, non-CLOB, single auditor, Feature/Label hygiene, synthetic
+jurisdictions)</label></li>
+<li><label><input type="checkbox" />Final venue formatting /
+camera-ready PDF styling; confirm StageRoute ICLR 2026 pagination when
+proceedings land</label></li>
+</ul>
+<p><em>Draft v0.1 camera-ready polish 2026-11-08 (Asia/Shanghai):
+Fig.1/Fig.2; claim sweep; repro one-pager; schema samples; production
+paths authoritative.</em></p>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="list">
+<div id="ref-aws2024compute_sla" class="csl-entry" role="listitem">
+Amazon Web Services. 2024. <em>Amazon Compute Service Level
+Agreement</em>. AWS Legal. <a
+href="https://aws.amazon.com/compute/sla/">https://aws.amazon.com/compute/sla/</a>.
+</div>
+<div id="ref-avenhaus2002inspection" class="csl-entry" role="listitem">
+Avenhaus, Rudolf, Bernhard von Stengel, and Shmuel Zamir. 2002.
+<span>“Inspection Games.”</span> Chap. 51 in <em>Handbook of Game Theory
+with Economic Applications</em>, edited by Robert J. Aumann and Sergiu
+Hart, vol. 3. Elsevier. <a
+href="https://doi.org/10.1016/S1574-0005(02)03014-X">https://doi.org/10.1016/S1574-0005(02)03014-X</a>.
+</div>
+<div id="ref-becker1968crime" class="csl-entry" role="listitem">
+Becker, Gary S. 1968. <span>“Crime and Punishment: An Economic
+Approach.”</span> <em>Journal of Political Economy</em> 76 (2): 169–217.
+<a
+href="https://doi.org/10.1086/259394">https://doi.org/10.1086/259394</a>.
+</div>
+<div id="ref-bester2021signaling" class="csl-entry" role="listitem">
+Bester, Helmut, Matthias Lang, and Jianpei Li. 2021. <span>“Signaling
+Versus Auditing.”</span> <em>The RAND Journal of Economics</em> 52 (4):
+859–83. <a
+href="https://doi.org/10.1111/1756-2171.12394">https://doi.org/10.1111/1756-2171.12394</a>.
+</div>
+<div id="ref-cumming2008surveillance" class="csl-entry" role="listitem">
+Cumming, Douglas, and Sofia Johan. 2008. <span>“Global Market
+Surveillance.”</span> <em>American Law and Economics Review</em> 10 (2):
+454–506. <a
+href="https://doi.org/10.1093/aler/ahn009">https://doi.org/10.1093/aler/ahn009</a>.
+</div>
+<div id="ref-daughety2008communicating" class="csl-entry"
+role="listitem">
+Daughety, Andrew F., and Jennifer F. Reinganum. 2008.
+<span>“Communicating Quality: A Unified Model of Disclosure and
+Signalling.”</span> <em>The RAND Journal of Economics</em> 39 (4):
+973–89. <a
+href="https://doi.org/10.1111/j.1756-2171.2008.00046.x">https://doi.org/10.1111/j.1756-2171.2008.00046.x</a>.
+</div>
+<div id="ref-hanson2003combinatorial" class="csl-entry" role="listitem">
+Hanson, Robin. 2003. <span>“Combinatorial Information Market
+Design.”</span> <em>Information Systems Frontiers</em> 5 (1): 107–19. <a
+href="https://doi.org/10.1023/A:1022058209073">https://doi.org/10.1023/A:1022058209073</a>.
+</div>
+<div id="ref-iosco2009surveillance" class="csl-entry" role="listitem">
+International Organization of Securities Commissions. 2009.
+<em>Approaches to Market Surveillance in Emerging Markets</em>. Final
+Report No. IOSCOPD313. Emerging Markets Committee of IOSCO. <a
+href="https://www.iosco.org/library/pubdocs/pdf/IOSCOPD313.pdf">https://www.iosco.org/library/pubdocs/pdf/IOSCOPD313.pdf</a>.
+</div>
+<div id="ref-li2026stageroute" class="csl-entry" role="listitem">
+Li, Shaoang, and Jian Li. 2026. <span>“Near-Optimal Online Deployment
+and Routing for Streaming <span>LLM</span>s.”</span> <em>The Fourteenth
+International Conference on Learning Representations</em>. <a
+href="https://openreview.net/forum?id=JJ3cwtUxzo">https://openreview.net/forum?id=JJ3cwtUxzo</a>.
+</div>
+<div id="ref-panda2025pilot" class="csl-entry" role="listitem">
+Panda, Pranoy, Raghav Magazine, Chaitanya Devaguptapu, Sho Takemori, and
+Vishal Sharma. 2025. <span>“Adaptive <span>LLM</span> Routing Under
+Budget Constraints.”</span> <em>Findings of the Association for
+Computational Linguistics: EMNLP 2025</em> (Suzhou, China), November,
+23934–49. <a
+href="https://doi.org/10.18653/v1/2025.findings-emnlp.1301">https://doi.org/10.18653/v1/2025.findings-emnlp.1301</a>.
+</div>
+<div id="ref-polymarket2024resolution" class="csl-entry"
+role="listitem">
+Polymarket. 2024. <em>Resolution</em>. Polymarket Documentation. <a
+href="https://docs.polymarket.com/concepts/resolution">https://docs.polymarket.com/concepts/resolution</a>.
+</div>
+<div id="ref-uma2024optimistic" class="csl-entry" role="listitem">
+UMA Protocol. 2024. <em>How Does <span>UMA</span> Resolve Prediction
+Markets?</em> UMA Documentation. <a
+href="https://docs.uma.xyz/protocol-overview/how-does-uma-resolve-prediction-markets">https://docs.uma.xyz/protocol-overview/how-does-uma-resolve-prediction-markets</a>.
+</div>
+<div id="ref-wolfers2004prediction" class="csl-entry" role="listitem">
+Wolfers, Justin, and Eric Zitzewitz. 2004. <span>“Prediction
+Markets.”</span> <em>Journal of Economic Perspectives</em> 18 (2):
+107–26. <a
+href="https://doi.org/10.1257/0895330041371321">https://doi.org/10.1257/0895330041371321</a>.
+</div>
+</div>
+</body>
+</html>

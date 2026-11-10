@@ -1,0 +1,49 @@
+# 稠密 π 扫描（L=0）— D3 相对合规 bandit 的 J 临界点
+
+设定：configs/pi_dense.yaml，experiment F；delays=[0]；
+reveal_probs=[1.0, 0.2, 0.18, 0.15, 0.12, 0.10, 0.08, 0.06, 0.05, 0.0]；
+policies=[PILOT+compliance, StageRoute+compliance, D3]；seeds=[0,1,2]；
+budget×2.0；卖方 learning swap+theft。结果目录 results/pi_dense/（未改动旧 results/feedback_ablation.*）。
+
+主张口径（不变）：威慑（D3 压低 q*）vs 规避（bandit 躲欺诈）；不主张即时反馈下 J 全面超过 PILOT/StageRoute。
+
+## L=0 汇总表（均值，seeds 0/1/2）
+
+| π    | PILOT J | StageRoute J | D3 J  | 最优 bandit | bandit J | ΔJ=D3−best | D3 q_swap/q_theft | 最优 bandit 下 q_swap/q_theft |
+|------|---------|--------------|-------|-------------|---------|------------|-------------------|-------------------------------|
+| 1.0  | 0.789   | 0.811        | 0.766 | StageRoute  | 0.811   | −0.045     | 0.08 / 0.08       | 0.80 / 0.77                   |
+| 0.20 | 0.780   | 0.803        | 0.766 | StageRoute  | 0.803   | −0.037     | 0.08 / 0.08       | 0.64 / 0.61                   |
+| 0.18 | 0.763   | 0.799        | 0.766 | StageRoute  | 0.799   | −0.033     | 0.08 / 0.08       | 0.64 / 0.61                   |
+| 0.15 | 0.772   | 0.798        | 0.766 | StageRoute  | 0.798   | −0.031     | 0.08 / 0.08       | 0.64 / 0.61                   |
+| 0.12 | 0.729   | 0.789        | 0.766 | StageRoute  | 0.789   | −0.023     | 0.08 / 0.08       | 0.80 / 0.77                   |
+| 0.10 | 0.726   | 0.747        | 0.766 | StageRoute  | 0.747   | +0.019     | 0.08 / 0.08       | 0.95 / 0.94                   |
+| 0.08 | 0.699   | 0.737        | 0.766 | StageRoute  | 0.737   | +0.029     | 0.08 / 0.08       | 0.95 / 0.94                   |
+| 0.06 | 0.652   | 0.714        | 0.766 | StageRoute  | 0.714   | +0.052     | 0.08 / 0.08       | 0.95 / 0.94                   |
+| 0.05 | 0.673   | 0.681        | 0.766 | StageRoute  | 0.681   | +0.085     | 0.08 / 0.08       | 0.95 / 0.94                   |
+| 0.0  | −0.030  | 0.585        | 0.766 | StageRoute  | 0.585   | +0.181     | 0.08 / 0.08       | 0.95 / 0.94                   |
+
+（ΔJ 与 feedback_ablation.md 中「D3 advantage」表一致：π=0.15 处为 −0.031。）
+
+## 临界区间
+
+- 网格上 ΔJ≥0 的最大 π：0.10（ΔJ≈+0.019，D3 胜）
+- 网格上 ΔJ<0 的最小 π：0.12（ΔJ≈−0.023，StageRoute 胜）
+- **符号翻转区间：π\* ∈ (0.10, 0.12)**
+  （即揭示概率大约 10%–12% 之间，D3 在 J 上从落后变为领先最优合规 bandit。）
+
+此前稀疏点：π=0.20 时 ΔJ≈−0.037；π=0.05 时 ΔJ≈+0.085，与本次稠密扫描一致。
+
+## 威慑是否依赖反馈？
+
+否。全网格上 D3 的 q_swap / q_theft **恒为 0.08 / 0.08**（与 π 无关），因为审计独立于 outcome feedback。
+合规 bandit 从不压低 q：即时反馈时 StageRoute 约 0.64–0.80；π≤0.10 时升到 ≈0.95 / 0.94——它们靠规避欺诈卖家，不是威慑。
+
+## 产物
+
+- results/pi_dense/feedback_ablation.md
+- results/pi_dense/feedback_ablation.json
+- results/pi_dense/feedback_ablation.png
+- results/pi_dense/SUMMARY_zh.txt（本文件）
+- 旧 results/feedback_ablation.* 未覆盖。
+
+失败：无。

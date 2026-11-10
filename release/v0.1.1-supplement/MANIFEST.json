@@ -1,0 +1,51 @@
+{
+  "files": [
+    {
+      "path": "REPRODUCE.md",
+      "sha256": "cd6f8b7fd8d968d0341f820b19753a4a379a0ce6e39dcf154691074a4bea9e99",
+      "size_bytes": 5187
+    },
+    {
+      "path": "cache/CACHE_MANIFEST.json",
+      "sha256": "f7a12846a405db2e12d232e5959fa367a9152efd4c971149b4c965e5512056cd",
+      "size_bytes": 494
+    },
+    {
+      "path": "cache/llm_outputs.jsonl",
+      "sha256": "64166a393a96ad43028c4c424ed0a83190c67767972695d55ecfa125d9df5d66",
+      "size_bytes": 304242
+    },
+    {
+      "path": "results/benchmark/production/T2_episodes.jsonl",
+      "sha256": "119c8830a547082c4d5157c9fb6acb1a397c68fd915e940202843722a0bbe53f",
+      "size_bytes": 35135
+    },
+    {
+      "path": "results/pi_dense/SUMMARY_zh.txt",
+      "sha256": "e0a8520d13d70fd8d9776b5ba993a4d986a38028f3e8eb9321406e6e9b3a558c",
+      "size_bytes": 3277
+    },
+    {
+      "path": "results/pi_dense/experiments_summary.md",
+      "sha256": "d38d28193037101f99d24fc56e737d85ed6692129b9151f06024927106853c7b",
+      "size_bytes": 9915
+    },
+    {
+      "path": "results/pi_dense/feedback_ablation.json",
+      "sha256": "b018c137577b22844520043f4745a4c06daf534e572f6cddee76d9fa3283347c",
+      "size_bytes": 47525
+    },
+    {
+      "path": "results/pi_dense/feedback_ablation.md",
+      "sha256": "d0a9ca7aae24001d8c437d41e98680c08590eb54c8d8e691639036a843f29803",
+      "size_bytes": 7889
+    },
+    {
+      "path": "results/pi_dense/feedback_ablation.png",
+      "sha256": "a5ccc001001a2952583779a4c44442ed7738f6f8f08a44734f58b1c1c1bfc2ee",
+      "size_bytes": 129196
+    }
+  ],
+  "staging": true,
+  "not_a_release": true
+}

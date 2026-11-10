@@ -1,0 +1,24 @@
+{
+  "T2": {
+    "task": "T2",
+    "path": "results/_smoke/fix2_pre/t2/T2_episodes.jsonl",
+    "meta": {
+      "pi_grid": [
+        1.0
+      ],
+      "crossover": {
+        "pi_star_J": 1.0,
+        "pi_star_J_interval": null,
+        "note": "D3 J >= best bandit at/below this \u03c0 on grid; no sign-flip bracket (coarse or all-win)"
+      },
+      "delta_J_by_pi": [
+        {
+          "pi": 1.0,
+          "D3_J": 0.8490990990990991,
+          "best_bandit_J": 0.7916666666666666,
+          "delta_J": 0.057432432432432456
+        }
+      ]
+    }
+  }
+}

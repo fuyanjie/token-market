@@ -1,0 +1,58 @@
+# v1.0 scale configuration (docs/PROTOCOL_v1.0.md §2, §3, §5, §6). Run with scripts/run_v1.py.
+# Inherits the v0.1 production benchmark (buyers, models, compliance rules, corridors, audit/penalty settings,
+# n_tasks=480, n_rounds=48, budget_multiplier=2.0, learning seller). The 3-seller `sellers:` list inherited from
+# default.yaml is REPLACED by the programmatic roster below (tokenmarket/roster.py) at run time.
+extends: ../benchmark/production.yaml
+
+run:
+  seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+  n_tasks: 480
+  n_rounds: 48                      # protocol §2: unchanged
+
+market:
+  budget_multiplier: 2.0
+  compliance_filter: true           # §6 A2: false = no hard compliance filter + audit-only gateway for EVERY method
+  feedback: {mode: immediate, delay_L: 0, reveal_prob: 1.0}   # run_v1.py sets mode/reveal_prob per π
+  audited:
+    audit_rate: 0.1
+    audit_rule: fixed               # fixed | random | risk_adaptive (tokenmarket/audit_v1.py); set per method
+    risk_adaptive: {a_min: 0.05, a_max: 0.5, prior_a: 1.0, prior_b: 9.0}
+    reputation_rounds: 0
+    adaptive_audit: false
+    escrow: false
+  pilot_v1: {alpha: 2.0, select: ucb, n_bins: 4, pretrain_iters: 400}   # alpha = paper's best (grid {1,1.5,2,5,10})
+  stageroute_v1: {gamma: 0.1, budget_scale: 1.0, n_stages: null, m_max: null}  # null: K=round(T^1/3), M=ceil(N^2/3)
+
+fraud:
+  strategy: learning
+  attack_modes_enabled: [swap, theft]   # global default; every strategic roster seller overrides it
+  downgrade_min_difficulty: 3           # selective downgrade only on tasks with difficulty >= 3 (hardest synthetic)
+  learning: {learner: egreedy, epsilon: 0.1, eta: 1.0, exp3_gamma: 0.1, fp_temperature: 0.1}
+
+roster:
+  seed: 20261110
+  resample_per_seed: false          # true: redraw roster per run seed (recommended for T4; see tokenmarket/roster.py)
+  n_honest: 31
+  capacity_per_round: 2             # binding (10 tasks/round, up to 3 purchases/task): demand spreads over the roster
+  honest_models:                    # price_per_1k ranges are synthetic market units (cf. configs/v1.0/prices.yaml)
+    - {model: Qwen/Qwen2.5-1.5B-Instruct, backend: local_hf, weight: 0.5, price_per_1k: [0.17, 0.24], cost_ratio: [0.5, 0.7]}
+    - {model: Qwen/Qwen2.5-0.5B-Instruct, backend: local_hf, weight: 0.25, price_per_1k: [0.08, 0.12], cost_ratio: [0.4, 0.6]}
+    - {model: sim-fast-mock, backend: mock, weight: 0.25, price_per_1k: [0.05, 0.08], cost_ratio: [0.4, 0.6]}
+  strategic:                        # claim 1.5B, cheap model 0.5B (same economics as v0.1 seller_sg)
+    claimed_model: Qwen/Qwen2.5-1.5B-Instruct
+    cheap_model: Qwen/Qwen2.5-0.5B-Instruct
+    backend: local_hf
+    price_per_1k: [0.15, 0.21]      # overlaps the honest 1.5B range [0.17, 0.24] (lower on average)
+    honest_cost_per_1k: 0.12
+    cheap_cost_per_1k: 0.05
+    groups:
+      - {attack_modes: [swap], count: 3}
+      - {attack_modes: [theft], count: 3}
+      - {attack_modes: [downgrade], count: 3}
+  # jurisdictions / flags: tokenmarket/roster.py defaults (CN/SG/BR latency as v0.1 ±20%; flag probabilities)
+
+v1:
+  # 0, 0.02, ..., 0.30 (16 values) + 0.11 + 0.5 + 1.0
+  pi_grid: [0.0, 0.02, 0.04, 0.06, 0.08, 0.10, 0.11, 0.12, 0.14, 0.16, 0.18, 0.20, 0.22, 0.24, 0.26, 0.28, 0.30, 0.5, 1.0]
+  methods: [pilot, stageroute, cheapest_fixed, strongest_fixed, random_audit, fixed_audit_a0.05, fixed_audit_a0.10,
+            fixed_audit_a0.20, risk_adaptive_audit]

@@ -1,0 +1,47 @@
+{
+ "config": "configs/v1.0/scale.yaml",
+ "seeds": [
+  0,
+  1
+ ],
+ "pi_grid": [
+  1.0
+ ],
+ "methods": [
+  "strongest_fixed"
+ ],
+ "labels": {
+  "strongest_fixed": "strongest fixed router (highest listed quality)"
+ },
+ "policies": {
+  "strongest_fixed": "single_best_compliant"
+ },
+ "learner": "egreedy",
+ "compliance_filter": true,
+ "resample_roster": true,
+ "backend_override": "mock",
+ "n_tasks": 192,
+ "n_rounds": 48,
+ "n_rows": 2,
+ "elapsed_s": 0.06,
+ "argv": [
+  "--seeds",
+  "0",
+  "1",
+  "--pi-grid",
+  "1.0",
+  "--methods",
+  "strongest_fixed",
+  "--resample-roster",
+  "--backend-override",
+  "mock",
+  "--n-tasks",
+  "192",
+  "--n-rounds",
+  "48",
+  "--out",
+  "results/_smoke/t4_smoke/runs",
+  "--log-dir",
+  "results/_smoke/t4_smoke/logs"
+ ]
+}

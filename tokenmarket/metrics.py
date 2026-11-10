@@ -29,7 +29,7 @@ def run_metrics(records: List[Dict], buyers, seller_ids: List[str], rep, policy:
     n_tasks = len(finals)
     swapped = [r for r in served if r["claimed_model"] != r["actual_model"]]
     # v4: token theft = billed materially above actually generated tokens; attacked = swapped OR theft
-    thefts = [r for r in served if r.get("attack_mode") in ("theft", "both")]
+    thefts = [r for r in served if r.get("attack_mode") in ("theft", "both", "downgrade+theft")]
     attacked = [r for r in served if r.get("attack_mode", "swap" if r["claimed_model"] != r["actual_model"]
                                            else "none") not in ("none", None)]
 
@@ -66,24 +66,29 @@ def run_metrics(records: List[Dict], buyers, seller_ids: List[str], rep, policy:
     overpay = sum(r["price_per_1k"] * (r.get("billed_tokens", r["reasoning_tokens"]) - r["reasoning_tokens"])
                   / 1000.0 for r in served)
     n_viol = sum(1 for r in served if r["violation"])
+    billed_all = sum(r.get("billed_tokens", r["reasoning_tokens"]) for r in served)
+    billed_att = sum(r.get("billed_tokens", r["reasoning_tokens"]) for r in attacked)
     return {
         # v4 joint-objective ingredients
         "compliance_violation_rate": n_viol / n_tasks if n_tasks else 0.0,   # per TASK
         "fraud_share": len(attacked) / len(served) if served else 0.0,       # per PURCHASE (swap OR theft)
+        "E_tok": billed_att / billed_all if billed_all else 0.0,           # v1.0: per BILLED TOKEN (secondary E)
         "theft_share": len(thefts) / len(served) if served else 0.0,
         "thefts_served": len(thefts),
         "thefts_detected": sum(1 for r in served if r.get("theft_detected")),
         "length_audits": sum(1 for r in served if r.get("audit_type") in ("length", "both")),
         "identity_audits": sum(1 for r in served if r.get("audit_type") in ("identity", "both")),
         "attacks_detected": sum(1 for r in served if r["swap_detected"] or r.get("theft_detected")),
-        "total_billed_tokens": sum(r.get("billed_tokens", r["reasoning_tokens"]) for r in served),
+        "total_billed_tokens": billed_all,
         "total_actual_tokens": sum(r["reasoning_tokens"] for r in served),
         "buyer_overpayment": overpay,                                          # price * (billed - actual), excl. fee
         "mean_theft_inflation": _mean(r["token_inflation"] for r in thefts),
         "theft_accuracy": _mean(1.0 if r["correct"] else 0.0 for r in thefts),
         "attack_mode_counts": {m: sum(1 for r in served if r.get("attack_mode") == m)
-                               for m in ("none", "swap", "theft", "both")},
-        "seller_theft_rate": {s: _mean(1.0 if r.get("attack_mode") in ("theft", "both") else 0.0
+                               for m in ("none", "swap", "theft", "both")
+                               + tuple(x for x in ("downgrade", "downgrade+theft")      # v1.0, only when present
+                                       if any(r.get("attack_mode") == x for r in served))},
+        "seller_theft_rate": {s: _mean(1.0 if r.get("attack_mode") in ("theft", "both", "downgrade+theft") else 0.0
                                        for r in served if r["seller_id"] == s) for s in seller_ids},
         "n_tasks": n_tasks,
         "n_purchases": len(served),

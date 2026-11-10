@@ -17,14 +17,21 @@ from typing import Callable, List, Optional, Sequence
 
 HARD_POLICIES = ("single_cheapest_compliant", "single_best_compliant", "cascade_compliant", "vote_k_compliant",
                  # v3: literature baselines + compliance filter, and OUR audited policy (D3)
-                 "pilot_compliant", "stageroute_compliant", "audited_compliance_cascade")
+                 "pilot_compliant", "stageroute_compliant", "audited_compliance_cascade",
+                 # v1.0: faithful PILOT / StageRoute reimplementations + compliance filter (baselines.py)
+                 "pilot_v1_compliant", "stageroute_v1_compliant")
 BASELINE_POLICIES = ("compliance_unaware_cheapest",
                      # v3: our simplified reimplementations of PILOT / StageRoute (no compliance filter)
-                     "pilot", "stageroute")
+                     "pilot", "stageroute",
+                     # v1.0 A2: D3 (fixed-rate audit reference baseline) WITHOUT the hard compliance filter
+                     "audited_cascade_unfiltered",
+                     # v1.0: faithful PILOT / StageRoute without the compliance filter
+                     "pilot_v1", "stageroute_v1")
 POLICIES = HARD_POLICIES + BASELINE_POLICIES
 SINGLE_POLICIES = ("single_cheapest_compliant", "single_best_compliant", "compliance_unaware_cheapest")
-ROUTER_POLICIES = ("pilot", "pilot_compliant", "stageroute", "stageroute_compliant")
-AUDITED_POLICIES = ("audited_compliance_cascade",)
+ROUTER_POLICIES = ("pilot", "pilot_compliant", "stageroute", "stageroute_compliant",
+                   "pilot_v1", "pilot_v1_compliant", "stageroute_v1", "stageroute_v1_compliant")
+AUDITED_POLICIES = ("audited_compliance_cascade", "audited_cascade_unfiltered")
 
 
 def is_hard(policy: str) -> bool:
@@ -86,7 +93,7 @@ def run_policy(policy: str, cands: List, price: Callable, exp_cost: Callable, qu
             return Decision(None, [], "budget")
         return Decision(p.answer if p.served else None, [p], "single")
 
-    if policy == "audited_compliance_cascade":   # same control flow as cascade, quality = audited trust
+    if policy in AUDITED_POLICIES:   # same control flow as cascade, quality = audited trust
         policy = "cascade_compliant"
         cfg_market = dict(cfg_market, cascade=cfg_market.get("audited", {}).get("cascade",
                                                                                cfg_market.get("cascade", {})))

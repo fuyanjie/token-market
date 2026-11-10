@@ -39,12 +39,22 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 
 STRATEGIES = ("static", "analytic", "logit", "learning")
-ATTACK_MODES = ("none", "swap", "theft", "both")
+# v1.0: + selective downgrade (serve the cheap model ONLY on hard tasks, difficulty >= downgrade_min_difficulty).
+# A purchase is never both swapped and downgraded (a swap draw wins), so the modes stay disjoint.
+ATTACK_MODES = ("none", "swap", "theft", "both", "downgrade", "downgrade+theft")
+THEFT_MODES = ("theft", "both", "downgrade+theft")
+SWAP_MODES = ("swap", "both")
+DOWNGRADE_MODES = ("downgrade", "downgrade+theft")
+LEARNERS = ("egreedy", "hedge", "exp3", "fictitious_play")
 AUDIT_TYPES = ("none", "identity", "length", "both")
 _CELLS = ((False, False), (True, False), (False, True), (True, True))   # (swap, theft) per purchase
+# v1.0 learning cells (swap, theft, downgrade); the downgrade=False half is _CELLS in the same order
+_CELLS3 = tuple((sw, th, False) for sw, th in _CELLS) + tuple((sw, th, True) for sw, th in _CELLS if not sw)
 
 
-def attack_mode(swapped: bool, theft: bool) -> str:
+def attack_mode(swapped: bool, theft: bool, downgraded: bool = False) -> str:
+    if downgraded and not swapped:
+        return "downgrade+theft" if theft else "downgrade"
     return ATTACK_MODES[int(bool(swapped)) + 2 * int(bool(theft))]
 
 
@@ -150,7 +160,7 @@ class AttackStrategy:
     reputation_loss: float = 0.0
     temperature: float = 0.002        # logit
     grid: List[float] = field(default_factory=lambda: [i / 10 for i in range(11)])
-    learner: str = "egreedy"          # learning: egreedy (default) | hedge
+    learner: str = "egreedy"          # learning: egreedy (default) | hedge | exp3 | fictitious_play (v1.0)
     eta: float = 1.0                  # learning (hedge): step size on profit normalised by `scale`
     epsilon: float = 0.1              # learning: uniform exploration over the grid
     scale: float = 0.01               # learning: typical per-purchase revenue (normalises rewards)
@@ -160,33 +170,72 @@ class AttackStrategy:
     q_theft_static: float = 1.0
     theft_saving: float = 0.0         # expected theft gain per purchase before penalties (analytic / logit)
     detect_prob_length: float = 0.9   # length audit d_length (0 if the buyers' audits do not include it)
+    # v1.0 selective downgrade: serve the cheap model with prob q_downgrade, only on tasks with
+    # difficulty >= downgrade_min_difficulty (detected by the identity check like a swap)
+    downgrade_enabled: bool = False
+    downgrade_min_difficulty: int = 3
+    q_downgrade_static: float = 1.0
+    exp3_gamma: float = 0.1           # learning (exp3): uniform mixing / step size
+    fp_temperature: float = 0.1       # learning (fictitious_play): logit smoothing, in units of `scale`
     q: float = 1.0
     q_theft: float = 0.0
+    q_downgrade: float = 0.0
     history: List[float] = field(default_factory=list)         # q_swap played per epoch
     history_theft: List[float] = field(default_factory=list)   # q_theft played per epoch
-    # learning state: realised profit sums / counts per (swapped, theft) cell
-    _sum: Dict[Tuple[bool, bool], float] = field(default_factory=dict)
-    _n: Dict[Tuple[bool, bool], int] = field(default_factory=dict)
-    _ep_n: Dict[Tuple[bool, bool], int] = field(default_factory=dict)
+    history_downgrade: List[float] = field(default_factory=list)   # v1.0: q_downgrade played per epoch
+    # learning state: realised profit sums / counts per (swapped, theft, downgraded) cell
+    _sum: Dict[Tuple[bool, bool, bool], float] = field(default_factory=dict)
+    _n: Dict[Tuple[bool, bool, bool], int] = field(default_factory=dict)
+    _ep_n: Dict[Tuple[bool, bool, bool], int] = field(default_factory=dict)
     _logw: List[float] = field(default_factory=list)
-    _pairs: List[Tuple[float, float]] = field(default_factory=list)
+    _pairs: List[Tuple[float, float, float]] = field(default_factory=list)
+    _n_hard: int = 0                  # v1.0: purchases on downgrade-eligible (hard) tasks
+    _n_all: int = 0
+    _arm: Optional[int] = None        # exp3: arm played this epoch and its probability
+    _arm_p: float = 1.0
+    _ep_profit: float = 0.0
+    _ep_count: int = 0
 
     def __post_init__(self):
         if self.kind not in STRATEGIES:
             raise ValueError(f"unknown attack strategy {self.kind}")
+        if self.learner not in LEARNERS:
+            raise ValueError(f"unknown seller learner {self.learner}")
         gs = list(self.grid) if self.swap_enabled else [0.0]
         gt = list(self.grid) if self.theft_enabled else [0.0]
-        self._pairs = [(qs, qt) for qs in gs for qt in gt]
+        gd = list(self.grid) if self.downgrade_enabled else [0.0]
+        self._pairs = [(qs, qt, qd) for qs in gs for qt in gt for qd in gd]
         self._logw = [0.0] * len(self._pairs)
-        self._sum = {c: 0.0 for c in _CELLS}
-        self._n = {c: 0 for c in _CELLS}
-        self._ep_n = {c: 0 for c in _CELLS}
+        self._sum = {c: 0.0 for c in _CELLS3}
+        self._n = {c: 0 for c in _CELLS3}
+        self._ep_n = {c: 0 for c in _CELLS3}
         if self.kind == "static":
-            self.q = self.q_static if self.swap_enabled else 0.0
-            self.q_theft = self.q_theft_static if self.theft_enabled else 0.0
+            self._set_static()
         else:
             self.q = 0.5 if self.swap_enabled else 0.0
             self.q_theft = 0.5 if self.theft_enabled else 0.0
+            self.q_downgrade = 0.5 if self.downgrade_enabled else 0.0
+
+    def _set_static(self):
+        self.q = self.q_static if self.swap_enabled else 0.0
+        self.q_theft = self.q_theft_static if self.theft_enabled else 0.0
+        self.q_downgrade = self.q_downgrade_static if self.downgrade_enabled else 0.0
+
+    def _set(self, arm: Tuple[float, float, float]):
+        self.q, self.q_theft, self.q_downgrade = arm
+
+    def can_downgrade(self, difficulty) -> bool:
+        return self.downgrade_enabled and int(difficulty) >= self.downgrade_min_difficulty
+
+    def note_task(self, difficulty) -> None:
+        """v1.0: track the share of this seller's purchases that are downgrade-eligible (hard)."""
+        if self.downgrade_enabled:
+            self._n_all += 1
+            self._n_hard += int(int(difficulty) >= self.downgrade_min_difficulty)
+
+    @property
+    def hard_share(self) -> float:
+        return self._n_hard / self._n_all if self._n_all else 0.5
 
     # ---------------------------------------------------------------- analytic quantities
     def gain(self) -> float:
@@ -196,55 +245,123 @@ class AttackStrategy:
         return swap_gain(self.theft_saving, self.audit_rate, self.detect_prob_length, self.penalty,
                          self.reputation_loss)
 
-    def _cells(self):
-        return [c for c in _CELLS if (self.swap_enabled or not c[0]) and (self.theft_enabled or not c[1])]
+    def gain_downgrade(self) -> float:
+        """Per downgrade-eligible purchase: same saving / detection as a swap (identity check)."""
+        return self.gain()
 
-    def mean_profit(self, swapped: bool, theft: bool = False) -> Optional[float]:
-        c = (bool(swapped), bool(theft))
+    def _cells(self):
+        return [c for c in _CELLS3 if (self.swap_enabled or not c[0]) and (self.theft_enabled or not c[1])
+                and (self.downgrade_enabled or not c[2])]
+
+    def mean_profit(self, swapped: bool, theft: bool = False, downgraded: bool = False) -> Optional[float]:
+        c = (bool(swapped), bool(theft), bool(downgraded))
         return self._sum[c] / self._n[c] if self._n[c] else None
 
-    def _reward(self, qs: float, qt: float, means: Dict) -> float:
-        """Estimated per-purchase profit of playing (qs, qt): bilinear in (qs, qt)."""
+    def _reward(self, qs: float, qt: float, means: Dict, qd: float = 0.0) -> float:
+        """Estimated per-purchase profit of playing (qs, qt[, qd]): multilinear in the attack probabilities.
+        A downgrade happens only on a hard task the seller did not swap, so its effective weight is
+        (1 - qs) * hard_share * qd (exactly 0 when downgrade is disabled: then this is the v4 bilinear reward)."""
+        hd = self.hard_share * qd if qd else 0.0
         r = 0.0
-        for (sw, th) in _CELLS:
-            w = (qs if sw else 1 - qs) * (qt if th else 1 - qt)
+        for (sw, th, dg) in _CELLS3:
+            if dg:
+                w = (1 - qs) * hd * (qt if th else 1 - qt)
+            else:
+                w = (qs if sw else 1 - qs) * (qt if th else 1 - qt)
+                if hd and not sw:
+                    w *= 1 - hd
             if w:
-                r += w * means[(sw, th)]
+                r += w * means[(sw, th, dg)]
         return r
+
+    def _arm_reward(self, p, means) -> float:
+        return self._reward(p[0], p[1], means, p[2])
 
     # ---------------------------------------------------------------- epochs
     def start_epoch(self, rng: random.Random) -> float:
-        """Choose (q_swap, q_theft) for the next epoch (round); returns q_swap."""
+        """Choose (q_swap, q_theft, q_downgrade) for the next epoch (round); returns q_swap."""
         if self.kind == "static":
-            self.q = self.q_static if self.swap_enabled else 0.0
-            self.q_theft = self.q_theft_static if self.theft_enabled else 0.0
+            self._set_static()
         elif self.kind == "analytic":
             self.q = (1.0 if self.gain() > 0 else 0.0) if self.swap_enabled else 0.0
             self.q_theft = (1.0 if self.gain_theft() > 0 else 0.0) if self.theft_enabled else 0.0
+            self.q_downgrade = (1.0 if self.gain_downgrade() > 0 else 0.0) if self.downgrade_enabled else 0.0
         elif self.kind == "logit":
             self.q = logit_response(self.gain(), self.temperature) if self.swap_enabled else 0.0
             self.q_theft = logit_response(self.gain_theft(), self.temperature) if self.theft_enabled else 0.0
+            self.q_downgrade = logit_response(self.gain_downgrade(), self.temperature) \
+                if self.downgrade_enabled else 0.0
         elif self.learner == "egreedy":
-            # epsilon-greedy over the (q_swap, q_theft) grid: exploit the grid point with the highest estimated
-            # per-purchase profit r(q) from the seller's own realised profits per attack cell
-            self._ep_n = {c: 0 for c in _CELLS}
+            # epsilon-greedy over the (q_swap, q_theft[, q_downgrade]) grid: exploit the grid point with the highest
+            # estimated per-purchase profit r(q) from the seller's own realised profits per attack cell
+            self._ep_n = {c: 0 for c in _CELLS3}
             means = {c: self.mean_profit(*c) for c in self._cells()}
             if any(v is None for v in means.values()) or rng.random() < self.epsilon:
-                self.q, self.q_theft = rng.choice(self._pairs)
+                self._set(rng.choice(self._pairs))
             else:
-                self.q, self.q_theft = max(self._pairs, key=lambda p: (self._reward(p[0], p[1], means),
-                                                                       -abs(p[0] - 0.5), -abs(p[1] - 0.5)))
+                self._set(max(self._pairs, key=lambda p: (self._arm_reward(p, means), -abs(p[0] - 0.5),
+                                                          -abs(p[1] - 0.5), -abs(p[2] - 0.5))))
+        elif self.learner == "exp3":
+            self._exp3_epoch(rng)
+        elif self.learner == "fictitious_play":
+            self._fp_epoch()
         else:
             self._learn_update()
             if rng.random() < self.epsilon:
-                self.q, self.q_theft = rng.choice(self._pairs)
+                self._set(rng.choice(self._pairs))
             else:
                 m = max(self._logw)
                 w = [math.exp(x - m) for x in self._logw]
-                self.q, self.q_theft = rng.choices(self._pairs, weights=w, k=1)[0]
+                self._set(rng.choices(self._pairs, weights=w, k=1)[0])
         self.history.append(self.q)
         self.history_theft.append(self.q_theft)
+        self.history_downgrade.append(self.q_downgrade)
         return self.q
+
+    # ---------------------------------------------------------------- v1.0 alternative learning rules
+    def _exp3_reward(self) -> float:
+        """Epoch reward in [0, 1]: mean realised per-purchase profit of the epoch, normalised by the typical
+        revenue `scale` and the stake penalty, r = clip(0.5 + 0.5 * profit / R, 0, 1), R = max(scale, penalty)."""
+        x = self._ep_profit / self._ep_count
+        r_scale = max(self.scale, self.penalty, 1e-12)
+        return min(1.0, max(0.0, 0.5 + 0.5 * x / r_scale))
+
+    def _exp3_epoch(self, rng: random.Random) -> None:
+        """EXP3 (Auer et al. 2002) over the grid of attack-probability tuples: BANDIT feedback - only the arm
+        played in the last epoch is updated, with the importance-weighted epoch reward. Epochs without a
+        served purchase give no feedback (no update)."""
+        k, g = len(self._pairs), self.exp3_gamma
+        if self._arm is not None and self._ep_count > 0:
+            self._logw[self._arm] += g * (self._exp3_reward() / self._arm_p) / k
+        self._ep_profit, self._ep_count = 0.0, 0
+        m = max(self._logw)
+        w = [math.exp(x - m) for x in self._logw]
+        tot = sum(w)
+        probs = [(1 - g) * wi / tot + g / k for wi in w]
+        i = rng.choices(range(k), weights=probs, k=1)[0]
+        self._arm, self._arm_p = i, probs[i]
+        self._set(self._pairs[i])
+
+    def _fp_epoch(self) -> None:
+        """Smooth fictitious play (Fudenberg & Kreps 1993): the seller best-responds to the EMPIRICAL behaviour
+        of the buyers (their realised audit / catch frequency is embedded in its running mean profit per
+        attack cell, penalties included). For each enabled mode the marginal gain is
+            gain_m = r(q with q_m = 1) - r(q with q_m = 0)   (r = estimated per-purchase profit, others fixed)
+        and q_m = sigmoid(gain_m / (fp_temperature * scale)). No exploration noise; until every enabled cell has
+        been observed the seller keeps its current mixed strategy (0.5 at start)."""
+        means = {c: self.mean_profit(*c) for c in self._cells()}
+        if any(v is None for v in means.values()):
+            return
+        cur = [self.q, self.q_theft, self.q_downgrade]
+        new = list(cur)
+        tau = max(self.fp_temperature * self.scale, 1e-12)
+        for j, on in enumerate((self.swap_enabled, self.theft_enabled, self.downgrade_enabled)):
+            if not on:
+                continue
+            hi, lo = list(cur), list(cur)
+            hi[j], lo[j] = 1.0, 0.0
+            new[j] = logit_response(self._arm_reward(hi, means) - self._arm_reward(lo, means), tau)
+        self._set(tuple(new))
 
     def _learn_update(self) -> None:
         """Full-information Hedge over the grid (fictitious-play style). Expected per-purchase profit is bilinear in
@@ -253,20 +370,22 @@ class AttackStrategy:
         this epoch's) keeps the estimate consistent despite rare, large penalties."""
         if not any(self._ep_n.values()):
             return
-        self._ep_n = {c: 0 for c in _CELLS}
+        self._ep_n = {c: 0 for c in _CELLS3}
         means = {c: self.mean_profit(*c) for c in self._cells()}
         if any(v is None for v in means.values()):
             return
-        for i, (qs, qt) in enumerate(self._pairs):
-            self._logw[i] += self.eta * self._reward(qs, qt, means) / max(self.scale, 1e-12)
+        for i, p in enumerate(self._pairs):
+            self._logw[i] += self.eta * self._arm_reward(p, means) / max(self.scale, 1e-12)
 
-    def observe(self, swapped: bool, profit: float, theft: bool = False) -> None:
+    def observe(self, swapped: bool, profit: float, theft: bool = False, downgraded: bool = False) -> None:
         """Realised profit of one purchase (revenue on billed tokens - serving cost of the served model on actual
         tokens - penalty if caught)."""
-        c = (bool(swapped), bool(theft))
+        c = (bool(swapped), bool(theft), bool(downgraded) and not swapped)
         self._sum[c] += profit
         self._n[c] += 1
         self._ep_n[c] += 1
+        self._ep_profit += profit
+        self._ep_count += 1
 
     @staticmethod
     def _tail(h: List[float], tail: float, default: float) -> float:
@@ -281,6 +400,13 @@ class AttackStrategy:
 
     def learned_q_theft(self, tail: float = 0.5) -> float:
         return self._tail(self.history_theft, tail, self.q_theft)
+
+    def learned_q_downgrade(self, tail: float = 0.5) -> float:
+        return self._tail(self.history_downgrade, tail, self.q_downgrade)
+
+    def enabled_modes(self) -> List[str]:
+        return [m for m, on in (("swap", self.swap_enabled), ("theft", self.theft_enabled),
+                                ("downgrade", self.downgrade_enabled)) if on]
 
 
 @dataclass
@@ -338,7 +464,8 @@ def make_strategy(seller_cfg: Dict, cfg: Dict, audit_rate: float, rep=None,
     tokens = rep.tokens_mean(seller_cfg["claimed_model"]) if rep is not None else \
         float(cfg["models"][seller_cfg["claimed_model"]]["tokens_mean"])
     lrn = f.get("learning", {})
-    modes = attack_modes_enabled(cfg)
+    # v1.0: a seller may override the global attack modes (strategy.attack_modes) and downgrade threshold
+    modes = list(st["attack_modes"]) if "attack_modes" in st else attack_modes_enabled(cfg)
     checks = set(audit_checks)
     return AttackStrategy(kind=kind, q_static=float(f.get("q_static", 1.0)),
                           cost_saving=cost_gap * tokens / 1000.0, audit_rate=float(audit_rate),
@@ -352,7 +479,13 @@ def make_strategy(seller_cfg: Dict, cfg: Dict, audit_rate: float, rep=None,
                           swap_enabled="swap" in modes, theft_enabled="theft" in modes,
                           q_theft_static=float(f.get("q_theft_static", 1.0)),
                           theft_saving=expected_theft_saving(cfg, seller_cfg, tokens),
-                          detect_prob_length=float(f.get("detect_prob_length", 0.9)) if "length" in checks else 0.0)
+                          detect_prob_length=float(f.get("detect_prob_length", 0.9)) if "length" in checks else 0.0,
+                          downgrade_enabled="downgrade" in modes,
+                          downgrade_min_difficulty=int(st.get("downgrade_min_difficulty",
+                                                              f.get("downgrade_min_difficulty", 3))),
+                          q_downgrade_static=float(f.get("q_downgrade_static", 1.0)),
+                          exp3_gamma=float(lrn.get("exp3_gamma", 0.1)),
+                          fp_temperature=float(lrn.get("fp_temperature", 0.1)))
 
 
 class TrustModel:

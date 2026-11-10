@@ -1,0 +1,94 @@
+[precompute] Qwen/Qwen2.5-0.5B-Instruct: all 80 tasks cached
+[precompute] Qwen/Qwen2.5-1.5B-Instruct: all 80 tasks cached
+{"seed": 0, "episode": {"run_id": "posted_price__audited_compliance_cascade__seed0", "seed": 0, "a": 0.1, "pi": 1.0, "L": 0, "reputation_rounds": 0, "active_attack_rate": 0.10028248587570622, "learned_q_swap": 0.041666666666666664, "learned_q_theft": 0.049999999999999996, "fraud_share": 0.10028248587570622, "J": 0.7706920903954801, "n_audits": 59, "config_hash": "7b60ac28061d2907"}}
+{"seed": 1, "episode": {"run_id": "posted_price__audited_compliance_cascade__seed1", "seed": 1, "a": 0.1, "pi": 1.0, "L": 0, "reputation_rounds": 0, "active_attack_rate": 0.12408759124087591, "learned_q_swap": 0.07083333333333333, "learned_q_theft": 0.06666666666666667, "fraud_share": 0.12408759124087591, "J": 0.7275395377128954, "n_audits": 56, "config_hash": "7b60ac28061d2907"}}
+{"seed": 2, "episode": {"run_id": "posted_price__audited_compliance_cascade__seed2", "seed": 2, "a": 0.1, "pi": 1.0, "L": 0, "reputation_rounds": 0, "active_attack_rate": 0.07879656160458452, "learned_q_swap": 0.13749999999999998, "learned_q_theft": 0.125, "fraud_share": 0.07879656160458452, "J": 0.8001850525310411, "n_audits": 66, "config_hash": "7b60ac28061d2907"}}
+{
+  "out_dir": "/workspace/token-market/exports/production",
+  "paths": {
+    "sellers": "/workspace/token-market/exports/production/sellers.jsonl",
+    "buyers": "/workspace/token-market/exports/production/buyers.jsonl",
+    "orders": "/workspace/token-market/exports/production/orders.jsonl",
+    "audits": "/workspace/token-market/exports/production/audits.jsonl",
+    "episodes": "/workspace/token-market/exports/production/episodes.jsonl",
+    "labels": "/workspace/token-market/exports/production/labels.jsonl"
+  },
+  "n_orders": 2167,
+  "n_audits": 2091,
+  "n_sellers": 9,
+  "n_buyers": 18,
+  "episode": {
+    "run_id": "posted_price__audited_compliance_cascade__seed0",
+    "seed": 0,
+    "a": 0.1,
+    "pi": 1.0,
+    "L": 0,
+    "reputation_rounds": 0,
+    "active_attack_rate": 0.10028248587570622,
+    "learned_q_swap": 0.041666666666666664,
+    "learned_q_theft": 0.049999999999999996,
+    "fraud_share": 0.10028248587570622,
+    "J": 0.7706920903954801,
+    "n_audits": 59,
+    "config_hash": "7b60ac28061d2907"
+  },
+  "knobs_path": "configs/exported_benchmark_production.yaml",
+  "labels_path": "/workspace/token-market/exports/production/labels.jsonl",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "n_tasks": 480,
+  "full": true,
+  "use_cache": true
+}
+{
+  "episodes": [
+    {
+      "run_id": "posted_price__audited_compliance_cascade__seed0",
+      "seed": 0,
+      "a": 0.1,
+      "pi": 1.0,
+      "L": 0,
+      "reputation_rounds": 0,
+      "active_attack_rate": 0.10028248587570622,
+      "learned_q_swap": 0.041666666666666664,
+      "learned_q_theft": 0.049999999999999996,
+      "fraud_share": 0.10028248587570622,
+      "J": 0.7706920903954801,
+      "n_audits": 59,
+      "config_hash": "7b60ac28061d2907"
+    },
+    {
+      "run_id": "posted_price__audited_compliance_cascade__seed1",
+      "seed": 1,
+      "a": 0.1,
+      "pi": 1.0,
+      "L": 0,
+      "reputation_rounds": 0,
+      "active_attack_rate": 0.12408759124087591,
+      "learned_q_swap": 0.07083333333333333,
+      "learned_q_theft": 0.06666666666666667,
+      "fraud_share": 0.12408759124087591,
+      "J": 0.7275395377128954,
+      "n_audits": 56,
+      "config_hash": "7b60ac28061d2907"
+    },
+    {
+      "run_id": "posted_price__audited_compliance_cascade__seed2",
+      "seed": 2,
+      "a": 0.1,
+      "pi": 1.0,
+      "L": 0,
+      "reputation_rounds": 0,
+      "active_attack_rate": 0.07879656160458452,
+      "learned_q_swap": 0.13749999999999998,
+      "learned_q_theft": 0.125,
+      "fraud_share": 0.07879656160458452,
+      "J": 0.8001850525310411,
+      "n_audits": 66,
+      "config_hash": "7b60ac28061d2907"
+    }
+  ]
+}

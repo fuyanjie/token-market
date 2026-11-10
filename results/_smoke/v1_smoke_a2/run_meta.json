@@ -1,0 +1,45 @@
+{
+ "config": "configs/v1.0/scale.yaml",
+ "seeds": [
+  0
+ ],
+ "pi_grid": [
+  1.0
+ ],
+ "methods": [
+  "d3",
+  "strongest_fixed",
+  "pilot"
+ ],
+ "labels": {
+  "d3": "fixed-rate audit reference baseline (a=0.10)",
+  "strongest_fixed": "strongest fixed router (highest listed quality)",
+  "pilot": "PILOT (Panda et al. 2025), faithful reimpl."
+ },
+ "policies": {
+  "d3": "audited_compliance_cascade",
+  "strongest_fixed": "single_best_compliant",
+  "pilot": "pilot_v1_compliant"
+ },
+ "learner": "egreedy",
+ "compliance_filter": false,
+ "resample_roster": false,
+ "backend_override": null,
+ "n_tasks": 480,
+ "n_rounds": 48,
+ "n_rows": 3,
+ "elapsed_s": 1.68,
+ "argv": [
+  "--seeds",
+  "0",
+  "--pi-grid",
+  "1.0",
+  "--methods",
+  "d3",
+  "strongest_fixed",
+  "pilot",
+  "--no-compliance-filter",
+  "--out",
+  "results/_smoke/v1_smoke_a2"
+ ]
+}

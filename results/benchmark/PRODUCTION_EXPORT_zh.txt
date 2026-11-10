@@ -1,0 +1,80 @@
+生产级 benchmark 导出摘要（2026-11-08 Asia/Shanghai）
+====================================================
+
+目的：清掉 draft 中「生产级 episodes TBD」；episodes 与 pi_dense / v6 对齐；
+      active_attack_rate 与 learned_q_* 分列（Idea 术语锁）。
+
+命令
+----
+/workspace/tmvenv/bin/python scripts/export_benchmark_layers.py \
+  --full --use-cache --with-labels \
+  --export-config configs/exported_benchmark_production.yaml
+
+/workspace/tmvenv/bin/python scripts/run_benchmark_tasks.py \
+  --full --use-cache --tasks T1 T2 T3 \
+  --out results/benchmark/production
+
+/workspace/tmvenv/bin/python -m pytest tests/ -q \
+  | tee results/benchmark/pytest_after_draft.txt
+
+配置
+----
+configs/benchmark/production.yaml
+  seeds=[0,1,2], n_tasks=480, n_rounds=48, budget×2
+  fraud=learning swap+theft
+  v6 开关关：adaptive_audit=false, escrow=false, reputation_rounds=0
+  T2 pi_grid = pi_dense 稠密网格
+  --use-cache：per-seller backend + cache/llm_outputs.jsonl（与 pi_dense/v6 同底座）
+
+产物路径
+--------
+exports/production/
+  sellers.jsonl buyers.jsonl orders.jsonl audits.jsonl episodes.jsonl labels.jsonl
+  （未覆盖 smoke exports/latest/）
+results/benchmark/production/
+  T1_episodes.jsonl T2_episodes.jsonl T2_crossover.json T3_episodes.jsonl
+  knobs.yaml tasks_summary.json export_layers.log tasks_run.log
+configs/exported_benchmark_production.yaml
+docs/DATA_SCHEMA.md（episodes 分列说明已更新）
+docs/BENCHMARK_PAPER_DRAFT_v0.md（生产 TBD 已清）
+
+术语（episodes 列）
+------------------
+active_attack_rate = 活跃成交攻击率 = attacked / served（status=allowed）
+learned_q_swap / learned_q_theft = epoch-mean learned q（欺诈卖方；另列）
+fraud_share = 实现欺诈份额（v1 与 active_attack_rate 同公式）
+主榜：active_attack_rate + fraud_share；J / learned_q_* 为次要
+
+关键数字（T1 / exports/production episodes，seeds 0/1/2 均值）
+--------------------------------------------------------------
+active_attack_rate = 0.10105554624038889
+fraud_share        = 0.10105554624038889
+learned_q_swap     = 0.08333333333333333
+learned_q_theft    = 0.08055555555555556
+J                  = 0.7661388935464721
+n_audits           = 60.333...
+→ 与 results/pi_dense（π=1）及 v6_delist rounds=0 对齐（fraud≈0.101, J≈0.766, q_swap≈0.083, audits≈60.3）
+
+T2 π*
+-----
+results/benchmark/production/T2_crossover.json
+  pi_star_J_interval = [0.10, 0.12]
+  ΔJ(0.12) ≈ −0.023 ; ΔJ(0.10) ≈ +0.019
+→ 与 results/pi_dense SUMMARY_zh「π* ∈ (0.10, 0.12)」一致
+  （smoke results/benchmark/T2_crossover.json 的 pi_star_J=1.0 勿再引用）
+
+T3（附录，非主榜）
+-----------------
+fixed   : fraud≈0.101, audits≈60.3, J≈0.766
+adaptive: fraud≈0.044–0.050, audits≈66, J≈0.78–0.81（同预算瞄准改进）
+
+pytest
+------
+results/benchmark/pytest_after_draft.txt
+  76 passed in 1.84s
+
+仍 TBD / 未做
+-------------
+- Survey Related Work 引用表（draft §2 BibTeX keys）
+- 未 push；未做 CLOB / 多买方；未改论文主张
+- smoke exports/latest 与 results/benchmark/ 顶层仍保留作示意，不当主榜

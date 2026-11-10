@@ -1,0 +1,284 @@
+{
+ "task": "T4 seller risk ranking (docs/PROTOCOL_v1.0.md \u00a75)",
+ "unit": "(run_id, seller_key)",
+ "label": "fraud_future",
+ "label_definition": "1 if the seller realised any attack (attack_mode != none) on a served purchase in the target window, 0 if it served without attacking, empty if it served nothing there",
+ "feature_rounds_1based": [
+  1,
+  32
+ ],
+ "target_rounds_1based": [
+  33,
+  48
+ ],
+ "log_round_index": "0-based: features use round < feature_rounds",
+ "train_runs": [
+  "posted_price__pilot_v1_compliant__seed0",
+  "posted_price__pilot_v1_compliant__seed1",
+  "posted_price__pilot_v1_compliant__seed10",
+  "posted_price__pilot_v1_compliant__seed11",
+  "posted_price__pilot_v1_compliant__seed12",
+  "posted_price__pilot_v1_compliant__seed13",
+  "posted_price__pilot_v1_compliant__seed2",
+  "posted_price__pilot_v1_compliant__seed3",
+  "posted_price__pilot_v1_compliant__seed4",
+  "posted_price__pilot_v1_compliant__seed5",
+  "posted_price__pilot_v1_compliant__seed6",
+  "posted_price__pilot_v1_compliant__seed7",
+  "posted_price__pilot_v1_compliant__seed8",
+  "posted_price__pilot_v1_compliant__seed9"
+ ],
+ "test_runs": [
+  "posted_price__pilot_v1_compliant__seed14",
+  "posted_price__pilot_v1_compliant__seed15",
+  "posted_price__pilot_v1_compliant__seed16",
+  "posted_price__pilot_v1_compliant__seed17",
+  "posted_price__pilot_v1_compliant__seed18",
+  "posted_price__pilot_v1_compliant__seed19"
+ ],
+ "train_seeds": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13
+ ],
+ "test_seeds": [
+  14,
+  15,
+  16,
+  17,
+  18,
+  19
+ ],
+ "feature_columns": [
+  "run_id",
+  "seed",
+  "seller_key",
+  "quoted_price_mean",
+  "quoted_price_std",
+  "declared_model",
+  "listed_quality_mean",
+  "latency_mean",
+  "latency_std",
+  "latency_p50",
+  "latency_p90",
+  "billed_tokens_mean",
+  "billed_tokens_std",
+  "billed_tokens_sum",
+  "seller_jurisdiction",
+  "cross_border_share",
+  "blocked_share",
+  "violation_share",
+  "n_attempts",
+  "n_served",
+  "n_buyers",
+  "served_share_of_run"
+ ],
+ "whitelist": {
+  "quoted_price_mean": [
+   "quoted price",
+   "price_per_1k",
+   "mean over purchase attempts (allowed+blocked)"
+  ],
+  "quoted_price_std": [
+   "quoted price",
+   "price_per_1k",
+   "population std over purchase attempts"
+  ],
+  "declared_model": [
+   "declared model",
+   "claimed_model",
+   "categorical (constant per seller)"
+  ],
+  "listed_quality_mean": [
+   "listed_quality",
+   "cfg.models[claimed_model].accuracy",
+   "mean listed accuracy over difficulties (public listing; needs cfg)"
+  ],
+  "latency_mean": [
+   "latency distribution",
+   "latency_ms",
+   "mean over served purchases"
+  ],
+  "latency_std": [
+   "latency distribution",
+   "latency_ms",
+   "population std over served purchases"
+  ],
+  "latency_p50": [
+   "latency distribution",
+   "latency_ms",
+   "median over served purchases"
+  ],
+  "latency_p90": [
+   "latency distribution",
+   "latency_ms",
+   "90th percentile (nearest-rank) over served"
+  ],
+  "billed_tokens_mean": [
+   "billed tokens",
+   "billed_tokens",
+   "mean over served purchases"
+  ],
+  "billed_tokens_std": [
+   "billed tokens",
+   "billed_tokens",
+   "population std over served purchases"
+  ],
+  "billed_tokens_sum": [
+   "billed tokens",
+   "billed_tokens",
+   "sum over served purchases"
+  ],
+  "seller_jurisdiction": [
+   "compliance label",
+   "seller_jurisdiction",
+   "categorical (constant per seller)"
+  ],
+  "cross_border_share": [
+   "compliance label",
+   "cross_border",
+   "share of purchase attempts"
+  ],
+  "blocked_share": [
+   "compliance label",
+   "status == 'blocked'",
+   "share of purchase attempts"
+  ],
+  "violation_share": [
+   "compliance label",
+   "violation",
+   "share of served purchases"
+  ],
+  "n_attempts": [
+   "historical trade volume",
+   "rows with this seller_id",
+   "count (allowed+blocked)"
+  ],
+  "n_served": [
+   "historical trade volume",
+   "status == 'allowed'",
+   "count"
+  ],
+  "n_buyers": [
+   "historical trade volume",
+   "buyer_id on served purchases",
+   "distinct count"
+  ],
+  "served_share_of_run": [
+   "historical trade volume",
+   "status == 'allowed'",
+   "n_served / all served purchases in the run's feature window"
+  ]
+ },
+ "protocol_items": [
+  "listed_quality",
+  "quoted price",
+  "declared model",
+  "latency distribution",
+  "billed tokens",
+  "compliance label",
+  "historical trade volume"
+ ],
+ "drop_latency": false,
+ "type_labels": {
+  "swap": "fraud_future_swap",
+  "theft": "fraud_future_theft",
+  "downgrade": "fraud_future_downgrade"
+ },
+ "excluded_pending_simulator_change": {
+  "answer_length": "v4 theft truncates the real cached output character-proportionally (backends.Backend.truncate), so answer length tracks tokens_actual and leaks theft. Re-admit only VISIBLE answer length once hidden reasoning and visible answer are logged separately (\u00a75b), and only after re-running scripts/check_t4_leakage.py.",
+  "quality_score": "TrustModel.quality uses audit outcomes (audit-revealed true model) and `correct` uses gold. A reference-free quality score may be added only if it uses neither gold nor true model identity, with the algorithm documented."
+ },
+ "blacklist_exact": [
+  "actual_model",
+  "actual_tokens",
+  "answer",
+  "answer_len",
+  "answer_length",
+  "audit_cost",
+  "audit_type",
+  "audited",
+  "ban_until",
+  "banned_until_round",
+  "billed_minus_actual",
+  "buyer_surplus",
+  "confidence",
+  "correct",
+  "delist_rounds",
+  "downgrade_prob",
+  "escrow_held",
+  "escrow_released",
+  "escrow_slashed",
+  "final_answer",
+  "final_correct",
+  "fraud_realized",
+  "gold",
+  "hit",
+  "label_correct",
+  "miss",
+  "quality_score",
+  "reasoning_tokens",
+  "seller_id",
+  "seller_profit",
+  "slash_amount",
+  "stake_remaining",
+  "swap_detected",
+  "swap_prob",
+  "theft_detected",
+  "theft_prob",
+  "token_inflation",
+  "tokens_actual",
+  "tokens_actual_minus_billed",
+  "tokens_billed_minus_actual"
+ ],
+ "blacklist_patterns": [
+  "tokens?_actual",
+  "actual_tokens?",
+  "reasoning_tokens?",
+  "token_inflation",
+  "billed_minus_actual",
+  "actual_minus_billed",
+  "token_gap",
+  "attack",
+  "learned_q",
+  "latent_q",
+  "fraud",
+  "slash",
+  "delist",
+  "(^|_)ban",
+  "escrow",
+  "audit",
+  "detected",
+  "(^|_)(hit|miss)(_|$)",
+  "label",
+  "actual_model",
+  "confidence",
+  "correct",
+  "answer",
+  "gold",
+  "swap_prob",
+  "theft_prob",
+  "profit",
+  "surplus",
+  "^quality",
+  "quality_score",
+  "trust",
+  "q_hat",
+  "downgrade"
+ ],
+ "n_units": {
+  "train": 551,
+  "test": 224
+ }
+}

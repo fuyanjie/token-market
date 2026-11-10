@@ -1,0 +1,35 @@
+token-market v6 小结（主张安全读法）
+========================================
+
+改动：
+1. 抓到欺诈后停牌（market.audited.reputation_rounds；默认 0 以保持旧 F/J 可复现；消融测 0/5/20）。
+   路由跳过 banned_until_round > 当前轮 的卖方。
+2. 固定审计预算下的自适应抽检（adaptive_audit；默认 false）：按 TrustModel 风险 / 账单膨胀 EMA /
+   历史检出打分，把期望 a·N 次审计优先花在高风险购买上，剩余额度随机补齐。
+3. 货款托管（escrow；默认 false）：审计决定前冻结卖方货款，罚没从托管扣再放行余额；
+   学习侧仍按全额 penalty 计利润（威慑强度与关托管时一致）；与标签延迟 L 正交。
+4. 结构化 audit trail（purchase_id / checks / detected / slash / ban_until），写入 metrics 与 jsonl 字段。
+
+未做：订单簿/CLOB、多买方。主张不变：威慑压低卖方攻击率；自适应审计只是同预算下的降成本/瞄准改进；
+不跟即时反馈下的 PILOT/StageRoute 比 J。
+
+停牌消融（D3, a=0.1, seeds=[0, 1, 2]）：
+  rounds=0 : q_swap=0.083  J=0.766  fraud=0.101
+  rounds=5 : q_swap=0.181  J=0.787  fraud=0.063
+  rounds=20: q_swap=0.439  J=0.807  fraud=0.041
+  读法：停牌拉长 → 实现 fraud share 下降、J 上升；但 epoch 均值 learned q 可能升高（停牌期间缺少观测、探索漂移）。
+  两指标都要报，不要写成「停牌单独把 q* 打到 0」。
+
+自适应审计（同预期预算 a=0.1, escrow=on）：
+  fixed   : q_swap=0.083  J=0.766  fraud=0.101  audits=60.3  realized_a=0.087
+  adaptive: q_swap=0.056  J=0.803  fraud=0.044  audits=66.0  realized_a=0.099
+  escrow fixed  held/slashed/released = 12.26/0.15/12.11
+  escrow adap   held/slashed/released = 11.47/0.23/11.24
+  读法：在相近审计次数下，自适应把更多检查打到高风险卖方 → q 与 fraud 更低、J 更高；这是瞄准改进，不是「全面赢 bandit」。
+
+产物：
+  results/v6_delist.md + .json
+  results/v6_adaptive_audit.md + .json
+  results/v6_SUMMARY_zh.txt
+  代码：tokenmarket/audit_v6.py；sim.py / logging_schema.py / configs/default.yaml / experiments.yaml；
+  tests/test_v6.py（7 passed）；scripts/run_v6_ablations.py

@@ -1,0 +1,10 @@
+extends: ../../../configs/benchmark/production.yaml
+run:
+  n_tasks: 24
+  n_rounds: 4
+  seeds: [0]
+benchmark:
+  seeds: [0]
+  tasks:
+    T2:
+      pi_grid: [1.0]

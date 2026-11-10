@@ -1,0 +1,42 @@
+python: /workspace/tmvenv/bin/python
+cache:  /workspace/token-market/cache/llm_outputs.jsonl
+version: 3.13.5 (main, Aug 10 2026, 12:06:59) [GCC 14.2.0]
+wrote results/_smoke/repro_post/pi_dense_smoke.yaml extends ../../../configs/pi_dense.yaml
+==> smoke experiment F (1 seed, 1 pi, 24 tasks, 4 rounds)
+[precompute] Qwen/Qwen2.5-0.5B-Instruct: all 80 tasks cached
+[precompute] Qwen/Qwen2.5-1.5B-Instruct: all 80 tasks cached
+[F] audited_compliance_cascade   immediate       L=0         pi=1.0   J=0.849 acc=0.917 fraud=0.135 q=0.55/0.45 cov=1.00
+[F] wrote results/_smoke/repro_post/pi_dense/feedback_ablation.png
+done in 0.5s -> results/_smoke/repro_post/pi_dense/experiments_summary.md
+==> smoke T2 (1 seed, 1 pi, 24 tasks) via run_benchmark_tasks.py --use-cache
+wrote results/_smoke/repro_post/t2_smoke.yaml extends ../../../configs/benchmark/production.yaml
+[T2] pi=1.0 audited_compliance_cascade: attack=0.135 fraud=0.135
+[T2] pi=1.0 stageroute_compliant: attack=0.000 fraud=0.000
+[T2] pi=1.0 pilot_compliant: attack=0.125 fraud=0.125
+{
+  "T2": {
+    "task": "T2",
+    "path": "results/_smoke/repro_post/t2/T2_episodes.jsonl",
+    "meta": {
+      "pi_grid": [
+        1.0
+      ],
+      "crossover": {
+        "pi_star_J": 1.0,
+        "pi_star_J_interval": null,
+        "note": "D3 J >= best bandit at/below this \u03c0 on grid; no sign-flip bracket (coarse or all-win)"
+      },
+      "delta_J_by_pi": [
+        {
+          "pi": 1.0,
+          "D3_J": 0.8490990990990991,
+          "best_bandit_J": 0.7916666666666666,
+          "delta_J": 0.057432432432432456
+        }
+      ]
+    }
+  }
+}
+smoke outputs under results/_smoke/repro_post
+-rw-r--r-- 1 box box 1963 Nov 10 11:13 results/_smoke/repro_post/pi_dense/feedback_ablation.json
+-rw-r--r-- 1 box box 1100 Nov 10 11:13 results/_smoke/repro_post/t2/T2_episodes.jsonl

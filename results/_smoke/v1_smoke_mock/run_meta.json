@@ -1,0 +1,52 @@
+{
+ "config": "configs/v1.0/scale.yaml",
+ "seeds": [
+  0
+ ],
+ "pi_grid": [
+  1.0
+ ],
+ "methods": [
+  "pilot",
+  "stageroute",
+  "d3"
+ ],
+ "labels": {
+  "pilot": "PILOT (Panda et al. 2025), faithful reimpl.",
+  "stageroute": "StageRoute (Li & Li 2025), faithful reimpl. incl. MIP",
+  "d3": "fixed-rate audit reference baseline (a=0.10)"
+ },
+ "policies": {
+  "pilot": "pilot_v1_compliant",
+  "stageroute": "stageroute_v1_compliant",
+  "d3": "audited_compliance_cascade"
+ },
+ "learner": "egreedy",
+ "compliance_filter": true,
+ "resample_roster": false,
+ "backend_override": "mock",
+ "n_tasks": 96,
+ "n_rounds": 12,
+ "n_rows": 3,
+ "elapsed_s": 1.4,
+ "argv": [
+  "--seeds",
+  "0",
+  "--pi-grid",
+  "1.0",
+  "--methods",
+  "pilot",
+  "stageroute",
+  "d3",
+  "--backend-override",
+  "mock",
+  "--n-tasks",
+  "96",
+  "--n-rounds",
+  "12",
+  "--out",
+  "results/_smoke/v1_smoke_mock",
+  "--log-dir",
+  "results/_smoke/v1_smoke_mock/logs"
+ ]
+}

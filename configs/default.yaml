@@ -42,6 +42,10 @@ market:
     audit_types: [identity, length]  # v4: D3 also length-audits (token theft)
     theft_quality_factor: 0.5        # v4: D3 prior: a truncated answer is 0.5x as likely correct (routing)
     cascade: {confidence_threshold: 0.7, max_steps: 3}
+    # v6 (defaults OFF / 0 so F/J tables stay reproducible; ablations turn these on)
+    reputation_rounds: 0             # D3 delist rounds after catch (falls back to fraud.reputation_rounds)
+    adaptive_audit: false            # true: allocate fixed a·N budget to high-risk sellers first
+    escrow: false                    # true: hold seller payout until audit decision; slash from escrow
   joint: {lambda: 1.0, mu: 0.5}      # v4 joint objective J = acc - lambda*violation_rate - mu*fraud_share
   # v5 outcome (correctness-label) feedback for the online bandits (tokenmarket/feedback.py). Default immediate =
   # v4. mode: immediate | delayed | sparse | delayed_sparse | never; delay_L in steps (null/inf = never);

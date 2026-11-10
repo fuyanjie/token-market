@@ -1,0 +1,9 @@
+method,pi,n_runs,tail_trade_runs,tail_trade_rate
+audited_cascade_unfiltered,0.1,2,0,0.0
+audited_cascade_unfiltered,1.0,2,0,0.0
+fixed_audit_a0.10,0.1,2,2,1.0
+fixed_audit_a0.10,1.0,2,2,1.0
+pilot,0.1,2,2,1.0
+pilot,1.0,2,2,1.0
+stageroute,0.1,2,2,1.0
+stageroute,1.0,2,2,1.0

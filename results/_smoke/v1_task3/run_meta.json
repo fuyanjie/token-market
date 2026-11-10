@@ -1,0 +1,55 @@
+{
+ "config": "configs/v1.0/scale.yaml",
+ "seeds": [
+  0,
+  1
+ ],
+ "pi_grid": [
+  1.0,
+  0.1
+ ],
+ "methods": [
+  "pilot",
+  "stageroute",
+  "fixed_audit_a0.10",
+  "audited_cascade_unfiltered"
+ ],
+ "labels": {
+  "pilot": "PILOT (Panda et al. 2025), faithful reimpl.",
+  "stageroute": "StageRoute (Li & Li 2025), faithful reimpl. incl. MIP",
+  "fixed_audit_a0.10": "fixed-rate audit reference baseline (a=0.10)",
+  "audited_cascade_unfiltered": "fixed-rate audit reference baseline (a=0.10) WITHOUT the compliance hard filter (A2)"
+ },
+ "policies": {
+  "pilot": "pilot_v1_compliant",
+  "stageroute": "stageroute_v1_compliant",
+  "fixed_audit_a0.10": "audited_compliance_cascade",
+  "audited_cascade_unfiltered": "audited_cascade_unfiltered"
+ },
+ "learner": "egreedy",
+ "compliance_filter": true,
+ "resample_roster": false,
+ "backend_override": null,
+ "n_tasks": 480,
+ "n_rounds": 48,
+ "n_rows": 16,
+ "elapsed_s": 1.94,
+ "argv": [
+  "--config",
+  "configs/v1.0/scale.yaml",
+  "--seeds",
+  "0-1",
+  "--pi-grid",
+  "1.0",
+  "0.1",
+  "--methods",
+  "pilot",
+  "stageroute",
+  "fixed_audit_a0.10",
+  "audited_cascade_unfiltered",
+  "--jobs",
+  "4",
+  "--out",
+  "results/_smoke/v1_task3"
+ ]
+}

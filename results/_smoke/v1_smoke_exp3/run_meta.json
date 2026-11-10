@@ -1,0 +1,54 @@
+{
+ "config": "configs/v1.0/scale.yaml",
+ "seeds": [
+  0,
+  1
+ ],
+ "pi_grid": [
+  1.0
+ ],
+ "methods": [
+  "pilot",
+  "stageroute",
+  "strongest_fixed",
+  "d3"
+ ],
+ "labels": {
+  "pilot": "PILOT (Panda et al. 2025), faithful reimpl.",
+  "stageroute": "StageRoute (Li & Li 2025), faithful reimpl. incl. MIP",
+  "strongest_fixed": "strongest fixed router (highest listed quality)",
+  "d3": "fixed-rate audit reference baseline (a=0.10)"
+ },
+ "policies": {
+  "pilot": "pilot_v1_compliant",
+  "stageroute": "stageroute_v1_compliant",
+  "strongest_fixed": "single_best_compliant",
+  "d3": "audited_compliance_cascade"
+ },
+ "learner": "exp3",
+ "compliance_filter": true,
+ "resample_roster": false,
+ "backend_override": null,
+ "n_tasks": 480,
+ "n_rounds": 48,
+ "n_rows": 8,
+ "elapsed_s": 1.56,
+ "argv": [
+  "--seeds",
+  "0",
+  "1",
+  "--pi-grid",
+  "1.0",
+  "--methods",
+  "pilot",
+  "stageroute",
+  "strongest_fixed",
+  "d3",
+  "--learner",
+  "exp3",
+  "--out",
+  "results/_smoke/v1_smoke_exp3",
+  "--jobs",
+  "4"
+ ]
+}

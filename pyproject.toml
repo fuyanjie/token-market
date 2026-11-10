@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=78"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tokenmarket"
+version = "0.2.0"
+description = "A mini virtual cross-border reasoning-token trading sandbox (research only)."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Yanjie Fu" }]
+requires-python = ">=3.13"
+dependencies = [
+  "PyYAML==6.0.3",
+  "numpy==2.5.4",
+  "matplotlib==3.11.2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest==9.2.0"]
+# CPU torch wheel is not expressed here; see requirements.txt for the
+# --extra-index-url incantation used in the v0.1 environment.
+local-hf = [
+  "torch==2.15.0",
+  "transformers==5.22.1",
+  "accelerate==1.15.0",
+  "huggingface_hub==2.4.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["tokenmarket*"]

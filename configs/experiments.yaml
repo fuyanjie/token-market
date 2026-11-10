@@ -83,3 +83,16 @@ experiments:
     delays: [0, 5, 20, 50, inf]         # pi = 1; inf = labels never delivered (mode never)
     reveal_probs: [1.0, 0.2, 0.05, 0.0] # L = 0
     combined: [[20, 0.2], [50, 0.05]]   # (L, pi)
+
+  # ------------------------------------------------------------------ v6
+  V6_delist:                            # delisting after catch under D3 (reputation_rounds ablation)
+    policy: audited_compliance_cascade
+    reputation_rounds: [0, 5, 20]
+    budget_multiplier: 2.0
+    attack_modes: [swap, theft]
+  V6_adaptive:                          # fixed a=0.1 Bernoulli vs adaptive same expected budget
+    policy: audited_compliance_cascade
+    audit_rate: 0.1
+    budget_multiplier: 2.0
+    attack_modes: [swap, theft]
+    escrow: true                        # turn on escrow for the adaptive arm too (report both)

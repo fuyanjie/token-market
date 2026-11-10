@@ -17,13 +17,16 @@ from .gateway import CrossBorderGateway
 from .logging_schema import TransactionLogger
 from .matching import candidate_sellers, sealed_bid_select
 from .metrics import aggregate, run_metrics
-from .baselines import PilotRouter, StageRouteRouter
+from .baselines import PilotRouter, PilotV1Router, StageRouteRouter, StageRouteV1Router, is_v1_router
 from .feedback import FeedbackBuffer, FeedbackRouter, delay_label, feedback_params
 from .portfolio import AUDITED_POLICIES, ROUTER_POLICIES, SINGLE_POLICIES, Purchase, is_hard, run_policy
 from .precompute import local_cfg, local_models, model_stats, precompute, render_model_accuracy_md
 from .sellers import Reputation, load_sellers
 from .strategic import (IdentityCheckDetector, TokenLengthAuditor, TrustModel, attack_mode, audit_type,
                         billed_tokens, fraud_cfg, make_strategy)
+from .audit_v6 import (AdaptiveAuditAllocator, EscrowBook, audit_trail_record, d3_adaptive_audit, d3_escrow,
+                       d3_reputation_rounds, make_purchase_id)
+from .audit_v1 import RandomAuditRate, RiskAdaptiveAudit, audit_rule, compliance_filter_on
 from .tasks import build_task_pool, sample_run_tasks
 from .verification import TrustingVerifier
 
@@ -45,7 +48,9 @@ def _base_record(run_id, mechanism, policy, seed, rnd, buyer, task, fb_L=0) -> D
             "billed_tokens": 0, "actual_tokens": 0, "token_inflation": None, "attack_mode": None,
             "theft_prob": None, "audit_type": "none", "theft_detected": None, "detect_prob_identity": None,
             "detect_prob_length": None,
-            "feedback_delay_L": fb_L, "feedback_revealed": False, "feedback_delivered_at": None}
+            "feedback_delay_L": fb_L, "feedback_revealed": False, "feedback_delivered_at": None,
+            "downgrade_prob": None, "purchase_id": None, "escrow_held": 0.0, "escrow_released": 0.0, "escrow_slashed": 0.0,
+            "ban_until": None}
 
 
 def policy_audit_rate(cfg: Dict, policy: str) -> float:
@@ -93,7 +98,10 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
     fcfg = fraud_cfg(cfg)
     audit_cost = float(mcfg.get("audit", {}).get("cost", 0.0))
     penalty = float(fcfg.get("penalty", 0.0))
-    rep_rounds = int(fcfg.get("reputation_rounds", 0))
+    # v6: D3 delist rounds from market.audited.reputation_rounds (backward-compat default 0)
+    rep_rounds = d3_reputation_rounds(cfg, policy, AUDITED_POLICIES)
+    use_adaptive = d3_adaptive_audit(cfg, policy, AUDITED_POLICIES) and a_rate > 0
+    use_escrow = d3_escrow(cfg, policy, AUDITED_POLICIES)
     detector = IdentityCheckDetector(float(fcfg.get("detect_prob", 0.9)))
     length_auditor = TokenLengthAuditor(float(fcfg.get("detect_prob_length", 0.9)),
                                         float(fcfg.get("length_audit_tol", 0.1)),
@@ -111,7 +119,7 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
     for scfg, s in zip(cfg["sellers"], sellers):
         s.strategy = make_strategy(scfg, cfg, a_rate, rep, checks)
     engine = ComplianceEngine.from_config(cfg)
-    hard = is_hard(policy)
+    hard = is_hard(policy) and compliance_filter_on(cfg)     # v1.0 A2: market.compliance_filter=false disables it
     gw_mode = "enforce" if hard else mcfg.get("unaware_gateway_mode", "audit_only")
     gateway = CrossBorderGateway(engine, cfg, mode=gw_mode)
     verifier = TrustingVerifier()
@@ -127,6 +135,15 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
     rng_audit = random.Random(f"audit-{seed}")
     rng_theft = random.Random(f"theft-{seed}")       # v4 streams: v3 draws are unchanged
     rng_length = random.Random(f"length-audit-{seed}")
+    alloc = AdaptiveAuditAllocator(a_rate, random.Random(f"adaptive-audit-{seed}")) if use_adaptive else None
+    # v1.0 audit rules (default fixed = v0.1 Bernoulli(a)); own RNG streams so v0.1 draws are unchanged
+    a_rule = audit_rule(cfg, policy, AUDITED_POLICIES) if a_rate > 0 else "fixed"
+    rand_rate = RandomAuditRate(a_rate, random.Random(f"audit-rate-{seed}")) if a_rule == "random" else None
+    risk_audit = RiskAdaptiveAudit.from_config(cfg, checks, detector.d, length_auditor.d) \
+        if a_rule == "risk_adaptive" else None
+    rng_downgrade = random.Random(f"downgrade-{seed}")
+    escrow = EscrowBook() if use_escrow else None
+    audit_trail: List[Dict] = []
 
     tasks = sample_run_tasks(pool, buyers, n_tasks, seed)
     per_round = -(-n_tasks // n_rounds)
@@ -137,7 +154,13 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
     for t in tasks:
         horizon[t.buyer_id] = horizon.get(t.buyer_id, 0) + 1
     router = None
-    if policy.startswith("pilot"):
+    if is_v1_router(policy):     # v1.0 faithful reimplementations (docs/BASELINES_v1.0.md)
+        if policy.startswith("pilot"):
+            router = PilotV1Router(sellers, rep, buyers, horizon, cfg, pool)
+        else:
+            router = StageRouteV1Router(sellers, buyers, horizon, cfg, len(tasks), per_round,
+                                        random.Random(f"router-{seed}"), rep)
+    elif policy.startswith("pilot"):
         router = PilotRouter(sellers, rep, buyers, horizon, cfg)
     elif policy.startswith("stageroute"):
         router = StageRouteRouter(sellers, buyers, horizon, cfg, per_round, random.Random(f"router-{seed}"))
@@ -148,6 +171,8 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
     if router is not None:
         router = FeedbackRouter(router, fb_buffer)
 
+    strat_ids = [s.id for s in sellers if s.strategy is not None]
+    delisted_rounds: Dict[str, List[int]] = {k: [] for k in strat_ids}   # v1.0 Q: rounds a strategic seller is delisted
     for i, task in enumerate(tasks):
         rnd = i // per_round
         if i % per_round == 0:
@@ -155,6 +180,10 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
                 s.reset_round()
                 if s.strategy is not None:
                     s.strategy.start_epoch(rng_strategy)
+                    if s.banned_until_round > rnd:
+                        delisted_rounds[s.id].append(rnd)
+            if rand_rate is not None:
+                rand_rate.start_round()
         # v5: deliver labels due by step i BEFORE this task's routing decision (non-bandit policies ignore them)
         if router is not None:
             router.step = i
@@ -208,6 +237,7 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
             q_now = s.strategy.q if s.strategy is not None else (1.0 if s.is_model_swap else 0.0)
             rec["swap_prob"] = float(q_now)
             rec["theft_prob"] = float(s.strategy.q_theft) if s.strategy is not None else 0.0
+            rec["downgrade_prob"] = float(s.strategy.q_downgrade) if s.strategy is not None else 0.0
             gw = gateway.route(buyer, s, task)
             if not gw.allowed:
                 rec.update(status="blocked", rule_id=gw.rule_id, budget_remaining=buyer.remaining,
@@ -220,8 +250,15 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
             else:
                 swapped = s.is_model_swap
             theft = s.strategy is not None and s.strategy.theft_enabled and rng_theft.random() < s.strategy.q_theft
-            served = s.actual_model if swapped else (s.honest_model or s.actual_model)
-            serve_cost = s.cost_per_1k if (swapped or s.strategy is None) else s.honest_cost_per_1k
+            # v1.0 selective downgrade: cheap model only on hard tasks (own RNG stream; never with a swap)
+            downgraded = False
+            if s.strategy is not None and s.strategy.downgrade_enabled:
+                s.strategy.note_task(task.difficulty)
+                if s.strategy.can_downgrade(task.difficulty):
+                    downgraded = rng_downgrade.random() < s.strategy.q_downgrade and not swapped
+            cheap = swapped or downgraded
+            served = s.actual_model if cheap else (s.honest_model or s.actual_model)
+            serve_cost = s.cost_per_1k if (cheap or s.strategy is None) else s.honest_cost_per_1k
             rec["actual_model"] = served
             be = backends[s.backend]
             res = be.solve(task, served, models[served], s.reasoning_effort, rng_backend)
@@ -237,13 +274,27 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
             buyer.spent += actual
             correct = res.answer is not None and int(res.answer) == task.gold
             fb_revealed, fb_at = fb_buffer.push(i, task, buyer, s, bool(correct), actual, len(tasks))
-            # v3 audit: identity check on a fraction a of purchases, fee charged to the buyer budget
+            # v3/v6 audit: Bernoulli(a) or adaptive top-risk under the same expected budget a·N
             audited, detected, t_detected, a_cost, slashed = False, None, None, 0.0, 0.0
-            if a_rate > 0 and rng_audit.random() < a_rate and buyer.remaining >= audit_cost:
+            risk_score = None
+            ban_until = None
+            do_audit = False
+            if a_rate > 0 and buyer.remaining >= audit_cost:
+                if alloc is not None:
+                    risk_score = alloc.score(s.id, trust, billed, actual_tok)
+                    do_audit = alloc.decide(s.id, risk_score)
+                elif rand_rate is not None:
+                    do_audit = rng_audit.random() < rand_rate.current
+                elif risk_audit is not None:
+                    risk_score = risk_audit.rate(s.id)
+                    do_audit = rng_audit.random() < risk_score
+                else:
+                    do_audit = rng_audit.random() < a_rate
+            if do_audit:
                 audited, a_cost = True, audit_cost
                 buyer.spent += audit_cost
                 if "identity" in checks:
-                    detected = detector.detect(swapped, rng_audit)
+                    detected = detector.detect(cheap, rng_audit)
                     if trust is not None:
                         trust.record(s.id, detected, served)
                 if "length" in checks:
@@ -255,10 +306,26 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
                     slashed = penalty
                     s.stake_slashed += penalty
                     if rep_rounds > 0:
-                        s.banned_until_round = rnd + 1 + rep_rounds
+                        ban_until = rnd + 1 + rep_rounds
+                        s.banned_until_round = max(s.banned_until_round, ban_until)
+                if alloc is not None:
+                    alloc.note_outcome(s.id, bool(detected or t_detected))
+                if risk_audit is not None:
+                    risk_audit.record(s.id, bool(detected or t_detected))
+            # v6 escrow: hold seller payout until audit decision; slash from escrow then release
+            pid = make_purchase_id(run_id, task.task_id, step, s.id)
+            eh = er = es = 0.0
+            if escrow is not None:
+                # Payment path: slash from hold then release remainder. Learning/profit still
+                # subtracts the FULL penalty (same as non-escrow) so deterrence is unchanged;
+                # escrow only changes what can be clawed from the in-flight payout.
+                eh, er, es, _seller_cash = escrow.settle(st.seller_receives, audited, slashed)
             profit = st.seller_receives - serve_cost * actual_tok / 1000.0 - slashed
+            if audited:
+                audit_trail.append(audit_trail_record(
+                    pid, s.id, checks, detected, t_detected, slashed, ban_until, risk_score, alloc is not None))
             if s.strategy is not None:
-                s.strategy.observe(swapped, profit, theft)
+                s.strategy.observe(swapped, profit, theft, downgraded)
             if res.gen_time_s is not None:   # real model: measured gen time + jurisdiction overhead/noise
                 lat = s.latency_mean_ms + res.gen_time_s * 1000.0 * lat_scale + rng_latency.gauss(0, s.latency_std_ms)
             else:
@@ -278,10 +345,13 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
                        audited=audited, audit_cost=a_cost, swap_detected=detected,
                        billed_tokens=int(billed), actual_tokens=actual_tok,
                        token_inflation=billed / actual_tok if actual_tok else 1.0,
-                       attack_mode=attack_mode(served != s.claimed_model, theft),
+                       attack_mode=attack_mode(swapped and served != s.claimed_model, theft,
+                                               downgraded and served != s.claimed_model),
                        audit_type=audit_type(checks) if audited else "none", theft_detected=t_detected,
                        detect_prob_identity=d_id_log, detect_prob_length=d_len_log,
-                       feedback_revealed=fb_revealed, feedback_delivered_at=fb_at)
+                       feedback_revealed=fb_revealed, feedback_delivered_at=fb_at,
+                       purchase_id=pid, escrow_held=eh, escrow_released=er, escrow_slashed=es,
+                       ban_until=ban_until)
             lines.append(rec)
             return Purchase(s, rec["answer"], res.confidence, quality(s), correct=bool(correct),
                             actual_cost=actual)
@@ -326,7 +396,18 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
              blocked_or_filtered=filtered_total + m["blocked_at_gateway"],
              audit_violations_enforced=audit_violations, stop_reasons=stop_reasons)
     strat = {s.id: s.strategy for s in sellers if s.strategy is not None}
+    if escrow is not None:
+        escrow.flush_end()
     m.update(audit_rate=a_rate, total_stake_slashed=sum(s.stake_slashed for s in sellers),
+             reputation_rounds=rep_rounds, adaptive_audit=bool(alloc is not None),
+             escrow_enabled=bool(escrow is not None),
+             escrow_held_total=escrow.held if escrow is not None else 0.0,
+             escrow_released_total=escrow.released if escrow is not None else 0.0,
+             escrow_slashed_total=escrow.slashed if escrow is not None else 0.0,
+             adaptive_audit_credit=alloc.credit if alloc is not None else None,
+             adaptive_n_audits=alloc.n_audits if alloc is not None else None,
+             audit_trail=audit_trail,
+             n_bans=sum(1 for t in audit_trail if t.get("ban_until") is not None),
              learned_swap_q={k: v.learned_q() for k, v in strat.items()},
              learned_theft_q={k: v.learned_q_theft() for k, v in strat.items()},
              theft_q_history={k: list(v.history_theft) for k, v in strat.items()},
@@ -335,6 +416,13 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
              swap_q_history={k: list(v.history) for k, v in strat.items()},
              swap_gain_analytic={k: v.gain() for k, v in strat.items()},
              swap_cost_saving={k: v.cost_saving for k, v in strat.items()})
+    # v1.0: downgrade / per-round histories for protocol §1 Q (seller-present rounds), audit-rule diagnostics
+    m.update(learned_downgrade_q={k: v.learned_q_downgrade() for k, v in strat.items()},
+             downgrade_q_history={k: list(v.history_downgrade) for k, v in strat.items()},
+             strategic_modes={k: v.enabled_modes() for k, v in strat.items()},
+             strategic_delisted_rounds=delisted_rounds, audit_rule=a_rule,
+             compliance_filter=compliance_filter_on(cfg),
+             random_audit_rate_history=list(rand_rate.history) if rand_rate is not None else None)
     lam, mu = joint_weights(cfg)
     m.update(joint_lambda=lam, joint_mu=mu,
              joint_objective=joint_objective(m["task_accuracy"], m["compliance_violation_rate"],

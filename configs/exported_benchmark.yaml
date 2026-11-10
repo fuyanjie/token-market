@@ -1,0 +1,9 @@
+a: 0.1
+audit_rate_default_policies: 0.0
+pi: 1.0
+L: 0
+feedback_mode: immediate
+reputation_rounds: 0
+adaptive_audit: false
+escrow: false
+note: adaptive_audit / reputation_rounds / escrow default OFF so legacy F/J stay reproducible

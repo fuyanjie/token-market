@@ -1,0 +1,60 @@
+# v1.0 price calibration table (docs/PROTOCOL_v1.0.md §7): REAL published list prices of public LLM APIs,
+# converted to USD per 1K tokens (= published USD per 1M tokens / 1000). Standard (non-batch) tier, short-context
+# rows. Every entry carries its source URL and access date. Entries that could not be verified on the provider's
+# page are left as TODO with null prices - nothing here is estimated or invented.
+#
+# Use: anchor ratios for the simulated market (e.g. strong/cheap output-price ratio). The simulator's own
+# price_per_1k values (configs/v1.0/scale.yaml roster) are synthetic market units and are NOT rescaled
+# automatically; tokenmarket.prices.load_prices() parses this file.
+#
+# Access date for every row below: 2026-11-10 (read via the provider pricing pages listed per provider).
+
+currency: USD
+unit: per_1k_tokens
+access_date: "2026-11-10"
+providers:
+  openai:
+    # source: https://developers.openai.com/api/docs/pricing  (redirect target of https://platform.openai.com/docs/pricing)
+    # accessed 2026-11-10; "Short context" columns; page notes promotional pricing for one model until 2026-11-30
+    source_url: https://developers.openai.com/api/docs/pricing
+    accessed: "2026-11-10"
+    models:
+      gpt-5.4-nano: {input: 0.00020, cached_input: 0.00002, output: 0.00125}    # $0.20 / $0.02 / $1.25 per 1M
+      gpt-5.4-mini: {input: 0.00075, cached_input: 0.000075, output: 0.00450}   # $0.75 / $0.075 / $4.50 per 1M
+      gpt-6.1-sol: {input: 0.00200, cached_input: 0.00010, output: 0.01000}     # $2.00 / $0.10 / $10.00 per 1M
+      gpt-6-astra: {input: 0.01000, cached_input: 0.00100, output: 0.05000}     # $10.00 / $1.00 / $50.00 per 1M (<=272K ctx)
+  anthropic:
+    # source: https://claude.com/pricing  (redirect target of https://www.anthropic.com/pricing), API section
+    # accessed 2026-11-10; Haiku row = "Prompts <= 100K tokens"; cache read prices listed as cached_input
+    source_url: https://claude.com/pricing
+    accessed: "2026-11-10"
+    models:
+      claude-haiku-5-5: {input: 0.00010, cached_input: 0.00001, output: 0.00050}   # $0.10 / $0.01 / $0.50 per 1M
+      claude-sonnet-5-5: {input: 0.00200, cached_input: 0.00010, output: 0.01000}  # $2 / $0.10 / $10 per 1M
+      claude-opus-5-5: {input: 0.00400, cached_input: 0.00020, output: 0.02000}    # $4 / $0.20 / $20 per 1M
+      claude-fable-5-2: {input: 0.00800, cached_input: 0.00020, output: 0.04000}   # $8 / $0.20 / $40 per 1M
+  google:
+    # source: https://aistudio.google.com/docs/pricing  (redirect target of https://ai.google.dev/gemini-api/docs/pricing)
+    # accessed 2026-11-10; rows below were read verbatim; prices change on 2026-12-01 for gemini-4-argon
+    source_url: https://aistudio.google.com/docs/pricing
+    accessed: "2026-11-10"
+    models:
+      gemini-3.1-pro-preview: {input: 0.00200, cached_input: 0.00020, output: 0.01200}   # $2.00 / $0.20 / $12.00 per 1M (<=200K)
+      gemini-4-argon: {input: 0.00200, cached_input: 0.00010, output: 0.01000,           # through 2026-11-30
+                       from_2026_12_01: {input: 0.00400, cached_input: 0.00020, output: 0.02000}}
+      # TODO(verify): gemini-3.1-flash-lite / gemini-3.5-flash-lite appeared only in a page summary, not read
+      # verbatim; add them after checking the page.
+      gemini-3.1-flash-lite: {input: null, cached_input: null, output: null, todo: "verify on source page"}
+  deepseek:
+    # TODO: https://api-docs.deepseek.com/quick_start/pricing served no price table on 2026-11-10. Not filled in.
+    source_url: https://api-docs.deepseek.com/quick_start/pricing
+    accessed: "2026-11-10"
+    models: {}
+    todo: "price table not retrievable on 2026-11-10"
+  alibaba_model_studio:
+    # TODO: https://www.alibabacloud.com/help/en/model-studio/models listed model ids but no prices on 2026-11-10;
+    # qwen2.5-0.5b/1.5b-instruct (the simulator's local models) were not listed. Not filled in.
+    source_url: https://www.alibabacloud.com/help/en/model-studio/models
+    accessed: "2026-11-10"
+    models: {}
+    todo: "prices not shown on the public model page on 2026-11-10"

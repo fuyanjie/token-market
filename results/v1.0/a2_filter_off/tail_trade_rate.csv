@@ -1,0 +1,10 @@
+method,pi,n_runs,tail_trade_runs,tail_trade_rate
+cheapest_fixed,1.0,20,0,0.0
+fixed_audit_a0.05,1.0,20,1,0.05
+fixed_audit_a0.10,1.0,20,1,0.05
+fixed_audit_a0.20,1.0,20,1,0.05
+pilot,1.0,20,20,1.0
+random_audit,1.0,20,1,0.05
+risk_adaptive_audit,1.0,20,1,0.05
+stageroute,1.0,20,11,0.55
+strongest_fixed,1.0,20,20,1.0

@@ -1,0 +1,103 @@
+{
+ "policy": "audited_compliance_cascade",
+ "seeds": [
+  0,
+  1,
+  2
+ ],
+ "audit_rate": 0.1,
+ "rows": [
+  {
+   "arm": "fixed",
+   "adaptive_audit": false,
+   "escrow": true,
+   "learned_q_swap": 0.08333333333333333,
+   "learned_q_swap_std": 0.04912427551063164,
+   "learned_q_theft": 0.08055555555555556,
+   "learned_q_theft_std": 0.03938179688543841,
+   "joint_objective": 0.7661388935464721,
+   "joint_objective_std": 0.03653616573968484,
+   "fraud_share": 0.10105554624038889,
+   "fraud_share_std": 0.02265540902575892,
+   "task_accuracy": 0.8166666666666668,
+   "n_audits": 60.333333333333336,
+   "n_purchases": 697.0,
+   "audit_rate_realized": 0.08656145384983262,
+   "escrow_held": 12.26287333333333,
+   "escrow_slashed": 0.15203999999999998,
+   "escrow_released": 12.110833333333332,
+   "per_seed": [
+    {
+     "seed": 0,
+     "q_swap": 0.041666666666666664,
+     "J": 0.7706920903954801,
+     "fraud_share": 0.10028248587570622,
+     "n_audits": 59
+    },
+    {
+     "seed": 1,
+     "q_swap": 0.07083333333333333,
+     "J": 0.7275395377128954,
+     "fraud_share": 0.12408759124087591,
+     "n_audits": 56
+    },
+    {
+     "seed": 2,
+     "q_swap": 0.13749999999999998,
+     "J": 0.8001850525310411,
+     "fraud_share": 0.07879656160458452,
+     "n_audits": 66
+    }
+   ]
+  },
+  {
+   "arm": "adaptive",
+   "adaptive_audit": true,
+   "escrow": true,
+   "learned_q_swap": 0.05555555555555555,
+   "learned_q_swap_std": 0.035437085617147424,
+   "learned_q_theft": 0.05277777777777778,
+   "learned_q_theft_std": 0.029265704869035385,
+   "joint_objective": 0.8028352827776607,
+   "joint_objective_std": 0.018738799222834793,
+   "fraud_share": 0.04432943444467873,
+   "fraud_share_std": 0.008511258206865985,
+   "task_accuracy": 0.8250000000000001,
+   "n_audits": 66.0,
+   "n_purchases": 669.0,
+   "audit_rate_realized": 0.09865470852017937,
+   "escrow_held": 11.470966666666671,
+   "escrow_slashed": 0.23046,
+   "escrow_released": 11.24050666666667,
+   "per_seed": [
+    {
+     "seed": 0,
+     "q_swap": 0.041666666666666664,
+     "J": 0.8118993993993995,
+     "fraud_share": 0.03453453453453453,
+     "n_audits": 66
+    },
+    {
+     "seed": 1,
+     "q_swap": 0.029166666666666664,
+     "J": 0.7812878214826021,
+     "fraud_share": 0.049924357034795766,
+     "n_audits": 65
+    },
+    {
+     "seed": 2,
+     "q_swap": 0.09583333333333333,
+     "J": 0.8153186274509804,
+     "fraud_share": 0.04852941176470588,
+     "n_audits": 67
+    }
+   ]
+  }
+ ],
+ "budget_multiplier": 2.0,
+ "attack_modes": [
+  "swap",
+  "theft"
+ ],
+ "escrow": true
+}

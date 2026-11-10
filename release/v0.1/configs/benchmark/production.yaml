@@ -1,0 +1,38 @@
+# Production-scale fixed-seed benchmark protocol (matches pi_dense / experiments scale).
+# Use with: scripts/run_benchmark_tasks.py --full [--use-cache]
+# Smoke/default stays at configs/benchmark/default.yaml (n_tasks=120).
+extends: ../default.yaml
+
+run:
+  seeds: [0, 1, 2]
+  n_tasks: 480              # 6 permutations of the 80-task synthetic pool (pi_dense / experiments)
+  n_rounds: 48              # strategic seller epoch length (pi_dense / experiments)
+
+market:
+  budget_multiplier: 2.0
+  feedback: {mode: immediate, delay_L: 0, reveal_prob: 1.0}
+  audited:
+    audit_rate: 0.1
+    reputation_rounds: 0
+    adaptive_audit: false
+    escrow: false
+
+fraud:
+  strategy: learning
+  attack_modes_enabled: [swap, theft]
+
+benchmark:
+  seeds: [0, 1, 2]
+  primary_metrics: [active_attack_rate, fraud_share]
+  secondary_metrics: [J, learned_q_swap, learned_q_theft]
+  note: >
+    Immediate-feedback J is NOT the primary ranking.
+    active_attack_rate = attacked/served purchases; learned_q_* are separate columns.
+  tasks:
+    T1: {name: fixed_audit_deterrence, a: 0.1, pi: 1.0, L: 0}
+    # Dense π grid matches configs/pi_dense.yaml experiment F (authoritative π* ∈ (0.10, 0.12)).
+    T2:
+      name: sparse_label_regime
+      L: 0
+      pi_grid: [1.0, 0.2, 0.18, 0.15, 0.12, 0.10, 0.08, 0.06, 0.05, 0.0]
+    T3: {name: adaptive_audit_same_budget, a: 0.1, adaptive: true, primary_board: false}

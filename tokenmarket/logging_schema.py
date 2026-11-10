@@ -1,5 +1,5 @@
 """Unified transaction log schema (v2 + v3 audit fields + v4 token-theft / imperfect-detection fields
-+ v5 outcome-feedback fields).
++ v5 outcome-feedback fields + v6 escrow / audit-trail fields).
 
 Exactly ONE JSONL line per transaction = one individual seller purchase attempt (allowed or blocked), or one
 `unfilled` line for a task where no purchase was made. Inside a cascade / vote portfolio every seller purchase is
@@ -13,7 +13,7 @@ from typing import Dict, List
 
 NUM = (int, float)
 STATUSES = ("allowed", "blocked", "unfilled")
-ATTACK_MODES = ("none", "swap", "theft", "both")
+ATTACK_MODES = ("none", "swap", "theft", "both", "downgrade", "downgrade+theft")   # v1.0: + selective downgrade
 AUDIT_TYPES = ("none", "identity", "length", "both")
 
 # field -> (accepted types, nullable)
@@ -70,7 +70,7 @@ SCHEMA: Dict[str, tuple] = {
     "billed_tokens": (int, False),      # tokens the buyer is billed for (== actual unless token theft)
     "actual_tokens": (int, False),      # tokens actually generated (alias of reasoning_tokens)
     "token_inflation": (NUM, True),     # billed / actual (1.0 honest; null if not served)
-    "attack_mode": (str, True),         # realised attack on this purchase: none|swap|theft|both (null if not served)
+    "attack_mode": (str, True),         # realised attack on this purchase: none|swap|theft|both|downgrade|downgrade+theft (null if not served)
     "theft_prob": (NUM, True),          # seller's current theft probability q_theft (0 honest; null if unfilled)
     "audit_type": (str, False),         # checks run on this purchase: none|identity|length|both
     "theft_detected": (bool, True),     # length-audit outcome; null if no length check ran
@@ -80,6 +80,13 @@ SCHEMA: Dict[str, tuple] = {
     "feedback_delay_L": (int, True),      # label delay L of the run's feedback regime (null: L = inf / never)
     "feedback_revealed": (bool, False),   # this purchase's correctness label is ever revealed (prob pi; false if not served)
     "feedback_delivered_at": (int, True),  # step (task index) the label is delivered; n_tasks = end-of-episode flush; null: never
+    "downgrade_prob": (NUM, True),        # v1.0: seller's q_downgrade this round (0 for non-strategic sellers; null if no seller)
+    # v6: escrow settlement + structured audit trail (adaptive scoring reads history)
+    "purchase_id": (str, True),           # stable id for audit trail joins; null if unfilled / no seller
+    "escrow_held": (NUM, False),          # seller payout placed in escrow (0 if escrow off / not served)
+    "escrow_released": (NUM, False),      # amount released to seller after audit decision (0 if escrow off)
+    "escrow_slashed": (NUM, False),       # amount deducted from escrow on catch (0 if none / escrow off)
+    "ban_until": (int, True),             # round index until which seller is delisted after this catch; null if no ban
 }
 FIELDS: List[str] = list(SCHEMA)
 

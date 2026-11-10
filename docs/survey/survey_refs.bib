@@ -1,0 +1,849 @@
+% survey_refs.bib -- references for SURVEY_DRAFT.md
+% STATUS: see VERIFICATION.md. In the drafting session web access was not
+% available, so every entry below is PENDING online verification. Entries that
+% fail verification must be removed from both this file and the draft.
+
+% ---------------------------------------------------------------------------
+% Reasoning tokens and test-time compute
+% ---------------------------------------------------------------------------
+
+@inproceedings{wei2022cot,
+  title     = {Chain-of-Thought Prompting Elicits Reasoning in Large Language Models},
+  author    = {Wei, Jason and Wang, Xuezhi and Schuurmans, Dale and Bosma, Maarten and Ichter, Brian and Xia, Fei and Chi, Ed and Le, Quoc and Zhou, Denny},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year      = {2022},
+  eprint    = {2201.11903},
+  archivePrefix = {arXiv}
+}
+
+@misc{snell2024scaling,
+  title     = {Scaling {LLM} Test-Time Compute Optimally can be More Effective than Scaling Model Parameters},
+  author    = {Snell, Charlie and Lee, Jaehoon and Xu, Kelvin and Kumar, Aviral},
+  year      = {2024},
+  eprint    = {2408.03314},
+  archivePrefix = {arXiv}
+}
+
+@misc{openai2024o1card,
+  title     = {{OpenAI} o1 System Card},
+  author    = {{OpenAI}},
+  year      = {2024},
+  eprint    = {2412.16720},
+  archivePrefix = {arXiv}
+}
+
+@article{deepseek2025r1,
+  title     = {{DeepSeek-R1} Incentivizes Reasoning in {LLMs} through Reinforcement Learning},
+  author    = {Guo, Daya and others},
+  journal   = {Nature},
+  volume    = {645},
+  number    = {8081},
+  pages     = {633--638},
+  year      = {2025},
+  doi       = {10.1038/s41586-025-09422-z}
+}
+
+@misc{chen2024overthinking,
+  title     = {Do {NOT} Think That Much for 2+3=? On the Overthinking of o1-Like {LLMs}},
+  author    = {Chen, Xingyu and Xu, Jiahao and Liang, Tian and He, Zhiwei and Pang, Jianhui and Yu, Dian and Song, Linfeng and Liu, Qiuzhi and Zhou, Mengfei and Zhang, Zhuosheng and Wang, Rui and Tu, Zhaopeng and Mi, Haitao and Yu, Dong},
+  year      = {2024},
+  eprint    = {2412.21187},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{han2024tokenbudget,
+  title     = {Token-Budget-Aware {LLM} Reasoning},
+  author    = {Han, Tingxu and Wang, Zhenting and Fang, Chunrong and Zhao, Shiyu and Ma, Shiqing and Chen, Zhenyu},
+  booktitle = {Findings of the Association for Computational Linguistics: ACL 2025},
+  pages     = {24842--24855},
+  year      = {2025},
+  doi       = {10.18653/v1/2025.findings-acl.1274}
+}
+
+@inproceedings{kwon2023vllm,
+  title     = {Efficient Memory Management for Large Language Model Serving with {PagedAttention}},
+  author    = {Kwon, Woosuk and Li, Zhuohan and Zhuang, Siyuan and Sheng, Ying and Zheng, Lianmin and Yu, Cody Hao and Gonzalez, Joseph E. and Zhang, Hao and Stoica, Ion},
+  booktitle = {Proceedings of the 29th Symposium on Operating Systems Principles (SOSP)},
+  year      = {2023},
+  doi       = {10.1145/3600006.3613165},
+  eprint    = {2309.06180},
+  archivePrefix = {arXiv}
+}
+
+% ---------------------------------------------------------------------------
+% Pricing, billing, and mechanism design for LLMs
+% ---------------------------------------------------------------------------
+
+@inproceedings{duetting2024mechanism,
+  title     = {Mechanism Design for Large Language Models},
+  author    = {Duetting, Paul and Mirrokni, Vahab and Paes Leme, Renato and Xu, Haifeng and Zuo, Song},
+  booktitle = {Proceedings of the ACM Web Conference 2024},
+  pages     = {144--155},
+  year      = {2024},
+  doi       = {10.1145/3589334.3645511}
+}
+
+@inproceedings{velasco2025overcharging,
+  title     = {Is Your {LLM} Overcharging You? {T}okenization, Transparency, and Incentives},
+  author    = {Velasco, Ander Artola and Tsirtsis, Stratis and Okati, Nastaran and Gomez-Rodriguez, Manuel},
+  booktitle = {Proceedings of the 43rd International Conference on Machine Learning (ICML)},
+  volume    = {306},
+  pages     = {123628--123652},
+  year      = {2026},
+  url       = {https://proceedings.mlr.press/v306/velasco26a.html}
+}
+
+% ---------------------------------------------------------------------------
+% Routing, cascades, and model selection
+% ---------------------------------------------------------------------------
+
+@article{chen2023frugalgpt,
+  title     = {{FrugalGPT}: How to Use Large Language Models While Reducing Cost and Improving Performance},
+  author    = {Chen, Lingjiao and Zaharia, Matei and Zou, James},
+  journal   = {Transactions on Machine Learning Research},
+  year      = {2024},
+  eprint    = {2305.05176},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{ong2025routellm,
+  title     = {{RouteLLM}: Learning to Route {LLMs} from Preference Data},
+  author    = {Ong, Isaac and Almahairi, Amjad and Wu, Vincent and Chiang, Wei-Lin and Wu, Tianhao and Gonzalez, Joseph E. and Kadous, M. Waleed and Stoica, Ion},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2025},
+  eprint    = {2406.18665},
+  archivePrefix = {arXiv}
+}
+
+@misc{hu2024routerbench,
+  title     = {{RouterBench}: A Benchmark for Multi-{LLM} Routing System},
+  author    = {Hu, Qitian Jason and Bieker, Jacob and Li, Xiuyu and Jiang, Nan and Keigwin, Benjamin and Ranganath, Gaurav and Keutzer, Kurt and Upadhyay, Shriyash Kaustubh},
+  year      = {2024},
+  eprint    = {2403.12031},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{ding2024hybrid,
+  title     = {Hybrid {LLM}: Cost-Efficient and Quality-Aware Query Routing},
+  author    = {Ding, Dujian and Mallick, Ankur and Wang, Chi and Sim, Robert and Mukherjee, Subhabrata and R{\"u}hle, Victor and Lakshmanan, Laks V. S. and Awadallah, Ahmed Hassan},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2024},
+  eprint    = {2404.14618},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{yue2024cascades,
+  title     = {Large Language Model Cascades with Mixture of Thought Representations for Cost-Efficient Reasoning},
+  author    = {Yue, Murong and Zhao, Jie and Zhang, Min and Du, Liang and Yao, Ziyu},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2024},
+  eprint    = {2310.03094},
+  archivePrefix = {arXiv}
+}
+
+@misc{shnitzer2023routing,
+  title     = {Large Language Model Routing with Benchmark Datasets},
+  author    = {Shnitzer, Tal and Ou, Anthony and Silva, M{\'i}rian and Soule, Kate and Sun, Yuekai and Solomon, Justin and Thompson, Neil and Yurochkin, Mikhail},
+  year      = {2023},
+  eprint    = {2309.15789},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{jiang2023blender,
+  title     = {{LLM-Blender}: Ensembling Large Language Models with Pairwise Ranking and Generative Fusion},
+  author    = {Jiang, Dongfu and Ren, Xiang and Lin, Bill Yuchen},
+  booktitle = {Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (ACL)},
+  year      = {2023},
+  eprint    = {2306.02561},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{aggarwal2024automix,
+  title     = {{AutoMix}: Automatically Mixing Language Models},
+  author    = {Aggarwal, Pranjal and Madaan, Aman and Anand, Ankit and Potharaju, Srividya Pranavi and Mishra, Swaroop and Zhou, Pei and Gupta, Aditya and Rajagopal, Dheeraj and Kappaganthu, Karthik and Yang, Yiming and Upadhyay, Shyam and Faruqui, Manaal and Mausam},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year      = {2024},
+  eprint    = {2310.12963},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{panda2025pilot,
+  title     = {Adaptive {LLM} Routing under Budget Constraints},
+  author    = {Panda, Pranoy and Magazine, Raghav and Devaguptapu, Chaitanya and Takemori, Sho and Sharma, Vishal},
+  booktitle = {Findings of the Association for Computational Linguistics: EMNLP 2025},
+  year      = {2025},
+  eprint    = {2508.21141},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{li2026stageroute,
+  title     = {Near-Optimal Online Deployment and Routing for Streaming {LLM}s},
+  author    = {Li, Shaoang and Li, Jian},
+  booktitle = {International Conference on Learning Representations ({ICLR})},
+  year      = {2026},
+  eprint    = {2506.17254},
+  archivePrefix = {arXiv},
+  note      = {StageRoute}
+}
+
+
+% ---------------------------------------------------------------------------
+% Auditing providers: substitution, fingerprinting, drift, extraction
+% ---------------------------------------------------------------------------
+
+@misc{cai2025substitution,
+  title     = {Are You Getting What You Pay For? Auditing Model Substitution in {LLM} {APIs}},
+  author    = {Cai, Will and Shi, Tianneng and Zhao, Xuandong and Song, Dawn},
+  year      = {2025},
+  eprint    = {2504.04715},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{gao2025equality,
+  title     = {Model Equality Testing: Which Model Is This {API} Serving?},
+  author    = {Gao, Irena and Liang, Percy and Guestrin, Carlos},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2025},
+  eprint    = {2410.20247},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{sun2025idiosyncrasies,
+  title     = {Idiosyncrasies in Large Language Models},
+  author    = {Sun, Mingjie and Yin, Yida and Xu, Zhiqiu and Kolter, J. Zico and Liu, Zhuang},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2025},
+  eprint    = {2502.12150},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{pasquini2025llmmap,
+  title     = {{LLMmap}: Fingerprinting for Large Language Models},
+  author    = {Pasquini, Dario and Kornaropoulos, Evgenios M. and Ateniese, Giuseppe},
+  booktitle = {USENIX Security Symposium},
+  year      = {2025},
+  eprint    = {2407.15847},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{xu2024instructional,
+  title     = {Instructional Fingerprinting of Large Language Models},
+  author    = {Xu, Jiashu and Wang, Fei and Ma, Mingyu Derek and Koh, Pang Wei and Xiao, Chaowei and Chen, Muhao},
+  booktitle = {Proceedings of NAACL-HLT 2024},
+  year      = {2024},
+  eprint    = {2401.12255},
+  archivePrefix = {arXiv}
+}
+
+@article{chen2024drift,
+  title     = {How Is {ChatGPT}'s Behavior Changing Over Time?},
+  author    = {Chen, Lingjiao and Zaharia, Matei and Zou, James},
+  journal   = {Harvard Data Science Review},
+  volume    = {6},
+  number    = {2},
+  year      = {2024},
+  doi       = {10.1162/99608f92.5317da47}
+}
+
+@inproceedings{finlayson2024logits,
+  title     = {Logits of {API}-Protected {LLMs} Leak Proprietary Information},
+  author    = {Finlayson, Matthew and Ren, Xiang and Swayamdipta, Swabha},
+  booktitle = {Conference on Language Modeling (COLM)},
+  year      = {2024},
+  eprint    = {2403.09539},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{carlini2024stealing,
+  title     = {Stealing Part of a Production Language Model},
+  author    = {Carlini, Nicholas and Paleka, Daniel and Dvijotham, Krishnamurthy Dj and Steinke, Thomas and Hayase, Jonathan and Cooper, A. Feder and Lee, Katherine and Jagielski, Matthew and Nasr, Milad and Conmy, Arthur and Yona, Itay and Wallace, Eric and Rolnick, David and Tram{\`e}r, Florian},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2024},
+  eprint    = {2403.06634},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{kirchenbauer2023watermark,
+  title     = {A Watermark for Large Language Models},
+  author    = {Kirchenbauer, John and Geiping, Jonas and Wen, Yuxin and Katz, Jonathan and Miers, Ian and Goldstein, Tom},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2023},
+  eprint    = {2301.10226},
+  archivePrefix = {arXiv}
+}
+
+% ---------------------------------------------------------------------------
+% Verifiable inference
+% ---------------------------------------------------------------------------
+
+@inproceedings{ghodsi2017safetynets,
+  title     = {{SafetyNets}: Verifiable Execution of Deep Neural Networks on an Untrusted Cloud},
+  author    = {Ghodsi, Zahra and Gu, Tianyu and Garg, Siddharth},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year      = {2017},
+  eprint    = {1706.10268},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{tramer2019slalom,
+  title     = {Slalom: Fast, Verifiable and Private Execution of Neural Networks in Trusted Hardware},
+  author    = {Tram{\`e}r, Florian and Boneh, Dan},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2019},
+  eprint    = {1806.03287},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{liu2021zkcnn,
+  title     = {{zkCNN}: Zero Knowledge Proofs for Convolutional Neural Network Predictions and Accuracy},
+  author    = {Liu, Tianyi and Xie, Xiang and Zhang, Yupeng},
+  booktitle = {Proceedings of the 2021 ACM SIGSAC Conference on Computer and Communications Security (CCS)},
+  year      = {2021},
+  doi       = {10.1145/3460120.3485379}
+}
+
+@inproceedings{chen2024zkml,
+  title     = {{ZKML}: An Optimizing System for {ML} Inference in Zero-Knowledge Proofs},
+  author    = {Chen, Bing-Jyue and Waiwitlikhit, Suppakit and Stoica, Ion and Kang, Daniel},
+  booktitle = {Proceedings of the Nineteenth European Conference on Computer Systems (EuroSys)},
+  year      = {2024},
+  doi       = {10.1145/3627703.3650088}
+}
+
+@inproceedings{sun2024zkllm,
+  title     = {{zkLLM}: Zero Knowledge Proofs for Large Language Models},
+  author    = {Sun, Haochen and Li, Jason and Zhang, Hongyang},
+  booktitle = {Proceedings of the 2024 ACM SIGSAC Conference on Computer and Communications Security (CCS)},
+  year      = {2024},
+  eprint    = {2404.16109},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{ong2025toploc,
+  title     = {{TOPLOC}: A Locality Sensitive Hashing Scheme for Trustless Verifiable Inference},
+  author    = {Ong, Jack Min and Di Ferrante, Matthew and Pazdera, Aaron and Garner, Ryan and Jaghouar, Sami and Basra, Manveer and Ryabinin, Max and Hagemann, Johannes},
+  booktitle = {Proceedings of the 42nd International Conference on Machine Learning (ICML)},
+  volume    = {267},
+  pages     = {47196--47211},
+  year      = {2025},
+  url       = {https://proceedings.mlr.press/v267/ong25a.html}
+}
+
+@inproceedings{jia2021pol,
+  title     = {Proof-of-Learning: Definitions and Practice},
+  author    = {Jia, Hengrui and Yaghini, Mohammad and Choquette-Choo, Christopher A. and Dullerud, Natalie and Thudi, Anvith and Chandrasekaran, Varun and Papernot, Nicolas},
+  booktitle = {IEEE Symposium on Security and Privacy (S\&P)},
+  year      = {2021},
+  eprint    = {2103.05633},
+  archivePrefix = {arXiv}
+}
+
+% ---------------------------------------------------------------------------
+% Economics: asymmetric information, procurement, enforcement, inspection
+% ---------------------------------------------------------------------------
+
+@article{akerlof1970lemons,
+  title     = {The Market for ``Lemons'': Quality Uncertainty and the Market Mechanism},
+  author    = {Akerlof, George A.},
+  journal   = {The Quarterly Journal of Economics},
+  volume    = {84},
+  number    = {3},
+  pages     = {488--500},
+  year      = {1970},
+  doi       = {10.2307/1879431}
+}
+
+@article{holmstrom1979moral,
+  title     = {Moral Hazard and Observability},
+  author    = {Holmstr{\"o}m, Bengt},
+  journal   = {The Bell Journal of Economics},
+  volume    = {10},
+  number    = {1},
+  pages     = {74--91},
+  year      = {1979},
+  doi       = {10.2307/3003320}
+}
+
+@article{myerson1981optimal,
+  title     = {Optimal Auction Design},
+  author    = {Myerson, Roger B.},
+  journal   = {Mathematics of Operations Research},
+  volume    = {6},
+  number    = {1},
+  pages     = {58--73},
+  year      = {1981},
+  doi       = {10.1287/moor.6.1.58}
+}
+
+@book{laffont1993procurement,
+  title     = {A Theory of Incentives in Procurement and Regulation},
+  author    = {Laffont, Jean-Jacques and Tirole, Jean},
+  publisher = {MIT Press},
+  address   = {Cambridge, MA},
+  year      = {1993},
+  url       = {https://openlibrary.org/isbn/0262121743}
+}
+
+@article{townsend1979csv,
+  title     = {Optimal Contracts and Competitive Markets with Costly State Verification},
+  author    = {Townsend, Robert M.},
+  journal   = {Journal of Economic Theory},
+  volume    = {21},
+  number    = {2},
+  pages     = {265--293},
+  year      = {1979},
+  doi       = {10.1016/0022-0531(79)90031-0}
+}
+
+@article{border1987samurai,
+  title     = {Samurai Accountant: A Theory of Auditing and Plunder},
+  author    = {Border, Kim C. and Sobel, Joel},
+  journal   = {The Review of Economic Studies},
+  volume    = {54},
+  number    = {4},
+  pages     = {525--540},
+  year      = {1987},
+  doi       = {10.2307/2297481}
+}
+
+@article{becker1968crime,
+  title     = {Crime and Punishment: An Economic Approach},
+  author    = {Becker, Gary S.},
+  journal   = {Journal of Political Economy},
+  volume    = {76},
+  number    = {2},
+  pages     = {169--217},
+  year      = {1968},
+  doi       = {10.1086/259394}
+}
+
+@article{polinsky2000enforcement,
+  title     = {The Economic Theory of Public Enforcement of Law},
+  author    = {Polinsky, A. Mitchell and Shavell, Steven},
+  journal   = {Journal of Economic Literature},
+  volume    = {38},
+  number    = {1},
+  pages     = {45--76},
+  year      = {2000},
+  doi       = {10.1257/jel.38.1.45}
+}
+
+@incollection{avenhaus2002inspection,
+  title     = {Inspection Games},
+  author    = {Avenhaus, Rudolf and von Stengel, Bernhard and Zamir, Shmuel},
+  booktitle = {Handbook of Game Theory with Economic Applications},
+  editor    = {Aumann, Robert J. and Hart, Sergiu},
+  volume    = {3},
+  publisher = {Elsevier},
+  pages     = {1947--1987},
+  year      = {2002},
+  doi       = {10.1016/S1574-0005(02)03014-X}
+}
+
+@inproceedings{conitzer2006commit,
+  title     = {Computing the Optimal Strategy to Commit To},
+  author    = {Conitzer, Vincent and Sandholm, Tuomas},
+  booktitle = {Proceedings of the 7th ACM Conference on Electronic Commerce (EC)},
+  year      = {2006},
+  doi       = {10.1145/1134707.1134717}
+}
+
+@article{calvano2020collusion,
+  title     = {Artificial Intelligence, Algorithmic Pricing, and Collusion},
+  author    = {Calvano, Emilio and Calzolari, Giacomo and Denicol{\`o}, Vincenzo and Pastorello, Sergio},
+  journal   = {American Economic Review},
+  volume    = {110},
+  number    = {10},
+  pages     = {3267--3297},
+  year      = {2020},
+  doi       = {10.1257/aer.20190623}
+}
+
+% ---------------------------------------------------------------------------
+% Bandits, partial monitoring, delayed feedback
+% ---------------------------------------------------------------------------
+
+@article{auer2002ucb,
+  title     = {Finite-Time Analysis of the Multiarmed Bandit Problem},
+  author    = {Auer, Peter and Cesa-Bianchi, Nicol{\`o} and Fischer, Paul},
+  journal   = {Machine Learning},
+  volume    = {47},
+  pages     = {235--256},
+  year      = {2002},
+  doi       = {10.1023/A:1013689704352}
+}
+
+@book{lattimore2020bandit,
+  title     = {Bandit Algorithms},
+  author    = {Lattimore, Tor and Szepesv{\'a}ri, Csaba},
+  publisher = {Cambridge University Press},
+  year      = {2020},
+  doi       = {10.1017/9781108571401}
+}
+
+@article{badanidiyuru2018bwk,
+  title     = {Bandits with Knapsacks},
+  author    = {Badanidiyuru, Ashwinkumar and Kleinberg, Robert and Slivkins, Aleksandrs},
+  journal   = {Journal of the ACM},
+  volume    = {65},
+  number    = {3},
+  year      = {2018},
+  doi       = {10.1145/3164539},
+  eprint    = {1305.2545},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{joulani2013delayed,
+  title     = {Online Learning under Delayed Feedback},
+  author    = {Joulani, Pooria and Gy{\"o}rgy, Andr{\'a}s and Szepesv{\'a}ri, Csaba},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2013},
+  eprint    = {1306.0686},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{vernade2017delayed,
+  title     = {Stochastic Bandit Models for Delayed Conversions},
+  author    = {Vernade, Claire and Capp{\'e}, Olivier and Perchet, Vianney},
+  booktitle = {Conference on Uncertainty in Artificial Intelligence (UAI)},
+  year      = {2017},
+  eprint    = {1706.09186},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{pikeburke2018aggregated,
+  title     = {Bandits with Delayed, Aggregated Anonymous Feedback},
+  author    = {Pike-Burke, Ciara and Agrawal, Shipra and Szepesv{\'a}ri, Csaba and Gr{\"u}new{\"a}lder, Steffen},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2018},
+  eprint    = {1709.06853},
+  archivePrefix = {arXiv}
+}
+
+@article{bartok2014partial,
+  title     = {Partial Monitoring---Classification, Regret Bounds, and Algorithms},
+  author    = {Bart{\'o}k, G{\'a}bor and Foster, Dean P. and P{\'a}l, D{\'a}vid and Rakhlin, Alexander and Szepesv{\'a}ri, Csaba},
+  journal   = {Mathematics of Operations Research},
+  volume    = {39},
+  number    = {4},
+  pages     = {967--997},
+  year      = {2014},
+  doi       = {10.1287/moor.2014.0663}
+}
+
+@article{cesabianchi2005label,
+  title     = {Minimizing Regret with Label Efficient Prediction},
+  author    = {Cesa-Bianchi, Nicol{\`o} and Lugosi, G{\'a}bor and Stoltz, Gilles},
+  journal   = {IEEE Transactions on Information Theory},
+  volume    = {51},
+  number    = {6},
+  pages     = {2152--2162},
+  year      = {2005},
+  doi       = {10.1109/TIT.2005.847729}
+}
+
+% ---------------------------------------------------------------------------
+% Law and regulation
+% ---------------------------------------------------------------------------
+
+@misc{eu2024aiact,
+  title     = {Regulation ({EU}) 2024/1689 of the European Parliament and of the Council of 13 June 2024 laying down harmonised rules on artificial intelligence (Artificial Intelligence Act)},
+  author    = {{European Parliament and Council of the European Union}},
+  howpublished = {Official Journal of the European Union, L series},
+  year      = {2024},
+  url       = {https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1689}
+}
+
+@misc{eu2016gdpr,
+  title     = {Regulation ({EU}) 2016/679 of the European Parliament and of the Council of 27 April 2016 (General Data Protection Regulation)},
+  author    = {{European Parliament and Council of the European Union}},
+  howpublished = {Official Journal of the European Union, L 119},
+  year      = {2016},
+  url       = {https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32016R0679}
+}
+
+@misc{cjeu2020schrems,
+  title     = {Judgment of the Court (Grand Chamber) of 16 July 2020, Data Protection Commissioner v Facebook Ireland Limited and Maximillian Schrems, Case {C-311/18}},
+  author    = {{Court of Justice of the European Union}},
+  year      = {2020},
+  note      = {ECLI:EU:C:2020:559},
+  url       = {https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:62018CJ0311}
+}
+
+@misc{eu2023dpf,
+  title     = {Commission Implementing Decision ({EU}) 2023/1795 of 10 July 2023 on the adequate level of protection of personal data under the {EU-US} Data Privacy Framework},
+  author    = {{European Commission}},
+  year      = {2023},
+  url       = {https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023D1795}
+}
+
+@misc{cac2023genai,
+  title     = {Interim Measures for the Management of Generative Artificial Intelligence Services},
+  author    = {{Cyberspace Administration of China and others}},
+  year      = {2023},
+  url       = {https://www.cac.gov.cn/2023-07/13/c_1690898327029107.htm}
+}
+
+@misc{npc2021pipl,
+  title     = {Personal Information Protection Law of the People's Republic of China},
+  author    = {{Standing Committee of the National People's Congress}},
+  year      = {2021},
+  url       = {https://www.cac.gov.cn/2021-08/20/c_1631050028355286.htm}
+}
+
+@misc{npc2021dsl,
+  title     = {Data Security Law of the People's Republic of China},
+  author    = {{Standing Committee of the National People's Congress}},
+  year      = {2021},
+  url       = {https://www.cac.gov.cn/2021-06/11/c_1624994566919140.htm}
+}
+
+@misc{cac2022assessment,
+  title     = {Measures for the Security Assessment of Outbound Data Transfers},
+  author    = {{Cyberspace Administration of China}},
+  year      = {2022},
+  url       = {https://www.cac.gov.cn/2022-07/07/c_1658811536396503.htm}
+}
+
+@misc{cac2024crossborder,
+  title     = {Provisions on Promoting and Regulating Cross-Border Data Flows},
+  author    = {{Cyberspace Administration of China}},
+  year      = {2024},
+  url       = {https://www.cac.gov.cn/2024-03/22/c_1712776611775634.htm}
+}
+
+@article{hacker2023regulating,
+  title     = {Regulating {ChatGPT} and Other Large Generative {AI} Models},
+  author    = {Hacker, Philipp and Engel, Andreas and Mauer, Marco},
+  journal   = {Proceedings of the 2023 ACM Conference on Fairness, Accountability, and Transparency (FAccT)},
+  year      = {2023},
+  doi       = {10.1145/3593013.3594067}
+}
+
+@article{veale2021demystifying,
+  title     = {Demystifying the Draft {EU} Artificial Intelligence Act: Analysing the Good, the Bad, and the Unclear Elements of the Proposed Approach},
+  author    = {Veale, Michael and Zuiderveen Borgesius, Frederik},
+  journal   = {Computer Law Review International},
+  volume    = {22},
+  number    = {4},
+  pages     = {97--112},
+  year      = {2021},
+  doi       = {10.9785/cri-2021-220402}
+}
+
+@article{roberts2021chinese,
+  title     = {The {Chinese} Approach to Artificial Intelligence: An Analysis of Policy, Ethics, and Regulation},
+  author    = {Roberts, Huw and Cowls, Josh and Morley, Jessica and Taddeo, Mariarosaria and Wang, Vincent and Floridi, Luciano},
+  journal   = {AI \& Society},
+  volume    = {36},
+  pages     = {59--77},
+  year      = {2021},
+  doi       = {10.1007/s00146-020-00992-2}
+}
+
+% ---------------------------------------------------------------------------
+% Simulators and benchmarks for agentic / economic settings
+% ---------------------------------------------------------------------------
+
+@article{zheng2022aieconomist,
+  title     = {The {AI} Economist: Taxation Policy Design via Two-Level Deep Multiagent Reinforcement Learning},
+  author    = {Zheng, Stephan and Trott, Alexander and Srinivasa, Sunil and Parkes, David C. and Socher, Richard},
+  journal   = {Science Advances},
+  volume    = {8},
+  number    = {18},
+  year      = {2022},
+  doi       = {10.1126/sciadv.abk2607}
+}
+
+@inproceedings{byrd2020abides,
+  title     = {{ABIDES}: Towards High-Fidelity Multi-Agent Market Simulation},
+  author    = {Byrd, David and Hybinette, Maria and Balch, Tucker Hybinette},
+  booktitle = {Proceedings of the 2020 ACM SIGSIM Conference on Principles of Advanced Discrete Simulation},
+  pages     = {11--22},
+  year      = {2020},
+  doi       = {10.1145/3384441.3395986}
+}
+
+@inproceedings{horton2023homosilicus,
+  title     = {Large Language Models as Simulated Economic Agents: What Can We Learn from Homo Silicus?},
+  author    = {Filippas, Apostolos and Horton, John J. and Manning, Benjamin S.},
+  booktitle = {Proceedings of the 25th ACM Conference on Economics and Computation (EC '24)},
+  pages     = {614--615},
+  year      = {2024},
+  doi       = {10.1145/3670865.3673513}
+}
+
+@inproceedings{park2023generative,
+  title     = {Generative Agents: Interactive Simulacra of Human Behavior},
+  author    = {Park, Joon Sung and O'Brien, Joseph C. and Cai, Carrie J. and Morris, Meredith Ringel and Liang, Percy and Bernstein, Michael S.},
+  booktitle = {Proceedings of the 36th Annual ACM Symposium on User Interface Software and Technology (UIST)},
+  year      = {2023},
+  eprint    = {2304.03442},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{li2024econagent,
+  title     = {{EconAgent}: Large Language Model-Empowered Agents for Simulating Macroeconomic Activities},
+  author    = {Li, Nian and Gao, Chen and Li, Mingyu and Li, Yong and Liao, Qingmin},
+  booktitle = {Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (ACL)},
+  year      = {2024},
+  eprint    = {2310.10436},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{fish2024collusion,
+  title     = {Algorithmic Collusion by Large Language Models},
+  author    = {Fish, Sara and Gonczarowski, Yannai A. and Shorrer, Ran I.},
+  booktitle = {Proceedings of the 27th ACM Conference on Economics and Computation (EC '26)},
+  year      = {2026},
+  eprint    = {2404.00806},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{duan2024gtbench,
+  title     = {{GTBench}: Uncovering the Strategic Reasoning Capabilities of {LLMs} via Game-Theoretic Evaluations},
+  author    = {Duan, Jinhao and Zhang, Renming and Diffenderfer, James and Kailkhura, Bhavya and Sun, Lichao and Stengel-Eskin, Elias and Bansal, Mohit and Chen, Tianlong and Xu, Kaidi},
+  booktitle = {Advances in Neural Information Processing Systems 37 (NeurIPS 2024)},
+  pages     = {28219--28253},
+  year      = {2024},
+  doi       = {10.52202/079017-0885}
+}
+
+@inproceedings{liu2024agentbench,
+  title     = {{AgentBench}: Evaluating {LLMs} as Agents},
+  author    = {Liu, Xiao and Yu, Hao and Zhang, Hanchen and Xu, Yifan and Lei, Xuanyu and Lai, Hanyu and Gu, Yu and Ding, Hangliang and Men, Kaiwen and Yang, Kejuan and Zhang, Shudan and Deng, Xiang and Zeng, Aohan and Du, Zhengxiao and Zhang, Chenhui and Shen, Sheng and Zhang, Tianjun and Su, Yu and Sun, Huan and Huang, Minlie and Dong, Yuxiao and Tang, Jie},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2024},
+  eprint    = {2308.03688},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{zhou2024webarena,
+  title     = {{WebArena}: A Realistic Web Environment for Building Autonomous Agents},
+  author    = {Zhou, Shuyan and Xu, Frank F. and Zhu, Hao and Zhou, Xuhui and Lo, Robert and Sridhar, Abishek and Cheng, Xianyi and Ou, Tianyue and Bisk, Yonatan and Fried, Daniel and Alon, Uri and Neubig, Graham},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2024},
+  eprint    = {2307.13854},
+  archivePrefix = {arXiv}
+}
+
+@misc{yao2024taubench,
+  title     = {{$\tau$}-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains},
+  author    = {Yao, Shunyu and Shinn, Noah and Razavi, Pedram and Narasimhan, Karthik},
+  year      = {2024},
+  eprint    = {2406.12045},
+  archivePrefix = {arXiv}
+}
+
+@misc{backlund2025vending,
+  title     = {Vending-Bench: A Benchmark for Long-Term Coherence of Autonomous Agents},
+  author    = {Backlund, Axel and Petersson, Lukas},
+  year      = {2025},
+  eprint    = {2502.15840},
+  archivePrefix = {arXiv}
+}
+
+% ===========================================================================
+% VERIFICATION SOURCES (key -> URL to check title/authors/year/venue)
+% Status of every key: PENDING -- web access was unavailable in the drafting
+% session. See VERIFICATION.md for the checklist; drop any key that fails.
+% ---------------------------------------------------------------------------
+% wei2022cot              https://arxiv.org/abs/2201.11903
+% snell2024scaling        https://arxiv.org/abs/2408.03314
+% openai2024o1card        https://arxiv.org/abs/2412.16720
+% deepseek2025r1          https://arxiv.org/abs/2501.12948
+% chen2024overthinking    https://arxiv.org/abs/2412.21187
+% han2024tokenbudget      https://arxiv.org/abs/2412.18547
+% kwon2023vllm            https://arxiv.org/abs/2309.06180 ; https://doi.org/10.1145/3600006.3613165
+% duetting2024mechanism   https://arxiv.org/abs/2310.10826
+% velasco2025overcharging https://arxiv.org/abs/2505.21627
+% chen2023frugalgpt       https://arxiv.org/abs/2305.05176
+% ong2025routellm         https://arxiv.org/abs/2406.18665
+% hu2024routerbench       https://arxiv.org/abs/2403.12031
+% ding2024hybrid          https://arxiv.org/abs/2404.14618
+% yue2024cascades         https://arxiv.org/abs/2310.03094
+% shnitzer2023routing     https://arxiv.org/abs/2309.15789
+% jiang2023blender        https://arxiv.org/abs/2306.02561
+% aggarwal2024automix     https://arxiv.org/abs/2310.12963
+% panda2025pilot          https://arxiv.org/abs/2508.21141
+% cai2025substitution     https://arxiv.org/abs/2504.04715
+% gao2025equality         https://arxiv.org/abs/2410.20247
+% sun2025idiosyncrasies   https://arxiv.org/abs/2502.12150
+% pasquini2025llmmap      https://arxiv.org/abs/2407.15847
+% xu2024instructional     https://arxiv.org/abs/2401.12255
+% chen2024drift           https://arxiv.org/abs/2307.09009
+% finlayson2024logits     https://arxiv.org/abs/2403.09539
+% carlini2024stealing     https://arxiv.org/abs/2403.06634
+% kirchenbauer2023watermark https://arxiv.org/abs/2301.10226
+% ghodsi2017safetynets    https://arxiv.org/abs/1706.10268
+% tramer2019slalom        https://arxiv.org/abs/1806.03287
+% liu2021zkcnn            https://doi.org/10.1145/3460120.3485379
+% chen2024zkml            https://doi.org/10.1145/3627703.3650088
+% sun2024zkllm            https://arxiv.org/abs/2404.16109
+% ong2025toploc           https://arxiv.org/abs/2501.16007
+% jia2021pol              https://arxiv.org/abs/2103.05633
+% akerlof1970lemons       https://doi.org/10.2307/1879431
+% holmstrom1979moral      https://doi.org/10.2307/3003320
+% myerson1981optimal      https://doi.org/10.1287/moor.6.1.58
+% laffont1993procurement  https://mitpress.mit.edu/9780262121743/
+% townsend1979csv         https://doi.org/10.1016/0022-0531(79)90031-0
+% border1987samurai       https://doi.org/10.2307/2297481
+% becker1968crime         https://doi.org/10.1086/259394
+% polinsky2000enforcement https://doi.org/10.1257/jel.38.1.45
+% avenhaus2002inspection  https://doi.org/10.1016/S1574-0005(02)03014-X
+% conitzer2006commit      https://doi.org/10.1145/1134707.1134717
+% calvano2020collusion    https://doi.org/10.1257/aer.20190623
+% auer2002ucb             https://doi.org/10.1023/A:1013689704352
+% lattimore2020bandit     https://doi.org/10.1017/9781108571401
+% badanidiyuru2018bwk     https://doi.org/10.1145/3164539 ; https://arxiv.org/abs/1305.2545
+% joulani2013delayed      https://arxiv.org/abs/1306.0686
+% vernade2017delayed      https://arxiv.org/abs/1706.09186
+% pikeburke2018aggregated https://arxiv.org/abs/1709.06853
+% bartok2014partial       https://doi.org/10.1287/moor.2014.0663
+% cesabianchi2005label    https://doi.org/10.1109/TIT.2005.847729
+% eu2024aiact             https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1689
+% eu2016gdpr              https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32016R0679
+% cjeu2020schrems         https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:62018CJ0311
+% eu2023dpf               https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023D1795
+% cac2023genai            https://www.cac.gov.cn/2023-07/13/c_1690898327029107.htm
+% npc2021pipl             https://www.cac.gov.cn/2021-08/20/c_1631050028355286.htm
+% npc2021dsl              https://www.cac.gov.cn/2021-06/11/c_1624994566919140.htm
+% cac2022assessment       https://www.cac.gov.cn/2022-07/07/c_1658811536396503.htm
+% cac2024crossborder      https://www.cac.gov.cn/2024-03/22/c_1712776611775634.htm
+% hacker2023regulating    https://doi.org/10.1145/3593013.3594067
+% veale2021demystifying   https://doi.org/10.9785/cri-2021-220402
+% roberts2021chinese      https://doi.org/10.1007/s00146-020-00992-2
+% zheng2022aieconomist    https://doi.org/10.1126/sciadv.abk2607
+% byrd2020abides          https://arxiv.org/abs/1904.12066
+% horton2023homosilicus   https://arxiv.org/abs/2301.07543
+% park2023generative      https://arxiv.org/abs/2304.03442
+% li2024econagent         https://arxiv.org/abs/2310.10436
+% fish2024collusion       https://arxiv.org/abs/2404.00806
+% duan2024gtbench         https://arxiv.org/abs/2402.12348
+% liu2024agentbench       https://arxiv.org/abs/2308.03688
+% zhou2024webarena        https://arxiv.org/abs/2307.13854
+% yao2024taubench         https://arxiv.org/abs/2406.12045
+% backlund2025vending     https://arxiv.org/abs/2502.15840
+% ===========================================================================
+
+% ---------------------------------------------------------------------------
+% Public API pricing and documentation (accessed 2026-11-10)
+% ---------------------------------------------------------------------------
+
+@misc{anthropic2026pricing,
+  title     = {Pricing},
+  author    = {{Anthropic}},
+  howpublished = {Claude Platform Docs},
+  year      = {2026},
+  url       = {https://platform.claude.com/docs/en/about-claude/pricing},
+  note      = {Accessed 2026-11-10}
+}
+
+@misc{openai2026reasoning,
+  title     = {Reasoning Models},
+  author    = {{OpenAI}},
+  howpublished = {OpenAI API documentation},
+  year      = {2026},
+  url       = {https://developers.openai.com/api/docs/guides/reasoning},
+  note      = {Accessed 2026-11-10}
+}

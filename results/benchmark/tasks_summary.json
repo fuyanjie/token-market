@@ -1,0 +1,19 @@
+{
+  "T2": {
+    "task": "T2",
+    "path": "/workspace/token-market/results/benchmark/T2_episodes.jsonl",
+    "meta": {
+      "pi_grid": [
+        1.0,
+        0.2,
+        0.1,
+        0.05,
+        0.0
+      ],
+      "crossover": {
+        "pi_star_J": 1.0,
+        "note": "D3 J >= StageRoute J (secondary); primary board remains attack/fraud"
+      }
+    }
+  }
+}

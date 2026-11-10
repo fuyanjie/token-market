@@ -1,0 +1,5 @@
+run_id,seed,seller_key,seller_id,fraud_future,fraud_future_swap,fraud_future_theft,fraud_future_downgrade,n_target_served,fraud_order_share_target,fraud_billed_token_share_target,leakref_tokens_actual_mean,leakref_billed_minus_actual_mean
+posted_price__single_best_compliant__seed0,0,b17feb9fe03a,s03,0,0,0,0,16,0.0,0.0,181.0625,0.0
+posted_price__single_best_compliant__seed0,0,cfe68ec98103,s15,0,0,0,0,8,0.0,0.0,151.35,0.0
+posted_price__single_best_compliant__seed0,0,778190876bda,s26,1,1,0,0,8,1.0,1.0,165.16666666666666,0.0
+posted_price__single_best_compliant__seed0,0,aa30f8066ca1,s39,1,1,0,0,32,0.9375,0.9555876512005778,170.796875,0.0

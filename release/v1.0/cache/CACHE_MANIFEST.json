@@ -1,0 +1,13 @@
+{
+  "source_path": "/workspace/token-market/cache/llm_outputs.jsonl",
+  "staged_path": "cache/llm_outputs.jsonl",
+  "size_bytes": 304242,
+  "sha256": "64166a393a96ad43028c4c424ed0a83190c67767972695d55ecfa125d9df5d66",
+  "records": 250,
+  "models": [
+    "Qwen/Qwen2.5-0.5B-Instruct",
+    "Qwen/Qwen2.5-1.5B-Instruct"
+  ],
+  "records_per_model": 125,
+  "note": "File is small (under 300 KiB) and is copied into this staging dir; this sidecar records size, sha256, and the exact in-repo path."
+}

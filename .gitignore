@@ -5,3 +5,10 @@ results/transactions.jsonl
 results/experiments/
 results/long_math*/transactions.jsonl
 logs/
+
+# local reproduction / smoke outputs (scripts/reproduce_pi_dense.sh)
+results/_smoke_repro/
+results/_repro/
+
+# large smoke regression dumps
+results/_smoke/regress_*.json

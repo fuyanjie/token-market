@@ -1,0 +1,307 @@
+{
+  "label": "v0.1-scale",
+  "status": "APPENDIX ONLY \u2014 not the formal \u00a71 Q-promotion gate (protocol \u53e3\u5f84\u8865\u6b63 item 3/5). Formal gate: EXP3 or fictitious play, per \u03c0, all \u03c0 must pass, at 40-seller scale with full baselines.",
+  "learners": [
+    "egreedy (v0.1 default)",
+    "hedge"
+  ],
+  "per_pi": [
+    {
+      "pi": 1.0,
+      "Q_egreedy": {
+        "audited_compliance_cascade": 0.11770833333333335,
+        "stageroute_compliant": 0.6891666666666666,
+        "pilot_compliant": 0.9133333333333333
+      },
+      "Q_hedge": {
+        "audited_compliance_cascade": 0.328125,
+        "stageroute_compliant": 0.5506249999999999,
+        "pilot_compliant": 0.6595833333333333
+      },
+      "kendall_tau": 1.0,
+      "front_egreedy": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "front_hedge": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "tail_trade_frac_hedge": {
+        "audited_compliance_cascade": 1.0,
+        "stageroute_compliant": 0.1,
+        "pilot_compliant": 0.95
+      }
+    },
+    {
+      "pi": 0.2,
+      "Q_egreedy": {
+        "audited_compliance_cascade": 0.11770833333333335,
+        "stageroute_compliant": 0.6714583333333334,
+        "pilot_compliant": 0.9116666666666667
+      },
+      "Q_hedge": {
+        "audited_compliance_cascade": 0.328125,
+        "stageroute_compliant": 0.5975,
+        "pilot_compliant": 0.7295833333333335
+      },
+      "kendall_tau": 1.0,
+      "front_egreedy": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "front_hedge": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "tail_trade_frac_hedge": {
+        "audited_compliance_cascade": 1.0,
+        "stageroute_compliant": 0.1,
+        "pilot_compliant": 0.9
+      }
+    },
+    {
+      "pi": 0.18,
+      "Q_egreedy": {
+        "audited_compliance_cascade": 0.11770833333333335,
+        "stageroute_compliant": 0.6983333333333333,
+        "pilot_compliant": 0.9114583333333333
+      },
+      "Q_hedge": {
+        "audited_compliance_cascade": 0.328125,
+        "stageroute_compliant": 0.59125,
+        "pilot_compliant": 0.7366666666666666
+      },
+      "kendall_tau": 1.0,
+      "front_egreedy": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "front_hedge": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "tail_trade_frac_hedge": {
+        "audited_compliance_cascade": 1.0,
+        "stageroute_compliant": 0.15,
+        "pilot_compliant": 1.0
+      }
+    },
+    {
+      "pi": 0.15,
+      "Q_egreedy": {
+        "audited_compliance_cascade": 0.11770833333333335,
+        "stageroute_compliant": 0.6766666666666665,
+        "pilot_compliant": 0.9287499999999997
+      },
+      "Q_hedge": {
+        "audited_compliance_cascade": 0.328125,
+        "stageroute_compliant": 0.5660416666666668,
+        "pilot_compliant": 0.71
+      },
+      "kendall_tau": 1.0,
+      "front_egreedy": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "front_hedge": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "tail_trade_frac_hedge": {
+        "audited_compliance_cascade": 1.0,
+        "stageroute_compliant": 0.1,
+        "pilot_compliant": 1.0
+      }
+    },
+    {
+      "pi": 0.12,
+      "Q_egreedy": {
+        "audited_compliance_cascade": 0.11770833333333335,
+        "stageroute_compliant": 0.7458333333333333,
+        "pilot_compliant": 0.9010416666666666
+      },
+      "Q_hedge": {
+        "audited_compliance_cascade": 0.328125,
+        "stageroute_compliant": 0.5468750000000001,
+        "pilot_compliant": 0.6935416666666667
+      },
+      "kendall_tau": 1.0,
+      "front_egreedy": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "front_hedge": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "tail_trade_frac_hedge": {
+        "audited_compliance_cascade": 1.0,
+        "stageroute_compliant": 0.15,
+        "pilot_compliant": 0.9
+      }
+    },
+    {
+      "pi": 0.11,
+      "Q_egreedy": {
+        "audited_compliance_cascade": 0.11770833333333335,
+        "stageroute_compliant": 0.7910416666666666,
+        "pilot_compliant": 0.8812499999999999
+      },
+      "Q_hedge": {
+        "audited_compliance_cascade": 0.328125,
+        "stageroute_compliant": 0.5910416666666667,
+        "pilot_compliant": 0.7139583333333333
+      },
+      "kendall_tau": 1.0,
+      "front_egreedy": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "front_hedge": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "tail_trade_frac_hedge": {
+        "audited_compliance_cascade": 1.0,
+        "stageroute_compliant": 0.15,
+        "pilot_compliant": 0.95
+      }
+    },
+    {
+      "pi": 0.1,
+      "Q_egreedy": {
+        "audited_compliance_cascade": 0.11770833333333335,
+        "stageroute_compliant": 0.8222916666666666,
+        "pilot_compliant": 0.9035416666666667
+      },
+      "Q_hedge": {
+        "audited_compliance_cascade": 0.328125,
+        "stageroute_compliant": 0.6162500000000001,
+        "pilot_compliant": 0.7458333333333333
+      },
+      "kendall_tau": 1.0,
+      "front_egreedy": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "front_hedge": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "tail_trade_frac_hedge": {
+        "audited_compliance_cascade": 1.0,
+        "stageroute_compliant": 0.2,
+        "pilot_compliant": 1.0
+      }
+    },
+    {
+      "pi": 0.08,
+      "Q_egreedy": {
+        "audited_compliance_cascade": 0.11770833333333335,
+        "stageroute_compliant": 0.8054166666666666,
+        "pilot_compliant": 0.9143749999999999
+      },
+      "Q_hedge": {
+        "audited_compliance_cascade": 0.328125,
+        "stageroute_compliant": 0.6189583333333334,
+        "pilot_compliant": 0.7318749999999999
+      },
+      "kendall_tau": 1.0,
+      "front_egreedy": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "front_hedge": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "tail_trade_frac_hedge": {
+        "audited_compliance_cascade": 1.0,
+        "stageroute_compliant": 0.2,
+        "pilot_compliant": 0.95
+      }
+    },
+    {
+      "pi": 0.06,
+      "Q_egreedy": {
+        "audited_compliance_cascade": 0.11770833333333335,
+        "stageroute_compliant": 0.8400000000000001,
+        "pilot_compliant": 0.9106249999999999
+      },
+      "Q_hedge": {
+        "audited_compliance_cascade": 0.328125,
+        "stageroute_compliant": 0.6116666666666666,
+        "pilot_compliant": 0.7404166666666667
+      },
+      "kendall_tau": 1.0,
+      "front_egreedy": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "front_hedge": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "tail_trade_frac_hedge": {
+        "audited_compliance_cascade": 1.0,
+        "stageroute_compliant": 0.1,
+        "pilot_compliant": 0.95
+      }
+    },
+    {
+      "pi": 0.05,
+      "Q_egreedy": {
+        "audited_compliance_cascade": 0.11770833333333335,
+        "stageroute_compliant": 0.8595833333333334,
+        "pilot_compliant": 0.9043749999999999
+      },
+      "Q_hedge": {
+        "audited_compliance_cascade": 0.328125,
+        "stageroute_compliant": 0.6229166666666667,
+        "pilot_compliant": 0.7629166666666667
+      },
+      "kendall_tau": 1.0,
+      "front_egreedy": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "front_hedge": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "tail_trade_frac_hedge": {
+        "audited_compliance_cascade": 1.0,
+        "stageroute_compliant": 0.15,
+        "pilot_compliant": 0.95
+      }
+    },
+    {
+      "pi": 0.0,
+      "Q_egreedy": {
+        "audited_compliance_cascade": 0.11770833333333335,
+        "stageroute_compliant": 0.9341666666666667,
+        "pilot_compliant": 0.9366666666666665
+      },
+      "Q_hedge": {
+        "audited_compliance_cascade": 0.328125,
+        "stageroute_compliant": 0.7635416666666666,
+        "pilot_compliant": 0.84375
+      },
+      "kendall_tau": 1.0,
+      "front_egreedy": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "front_hedge": [
+        "audited_compliance_cascade",
+        "stageroute_compliant"
+      ],
+      "tail_trade_frac_hedge": {
+        "audited_compliance_cascade": 1.0,
+        "stageroute_compliant": 1.0,
+        "pilot_compliant": 1.0
+      }
+    }
+  ]
+}

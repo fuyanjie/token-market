@@ -1,3 +1,57 @@
+## Benchmark release (Datasets & Benchmarks track)
+
+This repository is a **reproducible cross-border reasoning-token market simulator** used as a
+**benchmark generator** (not an order-book / CLOB). The research claim for the Datasets & Benchmarks
+paper is the **platform + evaluation protocol**; deterrence methods stay in a separate methods paper.
+
+### Five platform layers ↔ code
+
+| Layer | Code |
+|---|---|
+| 1. Admission / compliance | `tokenmarket/gateway.py`, `compliance.py` |
+| 2. Routing / portfolio procurement (not an order book) | `matching.py`, `portfolio.py`, `buyers.py`, `baselines.py` |
+| 3. Escrow settlement (`locked→settled/slashed`; **default OFF**) | `sim.py`, `audit_v6.py` |
+| 4. Oversight audit (fixed `a`; optional delist / adaptive; **default OFF**) | `strategic.py`, `audit_v6.py` |
+| 5. Feedback & trails | `feedback.py`, `logging_schema.py` |
+
+### v1 publishable export (five JSONL files)
+
+See field dictionary + samples: [`docs/DATA_SCHEMA.md`](docs/DATA_SCHEMA.md).
+
+| File | Contents |
+|---|---|
+| `sellers.jsonl` | seller catalog |
+| `buyers.jsonl` | buyer demand / compliance profile |
+| `orders.jsonl` | order flow (from `logging_schema`) |
+| `audits.jsonl` | audit events joined by `order_id` |
+| `episodes.jsonl` | protocol + **primary board** metrics |
+
+**Primary board** (from `episodes.jsonl`): `active_attack_rate` + `fraud_share`.  
+**Secondary**: `J`, learned q. **Immediate-feedback J is NOT the primary ranking.**  
+No `ledger.jsonl` / `events.jsonl` on disk (derive via `orders ⋈ audits`). Internal caches are not part of the release.
+
+### One-click commands
+
+```bash
+# five-layer JSONL + knobs yaml (mock backend, no GPU)
+/workspace/tmvenv/bin/python scripts/export_benchmark_layers.py \
+  --out exports/latest --seed 0 --n-tasks 48 --learning
+
+# knobs only (a, π, L, reputation_rounds, ...)
+/workspace/tmvenv/bin/python scripts/export_config.py
+
+# standard tasks T1–T3 (fixed seeds)
+/workspace/tmvenv/bin/python scripts/run_benchmark_tasks.py --smoke          # fast
+/workspace/tmvenv/bin/python scripts/run_benchmark_tasks.py --tasks T1 T2 T3
+
+# leaderboard: three tables (attack, fraud, J-secondary)
+/workspace/tmvenv/bin/python scripts/run_leaderboard.py --smoke
+```
+
+Config: `configs/benchmark/default.yaml` (seeds `[0,1,2]`; v6 switches remain off).
+
+---
+
 # token-market v5：合规约束下的多模型组合采购 + 不完美审计下的策略性欺诈 + 延迟/稀疏结果反馈（Compliance-constrained Portfolio Purchasing under Strategic Fraud and Delayed / Sparse Outcome Feedback）
 
 一个**纯虚拟**的跨境推理 token 交易平台（cross-border reasoning-token marketplace）研究沙盒。

@@ -1,0 +1,13 @@
+extends: ../../../configs/pi_dense.yaml
+# Tiny smoke overlay for experiment F. Lists replace parent lists
+# (see tokenmarket.config.deep_merge).
+run:
+  n_tasks: 24
+  n_rounds: 4
+experiments:
+  seeds: [0]
+  F:
+    policies: [audited_compliance_cascade]
+    reveal_probs: [1.0]
+    delays: [0]
+    combined: []

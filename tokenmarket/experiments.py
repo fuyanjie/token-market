@@ -966,7 +966,9 @@ FMETRICS = ("joint_objective", "task_accuracy", "compliance_violation_rate", "fr
             "swaps_detected", "thefts_detected", "n_purchases", "bandit_label_updates_online")
 
 
-def experiment_F(ctx: Context, seeds: List[int], log=print) -> Dict:
+def experiment_F(ctx: Context, seeds: List[int], log=print, per_seed_rows: Optional[List[Dict]] = None) -> Dict:
+    """per_seed_rows: if a list is given, one row per (policy, regime, seed) is appended to it (see
+    per_seed_F_rows / write_per_seed_F); the returned dict is unchanged either way."""
     ef = ctx.cfg["experiments"]["F"]
     sid = fraud_seller_id(ctx.cfg)
     delays = [None if (d is None or str(d).lower() == "inf") else int(d) for d in ef["delays"]]
@@ -998,6 +1000,12 @@ def experiment_F(ctx: Context, seeds: List[int], log=print) -> Dict:
             row["label_updates_per_purchase"] = statistics.fmean(
                 m["bandit_label_updates_online"] / m["n_purchases"] if m["n_purchases"] else 0.0 for m in ps)
             rows.append(row)
+            if per_seed_rows is not None:
+                for seed, m in zip(seeds, ps):
+                    per_seed_rows.append({"seed": seed, "sweep": sweep, "delay_L": L, "pi": pi, "method": pol,
+                                          "J": m["joint_objective"], "fraud_share": m["fraud_share"],
+                                          "learned_q_swap": m["learned_swap_q"][sid],
+                                          "learned_q_theft": m["learned_theft_q"][sid]})
             log(f"[F] {pol:28s} {fo['mode']:15s} L={_Lstr(L):9s} pi={pi:<5} J={row['joint_objective']:.3f} "
                 f"acc={row['task_accuracy']:.3f} fraud={row['fraud_share']:.3f} q={row['learned_q_swap']:.2f}/"
                 f"{row['learned_q_theft']:.2f} cov={row['feedback_coverage']:.2f}")
@@ -1010,6 +1018,46 @@ def experiment_F(ctx: Context, seeds: List[int], log=print) -> Dict:
             "d3_audit_types": ctx.cfg["market"]["audited"].get("audit_types", ["identity", "length"]),
             "penalty": ctx.cfg["fraud"]["penalty"], "detect_prob": ctx.cfg["fraud"]["detect_prob"],
             "detect_prob_length": ctx.cfg["fraud"].get("detect_prob_length", 0.9), "fraud_seller": sid}
+
+
+PER_SEED_F_COLS = ("seed", "sweep", "delay_L", "pi", "method", "J", "fraud_share", "learned_q_swap",
+                   "learned_q_theft", "dJ_vs_D3")
+
+
+def per_seed_F_rows(rows: List[Dict], ours: str = "audited_compliance_cascade") -> List[Dict]:
+    """Add dJ_vs_D3 = J(D3) − J(method) on the SAME seed and regime (positive = D3 better, same sign as the
+    ΔJ in render_F; 0 on D3's own rows, None if D3 was not run in that regime)."""
+    d3 = {(r["seed"], r["sweep"], r["delay_L"], r["pi"]): r["J"] for r in rows if r["method"] == ours}
+    out = []
+    for r in rows:
+        j = d3.get((r["seed"], r["sweep"], r["delay_L"], r["pi"]))
+        out.append(dict(r, dJ_vs_D3=None if j is None else j - r["J"]))
+    return sorted(out, key=lambda r: (r["sweep"], -1 if r["delay_L"] is None else r["delay_L"], r["pi"],
+                                      r["method"], r["seed"]))
+
+
+def write_per_seed_F(rows: List[Dict], path: str, ours: str = "audited_compliance_cascade") -> Tuple[str, str]:
+    """Write the per-seed experiment-F table as <stem>.md and <stem>.csv (a .md / .csv suffix on path is dropped)."""
+    import csv
+    stem = os.path.splitext(path)[0] if path.endswith((".md", ".csv")) else path
+    os.makedirs(os.path.dirname(stem) or ".", exist_ok=True)
+    table = per_seed_F_rows(rows, ours)
+    fmt = lambda v: "" if v is None else (f"{v:.6f}" if isinstance(v, float) else str(v))  # noqa: E731
+    with open(stem + ".csv", "w", encoding="utf-8", newline="") as fh:   # CSV keeps full float precision
+        w = csv.writer(fh)
+        w.writerow(PER_SEED_F_COLS)
+        for r in table:
+            w.writerow(["inf" if c == "delay_L" and r[c] is None else ("" if r[c] is None else r[c])
+                        for c in PER_SEED_F_COLS])
+    md = ["# F — per-seed table", "",
+          f"One row per (regime, method, seed). dJ_vs_D3 = J(D3) − J(method) on the same seed and regime "
+          f"(positive = D3 better; D3 = {ours}). learned q = strategic seller's learned attack rate.", "",
+          "| " + " | ".join(PER_SEED_F_COLS) + " |", "|" + "---|" * len(PER_SEED_F_COLS)]
+    for r in table:
+        md.append("| " + " | ".join(_Lstr(r[c]) if c == "delay_L" else fmt(r[c]) for c in PER_SEED_F_COLS) + " |")
+    with open(stem + ".md", "w", encoding="utf-8") as fh:
+        fh.write("\n".join(md) + "\n")
+    return stem + ".md", stem + ".csv"
 
 
 def _frow(res: Dict, pol: str, L, pi) -> Optional[Dict]:
@@ -1164,3 +1212,130 @@ def plot_F(res: Dict, path: str) -> bool:
     fig.savefig(path, dpi=130, bbox_inches="tight")
     plt.close(fig)
     return True
+
+
+# --------------------------------------------------------------------------- v6
+def experiment_V6_delist(ctx: Context, seeds: List[int], log=print) -> Dict:
+    """Ablation: D3 reputation_rounds ∈ {0, 5, 20} at default a=0.1. Reports learned q, J, fraud share."""
+    ev = ctx.cfg.get("experiments", {}).get("V6_delist", {})
+    policy = ev.get("policy", "audited_compliance_cascade")
+    rounds_list = list(ev.get("reputation_rounds", [0, 5, 20]))
+    bmult = float(ev.get("budget_multiplier", 2.0))
+    modes = list(ev.get("attack_modes", ["swap", "theft"]))
+    sid = fraud_seller_id(ctx.cfg)
+    rows = []
+    for rr in rounds_list:
+        over = {"fraud": {"attack_modes_enabled": modes},
+                "market": {"budget_multiplier": bmult,
+                           "audited": {"reputation_rounds": int(rr), "adaptive_audit": False, "escrow": False}}}
+        r = run_point(ctx, over, policy, seeds)
+        ps = r["per_seed"]
+        q = _ms(m["learned_swap_q"].get(sid, 0.0) for m in ps)
+        qt = _ms(m["learned_theft_q"].get(sid, 0.0) for m in ps)
+        row = {"reputation_rounds": rr,
+               "learned_q_swap": q[0], "learned_q_swap_std": q[1],
+               "learned_q_theft": qt[0], "learned_q_theft_std": qt[1],
+               "joint_objective": _ms(m["joint_objective"] for m in ps)[0],
+               "joint_objective_std": _ms(m["joint_objective"] for m in ps)[1],
+               "fraud_share": _ms(m["fraud_share"] for m in ps)[0],
+               "fraud_share_std": _ms(m["fraud_share"] for m in ps)[1],
+               "task_accuracy": _ms(m["task_accuracy"] for m in ps)[0],
+               "n_audits": _ms(m["n_audits"] for m in ps)[0],
+               "n_bans": _ms(m.get("n_bans", 0) for m in ps)[0],
+               "stake_slashed": _ms(m["total_stake_slashed"] for m in ps)[0],
+               "per_seed": [{"seed": seeds[i], "q_swap": ps[i]["learned_swap_q"].get(sid, 0.0),
+                             "q_theft": ps[i]["learned_theft_q"].get(sid, 0.0),
+                             "J": ps[i]["joint_objective"], "fraud_share": ps[i]["fraud_share"]}
+                            for i in range(len(seeds))]}
+        rows.append(row)
+        log(f"[V6_delist] rounds={rr}: q={q[0]:.3f} J={row['joint_objective']:.3f} fraud={row['fraud_share']:.3f}")
+    return {"policy": policy, "seeds": seeds, "audit_rate": 0.1, "rows": rows,
+            "budget_multiplier": bmult, "attack_modes": modes}
+
+
+def render_V6_delist(res: Dict) -> str:
+    L = ["# v6 — Delisting after catch (D3 reputation_rounds ablation)", "",
+         f"Policy `{res['policy']}`, a={res['audit_rate']}, budget×{res['budget_multiplier']}, "
+         f"attack modes {res['attack_modes']}, seeds={res['seeds']}. "
+         "Routing skips sellers with banned_until_round > current round (demand zero while banned).", "",
+         "| reputation_rounds | learned q_swap / q_theft | J | fraud share | accuracy | n_audits | n_bans | stake slashed |",
+         "|---|---|---|---|---|---|---|---|"]
+    for r in res["rows"]:
+        L.append(f"| {r['reputation_rounds']} | {r['learned_q_swap']:.3f}±{r['learned_q_swap_std']:.3f} / "
+                 f"{r['learned_q_theft']:.3f}±{r['learned_q_theft_std']:.3f} "
+                 f"| {r['joint_objective']:.3f}±{r['joint_objective_std']:.3f} "
+                 f"| {r['fraud_share']:.3f}±{r['fraud_share_std']:.3f} "
+                 f"| {r['task_accuracy']:.3f} | {r['n_audits']:.1f} | {r['n_bans']:.1f} "
+                 f"| {r['stake_slashed']:.2f} |")
+    L += ["", "Claim-safe reading: delisting strengthens deterrence (lower q*) by zeroing demand after a catch; "
+          "it is NOT a claim about beating PILOT/StageRoute under immediate feedback. "
+          "Default config keeps reputation_rounds=0 so prior F/J tables stay reproducible.", ""]
+    return "\n".join(L)
+
+
+def experiment_V6_adaptive(ctx: Context, seeds: List[int], log=print) -> Dict:
+    """Ablation: fixed Bernoulli(a=0.1) vs adaptive audit under the same expected budget; escrow on both arms."""
+    ev = ctx.cfg.get("experiments", {}).get("V6_adaptive", {})
+    policy = ev.get("policy", "audited_compliance_cascade")
+    a = float(ev.get("audit_rate", 0.1))
+    bmult = float(ev.get("budget_multiplier", 2.0))
+    modes = list(ev.get("attack_modes", ["swap", "theft"]))
+    use_escrow = bool(ev.get("escrow", True))
+    sid = fraud_seller_id(ctx.cfg)
+    rows = []
+    for name, adaptive in (("fixed", False), ("adaptive", True)):
+        over = {"fraud": {"attack_modes_enabled": modes},
+                "market": {"budget_multiplier": bmult,
+                           "audited": {"audit_rate": a, "adaptive_audit": adaptive,
+                                       "escrow": use_escrow, "reputation_rounds": 0}}}
+        r = run_point(ctx, over, policy, seeds)
+        ps = r["per_seed"]
+        q = _ms(m["learned_swap_q"].get(sid, 0.0) for m in ps)
+        qt = _ms(m["learned_theft_q"].get(sid, 0.0) for m in ps)
+        row = {"arm": name, "adaptive_audit": adaptive, "escrow": use_escrow,
+               "learned_q_swap": q[0], "learned_q_swap_std": q[1],
+               "learned_q_theft": qt[0], "learned_q_theft_std": qt[1],
+               "joint_objective": _ms(m["joint_objective"] for m in ps)[0],
+               "joint_objective_std": _ms(m["joint_objective"] for m in ps)[1],
+               "fraud_share": _ms(m["fraud_share"] for m in ps)[0],
+               "fraud_share_std": _ms(m["fraud_share"] for m in ps)[1],
+               "task_accuracy": _ms(m["task_accuracy"] for m in ps)[0],
+               "n_audits": _ms(m["n_audits"] for m in ps)[0],
+               "n_purchases": _ms(m["n_purchases"] for m in ps)[0],
+               "audit_rate_realized": (_ms(m["n_audits"] for m in ps)[0] /
+                                       max(1e-9, _ms(m["n_purchases"] for m in ps)[0])),
+               "escrow_held": _ms(m.get("escrow_held_total", 0.0) for m in ps)[0],
+               "escrow_slashed": _ms(m.get("escrow_slashed_total", 0.0) for m in ps)[0],
+               "escrow_released": _ms(m.get("escrow_released_total", 0.0) for m in ps)[0],
+               "per_seed": [{"seed": seeds[i], "q_swap": ps[i]["learned_swap_q"].get(sid, 0.0),
+                             "J": ps[i]["joint_objective"], "fraud_share": ps[i]["fraud_share"],
+                             "n_audits": ps[i]["n_audits"]} for i in range(len(seeds))]}
+        rows.append(row)
+        log(f"[V6_adaptive] {name}: q={q[0]:.3f} J={row['joint_objective']:.3f} "
+            f"fraud={row['fraud_share']:.3f} audits={row['n_audits']:.1f} "
+            f"realized_a={row['audit_rate_realized']:.3f}")
+    return {"policy": policy, "seeds": seeds, "audit_rate": a, "rows": rows,
+            "budget_multiplier": bmult, "attack_modes": modes, "escrow": use_escrow}
+
+
+def render_V6_adaptive(res: Dict) -> str:
+    L = ["# v6 — Adaptive audit under fixed expected budget (+ escrow)", "",
+         f"Policy `{res['policy']}`, target a={res['audit_rate']}, budget×{res['budget_multiplier']}, "
+         f"escrow={res['escrow']}, attack modes {res['attack_modes']}, seeds={res['seeds']}. "
+         "Adaptive arm scores sellers (TrustModel risk / billed÷actual EMA / prior detections) and spends "
+         "the same expected audit budget on high-risk purchases first; leftover credit falls back to random.", "",
+         "| arm | learned q_swap / q_theft | J | fraud share | accuracy | n_audits | realized a | "
+         "escrow held / slashed / released |",
+         "|---|---|---|---|---|---|---|---|"]
+    for r in res["rows"]:
+        L.append(f"| {r['arm']} | {r['learned_q_swap']:.3f}±{r['learned_q_swap_std']:.3f} / "
+                 f"{r['learned_q_theft']:.3f}±{r['learned_q_theft_std']:.3f} "
+                 f"| {r['joint_objective']:.3f}±{r['joint_objective_std']:.3f} "
+                 f"| {r['fraud_share']:.3f}±{r['fraud_share_std']:.3f} "
+                 f"| {r['task_accuracy']:.3f} | {r['n_audits']:.1f} | {r['audit_rate_realized']:.3f} "
+                 f"| {r['escrow_held']:.2f} / {r['escrow_slashed']:.2f} / {r['escrow_released']:.2f} |")
+    L += ["", "Claim-safe reading: adaptive audit is a **cost-reduction / targeting** improvement under a fixed "
+          "audit budget; the main claim remains deterrence (lower q*) via audits. Do **not** read a J gap vs "
+          "PILOT/StageRoute under immediate feedback as a win. Escrow is payment timing (slash-from-hold), "
+          "orthogonal to label delay L.", ""]
+    return "\n".join(L)

@@ -20,7 +20,7 @@ from tokenmarket.config import load_config
 from tokenmarket.experiments import (REAL_VS_SIM, Context, experiment_A, experiment_B, experiment_C, experiment_D,
                                      experiment_F, experiment_I, experiment_J, experiment_T, plot_A, plot_C, plot_F,
                                      plot_I, render_A, render_B, render_C, render_D, render_F, render_I, render_J,
-                                     render_T)
+                                     render_T, write_per_seed_F)
 
 
 def _dump(results_dir, name, obj, md):
@@ -39,6 +39,9 @@ def main(argv=None):
     ap.add_argument("--backend-override", choices=["mock", "local_hf"], default=None)
     ap.add_argument("--results-dir", default=None)
     ap.add_argument("--cache-file", default=None)
+    ap.add_argument("--per-seed-out", default=None, metavar="PATH",
+                    help="experiment F only: also write a per-seed table (seed, pi, method, J, fraud_share, learned q, "
+                         "dJ vs D3) to PATH.md and PATH.csv; all default outputs are unchanged")
     args = ap.parse_args(argv)
 
     t0 = time.time()
@@ -78,7 +81,11 @@ def main(argv=None):
         jpart = md.split("## Appendix")[0].replace("# Joint objective —", "## J — Joint objective —", 1)
     fpart = None
     if "F" in args.only:   # v5: delayed / sparse outcome feedback; placed right after J in the summary
-        out["F"] = experiment_F(ctx, seeds, log)
+        per_seed = [] if args.per_seed_out else None
+        out["F"] = experiment_F(ctx, seeds, log, per_seed_rows=per_seed)
+        if per_seed is not None:
+            md_path, csv_path = write_per_seed_F(per_seed, args.per_seed_out, out["F"]["ours"])
+            log(f"[F] wrote per-seed table {md_path} / {csv_path}")
         md = render_F(out["F"])
         _dump(rd, "feedback_ablation", out["F"], md)
         if plot_F(out["F"], os.path.join(rd, "feedback_ablation.png")):
