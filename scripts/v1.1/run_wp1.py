@@ -37,7 +37,7 @@ def write_csv(path, rows):
     if not rows:
         return
     with path.open("x", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, list(rows[0]))
+        writer = csv.DictWriter(fh, list(rows[0]), lineterminator="\n")
         writer.writeheader()
         for row in rows:
             writer.writerow({k: json.dumps(v, sort_keys=True) if isinstance(v, (dict, list)) else v

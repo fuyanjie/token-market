@@ -212,6 +212,7 @@ def test_runner_smoke_outputs_and_overwrite_guard(runner, tmp_path, monkeypatch)
     assert json.loads((tmp_path / "smoke/completion.json").read_text())["n_runs_completed"] == 2
     for arm in ("factorial", "control"):
         assert (tmp_path / f"smoke/{arm}/per_seed.csv").exists()
+        assert b"\r" not in (tmp_path / f"smoke/{arm}/per_seed.csv").read_bytes()
         assert len(json.loads((tmp_path / f"smoke/{arm}/cells.json").read_text())) == 1
     with pytest.raises(SystemExit):
         runner.main(args)

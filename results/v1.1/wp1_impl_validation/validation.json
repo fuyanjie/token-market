@@ -17,5 +17,9 @@
   "protected_changed_paths": [],
   "protected_untracked_paths": [],
   "protocol_sha256": "e9c84494a7031d7023d4861c02a5786a59fbc74541007978a13b9882f209c179",
-  "ruff_available": false
+  "ruff_available": false,
+  "pytest_log": "/workspace/token-market/results/v1.1/wp1_impl_validation/pytest_delivery.log",
+  "diff_check_output": "",
+  "csv_lf_normalized": true,
+  "implementation_base_commit": "49d816d73a13ce3a773b317367c3758caf303a13"
 }
