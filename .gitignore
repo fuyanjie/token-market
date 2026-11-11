@@ -15,3 +15,6 @@ results/_smoke/regress_*.json
 
 # large per-run transaction dumps (official WP1 transactions/ is 4.3G)
 results/**/transactions/
+
+# pytest scratch left by WP2 review
+results/**/pytest_tmp/
