@@ -12,3 +12,6 @@ results/_repro/
 
 # large smoke regression dumps
 results/_smoke/regress_*.json
+
+# large per-run transaction dumps (official WP1 transactions/ is 4.3G)
+results/**/transactions/
