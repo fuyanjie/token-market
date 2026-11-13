@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.11.10)  13 NOV 2026 08:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.11.10)  13 NOV 2026 09:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1216,7 +1216,7 @@ File: figures/fig3_40seller_E_Q_vs_pi.pdf Graphic file (type pdf)
 Package pdftex.def Info: figures/fig3_40seller_E_Q_vs_pi.pdf  used on input line 383.
 (pdftex.def)             Requested size: 506.295pt x 138.33867pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 3019) has occurred while \output is active []
 
  [6.6]
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
@@ -1254,7 +1254,7 @@ LaTeX Info: Redefining \tempurl on input line 147.
 LaTeX Info: Redefining \tempurl on input line 171.
 LaTeX Info: Redefining \tempurl on input line 185.
 )
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 1975) has occurred while \output is active []
 
  [8.8]
 LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
@@ -1402,7 +1402,7 @@ Here is how much of TeX's memory you used:
  197 hyphenation exceptions out of 8191
  89i,16n,131p,2025b,1261s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </home/box/.TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4b.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathMI.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathMI5.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathMI7.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathRM.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinBiolinumT.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinBiolinumTB.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineT.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineTB.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineTI.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/NewTXMI.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/NewTXMI7.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu59.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu5b.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu6a.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu6f.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu74.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu78.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu7a.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu7b.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu95.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu96.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu9a.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/txmiaX.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/txsys.pfb>
-Output written on main.pdf (21 pages, 837068 bytes).
+Output written on main.pdf (21 pages, 837627 bytes).
 PDF statistics:
  736 PDF objects out of 1000 (max. 8388607)
  593 compressed objects within 6 object streams

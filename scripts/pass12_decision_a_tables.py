@@ -46,7 +46,12 @@ def p_value(value, holm_tests=None):
 
 
 def delta_cell(row, places=3):
-    return '$' + f"{float(row['delta_mean']):+.{places}f}\\;[{float(row['delta_lo']):+.{places}f}, {float(row['delta_hi']):+.{places}f}]" + '$'
+    def signed_value(value):
+        formatted = f'{float(value):+.{places}f}'
+        return formatted[1:] if float(formatted) == 0 else formatted
+
+    mean, lo, hi = (signed_value(row[key]) for key in ('delta_mean', 'delta_lo', 'delta_hi'))
+    return rf'${mean}\;[{lo}, {hi}]$'
 
 
 def holm_adjust(raw):
@@ -204,7 +209,7 @@ for penalty, label, astar in ((0.0625, 'P/4', r'0.18\text{--}0.20'), (0.015625, 
     assert len(lower_cells) == 48 and len(lower_contrasts) == 84
     assert all(report_sizes[r['report_family']] == 42 and not r['decision_a_family'] for r in lower_contrasts.values())
     lower += [r'\begin{table*}[p]',
-        r'\caption{Lower-penalty 1000-round cells: $' + label + r'$, $a^*\approx ' + astar + r'$, $\pi=1$, 20 seeds (means). Descriptive only, never evidence of audit efficacy; not part of the Decision A family. $^{*}$/$^{\uparrow}$ mark significant audit-minus-$a=0$ decreases/increases under the official report-family Holm flags (42 tests per router $\times$ learner $\times\pi$, all penalties, both metrics, $\alpha=0.05$). All cells have identifiable $\Qmet$ and 20/20 tail-trade runs.}',
+        r'\caption{Lower-penalty 1000-round cells: $' + label + r'$, $a^*\approx ' + astar + r"$, $\pi=1$, 20 seeds (means). Descriptive only, never evidence of audit efficacy; not part of the Decision A family. $^{*}$/$^{\uparrow}$ mark significant audit-minus-$a=0$ decreases/increases under the official report-family Holm flags (42 tests per router $\times$ learner $\times\pi$, all penalties, both metrics, $\alpha=0.05$). All cells have identifiable $\Qmet$ and 20/20 tail-trade runs. EXP3's $a=0$ reference differs across $P$ because its epoch reward is normalised by $\max(\text{revenue scale}, P)$; egreedy and fictitious-play references are $P$-invariant.}",
         r'\label{tab:decision-a-' + ('p4' if penalty == 0.0625 else 'p16') + '}',
         r'\centering\footnotesize', r'\setlength{\tabcolsep}{5pt}',
         r'\begin{tabular}{@{}llcccccc@{}}', r'\toprule',
