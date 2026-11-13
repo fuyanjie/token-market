@@ -1,0 +1,100 @@
+{
+  "mode": "wp2",
+  "official": true,
+  "dry_run": false,
+  "protocol_sha256": "daddac6c0dddb22b08701caff5715e77215ae13a588512af176ff4933430b102",
+  "git_head": "5e848d9edb1aeb393ff0fa6362465bf28a2e89fa",
+  "config": "/workspace/token-market/configs/v1.0/scale.yaml",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "n_rounds": [
+    1000
+  ],
+  "learners": [
+    "egreedy",
+    "fictitious_play",
+    "exp3"
+  ],
+  "cells": [
+    {
+      "router": "pilot",
+      "audit": "a0.1",
+      "penalty": 0.25,
+      "pi": 1.0,
+      "cell_id": "pilot__a0.1__P0.25__pi1",
+      "arm": "factorial",
+      "policy": "pilot_v1_compliant",
+      "trust_feedback": false,
+      "penalty_label": "P",
+      "audit_efficacy_evidence_allowed": true
+    },
+    {
+      "router": "strongest",
+      "audit": "a0.1",
+      "penalty": 0.25,
+      "pi": 1.0,
+      "cell_id": "strongest__a0.1__P0.25__pi1",
+      "arm": "factorial",
+      "policy": "single_best_compliant",
+      "trust_feedback": false,
+      "penalty_label": "P",
+      "audit_efficacy_evidence_allowed": true
+    },
+    {
+      "router": "cascade",
+      "audit": "a0.1",
+      "penalty": 0.25,
+      "pi": 1.0,
+      "cell_id": "cascade__a0.1__P0.25__pi1",
+      "arm": "factorial",
+      "policy": "audited_compliance_cascade",
+      "trust_feedback": false,
+      "penalty_label": "P",
+      "audit_efficacy_evidence_allowed": true
+    }
+  ],
+  "pairing": {
+    "1000": {
+      "n_rounds": 1000,
+      "n_tasks": 10000,
+      "budget_multiplier": 41.666666666666664,
+      "budget_multiplier_at_480": 2.0
+    }
+  },
+  "n_run_groups": 9,
+  "n_runs_planned": 180,
+  "argv": [
+    "--official-r1000",
+    "--protocol",
+    "docs/v1.1/PROTOCOL_v1.2.md",
+    "--protocol-sha256",
+    "daddac6c0dddb22b08701caff5715e77215ae13a588512af176ff4933430b102",
+    "--out",
+    "results/v1.1/v1.2_wp2_r1000",
+    "--jobs",
+    "8"
+  ],
+  "cell_choice": "PROTOCOL \u00a72 names routers PILOT, strongest, and cascade + a=0.1 at \u03c0=1. Official WP2 uses the frozen WP1 cells pilot/strongest/cascade at a=0.1, P=0.25, \u03c0=1, trust_feedback=false (not cascade+trust). Horizon pairing is scale_horizon only.",
+  "inference": "plain means only; Q3-Q4 bootstrap, recommended n_rounds, and Decision A remain Experiment's responsibility",
+  "protocol_path": "/workspace/token-market/docs/v1.1/PROTOCOL_v1.2.md"
+}

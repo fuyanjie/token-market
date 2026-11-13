@@ -1,0 +1,101 @@
+[
+  {
+    "cell_id": "pilot__a0.1__P0.25__pi1",
+    "router": "pilot",
+    "audit": "a0.1",
+    "penalty": 0.25,
+    "pi": 1.0,
+    "learner": "egreedy",
+    "n_rounds": 1000,
+    "n_tasks": 10000,
+    "budget_multiplier": 41.666666666666664
+  },
+  {
+    "cell_id": "pilot__a0.1__P0.25__pi1",
+    "router": "pilot",
+    "audit": "a0.1",
+    "penalty": 0.25,
+    "pi": 1.0,
+    "learner": "fictitious_play",
+    "n_rounds": 1000,
+    "n_tasks": 10000,
+    "budget_multiplier": 41.666666666666664
+  },
+  {
+    "cell_id": "pilot__a0.1__P0.25__pi1",
+    "router": "pilot",
+    "audit": "a0.1",
+    "penalty": 0.25,
+    "pi": 1.0,
+    "learner": "exp3",
+    "n_rounds": 1000,
+    "n_tasks": 10000,
+    "budget_multiplier": 41.666666666666664
+  },
+  {
+    "cell_id": "strongest__a0.1__P0.25__pi1",
+    "router": "strongest",
+    "audit": "a0.1",
+    "penalty": 0.25,
+    "pi": 1.0,
+    "learner": "egreedy",
+    "n_rounds": 1000,
+    "n_tasks": 10000,
+    "budget_multiplier": 41.666666666666664
+  },
+  {
+    "cell_id": "strongest__a0.1__P0.25__pi1",
+    "router": "strongest",
+    "audit": "a0.1",
+    "penalty": 0.25,
+    "pi": 1.0,
+    "learner": "fictitious_play",
+    "n_rounds": 1000,
+    "n_tasks": 10000,
+    "budget_multiplier": 41.666666666666664
+  },
+  {
+    "cell_id": "strongest__a0.1__P0.25__pi1",
+    "router": "strongest",
+    "audit": "a0.1",
+    "penalty": 0.25,
+    "pi": 1.0,
+    "learner": "exp3",
+    "n_rounds": 1000,
+    "n_tasks": 10000,
+    "budget_multiplier": 41.666666666666664
+  },
+  {
+    "cell_id": "cascade__a0.1__P0.25__pi1",
+    "router": "cascade",
+    "audit": "a0.1",
+    "penalty": 0.25,
+    "pi": 1.0,
+    "learner": "egreedy",
+    "n_rounds": 1000,
+    "n_tasks": 10000,
+    "budget_multiplier": 41.666666666666664
+  },
+  {
+    "cell_id": "cascade__a0.1__P0.25__pi1",
+    "router": "cascade",
+    "audit": "a0.1",
+    "penalty": 0.25,
+    "pi": 1.0,
+    "learner": "fictitious_play",
+    "n_rounds": 1000,
+    "n_tasks": 10000,
+    "budget_multiplier": 41.666666666666664
+  },
+  {
+    "cell_id": "cascade__a0.1__P0.25__pi1",
+    "router": "cascade",
+    "audit": "a0.1",
+    "penalty": 0.25,
+    "pi": 1.0,
+    "learner": "exp3",
+    "n_rounds": 1000,
+    "n_tasks": 10000,
+    "budget_multiplier": 41.666666666666664
+  }
+]

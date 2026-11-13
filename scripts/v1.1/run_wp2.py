@@ -238,31 +238,49 @@ def main(argv=None):
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--seeds", type=int, nargs="+", default=None)
     ap.add_argument("--n-rounds", type=int, nargs="+", default=None)
+    ap.add_argument("--official-r1000", action="store_true",
+                    help="require only the 180-run 1000-round tier, all seeds/learners/routers")
+    ap.add_argument("--cell", action="append", default=[],
+                    help="exact WP2 cell id; diagnostic selections only")
     ap.add_argument("--learner", nargs="+", default=None)
     ap.add_argument("--jobs", type=int, default=1)
     ap.add_argument("--cache-file", default=str(ROOT / "cache/llm_outputs.jsonl"))
     ap.add_argument("--log-transactions", action="store_true")
     ap.add_argument("--official", action="store_true",
                     help="require the frozen official grid (seeds 0-19, all three horizons and learners)")
+    ap.add_argument("--protocol", default=str(ROOT / "docs/v1.1/PROTOCOL_v1.1.md"))
+    ap.add_argument("--protocol-sha256", default=PROTOCOL_SHA256,
+                    help="expected SHA256 of the frozen protocol")
     args = ap.parse_args(argv)
-    protocol = ROOT / "docs/v1.1/PROTOCOL_v1.1.md"
-    if hashlib.sha256(protocol.read_bytes()).hexdigest() != PROTOCOL_SHA256:
+    protocol = Path(args.protocol).resolve()
+    if not protocol.is_file() or hashlib.sha256(protocol.read_bytes()).hexdigest() != args.protocol_sha256:
         ap.error("frozen protocol checksum mismatch")
     if args.jobs < 1:
         ap.error("--jobs must be positive")
     seeds = args.seeds if args.seeds is not None else list(range(N_SEEDS))
-    n_rounds_list = tuple(args.n_rounds) if args.n_rounds is not None else WP2_ROUNDS
+    n_rounds_list = (tuple(args.n_rounds) if args.n_rounds is not None
+                     else ((1000,) if args.official_r1000 else WP2_ROUNDS))
     learners = tuple(args.learner) if args.learner is not None else WP2_LEARNERS
+    cells = WP2_CELLS
+    if args.cell:
+        known = {c.cell_id: c for c in cells}
+        if len(args.cell) != len(set(args.cell)) or any(c not in known for c in args.cell):
+            ap.error("--cell must name distinct WP2 cells")
+        cells = tuple(known[c] for c in args.cell)
     if not seeds or len(seeds) != len(set(seeds)) or any(s < 0 for s in seeds):
         ap.error("seeds must be distinct nonnegative integers")
-    if any(n not in WP2_ROUNDS for n in n_rounds_list):
-        ap.error("n_rounds must be a subset of {48, 200, 500}")
-    if any(l not in WP2_LEARNERS for l in learners):
+    if (not n_rounds_list or len(set(n_rounds_list)) != len(n_rounds_list)
+            or any(n not in (*WP2_ROUNDS, 1000) for n in n_rounds_list)):
+        ap.error("n_rounds must be a distinct subset of {48, 200, 500, 1000}")
+    if not learners or len(set(learners)) != len(learners) or any(l not in WP2_LEARNERS for l in learners):
         ap.error("learner must be a subset of egreedy, fictitious_play, exp3")
-    official = (seeds == list(range(N_SEEDS)) and tuple(n_rounds_list) == WP2_ROUNDS
-                and tuple(learners) == WP2_LEARNERS)
-    if args.official and not official:
+    complete = (seeds == list(range(N_SEEDS)) and tuple(learners) == WP2_LEARNERS
+                and cells == WP2_CELLS)
+    official = complete and n_rounds_list in (WP2_ROUNDS, (1000,))
+    if args.official and (not complete or n_rounds_list != WP2_ROUNDS or args.official_r1000):
         ap.error("official WP2 is fixed: seeds 0-19, rounds 48/200/500, all three learners, three router cells")
+    if args.official_r1000 and (not complete or n_rounds_list != (1000,)):
+        ap.error("official R1000 requires seeds 0-19, only 1000 rounds, all three learners and router cells")
     try:
         out = output_path(args.out)
     except ValueError as exc:
@@ -273,7 +291,7 @@ def main(argv=None):
     # Verify pairing on every horizon before writing anything else.
     pairing = {}
     for n_rounds in n_rounds_list:
-        cfg = cell_config(base, WP2_CELLS[0], seeds[0], n_rounds, learners[0])
+        cfg = cell_config(base, cells[0], seeds[0], n_rounds, learners[0])
         if cfg["run"]["n_tasks"] != 10 * n_rounds:
             ap.error(f"n_tasks was not paired to 10*n_rounds at n_rounds={n_rounds}")
         pairing[str(n_rounds)] = {
@@ -285,16 +303,16 @@ def main(argv=None):
                   "penalty": c.penalty, "pi": c.pi, "learner": learner, "n_rounds": n,
                   "n_tasks": pairing[str(n)]["n_tasks"],
                   "budget_multiplier": pairing[str(n)]["budget_multiplier"]}
-                 for c in WP2_CELLS for learner in learners for n in n_rounds_list]
+                 for c in cells for learner in learners for n in n_rounds_list]
     out.mkdir(parents=True, exist_ok=True)
     meta = {
         "mode": "wp2", "official": official, "dry_run": args.dry_run,
-        "protocol_sha256": PROTOCOL_SHA256,
+        "protocol_sha256": args.protocol_sha256,
         "git_head": subprocess.check_output(
             ["git", "--no-pager", "-C", str(ROOT), "rev-parse", "HEAD"], text=True).strip(),
         "config": str(Path(args.config).resolve()),
         "seeds": seeds, "n_rounds": list(n_rounds_list), "learners": list(learners),
-        "cells": [c.metadata() for c in WP2_CELLS],
+        "cells": [c.metadata() for c in cells],
         "pairing": pairing,
         "n_run_groups": len(jobs_meta),
         "n_runs_planned": len(jobs_meta) * len(seeds),
@@ -306,11 +324,17 @@ def main(argv=None):
         ),
         "inference": "plain means only; Q3-Q4 bootstrap, recommended n_rounds, and Decision A remain Experiment's responsibility",
     }
+    if protocol != ROOT / "docs/v1.1/PROTOCOL_v1.1.md":
+        meta["protocol_path"] = str(protocol)
     write_json(out / "run_meta.json", meta)
     write_json(out / "manifest.json", jobs_meta)
     if args.dry_run:
         print(json.dumps({"official": official, "n_run_groups": meta["n_run_groups"],
                           "n_runs_planned": meta["n_runs_planned"], "pairing": pairing}))
+        if 1000 in n_rounds_list:
+            for group in jobs_meta:
+                for seed in seeds:
+                    print(json.dumps(dict(group, seed=seed)))
         return
     traj_dir = out / "trajectories"
     traj_dir.mkdir()
@@ -320,7 +344,7 @@ def main(argv=None):
     jobs = [{"base": base, "cell": cell, "seed": seed, "n_rounds": n_rounds,
              "learner": learner, "backend": None, "cache_file": args.cache_file,
              "traj_dir": traj_dir, "log_dir": log_dir}
-            for cell in WP2_CELLS for learner in learners for n_rounds in n_rounds_list
+            for cell in cells for learner in learners for n_rounds in n_rounds_list
             for seed in seeds]
     start = time.monotonic()
     rows = []
