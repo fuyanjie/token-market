@@ -1,0 +1,794 @@
+{
+  "mode": "decision_a",
+  "dry_run": false,
+  "protocol_sha256": "daddac6c0dddb22b08701caff5715e77215ae13a588512af176ff4933430b102",
+  "git_head": "5e848d9edb1aeb393ff0fa6362465bf28a2e89fa",
+  "config": "/workspace/token-market/configs/v1.0/scale.yaml",
+  "base_config": {
+    "run": {
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "n_tasks": 480,
+      "n_rounds": 48,
+      "results_dir": "results",
+      "log_file": "transactions.jsonl",
+      "cache_file": "cache/llm_outputs.jsonl"
+    },
+    "task_pool": {
+      "kind": "synthetic",
+      "size": 80,
+      "task_seed": 1234,
+      "long_path": "data/long_tasks.jsonl"
+    },
+    "market": {
+      "policies": [
+        "single_cheapest_compliant",
+        "single_best_compliant",
+        "cascade_compliant",
+        "vote_k_compliant",
+        "compliance_unaware_cheapest"
+      ],
+      "mechanisms": [
+        "posted_price",
+        "sealed_bid"
+      ],
+      "auction_policies": [
+        "single_cheapest_compliant",
+        "single_best_compliant",
+        "compliance_unaware_cheapest"
+      ],
+      "unaware_gateway_mode": "audit_only",
+      "cascade": {
+        "confidence_threshold": 0.7,
+        "max_steps": 3
+      },
+      "vote": {
+        "k": 3
+      },
+      "mock_confidence": {
+        "correct_mean": 0.75,
+        "wrong_mean": 0.45,
+        "std": 0.15
+      },
+      "budget_multiplier": 2.0,
+      "audit": {
+        "rate": 0.0,
+        "cost": 0.004,
+        "types": [
+          "identity"
+        ]
+      },
+      "audited": {
+        "audit_rate": 0.1,
+        "audit_types": [
+          "identity",
+          "length"
+        ],
+        "theft_quality_factor": 0.5,
+        "cascade": {
+          "confidence_threshold": 0.7,
+          "max_steps": 3
+        },
+        "reputation_rounds": 0,
+        "adaptive_audit": false,
+        "escrow": false,
+        "audit_rule": "fixed",
+        "risk_adaptive": {
+          "a_min": 0.05,
+          "a_max": 0.5,
+          "prior_a": 1.0,
+          "prior_b": 9.0
+        }
+      },
+      "joint": {
+        "lambda": 1.0,
+        "mu": 0.5
+      },
+      "feedback": {
+        "mode": "immediate",
+        "delay_L": 0,
+        "reveal_prob": 1.0
+      },
+      "pilot": {
+        "alpha": 0.5,
+        "prior_lambda": 5.0,
+        "n_bins": 4
+      },
+      "stageroute": {
+        "gamma": 0.5,
+        "budget_scale": 1.0
+      },
+      "auction": {
+        "format": "second_price",
+        "markup_low": 1.1,
+        "markup_high": 1.8,
+        "reserve_price_per_1k": 0.3
+      },
+      "compliance_filter": true,
+      "pilot_v1": {
+        "alpha": 2.0,
+        "select": "ucb",
+        "n_bins": 4,
+        "pretrain_iters": 400
+      },
+      "stageroute_v1": {
+        "gamma": 0.1,
+        "budget_scale": 1.0,
+        "n_stages": null,
+        "m_max": null
+      }
+    },
+    "models": {
+      "Qwen/Qwen2.5-1.5B-Instruct": {
+        "accuracy": {
+          "1": 0.95,
+          "2": 0.85,
+          "3": 0.7,
+          "4": 0.55,
+          "5": 0.35
+        },
+        "tokens_mean": 150,
+        "tokens_std": 45
+      },
+      "Qwen/Qwen2.5-0.5B-Instruct": {
+        "accuracy": {
+          "1": 0.8,
+          "2": 0.55,
+          "3": 0.35,
+          "4": 0.25,
+          "5": 0.15
+        },
+        "tokens_mean": 140,
+        "tokens_std": 50
+      },
+      "sim-fast-mock": {
+        "accuracy": {
+          "1": 0.82,
+          "2": 0.62,
+          "3": 0.4,
+          "4": 0.3,
+          "5": 0.2
+        },
+        "tokens_mean": 100,
+        "tokens_std": 35
+      },
+      "sim-strong-r1": {
+        "accuracy": {
+          "1": 0.97,
+          "2": 0.92,
+          "3": 0.85
+        },
+        "tokens_mean": 1400,
+        "tokens_std": 300
+      },
+      "sim-mid-r1": {
+        "accuracy": {
+          "1": 0.92,
+          "2": 0.82,
+          "3": 0.68
+        },
+        "tokens_mean": 1000,
+        "tokens_std": 250
+      },
+      "sim-weak-r1": {
+        "accuracy": {
+          "1": 0.8,
+          "2": 0.58,
+          "3": 0.35
+        },
+        "tokens_mean": 550,
+        "tokens_std": 150
+      }
+    },
+    "sellers": [
+      {
+        "id": "seller_cn",
+        "jurisdiction": "CN",
+        "backend": "local_hf",
+        "claimed_model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "actual_model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "price_per_1k": 0.2,
+        "cost_per_1k": 0.12,
+        "latency": {
+          "mean_ms": 150,
+          "std_ms": 60
+        },
+        "capacity_per_round": 20,
+        "flags": [
+          "br_scc"
+        ]
+      },
+      {
+        "id": "seller_sg",
+        "jurisdiction": "SG",
+        "backend": "local_hf",
+        "claimed_model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "actual_model": "Qwen/Qwen2.5-0.5B-Instruct",
+        "price_per_1k": 0.18,
+        "cost_per_1k": 0.05,
+        "strategy": {
+          "honest_model": "Qwen/Qwen2.5-1.5B-Instruct",
+          "honest_cost_per_1k": 0.12
+        },
+        "latency": {
+          "mean_ms": 100,
+          "std_ms": 40
+        },
+        "capacity_per_round": 20,
+        "flags": [
+          "cn_standard_contract",
+          "br_scc"
+        ]
+      },
+      {
+        "id": "seller_br",
+        "jurisdiction": "BR",
+        "backend": "mock",
+        "claimed_model": "sim-fast-mock",
+        "actual_model": "sim-fast-mock",
+        "price_per_1k": 0.06,
+        "cost_per_1k": 0.03,
+        "latency": {
+          "mean_ms": 400,
+          "std_ms": 120
+        },
+        "capacity_per_round": 20,
+        "flags": [
+          "sg_contractual_safeguards"
+        ]
+      }
+    ],
+    "buyers": [
+      {
+        "id": "buyer_cn_1",
+        "jurisdiction": "CN",
+        "budget": 2.5,
+        "value_per_correct": 0.08,
+        "allowed_jurisdictions": [
+          "CN",
+          "SG",
+          "BR"
+        ],
+        "sensitivity_mix": {
+          "public": 0.4,
+          "personal": 0.35,
+          "sensitive_personal": 0.15,
+          "important_data": 0.1
+        },
+        "consent_rate": 0.5
+      },
+      {
+        "id": "buyer_cn_2",
+        "jurisdiction": "CN",
+        "budget": 2.5,
+        "value_per_correct": 0.1,
+        "allowed_jurisdictions": [
+          "CN",
+          "SG",
+          "BR"
+        ],
+        "sensitivity_mix": {
+          "public": 0.3,
+          "personal": 0.2,
+          "sensitive_personal": 0.1,
+          "important_data": 0.4
+        },
+        "consent_rate": 0.5
+      },
+      {
+        "id": "buyer_sg_1",
+        "jurisdiction": "SG",
+        "budget": 2.5,
+        "value_per_correct": 0.08,
+        "allowed_jurisdictions": [
+          "CN",
+          "SG",
+          "BR"
+        ],
+        "sensitivity_mix": {
+          "public": 0.5,
+          "personal": 0.35,
+          "sensitive_personal": 0.15,
+          "important_data": 0.0
+        },
+        "consent_rate": 0.5
+      },
+      {
+        "id": "buyer_sg_2",
+        "jurisdiction": "SG",
+        "budget": 0.5,
+        "value_per_correct": 0.06,
+        "allowed_jurisdictions": [
+          "SG",
+          "BR"
+        ],
+        "sensitivity_mix": {
+          "public": 0.6,
+          "personal": 0.4,
+          "sensitive_personal": 0.0,
+          "important_data": 0.0
+        },
+        "consent_rate": 0.5
+      },
+      {
+        "id": "buyer_br_1",
+        "jurisdiction": "BR",
+        "budget": 2.0,
+        "value_per_correct": 0.07,
+        "allowed_jurisdictions": [
+          "CN",
+          "SG",
+          "BR"
+        ],
+        "sensitivity_mix": {
+          "public": 0.4,
+          "personal": 0.3,
+          "sensitive_personal": 0.3,
+          "important_data": 0.0
+        },
+        "consent_rate": 0.3
+      },
+      {
+        "id": "buyer_br_2",
+        "jurisdiction": "BR",
+        "budget": 2.0,
+        "value_per_correct": 0.07,
+        "allowed_jurisdictions": [
+          "CN",
+          "SG",
+          "BR"
+        ],
+        "sensitivity_mix": {
+          "public": 0.5,
+          "personal": 0.3,
+          "sensitive_personal": 0.2,
+          "important_data": 0.0
+        },
+        "consent_rate": 0.8
+      }
+    ],
+    "fraud": {
+      "strategy": "learning",
+      "q_static": 1.0,
+      "cost_gap_per_1k": 0.07,
+      "detect_prob": 0.9,
+      "penalty": 0.25,
+      "reputation_rounds": 0,
+      "reputation_loss": 0.0,
+      "logit_temperature": 0.002,
+      "learning": {
+        "learner": "egreedy",
+        "epsilon": 0.1,
+        "eta": 1.0,
+        "exp3_gamma": 0.1,
+        "fp_temperature": 0.1
+      },
+      "attack_modes_enabled": [
+        "swap",
+        "theft"
+      ],
+      "q_theft_static": 1.0,
+      "detect_prob_length": 0.9,
+      "billed_token_policy": "claimed_mean",
+      "inflated_factor": 2.0,
+      "theft_max_new_tokens": 48,
+      "length_audit_tol": 0.1,
+      "length_audit_abs_gap": 0,
+      "length_audit_reference": false,
+      "downgrade_min_difficulty": 3
+    },
+    "tasks": {
+      "types": [
+        "arithmetic",
+        "word_problem",
+        "sequence",
+        "logic"
+      ],
+      "difficulty_mix": {
+        "1": 0.4,
+        "2": 0.4,
+        "3": 0.2
+      }
+    },
+    "gateway": {
+      "default_cross_border": {
+        "latency_penalty_ms": 200,
+        "fee_rate": 0.03
+      },
+      "corridors": {
+        "CN->SG": {
+          "latency_penalty_ms": 80,
+          "fee_rate": 0.02
+        },
+        "SG->CN": {
+          "latency_penalty_ms": 80,
+          "fee_rate": 0.02
+        },
+        "CN->BR": {
+          "latency_penalty_ms": 320,
+          "fee_rate": 0.05
+        },
+        "BR->CN": {
+          "latency_penalty_ms": 320,
+          "fee_rate": 0.05
+        },
+        "SG->BR": {
+          "latency_penalty_ms": 280,
+          "fee_rate": 0.04
+        },
+        "BR->SG": {
+          "latency_penalty_ms": 280,
+          "fee_rate": 0.04
+        }
+      }
+    },
+    "compliance": {
+      "adequacy": {
+        "SG": [
+          "BR"
+        ],
+        "BR": [],
+        "CN": []
+      },
+      "rules": [
+        {
+          "rule_id": "GEN-PUBLIC",
+          "description": "Public (non-personal) data may flow to any jurisdiction.",
+          "origin": "ANY",
+          "sensitivity": [
+            "public"
+          ],
+          "type": "allow"
+        },
+        {
+          "rule_id": "CN-DSL-31",
+          "description": "Important data collected in CN may not leave CN without a security assessment.",
+          "origin": "CN",
+          "sensitivity": [
+            "important_data"
+          ],
+          "type": "require",
+          "allow_if": {
+            "seller_flags_any": [
+              "cn_security_assessment"
+            ]
+          }
+        },
+        {
+          "rule_id": "CN-PIPL-40",
+          "description": "Sensitive personal information from CN requires a CAC security assessment before export.",
+          "origin": "CN",
+          "sensitivity": [
+            "sensitive_personal"
+          ],
+          "type": "require",
+          "allow_if": {
+            "seller_flags_any": [
+              "cn_security_assessment"
+            ]
+          }
+        },
+        {
+          "rule_id": "CN-PIPL-38",
+          "description": "Personal information export from CN requires a legal mechanism (security assessment / standard contract / certification).",
+          "origin": "CN",
+          "sensitivity": [
+            "personal"
+          ],
+          "type": "require",
+          "allow_if": {
+            "seller_flags_any": [
+              "cn_security_assessment",
+              "cn_standard_contract",
+              "cn_certification"
+            ]
+          }
+        },
+        {
+          "rule_id": "SG-PDPA-26",
+          "description": "Transfer limitation obligation - personal data leaves SG only to comparable-protection jurisdictions or under contractual safeguards.",
+          "origin": "SG",
+          "sensitivity": [
+            "personal",
+            "sensitive_personal"
+          ],
+          "type": "require",
+          "allow_if": {
+            "dest_in_adequacy": true,
+            "seller_flags_any": [
+              "sg_contractual_safeguards"
+            ]
+          }
+        },
+        {
+          "rule_id": "BR-LGPD-33-VIII",
+          "description": "Sensitive personal data transferred from BR requires the data subject's specific consent (simplified).",
+          "origin": "BR",
+          "sensitivity": [
+            "sensitive_personal"
+          ],
+          "type": "require",
+          "allow_if": {
+            "task_flags_all": [
+              "specific_consent"
+            ]
+          }
+        },
+        {
+          "rule_id": "BR-LGPD-33",
+          "description": "International transfer from BR only to adequate countries, or with standard contractual clauses, or with specific consent.",
+          "origin": "BR",
+          "sensitivity": [
+            "personal",
+            "sensitive_personal"
+          ],
+          "type": "require",
+          "allow_if": {
+            "dest_in_adequacy": true,
+            "seller_flags_any": [
+              "br_scc"
+            ],
+            "task_flags_all": [
+              "specific_consent"
+            ]
+          }
+        }
+      ]
+    },
+    "backends": {
+      "local_hf": {
+        "max_new_tokens": 256,
+        "long_max_new_tokens": 512,
+        "long_dtype": "bfloat16",
+        "batch_size": 16,
+        "num_threads": 8,
+        "latency_scale": 1.0
+      },
+      "real": {
+        "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "api_key_env": "DASHSCOPE_API_KEY",
+        "model_map": {
+          "sim-strong-r1": "qwen-plus",
+          "sim-mid-r1": "qwen-turbo",
+          "sim-weak-r1": "qwen-turbo",
+          "sim-fast-mock": "qwen-turbo",
+          "Qwen/Qwen2.5-1.5B-Instruct": "qwen2.5-1.5b-instruct",
+          "Qwen/Qwen2.5-0.5B-Instruct": "qwen2.5-0.5b-instruct"
+        },
+        "timeout_s": 60
+      }
+    },
+    "benchmark": {
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "primary_metrics": [
+        "active_attack_rate",
+        "fraud_share"
+      ],
+      "secondary_metrics": [
+        "J",
+        "learned_q_swap",
+        "learned_q_theft"
+      ],
+      "note": "Immediate-feedback J is NOT the primary ranking. active_attack_rate = attacked/served purchases; learned_q_* are separate columns.\n",
+      "tasks": {
+        "T1": {
+          "name": "fixed_audit_deterrence",
+          "a": 0.1,
+          "pi": 1.0,
+          "L": 0
+        },
+        "T2": {
+          "name": "sparse_label_regime",
+          "L": 0,
+          "pi_grid": [
+            1.0,
+            0.2,
+            0.18,
+            0.15,
+            0.12,
+            0.1,
+            0.08,
+            0.06,
+            0.05,
+            0.0
+          ]
+        },
+        "T3": {
+          "name": "adaptive_audit_same_budget",
+          "a": 0.1,
+          "adaptive": true,
+          "primary_board": false
+        }
+      }
+    },
+    "roster": {
+      "seed": 20261110,
+      "resample_per_seed": false,
+      "n_honest": 31,
+      "capacity_per_round": 2,
+      "honest_models": [
+        {
+          "model": "Qwen/Qwen2.5-1.5B-Instruct",
+          "backend": "local_hf",
+          "weight": 0.5,
+          "price_per_1k": [
+            0.17,
+            0.24
+          ],
+          "cost_ratio": [
+            0.5,
+            0.7
+          ]
+        },
+        {
+          "model": "Qwen/Qwen2.5-0.5B-Instruct",
+          "backend": "local_hf",
+          "weight": 0.25,
+          "price_per_1k": [
+            0.08,
+            0.12
+          ],
+          "cost_ratio": [
+            0.4,
+            0.6
+          ]
+        },
+        {
+          "model": "sim-fast-mock",
+          "backend": "mock",
+          "weight": 0.25,
+          "price_per_1k": [
+            0.05,
+            0.08
+          ],
+          "cost_ratio": [
+            0.4,
+            0.6
+          ]
+        }
+      ],
+      "strategic": {
+        "claimed_model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "cheap_model": "Qwen/Qwen2.5-0.5B-Instruct",
+        "backend": "local_hf",
+        "price_per_1k": [
+          0.15,
+          0.21
+        ],
+        "honest_cost_per_1k": 0.12,
+        "cheap_cost_per_1k": 0.05,
+        "groups": [
+          {
+            "attack_modes": [
+              "swap"
+            ],
+            "count": 3
+          },
+          {
+            "attack_modes": [
+              "theft"
+            ],
+            "count": 3
+          },
+          {
+            "attack_modes": [
+              "downgrade"
+            ],
+            "count": 3
+          }
+        ]
+      }
+    },
+    "v1": {
+      "pi_grid": [
+        0.0,
+        0.02,
+        0.04,
+        0.06,
+        0.08,
+        0.1,
+        0.11,
+        0.12,
+        0.14,
+        0.16,
+        0.18,
+        0.2,
+        0.22,
+        0.24,
+        0.26,
+        0.28,
+        0.3,
+        0.5,
+        1.0
+      ],
+      "methods": [
+        "pilot",
+        "stageroute",
+        "cheapest_fixed",
+        "strongest_fixed",
+        "random_audit",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "risk_adaptive_audit"
+      ]
+    }
+  },
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "n_rounds": 1000,
+  "n_tasks": 10000,
+  "budget_multiplier": 41.666666666666664,
+  "learner": "all",
+  "backend_override": null,
+  "cache_file": "/workspace/token-market/cache/llm_outputs.jsonl",
+  "n_cells": 48,
+  "n_factorial_cells": 48,
+  "n_control_cells": 0,
+  "n_runs_planned": 2880,
+  "argv": [
+    "--mode",
+    "decision_a",
+    "--protocol",
+    "/workspace/token-market/docs/v1.1/PROTOCOL_v1.2.md",
+    "--protocol-sha256",
+    "daddac6c0dddb22b08701caff5715e77215ae13a588512af176ff4933430b102",
+    "--n-rounds",
+    "1000",
+    "--out",
+    "results/v1.1/v1.2_decision_a",
+    "--jobs",
+    "8"
+  ],
+  "inference": "plain means only; paired bootstrap and Holm remain Experiment's responsibility",
+  "protocol_path": "/workspace/token-market/docs/v1.1/PROTOCOL_v1.2.md",
+  "learners": [
+    "egreedy",
+    "fictitious_play",
+    "exp3"
+  ]
+}
