@@ -29,9 +29,9 @@ latexmk -pdf main.tex        # pdflatex + bibtex (ACM-Reference-Format.bst)
 - Camera-ready: `[sigconf]`. The camera-ready limit is 12 pages total: up to 9 content pages, plus references and appendix up to 3 pages combined.
 
 ## Page budget (submission)
-- The compiled PDF is 10 pages in total.
-- The main body (§1–§8 plus the Ethics statement) ends on **page 6**, within the 8-content-page limit.
-- References start on page 6. Appendices A–D follow on pages 6–10.
+- The compiled PDF is 21 pages in total (Pass 13 build).
+- The main body (§1–§8 plus the Ethics statement) ends on **page 8**, within the 8-content-page limit.
+- References start on page 8. Appendices follow on pages 9–21.
 - Repository and file paths, the one-click commands, and the reproducibility table now live only in Appendix B, "Reproducibility and Artifact Paths" (lettered C before the companion appendix was removed on 2026-11-10). It merges the former §4.3 listing, the former §6.5 one-pager, the layer code map, and the source-path table.
 
 ## TODOs (not invented on purpose)

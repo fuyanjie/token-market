@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Generate Pass 12 LaTeX from the official Decision A CSVs (stdlib only).
+"""Generate Pass 12/13 LaTeX from official Decision A and WP1 files (stdlib only).
 
 Run from any directory: python3 scripts/pass12_decision_a_tables.py
-No inference is recomputed: use the official merged-family significance flags.
+Tables use official significance flags; Holm-floor sensitivity is checked separately.
 """
 import csv
 import hashlib
 import json
+import math
+from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,21 +26,36 @@ def read_csv(name):
         return list(csv.DictReader(stream))
 
 
-def audit_label(audit):
+def audit_label(audit, boundary=True):
     if audit == 'risk_adaptive':
         return 'risk-adaptive'
     value = float(audit[1:])
     label = '0 (reference)' if value == 0 else f'{value:.2f}'
-    return label + (r'$^{\dagger}$' if audit == 'a0.05' else '')
+    return label + (r'$^{\dagger}$' if boundary and audit == 'a0.05' else '')
 
 
-def p_value(value):
+def p_value(value, holm_tests=None):
     p = float(value)
-    return r'$<10^{-4}$' if p < 1 / meta['B'] else f'${p:.4f}$'
+    if p == 0:
+        if holm_tests is None:
+            return r'$<2\times10^{-4}$'
+        # Round the conservative family-size bound upward to three decimals.
+        bound = math.ceil(holm_tests * 2 / meta['B'] * 1000) / 1000
+        return rf'$\le {bound:.3f}$'
+    return f'${p:.4f}$'
 
 
-def delta_cell(row):
-    return '$' + f"{float(row['delta_mean']):+.3f}\\;[{float(row['delta_lo']):+.3f}, {float(row['delta_hi']):+.3f}]" + '$'
+def delta_cell(row, places=3):
+    return '$' + f"{float(row['delta_mean']):+.{places}f}\\;[{float(row['delta_lo']):+.{places}f}, {float(row['delta_hi']):+.{places}f}]" + '$'
+
+
+def holm_adjust(raw):
+    adjusted = [None] * len(raw)
+    running = 0.0
+    for rank, index in enumerate(sorted(range(len(raw)), key=raw.__getitem__)):
+        running = max(running, min(1.0, (len(raw) - rank) * raw[index]))
+        adjusted[index] = running
+    return adjusted
 
 
 # Check every supplied checksum, including the readout and CSV inputs.
@@ -76,6 +93,42 @@ for csv_rows, json_rows, fields in (
 cell_map = {(r['router'], r['audit'], r['learner']): r for r in cells if float(r['penalty']) == 0.25}
 contrast_map = {(r['router'], r['audit'], r['learner'], r['metric']): r for r in contrasts if float(r['penalty']) == 0.25}
 assert len(contrast_map) == 84
+# Verify the mechanism claims from official run metadata and every per-seed row.
+run_dir = ROOT / 'results/v1.1/v1.2_decision_a'
+run_meta = json.loads((run_dir / 'run_meta.json').read_text())
+assert run_meta['base_config']['market']['audited']['reputation_rounds'] == 0
+assert run_meta['base_config']['fraud']['reputation_rounds'] == 0
+assert all(not r['trust_feedback'] for r in json.loads((run_dir / 'manifest.json').read_text()))
+with (run_dir / 'factorial/per_seed.csv').open(newline='') as stream:
+    runs = list(csv.DictReader(stream))
+assert len(runs) == 2880
+assert all(r['trust_feedback'] == 'False' and float(r['delisted_rounds_tail']) == 0 for r in runs)
+
+# Recompute only the requested sensitivity checks; never replace readout flags.
+family = list(contrast_map.values())
+expected_flags = [r['significant_decision_a'] == 'True' for r in family]
+expected_hits = {(r['router'], r['audit'], r['metric']) for r in votes if r['result1_hit'] == 'True'}
+assert len(expected_hits) == 16
+for numerator in (1, 2):
+    adjusted = holm_adjust([float(r['p_raw']) or numerator / meta['B'] for r in family])
+    flags = [p < meta['alpha'] for p in adjusted]
+    assert flags == expected_flags, numerator
+    flagged = {(r['router'], r['audit'], r['learner'], r['metric']): flag for r, flag in zip(family, flags)}
+    hits = set()
+    for router in ROUTERS:
+        for audit in AUDITS[4:]:
+            for metric in ('E', 'Q'):
+                down_count = up_count = 0
+                for learner in LEARNERS:
+                    row = contrast_map[router, audit, learner, metric]
+                    if flagged[router, audit, learner, metric]:
+                        down_count += float(row['delta_mean']) < 0
+                        up_count += float(row['delta_mean']) > 0
+                if down_count >= 2 and up_count == 0:
+                    hits.add((router, audit, metric))
+    assert hits == expected_hits, numerator
+    print(f'Zero floor {numerator}/B: 84/84 flags unchanged; 16 result-1 hits unchanged; '
+          f'max adjusted p among significant = {max(p for p, flag in zip(adjusted, flags) if flag):.4f}.')
 for r in cell_map.values():
     assert r['n_runs'] == '20' and r['trust_feedback'] == 'False' and float(r['pi']) == 1
     assert r['Q_identifiable'] == 'True' and r['tail_trade_runs'] == '20'
@@ -95,7 +148,7 @@ for router in ROUTERS:
 
 OUT.mkdir(exist_ok=True)
 main = [HEADER, r'\begin{table*}[t]',
- r'\caption{T1, v1.2 Decision A: router $\times$ audit at default $P=0.25$, $\pi=1$; 1000 rounds, 20 seeds (means). All routers use identity+length checks and \texttt{trust\_feedback=false}. $^{*}$: significant decrease vs.\ same-router/learner $a=0$, same-seed paired bootstrap ($B=10{,}000$), two-sided $p$, 95\% percentile CIs (Appendix~\ref{app:decision-a}), merged 84-test Decision-A Holm family, $\alpha=0.05$. Stored zero raw/Holm values mean $p<10^{-4}$ (bootstrap floor $1/B$). $^{\dagger}$: $a=0.05$ is the upper edge of frozen $a^*(P=0.25)=[0.044,0.050]$. Below-$a^*$ rows are not counted toward result 1; individual significant cells remain marked. Not comparable with v1.0 audit arms.}',
+ r'\caption{T1, v1.2 Decision A: router $\times$ audit at default $P=0.25$, $\pi=1$; 1000 rounds, 20 seeds (means). All routers use identity+length checks and \texttt{trust\_feedback=false}. $^{*}$: significant decrease vs.\ same-router/learner $a=0$, same-seed paired bootstrap ($B=10{,}000$), two-sided $p$, 95\% percentile CIs (Appendix~\ref{app:decision-a}), merged 84-test Decision-A Holm family, $\alpha=0.05$. Stored zero raw values mean $p_{\mathrm{raw}}<2\times10^{-4}$ (two-sided resolution $2/B$); stored zero Holm values have bound $\le84\cdot2/B=0.0168$, printed $\le0.017$. $^{\dagger}$: $a=0.05$ is the upper edge of frozen $a^*(P=0.25)=[0.044,0.050]$. Below-$a^*$ rows are not counted toward result 1; individual significant cells remain marked. Not comparable with v1.0 audit arms.}',
  r'\label{tab:t1}', r'\centering\footnotesize', r'\setlength{\tabcolsep}{4pt}', r'\renewcommand{\arraystretch}{0.95}',
  r'\begin{tabular}{@{}lllcccccc@{}}', r'\toprule',
  r'Router & Audit $a$ & Protocol status & \multicolumn{2}{c}{egreedy} & \multicolumn{2}{c}{fictitious play} & \multicolumn{2}{c}{EXP3} \\',
@@ -115,13 +168,13 @@ for router, name in ROUTERS.items():
                     value += r'$^{*}$'
                 row.append(value)
         main.append(' & '.join(row) + r' \\')
-main += [r'\bottomrule', r'\multicolumn{9}{@{}l}{Below $a^*$: $a=0.01$--$0.03$, not counted toward result 1. All cells: 20/20 tail-trade runs; $\Qmet$ identifiable.} \\', r'\end{tabular}', r'\end{table*}']
+main += [r'\bottomrule', r'\multicolumn{9}{@{}l}{Per router: 8/8 hits = 4 counted levels $\{0.05,0.10,0.20,\text{risk-adaptive}\}\times\{\Emet,\Qmet\}$.} \\', r'\multicolumn{9}{@{}l}{Below $a^*$: $a=0.01$--$0.03$, not counted toward result 1. All cells: 20/20 tail-trade runs; $\Qmet$ identifiable.} \\', r'\end{tabular}', r'\end{table*}']
 (OUT / 'decision_a_main.tex').write_text('\n'.join(main) + '\n')
 
 appendix = [HEADER]
 for router, name in ROUTERS.items():
     appendix += [r'\begin{table*}[p]',
-        r'\caption{Decision A, ' + name + r': full paired audit-minus-$a=0$ deltas at $P=0.25$, $\pi=1$, 1000 rounds, seeds 0--19. Intervals: 95\% same-seed paired-bootstrap percentile CIs, $B=10{,}000$; $p_{\mathrm{raw}}$ is two-sided, $p_{\mathrm{H}}$ uses the merged 84-test Holm family. $^{*}$: significant decrease ($p_{\mathrm{H}}<0.05$). Values below the bootstrap floor are written $<10^{-4}$. $^{\dagger}$: $a=0.05$ is the upper edge of $a^*=[0.044,0.050]$. $a=0.01$--$0.03$ are below $a^*$ and not counted toward result 1. Rounding to three decimals can mask tiny changes or CI endpoints.}',
+        r'\caption{Decision A, ' + name + r': full paired audit-minus-$a=0$ deltas at $P=0.25$, $\pi=1$, 1000 rounds, seeds 0--19. Intervals: 95\% same-seed paired-bootstrap percentile CIs, $B=10{,}000$; $p_{\mathrm{raw}}$ is two-sided, $p_{\mathrm{H}}$ uses the merged 84-test Holm family. $^{*}$: significant decrease ($p_{\mathrm{H}}<0.05$). Stored zero raw values are written $<2\times10^{-4}$ (two-sided resolution $2/B$); stored zero Holm values have bound $\le84\cdot2/B=0.0168$, printed $\le0.017$. $^{\dagger}$: $a=0.05$ is the upper edge of $a^*=[0.044,0.050]$. $a=0.01$--$0.03$ are below $a^*$ and not counted toward result 1. Rounding to three decimals can mask tiny changes or CI endpoints.}',
         r'\label{tab:decision-a-' + router + '}', r'\centering\footnotesize', r'\setlength{\tabcolsep}{4pt}', r'\renewcommand{\arraystretch}{0.90}', r'\begin{tabular}{@{}lcccccc@{}}', r'\toprule',
         r'Audit $a$ & $\Delta\Emet$ [95\% CI] & $p_{\mathrm{raw}}$ & $p_{\mathrm{H}}$ & $\Delta\Qmet$ [95\% CI] & $p_{\mathrm{raw}}$ & $p_{\mathrm{H}}$ \\']
     for learner in LEARNERS:
@@ -130,7 +183,7 @@ for router, name in ROUTERS.items():
             row = [audit_label(audit)]
             for metric in ('E', 'Q'):
                 r = contrast_map[router, audit, learner, metric]
-                row += [delta_cell(r) + (r'$^{*}$' if r['significant_decision_a'] == 'True' else ''), p_value(r['p_raw']), p_value(r['p_holm_decision_a'])]
+                row += [delta_cell(r) + (r'$^{*}$' if r['significant_decision_a'] == 'True' else ''), p_value(r['p_raw']), p_value(r['p_holm_decision_a'], holm_tests=84)]
             appendix.append(' & '.join(row) + r' \\')
     appendix += [r'\bottomrule', r'\end{tabular}', r'\end{table*}']
 (OUT / 'decision_a_deltas.tex').write_text('\n'.join(appendix) + '\n')
@@ -141,4 +194,79 @@ q_deltas = [float(contrast_map['pilot', a, 'exp3', 'Q']['delta_mean']) for a in 
 facts = HEADER + f'\\newcommand{{\\DecisionAExample}}{{${example0:.3f}\\rightarrow {example1:.3f}$}}\n'
 facts += f'\\newcommand{{\\DecisionAExpQRange}}{{${max(q_deltas):.3f}$ to ${min(q_deltas):.3f}$}}\n'
 (OUT / 'decision_a_facts.tex').write_text(facts)
+
+# Report the lower-penalty cells with their own router x learner x pi flags.
+report_sizes = Counter(r['report_family'] for r in contrasts if r['testable'] == 'True')
+lower = [HEADER]
+for penalty, label, astar in ((0.0625, 'P/4', r'0.18\text{--}0.20'), (0.015625, 'P/16', r'0.71\text{--}0.80')):
+    lower_cells = {(r['router'], r['audit'], r['learner']): r for r in cells if float(r['penalty']) == penalty}
+    lower_contrasts = {(r['router'], r['audit'], r['learner'], r['metric']): r for r in contrasts if float(r['penalty']) == penalty}
+    assert len(lower_cells) == 48 and len(lower_contrasts) == 84
+    assert all(report_sizes[r['report_family']] == 42 and not r['decision_a_family'] for r in lower_contrasts.values())
+    lower += [r'\begin{table*}[p]',
+        r'\caption{Lower-penalty 1000-round cells: $' + label + r'$, $a^*\approx ' + astar + r'$, $\pi=1$, 20 seeds (means). Descriptive only, never evidence of audit efficacy; not part of the Decision A family. $^{*}$/$^{\uparrow}$ mark significant audit-minus-$a=0$ decreases/increases under the official report-family Holm flags (42 tests per router $\times$ learner $\times\pi$, all penalties, both metrics, $\alpha=0.05$). All cells have identifiable $\Qmet$ and 20/20 tail-trade runs.}',
+        r'\label{tab:decision-a-' + ('p4' if penalty == 0.0625 else 'p16') + '}',
+        r'\centering\footnotesize', r'\setlength{\tabcolsep}{5pt}',
+        r'\begin{tabular}{@{}llcccccc@{}}', r'\toprule',
+        r'Router & Audit $a$ & \multicolumn{2}{c}{egreedy} & \multicolumn{2}{c}{fictitious play} & \multicolumn{2}{c}{EXP3} \\',
+        r'\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(l){7-8}',
+        r'& & $\Emet$ & $\Qmet$ & $\Emet$ & $\Qmet$ & $\Emet$ & $\Qmet$ \\', r'\midrule']
+    for router, name in ROUTERS.items():
+        if router != 'pilot':
+            lower.append(r'\midrule')
+        for audit in AUDITS:
+            row = [name, audit_label(audit, boundary=False)]
+            for learner in LEARNERS:
+                cell = lower_cells[router, audit, learner]
+                assert cell['Q_identifiable'] == 'True' and cell['tail_trade_runs'] == '20'
+                for metric in ('E', 'Q'):
+                    value = f"{json.loads(cell[metric])['mean']:.3f}"
+                    if audit != 'a0':
+                        contrast = lower_contrasts[router, audit, learner, metric]
+                        if contrast['significant_report'] == 'True':
+                            value += r'$^{*}$' if float(contrast['delta_mean']) < 0 else r'$^{\uparrow}$'
+                    row.append(value)
+            lower.append(' & '.join(row) + r' \\')
+    lower += [r'\bottomrule', r'\end{tabular}', r'\end{table*}']
+(OUT / 'decision_a_lower_penalties.tex').write_text('\n'.join(lower) + '\n')
+
+# Cascade belongs to the official 48-round WP1 diagnostic, not Decision A.
+wp1_dir = ROOT / 'results/v1.1/wp1_eval'
+wp1 = json.loads((wp1_dir / 'wp1_eval.json').read_text())
+assert wp1['n_rounds'] == 48 and wp1['learner'] == 'egreedy' and wp1['B'] == meta['B']
+assert hashlib.sha256((ROOT / 'docs/v1.1/PROTOCOL_v1.1.md').read_bytes()).hexdigest() == wp1['protocol_sha256']
+assert json.loads((ROOT / 'results/v1.1/v1.2_wp1/factorial/cells.json').read_text()) == json.loads((ROOT / 'results/v1.1/wp1/factorial/cells.json').read_text())
+for filename, digest in wp1['hashes'].items():
+    source = ROOT / 'docs/v1.1/PROTOCOL_v1.1.md' if filename == 'PROTOCOL_v1.1.md' else ROOT / 'results/v1.1/wp1' / filename
+    assert hashlib.sha256(source.read_bytes()).hexdigest() == digest, filename
+with (wp1_dir / 'contrasts.csv').open(newline='') as stream:
+    wp1_contrasts = list(csv.DictReader(stream))
+cascade_cells = {r['audit']: r for r in wp1['cells'] if r['router'] == 'cascade' and r['penalty'] == 0.25 and r['pi'] == 1}
+cascade_contrasts = {(r['audit'], r['metric']): r for r in wp1_contrasts if r['router'] == 'cascade' and float(r['penalty']) == 0.25 and float(r['pi']) == 1}
+assert len(cascade_cells) == 8 and len(cascade_contrasts) == 14
+for row in cascade_contrasts.values():
+    official = next(r for r in wp1['contrasts'] if r['cell_id'] == row['cell_id'] and r['metric'] == row['metric'])
+    for field in ('delta_mean', 'delta_lo', 'delta_hi', 'p_raw', 'p_holm_report'):
+        assert float(row[field]) == official[field]
+    assert (row['significant_report'] == 'True') == official['significant_report']
+    assert wp1['report_family_sizes'][row['report_family']] == 42
+assert all(r['Q_identifiable'] for r in cascade_cells.values())
+baseline = cascade_cells['a0']
+tails = [r['tail_trade_runs'] for r in cascade_cells.values()]
+cascade = [HEADER, r'\begin{table*}[p]',
+    r'\caption{Cascade, official WP1 48-round egreedy diagnostic at $P=0.25$, $\pi=1$, seeds 0--19; not part of Decision A and not counted toward result 1. At $a=0$, mean $\Emet=' + f"{baseline['E']['mean']:.6f}" + r'$ and $\Qmet=' + f"{baseline['Q']['mean']:.6f}" + r'$. All eight $\Qmet$ cells are identifiable as reported (' + f'{min(tails)}--{max(tails)}/20' + r' tail-trade runs). Deltas are audit-minus-$a=0$; intervals are same-seed paired-bootstrap 95\% CIs ($B=10{,}000$). $^{*}$: significant decrease under the official 42-test router $\times$ learner $\times\pi$ report family, pooling all penalties and both metrics. Stored zero raw values are written $<2\times10^{-4}$ (two-sided resolution $2/B$); zero Holm values have bound $\le42\cdot2/B=0.0084$, printed $\le0.009$.}',
+    r'\label{tab:wp1-cascade}', r'\centering\footnotesize', r'\setlength{\tabcolsep}{3pt}',
+    r'\begin{tabular}{@{}lcccccc@{}}', r'\toprule',
+    r'Audit $a$ & $\Delta\Emet$ [95\% CI] & $p_{\mathrm{raw}}$ & $p_{\mathrm{H}}$ & $\Delta\Qmet$ [95\% CI] & $p_{\mathrm{raw}}$ & $p_{\mathrm{H}}$ \\', r'\midrule']
+for audit in AUDITS[1:]:
+    row = [audit_label(audit, boundary=False)]
+    for metric in ('E', 'Q'):
+        contrast = cascade_contrasts[audit, metric]
+        row += [delta_cell(contrast, places=6) + (r'$^{*}$' if contrast['significant_report'] == 'True' else ''),
+                p_value(contrast['p_raw']), p_value(contrast['p_holm_report'], holm_tests=42)]
+    cascade.append(' & '.join(row) + r' \\')
+cascade += [r'\bottomrule', r'\end{tabular}', r'\end{table*}']
+(OUT / 'wp1_cascade.tex').write_text('\n'.join(cascade) + '\n')
 print('Generated 16 mean rows and 42 paired-delta rows (84 tests); result 1: PILOT 8/8, strongest 8/8.')
+print('Also generated 32 lower-penalty mean rows (192 E/Q means) and 7 cascade paired-delta rows (14 tests).')
+print('Verified all 2880 runs: trust_feedback=false, delisted_rounds_tail=0; run_meta reputation_rounds=0.')

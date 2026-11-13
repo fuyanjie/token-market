@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.11.10)  13 NOV 2026 08:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.11.10)  13 NOV 2026 08:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1105,10 +1105,10 @@ Underfull \hbox (badness 1661) in paragraph at lines 99--99
  []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 1540) has occurred while \output is active []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 1939) has occurred while \output is active []
 
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
 (Font)              scaled to size 6.0pt on input line 116.
@@ -1136,7 +1136,7 @@ Underfull \hbox (badness 2503) in paragraph at lines 137--138
 
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
 (Font)              scaled to size 8.0pt on input line 151.
-<figures/fig1_five_layers.png, id=187, 679.338pt x 368.577pt>
+<figures/fig1_five_layers.png, id=191, 679.338pt x 368.577pt>
 File: figures/fig1_five_layers.png Graphic file (type png)
 <use figures/fig1_five_layers.png>
 Package pdftex.def Info: figures/fig1_five_layers.png  used on input line 169.
@@ -1151,42 +1151,39 @@ LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
 (Font)              scaled to size 5.5pt on input line 211.
  [3.3 <./figures/fig1_five_layers.png>]
-Underfull \vbox (badness 1983) has occurred while \output is active []
-
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 10.95pt on input line 317.
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 6.1pt on input line 317.
+LaTeX Font Info:    Font shape `OML/nxlmi/m/it' will be
+(Font)              scaled to size 10.95pt on input line 317.
+LaTeX Font Info:    Font shape `OML/nxlmi/m/it' will be
+(Font)              scaled to size 6.1pt on input line 317.
+LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
+(Font)              scaled to size 10.95pt on input line 317.
+LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
+(Font)              scaled to size 6.1pt on input line 317.
+LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
+(Font)              scaled to size 10.95pt on input line 317.
+LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
+(Font)              scaled to size 6.1pt on input line 317.
+LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
+(Font)              scaled to size 10.95pt on input line 317.
+LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
+(Font)              scaled to size 6.1pt on input line 317.
+LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
+(Font)              scaled to size 10.95pt on input line 317.
+LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
+(Font)              scaled to size 6.1pt on input line 317.
+LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
+(Font)              scaled to size 10.95pt on input line 317.
+LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
+(Font)              scaled to size 6.1pt on input line 317.
+LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
+(Font)              scaled to size 10.95pt on input line 317.
+LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
+(Font)              scaled to size 6.1pt on input line 317.
  [4.4]
-LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 10.95pt on input line 343.
-LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 6.1pt on input line 343.
-LaTeX Font Info:    Font shape `OML/nxlmi/m/it' will be
-(Font)              scaled to size 10.95pt on input line 343.
-LaTeX Font Info:    Font shape `OML/nxlmi/m/it' will be
-(Font)              scaled to size 6.1pt on input line 343.
-LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
-(Font)              scaled to size 10.95pt on input line 343.
-LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
-(Font)              scaled to size 6.1pt on input line 343.
-LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
-(Font)              scaled to size 10.95pt on input line 343.
-LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
-(Font)              scaled to size 6.1pt on input line 343.
-LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
-(Font)              scaled to size 10.95pt on input line 343.
-LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
-(Font)              scaled to size 6.1pt on input line 343.
-LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
-(Font)              scaled to size 10.95pt on input line 343.
-LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
-(Font)              scaled to size 6.1pt on input line 343.
-LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
-(Font)              scaled to size 10.95pt on input line 343.
-LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
-(Font)              scaled to size 6.1pt on input line 343.
-LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
-(Font)              scaled to size 10.95pt on input line 343.
-LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
-(Font)              scaled to size 6.1pt on input line 343.
-
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 343.
@@ -1203,24 +1200,25 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 LaTeX Font Info:    Font shape `T1/zi4/b/n' will be
 (Font)              scaled to size 9.0pt on input line 4.
 )
-Underfull \hbox (badness 1389) in paragraph at lines 348--349
-\T1/LinuxLibertineT-TLF/m/n/9 (+20) learn-ing rules $\LMS/ntxsy/m/n/9 ^^B$ \T1/LinuxLibertineT-TLF/m/n/9 (+20) 20 seeds, with 1000 rounds / 10,000 tasks
+Underfull \hbox (badness 1048) in paragraph at lines 350--351
+\LMS/ntxsy/m/n/9 ^^U \OT1/LinuxLibertineT-TLF/m/n/9 (+20) 2$ \T1/LinuxLibertineT-TLF/m/n/9 (+20) of 3 learn-ers, none sig-nif-i-cantly re-versed, af-ter 84-test
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 350--351
- []\T1/LinuxLibertineT-TLF/m/it/9 (+20) Decision A: re-sult 1.[] \T1/LinuxLibertineT-TLF/m/n/9 (+20) In this sim-u-la-tor, un-der the de-
+Underfull \hbox (badness 1442) in paragraph at lines 350--351
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) Holm cor-rec-tion. Per router, 8/8 means four counted lev-els
  []
 
 [5.5]
-<figures/fig3_40seller_E_Q_vs_pi.pdf, id=297, 520.68546pt x 142.26378pt>
+<figures/fig3_40seller_E_Q_vs_pi.pdf, id=304, 520.68546pt x 142.26378pt>
 File: figures/fig3_40seller_E_Q_vs_pi.pdf Graphic file (type pdf)
 <use figures/fig3_40seller_E_Q_vs_pi.pdf>
 Package pdftex.def Info: figures/fig3_40seller_E_Q_vs_pi.pdf  used on input line 383.
 (pdftex.def)             Requested size: 506.295pt x 138.33867pt.
 
-Underfull \vbox (badness 2717) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
+ [6.6]
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
 (Font)              scaled to size 6.5pt on input line 407.
 LaTeX Font Info:    Font shape `OML/nxlmi/m/it' will be
@@ -1238,9 +1236,6 @@ LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
 LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
 (Font)              scaled to size 6.5pt on input line 407.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [6.6]
 Underfull \hbox (badness 1107) in paragraph at lines 430--431
 []\T1/LinuxLibertineT-TLF/b/n/9 (+20) Synthetic ju-ris-dic-tions and mech-a-nism + cached
  []
@@ -1279,32 +1274,37 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 (./tables/decision_a_deltas.tex) [9.9] [10.10
 
-] [11.11]
-<figures/fig2_40seller_pareto_EQ.pdf, id=411, 253.22952pt x 119.50157pt>
+] [11.11] (./tables/wp1_cascade.tex) (./tables/decision_a_lower_penalties.tex
+LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/b/n' will be
+(Font)              scaled to size 6.6pt on input line 4.
+LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/b/n' will be
+(Font)              scaled to size 5.5pt on input line 4.
+) [12.12
+
+
+] [13.13]
+<figures/fig2_40seller_pareto_EQ.pdf, id=442, 253.22952pt x 119.50157pt>
 File: figures/fig2_40seller_pareto_EQ.pdf Graphic file (type pdf)
 <use figures/fig2_40seller_pareto_EQ.pdf>
-Package pdftex.def Info: figures/fig2_40seller_pareto_EQ.pdf  used on input line 569.
+Package pdftex.def Info: figures/fig2_40seller_pareto_EQ.pdf  used on input line 583.
 (pdftex.def)             Requested size: 241.14749pt x 113.803pt.
- [12.12
-
-
- <./figures/fig2_40seller_pareto_EQ.pdf>]
-<figures/figC_40seller_Etok_vs_pi.pdf, id=439, 253.22952pt x 156.49016pt>
+ [14.14 <./figures/fig2_40seller_pareto_EQ.pdf>]
+<figures/figC_40seller_Etok_vs_pi.pdf, id=470, 253.22952pt x 156.49016pt>
 File: figures/figC_40seller_Etok_vs_pi.pdf Graphic file (type pdf)
 <use figures/figC_40seller_Etok_vs_pi.pdf>
-Package pdftex.def Info: figures/figC_40seller_Etok_vs_pi.pdf  used on input line 608.
+Package pdftex.def Info: figures/figC_40seller_Etok_vs_pi.pdf  used on input line 622.
 (pdftex.def)             Requested size: 241.14749pt x 149.02774pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 5475) in paragraph at lines 615--616
+Underfull \hbox (badness 5475) in paragraph at lines 629--630
  []$\OML/nxlmi/m/it/9 ^^Y[]$ \T1/LinuxLibertineT-TLF/m/it/9 (+20) crossover (T2, 40 sell-ers).[] $\U/ntxmia/m/it/9 ^^A\OML/nxlmi/m/it/9 J \U/ntxmia/m/it/9 = \OML/nxlmi/m/it/9 J\LMS/ntxsy/m/n/9 ¹[]º ^^@
  []
 
 
-Underfull \hbox (badness 3098) in paragraph at lines 615--616
+Underfull \hbox (badness 3098) in paragraph at lines 629--630
 []\LMS/ntxsy/m/n/9 ¹\OML/nxlmi/m/it/9 J[]; J[]\LMS/ntxsy/m/n/9 º$ \T1/LinuxLibertineT-TLF/m/n/9 (+20) with the best ban-dit taken per seed,
  []
 
@@ -1312,7 +1312,7 @@ Underfull \hbox (badness 3098) in paragraph at lines 615--616
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 2142) in paragraph at lines 649--650
+Underfull \hbox (badness 2142) in paragraph at lines 663--664
 \T1/LinuxLibertineT-TLF/m/it/9 (+20) First batch (v0.1 scale). \T1/LinuxLibertineT-TLF/m/n/9 (+20) Un-der the same pre-registered rule,
  []
 
@@ -1322,7 +1322,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[13.13 <./figures/figC_40seller_Etok_vs_pi.pdf>]
+[15.15 <./figures/figC_40seller_Etok_vs_pi.pdf>]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
@@ -1335,22 +1335,22 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[14.14] [15.15] [16.16]
+[16.16] [17.17] [18.18]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<figures/fig2_v01scale_pareto_EQ.pdf, id=497, 253.22952pt x 130.88269pt>
+<figures/fig2_v01scale_pareto_EQ.pdf, id=527, 253.22952pt x 130.88269pt>
 File: figures/fig2_v01scale_pareto_EQ.pdf Graphic file (type pdf)
 <use figures/fig2_v01scale_pareto_EQ.pdf>
-Package pdftex.def Info: figures/fig2_v01scale_pareto_EQ.pdf  used on input line 810.
+Package pdftex.def Info: figures/fig2_v01scale_pareto_EQ.pdf  used on input line 824.
 (pdftex.def)             Requested size: 253.14749pt x 130.8444pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<figures/fig3_v01scale_E_Q_vs_pi.pdf, id=498, 520.68546pt x 156.49016pt>
+<figures/fig3_v01scale_E_Q_vs_pi.pdf, id=528, 520.68546pt x 156.49016pt>
 File: figures/fig3_v01scale_E_Q_vs_pi.pdf Graphic file (type pdf)
 <use figures/fig3_v01scale_E_Q_vs_pi.pdf>
-Package pdftex.def Info: figures/fig3_v01scale_E_Q_vs_pi.pdf  used on input line 818.
+Package pdftex.def Info: figures/fig3_v01scale_E_Q_vs_pi.pdf  used on input line 832.
 (pdftex.def)             Requested size: 506.295pt x 152.17253pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -1375,13 +1375,13 @@ Class acmart Warning: CCS concepts are mandatory for papers over two pages.
 Package balance Warning: You have called \balance in second column
 (balance)                Columns might not be balanced.
 
-[17.17
+[19.19
 
-] [18.18 <./figures/fig2_v01scale_pareto_EQ.pdf> <./figures/fig3_v01scale_E_Q_vs_pi.pdf>] (/home/box/.TinyTeX/texmf-dist/tex/generic/stringenc/se-pdfdoc.def
+] [20.20 <./figures/fig2_v01scale_pareto_EQ.pdf> <./figures/fig3_v01scale_E_Q_vs_pi.pdf>] (/home/box/.TinyTeX/texmf-dist/tex/generic/stringenc/se-pdfdoc.def
 File: se-pdfdoc.def 2019/11/29 v1.12 stringenc: PDFDocEncoding
 ) (/home/box/.TinyTeX/texmf-dist/tex/generic/stringenc/se-utf8.def
 File: se-utf8.def 2019/11/29 v1.12 stringenc: UTF-8
-) [19.19] (./main.aux)
+) [21.21] (./main.aux)
  ***********
 LaTeX2e <2026-11-01>
 L3 programming layer <2026-09-09>
@@ -1391,21 +1391,21 @@ L3 programming layer <2026-09-09>
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 0D98572B6750688EE2798936C91CA12E;5215.
+(rerunfilecheck)             Checksum: 81752D03CD7D3793D8D7FFBEC4ACBE07;5543.
  ) 
 Here is how much of TeX's memory you used:
- 25548 strings out of 468915
- 408465 string characters out of 5453417
- 1134987 words of memory out of 5000000
- 53260 multiletter control sequences out of 15000+600000
- 853898 words of font info for 623 fonts, out of 8000000 for 9000
+ 25593 strings out of 468915
+ 409548 string characters out of 5453417
+ 1141987 words of memory out of 5000000
+ 53275 multiletter control sequences out of 15000+600000
+ 864748 words of font info for 633 fonts, out of 8000000 for 9000
  197 hyphenation exceptions out of 8191
- 89i,16n,131p,1952b,1261s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,16n,131p,2025b,1261s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </home/box/.TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4b.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathMI.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathMI5.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathMI7.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathRM.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinBiolinumT.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinBiolinumTB.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineT.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineTB.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineTI.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/NewTXMI.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/NewTXMI7.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu59.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu5b.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu6a.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu6f.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu74.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu78.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu7a.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu7b.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu95.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu96.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu9a.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/txmiaX.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/txsys.pfb>
-Output written on main.pdf (19 pages, 826340 bytes).
+Output written on main.pdf (21 pages, 837068 bytes).
 PDF statistics:
- 704 PDF objects out of 1000 (max. 8388607)
- 567 compressed objects within 6 object streams
- 175 named destinations out of 1000 (max. 500000)
- 106823 words of extra memory for PDF output out of 106986 (max. 10000000)
+ 736 PDF objects out of 1000 (max. 8388607)
+ 593 compressed objects within 6 object streams
+ 183 named destinations out of 1000 (max. 500000)
+ 110927 words of extra memory for PDF output out of 128383 (max. 10000000)
 
