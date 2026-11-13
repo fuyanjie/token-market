@@ -2,7 +2,7 @@
 %%% Do NOT edit. File created by BibTeX with style
 %%% ACM-Reference-Format-Journals [18-Jan-2012].
 
-\begin{thebibliography}{79}
+\begin{thebibliography}{97}
 
 %%% ====================================================================
 %%% NOTE TO THE USER: you can override these defaults by providing
@@ -57,6 +57,14 @@
 \href{https://doi.org/10.2307/1879431}{doi:\nolinkurl{10.2307/1879431}}
 
 
+\bibitem[Altman et~al\mbox{.}(2023)]%
+        {altman2023amlworld}
+\bibfield{author}{\bibinfo{person}{Erik Altman}, \bibinfo{person}{Jovan Blanu{\v{s}}a}, \bibinfo{person}{Luc von Niederh{\"a}usern}, \bibinfo{person}{B{\'e}ni Egressy}, \bibinfo{person}{Andreea Anghel}, {and} \bibinfo{person}{Kubilay Atasu}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{Realistic Synthetic Financial Transactions for Anti-Money Laundering Models}. In \bibinfo{booktitle}{\emph{Advances in Neural Information Processing Systems 36 (NeurIPS 2023), Datasets and Benchmarks Track}}.
+\newblock
+\showeprint[arxiv]{2306.16424}
+
+
 \bibitem[{Anthropic}(2026)]%
         {anthropic2026pricing}
 \bibfield{author}{\bibinfo{person}{{Anthropic}}.} \bibinfo{year}{2026}\natexlab{}.
@@ -105,6 +113,14 @@
 \newblock
 \showeprint[arxiv]{1305.2545}
 \href{https://doi.org/10.1145/3164539}{doi:\nolinkurl{10.1145/3164539}}
+
+
+\bibitem[Bansal et~al\mbox{.}(2025)]%
+        {bansal2025magentic}
+\bibfield{author}{\bibinfo{person}{Gagan Bansal}, \bibinfo{person}{Wenyue Hua}, \bibinfo{person}{Zezhou Huang}, \bibinfo{person}{Adam Fourney}, \bibinfo{person}{Amanda Swearngin}, \bibinfo{person}{Will Epperson}, \bibinfo{person}{Tyler Payne}, \bibinfo{person}{Jake~M. Hofman}, \bibinfo{person}{Brendan Lucier}, \bibinfo{person}{Chinmay Singh}, \bibinfo{person}{Markus Mobius}, \bibinfo{person}{Akshay Nambi}, \bibinfo{person}{Archana Yadav}, \bibinfo{person}{Kevin Gao}, \bibinfo{person}{David~M. Rothschild}, \bibinfo{person}{Aleksandrs Slivkins}, \bibinfo{person}{Daniel~G. Goldstein}, \bibinfo{person}{Hussein Mozannar}, \bibinfo{person}{Nicole Immorlica}, \bibinfo{person}{Maya Murad}, \bibinfo{person}{Matthew Vogel}, \bibinfo{person}{Subbarao Kambhampati}, \bibinfo{person}{Eric Horvitz}, {and} \bibinfo{person}{Saleema Amershi}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \bibinfo{title}{Magentic Marketplace: An Open-Source Environment for Studying Agentic Markets}.
+\newblock
+\showeprint[arxiv]{2510.25779}
 
 
 \bibitem[Bart{\'o}k et~al\mbox{.}(2014)]%
@@ -323,6 +339,14 @@
 \tempurl}
 
 
+\bibitem[Feng et~al\mbox{.}(2025)]%
+        {feng2025graphrouter}
+\bibfield{author}{\bibinfo{person}{Tao Feng}, \bibinfo{person}{Yanzhen Shen}, {and} \bibinfo{person}{Jiaxuan You}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{{GraphRouter}: A Graph-based Router for {LLM} Selections}. In \bibinfo{booktitle}{\emph{International Conference on Learning Representations (ICLR)}}.
+\newblock
+\showeprint[arxiv]{2410.03834}
+
+
 \bibitem[Filippas et~al\mbox{.}(2024)]%
         {horton2023homosilicus}
 \bibfield{author}{\bibinfo{person}{Apostolos Filippas}, \bibinfo{person}{John~J. Horton}, {and} \bibinfo{person}{Benjamin~S. Manning}.} \bibinfo{year}{2024}\natexlab{}.
@@ -372,6 +396,14 @@
 \href{https://doi.org/10.1038/s41586-025-09422-z}{doi:\nolinkurl{10.1038/s41586-025-09422-z}}
 
 
+\bibitem[Guo et~al\mbox{.}(2026)]%
+        {guo2026immaculate}
+\bibfield{author}{\bibinfo{person}{Yanpei Guo}, \bibinfo{person}{Wenjie Qu}, \bibinfo{person}{Linyu Wu}, \bibinfo{person}{Shengfang Zhai}, \bibinfo{person}{Lionel~Z. Wang}, \bibinfo{person}{Ming Xu}, \bibinfo{person}{Yue Liu}, \bibinfo{person}{Binhang Yuan}, \bibinfo{person}{Dawn Song}, {and} \bibinfo{person}{Jiaheng Zhang}.} \bibinfo{year}{2026}\natexlab{}.
+\newblock \bibinfo{title}{{IMMACULATE}: A Practical {LLM} Auditing Framework via Verifiable Computation}.
+\newblock
+\showeprint[arxiv]{2602.22700}
+
+
 \bibitem[Hacker et~al\mbox{.}(2023)]%
         {hacker2023regulating}
 \bibfield{author}{\bibinfo{person}{Philipp Hacker}, \bibinfo{person}{Andreas Engel}, {and} \bibinfo{person}{Marco Mauer}.} \bibinfo{year}{2023}\natexlab{}.
@@ -398,12 +430,44 @@
 \href{https://doi.org/10.2307/3003320}{doi:\nolinkurl{10.2307/3003320}}
 
 
+\bibitem[Hoque et~al\mbox{.}(2026)]%
+        {hoque2026tokeninflation}
+\bibfield{author}{\bibinfo{person}{Shahinul Hoque}, \bibinfo{person}{Jinghuai Zhang}, \bibinfo{person}{Jinyuan Sun}, {and} \bibinfo{person}{Fnu Suya}.} \bibinfo{year}{2026}\natexlab{}.
+\newblock \bibinfo{title}{Token Inflation: How Dishonest Providers Can Overcharge for Large Language Model Usage}.
+\newblock
+\showeprint[arxiv]{2605.30040}
+
+
 \bibitem[Hu et~al\mbox{.}(2024)]%
         {hu2024routerbench}
 \bibfield{author}{\bibinfo{person}{Qitian~Jason Hu}, \bibinfo{person}{Jacob Bieker}, \bibinfo{person}{Xiuyu Li}, \bibinfo{person}{Nan Jiang}, \bibinfo{person}{Benjamin Keigwin}, \bibinfo{person}{Gaurav Ranganath}, \bibinfo{person}{Kurt Keutzer}, {and} \bibinfo{person}{Shriyash~Kaustubh Upadhyay}.} \bibinfo{year}{2024}\natexlab{}.
 \newblock \bibinfo{title}{{RouterBench}: A Benchmark for Multi-{LLM} Routing System}.
 \newblock
 \showeprint[arxiv]{2403.12031}
+
+
+\bibitem[Huang et~al\mbox{.}(2022)]%
+        {huang2022dgraph}
+\bibfield{author}{\bibinfo{person}{Xuanwen Huang}, \bibinfo{person}{Yang Yang}, \bibinfo{person}{Yang Wang}, \bibinfo{person}{Chunping Wang}, \bibinfo{person}{Zhisheng Zhang}, \bibinfo{person}{Jiarong Xu}, \bibinfo{person}{Lei Chen}, {and} \bibinfo{person}{Michalis Vazirgiannis}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{{DGraph}: A Large-Scale Financial Dataset for Graph Anomaly Detection}. In \bibinfo{booktitle}{\emph{Advances in Neural Information Processing Systems 35 (NeurIPS 2022)}}.
+\newblock
+\showeprint[arxiv]{2207.03579}
+
+
+\bibitem[Huang et~al\mbox{.}(2025)]%
+        {huang2025routereval}
+\bibfield{author}{\bibinfo{person}{Zhongzhan Huang}, \bibinfo{person}{Guoming Ling}, \bibinfo{person}{Yupei Lin}, \bibinfo{person}{Yandong Chen}, \bibinfo{person}{Shanshan Zhong}, \bibinfo{person}{Hefeng Wu}, {and} \bibinfo{person}{Liang Lin}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \bibinfo{title}{{RouterEval}: A Comprehensive Benchmark for Routing {LLMs} to Explore Model-level Scaling Up in {LLMs}}.
+\newblock
+\showeprint[arxiv]{2503.10657}
+
+
+\bibitem[Jesus et~al\mbox{.}(2022)]%
+        {jesus2022baf}
+\bibfield{author}{\bibinfo{person}{S{\'e}rgio Jesus}, \bibinfo{person}{Jos{\'e} Pombal}, \bibinfo{person}{Duarte Alves}, \bibinfo{person}{Andr{\'e} Cruz}, \bibinfo{person}{Pedro Saleiro}, \bibinfo{person}{Rita~P. Ribeiro}, \bibinfo{person}{Jo{\~a}o Gama}, {and} \bibinfo{person}{Pedro Bizarro}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Turning the Tables: Biased, Imbalanced, Dynamic Tabular Datasets for {ML} Evaluation}. In \bibinfo{booktitle}{\emph{Advances in Neural Information Processing Systems 35 (NeurIPS 2022)}}.
+\newblock
+\showeprint[arxiv]{2211.13358}
 
 
 \bibitem[Jia et~al\mbox{.}(2021)]%
@@ -500,6 +564,14 @@
 \newblock \showarticletitle{{AgentBench}: Evaluating {LLMs} as Agents}. In \bibinfo{booktitle}{\emph{International Conference on Learning Representations (ICLR)}}.
 \newblock
 \showeprint[arxiv]{2308.03688}
+
+
+\bibitem[Lu et~al\mbox{.}(2025)]%
+        {lu2025routerarena}
+\bibfield{author}{\bibinfo{person}{Yifan Lu}, \bibinfo{person}{Rixin Liu}, \bibinfo{person}{Jiayi Yuan}, \bibinfo{person}{Xingqi Cui}, \bibinfo{person}{Shenrun Zhang}, \bibinfo{person}{Hongyi Liu}, {and} \bibinfo{person}{Jiarong Xing}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \bibinfo{title}{{RouterArena}: An Open Platform for Comprehensive Comparison of {LLM} Routers}.
+\newblock
+\showeprint[arxiv]{2510.00202}
 
 
 \bibitem[Myerson(1981)]%
@@ -602,6 +674,14 @@
 \href{https://doi.org/10.1007/s00146-020-00992-2}{doi:\nolinkurl{10.1007/s00146-020-00992-2}}
 
 
+\bibitem[Shapira et~al\mbox{.}(2024)]%
+        {shapira2024glee}
+\bibfield{author}{\bibinfo{person}{Eilam Shapira}, \bibinfo{person}{Omer Madmon}, \bibinfo{person}{Itamar Reinman}, \bibinfo{person}{Samuel~Joseph Amouyal}, \bibinfo{person}{Roi Reichart}, {and} \bibinfo{person}{Moshe Tennenholtz}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{title}{{GLEE}: A Unified Framework and Benchmark for Language-based Economic Environments}.
+\newblock
+\showeprint[arxiv]{2410.05254}
+
+
 \bibitem[Shnitzer et~al\mbox{.}(2023)]%
         {shnitzer2023routing}
 \bibfield{author}{\bibinfo{person}{Tal Shnitzer}, \bibinfo{person}{Anthony Ou}, \bibinfo{person}{M{\'i}rian Silva}, \bibinfo{person}{Kate Soule}, \bibinfo{person}{Yuekai Sun}, \bibinfo{person}{Justin Solomon}, \bibinfo{person}{Neil Thompson}, {and} \bibinfo{person}{Mikhail Yurochkin}.} \bibinfo{year}{2023}\natexlab{}.
@@ -640,6 +720,14 @@
 \tempurl}
 
 
+\bibitem[Sun et~al\mbox{.}(2025a)]%
+        {sun2025coin}
+\bibfield{author}{\bibinfo{person}{Guoheng Sun}, \bibinfo{person}{Ziyao Wang}, \bibinfo{person}{Bowei Tian}, \bibinfo{person}{Meng Liu}, \bibinfo{person}{Zheyu Shen}, \bibinfo{person}{Shwai He}, \bibinfo{person}{Yexiao He}, \bibinfo{person}{Wanghao Ye}, \bibinfo{person}{Yiting Wang}, {and} \bibinfo{person}{Ang Li}.} \bibinfo{year}{2025}\natexlab{a}.
+\newblock \bibinfo{title}{{CoIn}: Counting the Invisible Reasoning Tokens in Commercial Opaque {LLM} {APIs}}.
+\newblock
+\showeprint[arxiv]{2505.13778}
+
+
 \bibitem[Sun et~al\mbox{.}(2024)]%
         {sun2024zkllm}
 \bibfield{author}{\bibinfo{person}{Haochen Sun}, \bibinfo{person}{Jason Li}, {and} \bibinfo{person}{Hongyang Zhang}.} \bibinfo{year}{2024}\natexlab{}.
@@ -648,12 +736,20 @@
 \showeprint[arxiv]{2404.16109}
 
 
-\bibitem[Sun et~al\mbox{.}(2025)]%
+\bibitem[Sun et~al\mbox{.}(2025b)]%
         {sun2025idiosyncrasies}
-\bibfield{author}{\bibinfo{person}{Mingjie Sun}, \bibinfo{person}{Yida Yin}, \bibinfo{person}{Zhiqiu Xu}, \bibinfo{person}{J.~Zico Kolter}, {and} \bibinfo{person}{Zhuang Liu}.} \bibinfo{year}{2025}\natexlab{}.
+\bibfield{author}{\bibinfo{person}{Mingjie Sun}, \bibinfo{person}{Yida Yin}, \bibinfo{person}{Zhiqiu Xu}, \bibinfo{person}{J.~Zico Kolter}, {and} \bibinfo{person}{Zhuang Liu}.} \bibinfo{year}{2025}\natexlab{b}.
 \newblock \showarticletitle{Idiosyncrasies in Large Language Models}. In \bibinfo{booktitle}{\emph{International Conference on Machine Learning (ICML)}}.
 \newblock
 \showeprint[arxiv]{2502.12150}
+
+
+\bibitem[Tang et~al\mbox{.}(2023)]%
+        {tang2023gadbench}
+\bibfield{author}{\bibinfo{person}{Jianheng Tang}, \bibinfo{person}{Fengrui Hua}, \bibinfo{person}{Ziqi Gao}, \bibinfo{person}{Peilin Zhao}, {and} \bibinfo{person}{Jia Li}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{{GADBench}: Revisiting and Benchmarking Supervised Graph Anomaly Detection}. In \bibinfo{booktitle}{\emph{Advances in Neural Information Processing Systems 36 (NeurIPS 2023), Datasets and Benchmarks Track}}.
+\newblock
+\showeprint[arxiv]{2306.12251}
 
 
 \bibitem[Townsend(1979)]%
@@ -671,6 +767,14 @@
 \newblock \showarticletitle{Slalom: Fast, Verifiable and Private Execution of Neural Networks in Trusted Hardware}. In \bibinfo{booktitle}{\emph{International Conference on Learning Representations (ICLR)}}.
 \newblock
 \showeprint[arxiv]{1806.03287}
+
+
+\bibitem[Varangot-Reille et~al\mbox{.}(2025)]%
+        {varangot2025routingsurvey}
+\bibfield{author}{\bibinfo{person}{Clovis Varangot-Reille}, \bibinfo{person}{Christophe Bouvard}, \bibinfo{person}{Antoine Gourru}, \bibinfo{person}{Mathieu Ciancone}, \bibinfo{person}{Marion Schaeffer}, {and} \bibinfo{person}{Fran{\c{c}}ois Jacquenet}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \bibinfo{title}{Doing More with Less: A Survey on Routing Strategies for Resource Optimisation in Large Language Model-Based Systems}.
+\newblock
+\showeprint[arxiv]{2502.00409}
 
 
 \bibitem[Veale and Zuiderveen~Borgesius(2021)]%
@@ -699,6 +803,24 @@
 \newblock \showarticletitle{Stochastic Bandit Models for Delayed Conversions}. In \bibinfo{booktitle}{\emph{Conference on Uncertainty in Artificial Intelligence (UAI)}}.
 \newblock
 \showeprint[arxiv]{1706.09186}
+
+
+\bibitem[Wang et~al\mbox{.}(2025)]%
+        {wang2025palace}
+\bibfield{author}{\bibinfo{person}{Ziyao Wang}, \bibinfo{person}{Guoheng Sun}, \bibinfo{person}{Yexiao He}, \bibinfo{person}{Zheyu Shen}, \bibinfo{person}{Bowei Tian}, {and} \bibinfo{person}{Ang Li}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \bibinfo{title}{Predictive Auditing of Hidden Tokens in {LLM} {APIs} via Reasoning Length Estimation}.
+\newblock
+\showeprint[arxiv]{2508.00912}
+
+
+\bibitem[Weber et~al\mbox{.}(2019)]%
+        {weber2019elliptic}
+\bibfield{author}{\bibinfo{person}{Mark Weber}, \bibinfo{person}{Giacomo Domeniconi}, \bibinfo{person}{Jie Chen}, \bibinfo{person}{Daniel Karl~I. Weidele}, \bibinfo{person}{Claudio Bellei}, \bibinfo{person}{Tom Robinson}, {and} \bibinfo{person}{Charles~E. Leiserson}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \bibinfo{title}{Anti-Money Laundering in Bitcoin: Experimenting with Graph Convolutional Networks for Financial Forensics}.
+\newblock
+\showeprint[arxiv]{1908.02591}
+\newblock
+\shownote{KDD 2019 Workshop on Anomaly Detection in Finance}.
 
 
 \bibitem[Wei et~al\mbox{.}(2022)]%
@@ -733,6 +855,24 @@
 \showeprint[arxiv]{2310.03094}
 
 
+\bibitem[Zhang et~al\mbox{.}(2026)]%
+        {zhang2026shadowapis}
+\bibfield{author}{\bibinfo{person}{Yage Zhang}, \bibinfo{person}{Yukun Jiang}, \bibinfo{person}{Zeyuan Chen}, \bibinfo{person}{Michael Backes}, \bibinfo{person}{Xinyue Shen}, {and} \bibinfo{person}{Yang Zhang}.} \bibinfo{year}{2026}\natexlab{}.
+\newblock \bibinfo{title}{Real Money, Fake Models: Deceptive Model Claims in Shadow {APIs}}.
+\newblock
+\showeprint[arxiv]{2603.01919}
+\newblock
+\shownote{Accepted to ACM CCS 2026}.
+
+
+\bibitem[Zhao et~al\mbox{.}(2024)]%
+        {zhao2024competeai}
+\bibfield{author}{\bibinfo{person}{Qinlin Zhao}, \bibinfo{person}{Jindong Wang}, \bibinfo{person}{Yixuan Zhang}, \bibinfo{person}{Yiqiao Jin}, \bibinfo{person}{Kaijie Zhu}, \bibinfo{person}{Hao Chen}, {and} \bibinfo{person}{Xing Xie}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{{CompeteAI}: Understanding the Competition Dynamics in Large Language Model-based Agents}. In \bibinfo{booktitle}{\emph{Proceedings of the 41st International Conference on Machine Learning (ICML)}}.
+\newblock
+\showeprint[arxiv]{2310.17512}
+
+
 \bibitem[Zheng et~al\mbox{.}(2022)]%
         {zheng2022aieconomist}
 \bibfield{author}{\bibinfo{person}{Stephan Zheng}, \bibinfo{person}{Alexander Trott}, \bibinfo{person}{Sunil Srinivasa}, \bibinfo{person}{David~C. Parkes}, {and} \bibinfo{person}{Richard Socher}.} \bibinfo{year}{2022}\natexlab{}.
@@ -748,6 +888,14 @@
 \newblock \showarticletitle{{WebArena}: A Realistic Web Environment for Building Autonomous Agents}. In \bibinfo{booktitle}{\emph{International Conference on Learning Representations (ICLR)}}.
 \newblock
 \showeprint[arxiv]{2307.13854}
+
+
+\bibitem[Zhu et~al\mbox{.}(2025)]%
+        {zhu2025rut}
+\bibfield{author}{\bibinfo{person}{Xiaoyuan Zhu}, \bibinfo{person}{Yaowen Ye}, \bibinfo{person}{Tianyi Qiu}, \bibinfo{person}{Hanlin Zhu}, \bibinfo{person}{Sijun Tan}, \bibinfo{person}{Ajraf Mannan}, \bibinfo{person}{Jonathan Michala}, \bibinfo{person}{Raluca~Ada Popa}, {and} \bibinfo{person}{Willie Neiswanger}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \bibinfo{title}{Auditing Black-Box {LLM} {APIs} with a Rank-Based Uniformity Test}.
+\newblock
+\showeprint[arxiv]{2506.06975}
 
 
 \end{thebibliography}
