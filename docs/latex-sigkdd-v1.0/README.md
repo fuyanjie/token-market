@@ -1,46 +1,41 @@
-# SIGKDD D&B LaTeX — v1.0 text-edit copy (see CHANGES_v1.0.md; supersedes the v0.1 notes below)
+# Cross-Border KDD 2027 D&B manuscript
 
-This is a format-only conversion of `docs/BENCHMARK_PAPER_DRAFT_v0.1.md` (the source of record, which was not edited) into ACM `acmart` / `sigconf`.
-- Scientific claims, numbers, metric names, and contribution wording are unchanged.
-- The venue line now names the SIGKDD Datasets & Benchmarks Track.
-- §6.1 columns were reordered, as described below.
+Current text: **Pass 14**, 2026-11-15 (Asia/Shanghai), based on Pass 13b (`2616240`) on `v1.1`. This manuscript has evolved beyond the original v0.1 format conversion. See [CHANGES_v1.0.md](CHANGES_v1.0.md), [compliance check](KDD2027_DB_CHECK.md), and [official requirements](KDD2027_DB_REQUIREMENTS.md).
 
-## Files
-- `main.tex` is the paper. It uses `\documentclass[sigconf,review]{acmart}`, which is single-blind, so author names stay visible.
-- `refs.bib` is a copy of `docs/refs.bib` with the same keys. The only change is in the line-2 comment, where `[@key]` became `[at-key]`, because BibTeX treats `@` as the start of an entry, even inside a comment.
-- `figures/fig1_five_layers.png` and `figures/fig2_pi_star_crossover.png` are used in the paper. The `.svg` copies are included for reference only.
-- `main.pdf` is the compiled output.
+## Current status and files
+
+- `main.tex`: ACM `sigconf,review`, single-blind; Yanjie Fu, both affiliations, and short author line unchanged.
+- `main.pdf`: **21 pages**; the body and complete Ethics statement end on **page 8**, References start on **page 8**, Appendix A starts on **page 9**. Verified after Pass 14 source and clean-zip builds: **0 errors, 0 undefined references/citations, 0 overfull boxes**.
+- §4 now contains artifact availability, intended licenses, actual checkout paths, dependency/runner/rendering entry points, and generation/coverage limits. Appendix B gives detailed, version-labelled paths and recipes. The v1.0 staging subset is not a complete public release; no public artifact URL is available. C1/C2 remain partial and C3 requires 傅老师's cycle/status decision.
+- The manuscript's T4 feature contract governs; `docs/DATA_SCHEMA.md` contains legacy descriptions where they disagree. Two cached Qwen checkpoints and `sim-fast-mock` are distinguished. T3, secondary cost/accuracy intervals, and post-5b T4 are defined but not reported.
+- `refs.bib` / `main.bbl`: bibliography; `tables/`: five frozen-result LaTeX inputs. Table numbers/values and locked Decision A wording/statistical conventions are unchanged.
+- Figures: layer schematic PNG; PDF+PNG versions of the 40-seller and historical v0.1 Pareto / E–Q-versus-π plots, plus the 40-seller token-weighted-exposure plot. No figures were regenerated.
 
 ## Compile
+
+From this directory:
+
 ```bash
-latexmk -pdf main.tex        # pdflatex + bibtex (ACM-Reference-Format.bst)
-# or: pdflatex main && bibtex main && pdflatex main && pdflatex main
+latexmk -pdf -interaction=nonstopmode main.tex
 ```
-- Requires TeX Live with `acmart` (v2.21 was tested) and `CJK`/`CJKutf8` with the `bsmi` (arphic) font, which renders the affiliation 橫琴澳門大學高等研究院.
-- Also requires `xurl`, `makecell`, `tabularx`, `listings`, and `newunicodechar`.
 
-## Overleaf
-1. Choose New Project → Upload Project and upload a zip of this folder (`main.tex`, `refs.bib`, `figures/`).
-2. Set the compiler to pdfLaTeX and the main document to `main.tex`. Overleaf's TeX Live already ships `acmart` and `CJK`.
-3. Optionally, start from the official "ACM Conference Proceedings Primary Article Template" and replace its `.tex`/`.bib`.
+Requires TeX Live with `acmart` (v2.21 in this checkout), CJK/CJKutf8 (`bsmi` for the existing affiliation and `gbsn` for owner TBDs), `xurl`, `makecell`, `tabularx`, `listings`, and `newunicodechar`. Experiments and table generators were not run in Pass 14. Existing font-substitution / ACM metadata warnings are not undefined references or citations.
 
-## Class switches
-- Submission (current): `[sigconf,review]`. The D&B Track is single-blind, so do **not** add `anonymous`.
-- Camera-ready: `[sigconf]`. The camera-ready limit is 12 pages total: up to 9 content pages, plus references and appendix up to 3 pages combined.
+## Overleaf bundle
 
-## Page budget (submission)
-- The compiled PDF is 21 pages in total (Pass 13 build).
-- The main body (§1–§8 plus the Ethics statement) ends on **page 8**, within the 8-content-page limit.
-- References start on page 8. Appendices follow on pages 9–21.
-- Repository and file paths, the one-click commands, and the reproducibility table now live only in Appendix B, "Reproducibility and Artifact Paths" (lettered C before the companion appendix was removed on 2026-11-10). It merges the former §4.3 listing, the former §6.5 one-pager, the layer code map, and the source-path table.
+Upload `docs/kdd_overleaf_v1.0.zip`, choose pdfLaTeX, and set `main.tex` as the main document. It contains the same **19 compile members as Pass 13b**: `main.tex`, `main.bbl`, `refs.bib`, five `tables/*.tex` inputs, and eleven figure files. Every member is byte-identical to the repository source. CHECK, REQUIREMENTS, CHANGES, BRIEF, and other Markdown files are excluded. A clean unzip was compiled with the command above.
 
-## TODOs (not invented on purpose)
-- **CCS concepts:** generate them at https://dl.acm.org/ccs. There is a placeholder comment after the abstract.
-- **Conference metadata:** `\acmConference` dates and venue are set to `TBD`. `\acmYear`, DOI, ISBN, and rights (`\setcopyright{none}`) still need to come from the KDD rights form.
-- **Author details:** no ORCID or email was added. Please verify the `\country` fields ("Macau SAR, China" and "China").
-- **Keywords:** derived from the abstract. Please review them.
-- **`refs.bib` notes:** the TODOs and internal notes for `li2026stageroute`, `iosco2009surveillance`, and `aws2024compute_sla` were moved into `%` comments above each entry, so they no longer print. Keys are unchanged.
-- **`\nocite`:** `bester2001strategic` and `cumming2019capital` are not cited in the text. They are `\nocite`'d so that the reference list matches the draft's key map.
+## Pending decisions
+
+The check file inventories all 22 original TBDs and the 20 remaining/current invocations, including the three added owner decisions (public URL, additional representativeness evidence, maintainer/hosting/optional badge). Exact run recipes, final board fields/config hashes, submission interface, test logs/counts, and price calibration remain explicitly pending where unverified.
+
+Venue date/location now follow the [official KDD 2027 home](https://kdd2027.kdd.org/): August 1–5, 2027, San Jose, California. DOI/ISBN remain empty, copyright remains `none`, and CCS remains commented out; no author details or funding were added. Submission/cycle eligibility is an owner decision recorded outside the PDF; no target cycle was silently changed.
+
+Submission keeps the full appendix. Later camera-ready preparation must fit **12 total pages**, up to **9 content pages**, with references plus appendix at most **3 pages**; Pass 14 CHANGES records the allocation plan only.
+
+## Historical v0.1 conversion notes (superseded)
+
+The notes below preserve the old conversion history, labels, line numbers, and pending-marker plans. They do not describe the current metric contract, results, page count, artifact status, or outstanding work; use the current manuscript and Pass 14 checklist above.
 
 ## §6.1 table change (team decision)
 - The column order is now `active_attack_rate`, `fraud_share`, learned q (side), and J (secondary) last.

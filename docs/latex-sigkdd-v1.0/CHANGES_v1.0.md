@@ -324,3 +324,69 @@ Review source: `/workspace/review_notes/kdd_pass13_review_2026-11-13.md`. Offici
 - **P2-3 — Build artifacts retained:** existing build artifacts remain in the repo; none were removed or untracked. Rebuild updates and newly generated build bookkeeping files are left in place. Untracked `results/` directories were not touched.
 - **Source build:** `latexmk -pdf -interaction=nonstopmode main.tex` from `docs/latex-sigkdd-v1.0/`: **21 pages, 0 errors, 0 undefined references/citations, 0 overfull boxes**. PDF text confirms Ethics, including its final sentence, ends on **page 8**, and References start on **page 8**. The longer captions introduce no overfull boxes; no layout changes were needed.
 - **Overleaf zip:** `docs/kdd_overleaf_v1.0.zip` rebuilt with exactly the same **19 members**, all byte-identical to their repo sources. A clean unzip in `/tmp` compiled with the same command: **21 pages, 0 errors, 0 undefined references/citations, 0 overfull boxes**; Ethics, including its final sentence, ends on **page 8**, and References start on **page 8**.
+
+## Pass 14 — KDD 2027 D&B P0/P1 text fixes (2026-11-15, Asia/Shanghai)
+
+Starting point: branch `v1.1`, HEAD `2616240` (Pass 13b). Authority: [Round A compliance review](KDD2027_DB_CHECK.md) and [KDD 2027 D&B requirements](KDD2027_DB_REQUIREMENTS.md). All supported text-only P0/P1 fixes are implemented; public access, external representativeness evidence, owner/process decisions, and unverified operational facts remain explicit. This is **not a compliance sign-off**. No experiments, cache generation, table generators, or new result analyses were run. No commit or push was made.
+
+- **C1 — partial:** §4.1 now gives intended MIT / CC BY 4.0 licenses, actual in-checkout artifact paths, the pending public-repository/archival-copy statement, the exact owner URL TBD, and Appendix B recipes. The GitHub remote is not printed as a reviewer download URL: the independent unauthenticated check supplied for this pass returned 404. The repeated shell request here returned no HTTP response and does not supersede that evidence. Local paths are explicitly not public endpoints.
+- **C2 — partial:** §4.5 now bounds representativeness using documented roster, synthetic-pool reuse, source-task curation, cached checkpoints versus mock backend, and simulated mechanisms. The existing 40-seller composition is preserved, as is Decision A's repeated 80-task pool. Public GSM8K / MATH-500 long-task sources are distinguished from the pool used for the main results. The text states that prices are uncalibrated, jurisdiction tags are simplified controls, and there is no quantitative comparison to production cross-border inference markets. Workload coverage does not discharge the external representativeness requirement; whether to collect additional evidence remains an owner TBD.
+- **C3 — tbd-owner:** no eligibility/deadline discussion was added to the PDF and no cycle was silently changed. The first-cycle abstract/paper deadlines were **July 19/26, 2026 (AoE)** and the listed notification was **November 14, 2026**, before this review. **傅老师 decision:** establish already-submitted status versus internal readiness versus a later-cycle decision, then verify submission/profile/reviewer/disclosure facts from the actual records. Text editing cannot retroactively repair a submitted PDF.
+- **C4 — partial:** abstract, contribution 2, §4, conclusion, and Appendix B no longer advertise a completed self-contained/downloadable reference pack. `release/v1.0/MANIFEST.json` is explicitly staging/not-a-release. The actual notes/notices/cache/older pi_dense/T2 subset is described; absent pack-local LICENSE, requirements, data card, and production exports are acknowledged. Root LICENSE/requirements/notes, older five-file boards in `exports/production/` and frozen `release/v0.1/exports/production/`, v1.0 readouts, and Decision A eval paths are distinguished. The older boards are 3-seller / 9 seller-rows, not the 40-seller main table. Completing/publishing a public pack remains pending; `release/` is untouched.
+- **C5 — fixed:** the two named Qwen cached checkpoints replace “at least three models” and both third-model/license TBDs. Cache/manifest inspection confirms 250 records, 125 per named checkpoint; this is a provenance count, not a new experimental result. Frozen scale also contains `sim-fast-mock`, `backend: mock`, which is described separately. Code MIT, intended derived data/cache fields CC BY 4.0, attributed Apache-2.0 Qwen checkpoints, public-task MIT notices, and frozen v0.1 non-relicensing are stated accurately. No vendored Qwen license file or third checkpoint is claimed.
+- **C6 — partial:** §4.4 identifies root requirements, `scripts/run_v1.py`, frozen Decision A table rendering, and Appendix B for recipes. Appendix B labels the existing three one-click commands as older export/demo/T1–T3 paths, not the 40-seller / 1000-round Decision A workflow or a way to regenerate Table 5. Existing `run_v1.py` and T4 evaluator CLI entry points were inspected; the local evaluator is distinguished from an external score-file service. The leakage script is verified and named, with its heuristic scope and label-dependent correlation checks. `python3 scripts/pass12_decision_a_tables.py` is explicitly rendering from frozen eval files, not experiment reproduction, and was **not executed**. Inline command spaces are rendered explicitly because `\code` uses URL formatting. Versioned run recipes, final hashes/interface details, and attributable pytest evidence remain pending; no clean-environment experiment or test pass is claimed.
+- **C7 — fixed:** §4 adds seeded task-type/difficulty pool construction, per-run permutation/reuse, long-task source selection, cached parsed/gold correctness/token fields, mock sampling, and simulated market-generation lineage. Existing source code and notices support this description. The manuscript T4 feature contract explicitly governs over contradictory legacy portions of `docs/DATA_SCHEMA.md`; the schema and frozen protocols are unchanged. §6's fixed-roster overview now explicitly excepts T4's per-run resampling. Final board-field mappings remain marked pending rather than certified.
+- **C8 — partial:** the check file retains and dispositions all **22 original TBDs** and lists the **20 current invocations**. Five original placeholders were filled from verified evidence (baseline gap, two third-model entries, grid-config path, leakage-script path); 17 remain or were narrowed/renamed, and three owner TBDs were added. Unsupported tests-passed/release-complete assertions are removed. T3, T1-secondary cost/accuracy intervals, and post-5b T4 are **defined but not reported in this manuscript** in the relevant abstract/body/appendix/RQ statements; 5b is future work, not an already completed second release. All unresolved markers remain red; the macro adds CJK support for 傅老师 without hiding content.
+- **C9 — fixed:** abstract/contributions/Related Work/protocol say market-adapted implementations and point to `docs/BASELINES_v1.0.md`. The reproduction-or-gap TBD is replaced by the documented absence of RouterBench/original inputs and the distinction between algorithmic component checks and published-setting reproduction. No original-paper numeric claims were imported. Baseline table labels and result values are unchanged.
+- **C10 — fixed:** Ethics retains synthetic-transaction, legal-advice, commercial-API/key, intended-use/misuse, and Feature/Label safeguards. It adds public MIT math-task/no participant-log provenance, scenario tags rather than country fraud tendencies, restricted/reused task and two-model-plus-mock coverage, uncalibrated price/latency transfer limits, possible simulator shortcuts, and a prohibition on real seller sanctions/national-risk rankings. No IRB, consent, or text-screening determination is invented.
+- **C11 — partial:** a single §4.4 sentence explicitly leaves long-term host, named maintainer, and optional artifact-badge/DOI pledge unfinalized with the requested owner TBD. No team, host, DOI, support duration, or submitted pledge is invented.
+- **C13 — partial, factual scope completed:** `\acmConference` date/location now read **August 1–5, 2027; San Jose, California**, rechecked against the [official conference home](https://kdd2027.kdd.org/). DOI/ISBN remain empty, copyright remains `none`, and CCS remains commented. `\author{Yanjie Fu}`, both affiliations, and `\shortauthors` are byte-identical to Pass 13b. No email, ORCID, coauthor, or funding was added.
+
+**C12 — fixed for planning only:** later camera-ready preparation must allocate at most 9 content pages and 3 pages total for references plus appendix, within 12 proceedings pages. Preserve the self-contained body, locked result qualifications, essential reproducibility and Ethics; prioritize only essential supporting explanations in the small back matter. After owner authorization and actual public archival hosting, move long contrast listings and historical diagnostics to that artifact and select the minimum necessary appendix material for proceedings. No submission-stage appendix, table, figure, or result was deleted or regenerated in this pass, and no unavailable archive is treated as a substitute for the eight-page submission body.
+
+Remaining placeholders/actions (all retained in the check-file inventory):
+
+| Owner | Pending item | Current invocations |
+|---|---|---:|
+| 傅老师 | Public repository or archival URL (remote not publicly accessible) | 1 |
+| 傅老师 | Whether additional representativeness evidence will be collected | 1 |
+| 傅老师 | Maintainer, public host, optional artifact-badge pledge | 1 |
+| Coding | Price sources/snapshot/mapping/calibration and calibrated sample price | 5 |
+| Coding | v1.0 hash/final field names and episodes field names | 2 |
+| Coding | T4 submission channel / external score-file interface | 1 |
+| Coding | Final versioned command lines | 1 |
+| Coding | v1.0 config hash | 1 |
+| Coding | pytest count and attributable log path (no pass claimed) | 2 |
+| Coding | T1-secondary cost/accuracy intervals | 1 |
+| Coding | T3 delist / adaptive tables | 2 |
+| Coding | Post-5b T4, official and supplement (future work) | 2 |
+
+Additional owner actions without PDF placeholders: C3 cycle/submission eligibility and form-side facts; completing/publishing the artifact pack; later ACM rights/CCS metadata. No missing fact was replaced with an invented URL, DOI, license, model, price, hash, test count, result, or successful run claim.
+
+**Build and invariants:** `latexmk -pdf -interaction=nonstopmode main.tex` from `docs/latex-sigkdd-v1.0/` and from a clean unzip in `/tmp`: **21 pages, 0 errors, 0 undefined references/citations, 0 overfull hbox/vbox**. `pdftotext -layout` confirms availability on page 3, generation/coverage on page 4, complete Ethics including its final “overstated detection performance.” sentence on **page 8**, References starting on **page 8**, and Appendix A on **page 9**. Visual checks of pages 4 and 8 confirm readable owner markers and the Ethics boundary. Nearby §4 feature/5b prose was compressed; no font-size or margin workaround was introduced. The full Result 1 and learning-rule-caveat paragraphs, scoped headline Result 1 sentences, author block, all 12 numerical `tabular` result tables, all five table-input files, and figures are unchanged. Raw `p<2×10⁻⁴`, Decision A Holm `≤0.017`, cascade's own `≤0.009`, the 8/8 scope, three-learner rule, and default-P EXP3 caveats remain intact. There are no diffs under `results/`, `release/`, either frozen protocol, or the historical `KDD_v1.0_benchmark.pdf`; pre-existing untracked results and build-bookkeeping files are left unstaged/unmodified by source edits. Existing nonfatal ACM/font-substitution warnings are not undefined citations/references.
+
+**Documentation:** the compliance check preserves the original issue text, records all C1–C13 statuses and original-placeholder dispositions, and lists the current 20 markers. README now states current pagination, artifact limitations, metadata, entry points, bundle contents, and pending decisions; original v0.1 conversion notes are labelled historical/superseded.
+
+**Overleaf zip:** `docs/kdd_overleaf_v1.0.zip` has exactly the same **19 compile members as Pass 13b**, each byte-identical to its repository source after rebuild. No CHECK/REQUIREMENTS/CHANGES/BRIEF Markdown, new results, build bookkeeping, or historical benchmark PDF is included. Membership:
+
+```text
+figures/fig1_five_layers.png
+figures/fig2_40seller_pareto_EQ.pdf
+figures/fig2_40seller_pareto_EQ.png
+figures/fig2_v01scale_pareto_EQ.pdf
+figures/fig2_v01scale_pareto_EQ.png
+figures/fig3_40seller_E_Q_vs_pi.pdf
+figures/fig3_40seller_E_Q_vs_pi.png
+figures/fig3_v01scale_E_Q_vs_pi.pdf
+figures/fig3_v01scale_E_Q_vs_pi.png
+figures/figC_40seller_Etok_vs_pi.pdf
+figures/figC_40seller_Etok_vs_pi.png
+main.bbl
+main.tex
+refs.bib
+tables/decision_a_deltas.tex
+tables/decision_a_facts.tex
+tables/decision_a_main.tex
+tables/decision_a_lower_penalties.tex
+tables/wp1_cascade.tex
+```
