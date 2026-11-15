@@ -68,7 +68,7 @@ def render():
         r"production-market validation; not applied to official runs.",
         r"Panels use internal spreads in different units, not USD price-level",
         r"comparisons or mappings of Qwen/mock/strategic sellers to public SKUs.",
-        r"Simulator \protect\code{price_per_1k} has no input/output split.",
+        r"Simulator \mbox{\protect\code{price_per_1k}} has no input/output split.",
         r"No marketplace logs support quantitative latency, volume,",
         r"jurisdiction, or executed-trade comparisons.",
         r"Snapshot access: 2026-11-10; Google has only two filled models,",
