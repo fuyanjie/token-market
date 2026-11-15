@@ -1,0 +1,118 @@
+{
+  "date": "2026-11-15",
+  "commands": [
+    {
+      "command": [
+        "/workspace/tmvenv/bin/python",
+        "/tmp/pass17-l2/scripts/pass12_decision_a_tables.py"
+      ],
+      "cwd": "/tmp/pass17-l2",
+      "exit_code": 0,
+      "elapsed_s": 0.122
+    },
+    {
+      "command": [
+        "/workspace/tmvenv/bin/python",
+        "/tmp/pass17-l2/scripts/pass16_price_ratio_tables.py"
+      ],
+      "cwd": "/tmp/pass17-l2",
+      "exit_code": 0,
+      "elapsed_s": 0.027
+    },
+    {
+      "command": [
+        "/workspace/tmvenv/bin/python",
+        "/tmp/pass17-l2/scripts/figures_nature.py"
+      ],
+      "cwd": "/tmp/pass17-l2",
+      "exit_code": 0,
+      "elapsed_s": 3.484
+    },
+    {
+      "command": [
+        "/workspace/tmvenv/bin/python",
+        "scripts/v1/analyze_scale_v1.py",
+        "--in",
+        "results/v1.0/main",
+        "--peer",
+        "results/v1.0/main_fp",
+        "--out",
+        "/tmp/pass17-l2/analysis"
+      ],
+      "cwd": "/workspace/token-market",
+      "exit_code": 0,
+      "elapsed_s": 5.864
+    },
+    {
+      "command": [
+        "/workspace/tmvenv/bin/python",
+        "scripts/run_t4_eval.py",
+        "--export-dir",
+        "results/v1.0/t4_eval/export",
+        "--out",
+        "/tmp/pass17-l2/t4-d3",
+        "--n-boot",
+        "10000"
+      ],
+      "cwd": "/workspace/token-market",
+      "exit_code": 0,
+      "elapsed_s": 9.526
+    },
+    {
+      "command": [
+        "/workspace/tmvenv/bin/python",
+        "scripts/run_t4_eval.py",
+        "--export-dir",
+        "results/v1.0/t4_pilot_eval/export",
+        "--out",
+        "/tmp/pass17-l2/t4-pilot",
+        "--n-boot",
+        "2000"
+      ],
+      "cwd": "/workspace/token-market",
+      "exit_code": 0,
+      "elapsed_s": 11.05
+    }
+  ],
+  "comparisons": [
+    {
+      "path": "docs/latex-sigkdd-v1.0/tables/decision_a_deltas.tex",
+      "byte_identical": true
+    },
+    {
+      "path": "docs/latex-sigkdd-v1.0/tables/decision_a_facts.tex",
+      "byte_identical": true
+    },
+    {
+      "path": "docs/latex-sigkdd-v1.0/tables/decision_a_lower_penalties.tex",
+      "byte_identical": true
+    },
+    {
+      "path": "docs/latex-sigkdd-v1.0/tables/decision_a_main.tex",
+      "byte_identical": true
+    },
+    {
+      "path": "docs/latex-sigkdd-v1.0/tables/price_ratios.tex",
+      "byte_identical": true
+    },
+    {
+      "path": "docs/latex-sigkdd-v1.0/tables/wp1_cascade.tex",
+      "byte_identical": true
+    },
+    {
+      "path": "t4-d3/t4_eval.json",
+      "results_exact": true,
+      "notes_exact": true
+    },
+    {
+      "path": "t4-pilot/t4_eval.json",
+      "results_exact": true,
+      "notes_exact": true
+    },
+    {
+      "path": "analysis/inference.json",
+      "curves_exact": true,
+      "q_gate_exact": true
+    }
+  ]
+}

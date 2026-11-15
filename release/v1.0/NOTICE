@@ -1,0 +1,27 @@
+Token-market v1.0 staging notice — documentation added 2026-11-15
+
+This directory remains a staging subset, not a self-contained public release.
+Project's own code/data license: TBD (傅老师 to choose/confirm).
+The current repository top-level LICENSE is MIT; docs/LICENSE_NOTES.md
+records a 2026-11-10 owner note of CC BY 4.0 for derived data. This NOTICE
+makes no final choice and grants no replacement license.
+
+Source tasks: GSM8K, Copyright (c) 2021 OpenAI; MATH source,
+Copyright (c) 2021 Dan Hendrycks; PRM800K MATH-500 source,
+Copyright (c) 2023 OpenAI. Preserve applicable MIT notices.
+HuggingFaceH4/MATH-500 mirror-specific license/provenance is unverified.
+Cached generations identify Qwen/Qwen2.5-0.5B-Instruct and
+Qwen/Qwen2.5-1.5B-Instruct. Both public checkpoint LICENSE files name
+Apache-2.0; weights are not included. This does not independently resolve
+all rights in generated text or the project's derived fields.
+
+Python dependencies retain their own terms, including NumPy's BSD terms,
+Matplotlib's license agreements and bundled notices, and MIT terms for
+PyYAML and pytest. See THIRD_PARTY_LICENSES.md for per-component sources,
+modifications, attribution, verification dates and remaining gaps.
+This is an attribution index, not a substitute for complete upstream
+license texts in a future distribution. Upstream terms are preserved and
+are not overridden by project-level licensing.
+
+TBD (傅老师): public repository or archival URL.
+TBD (傅老师): maintainer / public host / DOI / badge pledge.

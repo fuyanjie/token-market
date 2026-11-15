@@ -1,0 +1,483 @@
+Rc files read (in order):
+  NONE
+Latexmk: This is Latexmk, John Collins, 9 March 2026. Version 4.88.
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  main.tex
+Category 'changed_user':
+  main.tex
+
+------------
+Run number 1 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -recorder  "main.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./main.tex
+LaTeX2e <2026-11-01>
+L3 programming layer <2026-09-09>
+(/home/box/.TinyTeX/texmf-dist/tex/latex/acmart/acmart.cls
+Document Class: acmart 2026/11/01 v2.21 Typesetting articles for the Association for Computing Machinery
+(/home/box/.TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/home/box/.TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex (/home/box/.TinyTeX/texmf-dist/tex/generic/xkeyval/keyval.tex)))) (/home/box/.TinyTeX/texmf-dist/tex/generic/xstring/xstring.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/xstring/xstring.tex)) (/home/box/.TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/amscls/amsart.cls
+Document Class: amsart 2020/05/29 v2.20.6
+(/home/box/.TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/home/box/.TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/microtype/microtype.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/microtype/microtype-pdftex.def) (/home/box/.TinyTeX/texmf-dist/tex/latex/microtype/microtype.cfg)) (/home/box/.TinyTeX/texmf-dist/tex/latex/booktabs/booktabs.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty) (/home/box/.TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/totpages/totpages.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/everyshi/everyshi.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/environ/environ.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/trimspaces/trimspaces.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/natbib/natbib.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty) (/home/box/.TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/home/box/.TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/nameref/nameref.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty))) (/home/box/.TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/home/box/.TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/home/box/.TinyTeX/texmf-dist/tex/latex/url/url.sty) (/home/box/.TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))) (/home/box/.TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def (/home/box/.TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty))) (/home/box/.TinyTeX/texmf-dist/tex/latex/hyperxmp/hyperxmp.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/ifmtarg/ifmtarg.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/base/ifthen.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/oberdiek/ifdraft.sty) (/home/box/.TinyTeX/texmf-dist/tex/generic/iftex/ifluatex.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/graphics/graphicx.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/graphics/graphics.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/graphics/trig.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/graphics-cfg/graphics.cfg) (/home/box/.TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def))) (/home/box/.TinyTeX/texmf-dist/tex/latex/xcolor/xcolor.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/home/box/.TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/home/box/.TinyTeX/texmf-dist/tex/latex/geometry/geometry.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/iftex/ifvtex.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/ncctools/manyfoot.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/ncctools/nccfoots.sty)) (/home/box/.TinyTeX/texmf-dist/tex/generic/pdftex/glyphtounicode.tex) (/home/box/.TinyTeX/texmf-dist/tex/latex/cmap/cmap.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/base/fontenc.sty<<t1.cmap>>) (/home/box/.TinyTeX/texmf-dist/tex/latex/libertine/libertine.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/iftex/ifxetex.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/base/textcomp.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/fontaxes/fontaxes.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/figureversions/figureversions.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/libertine/LinLibertine_I.tex)) (/home/box/.TinyTeX/texmf-dist/tex/latex/inconsolata/zi4.sty `inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe)) (/home/box/.TinyTeX/texmf-dist/tex/latex/newtx/newtxmath.sty `newtxmath' v1.754, 2024/09/22 Math macros based originally on txfonts (msharpe) (/home/box/.TinyTeX/texmf-dist/tex/latex/oberdiek/centernot.sty) (/home/box/.TinyTeX/texmf-dist/tex/generic/kastrup/binhex.tex)
+amsthm NOT loaded
+) (/home/box/.TinyTeX/texmf-dist/tex/latex/caption/caption.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/caption/caption3.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/caption/caption-ams-smf.sto))) (/home/box/.TinyTeX/texmf-dist/tex/latex/float/float.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/comment/comment.sty Excluding comment 'comment') Excluding comment 'CCSXML' (/home/box/.TinyTeX/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty) Special comment 'acks' (/home/box/.TinyTeX/texmf-dist/tex/latex/libertine/T1LinuxLibertineT-TLF.fd)) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/CJKutf8.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/iftex/ifpdf.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/base/inputenc.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/CJK.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/mule/MULEenc.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/CJK.enc)) (/home/box/.TinyTeX/texmf-dist/tex/latex/base/fontenc.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/listings/listings.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/listings/lstpatch.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/listings/lstmisc.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/listings/listings.cfg)) (/home/box/.TinyTeX/texmf-dist/tex/latex/tools/tabularx.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/tools/array.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/makecell/makecell.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/placeins/placeins.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/newunicodechar/newunicodechar.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/xurl/xurl.sty)
+
+Package newunicodechar Warning: Redefining Unicode character on input line 46.
+
+
+Package newunicodechar Warning: Redefining Unicode character on input line 50.
+
+(/home/box/.TinyTeX/texmf-dist/tex/latex/listings/lstlang1.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/listings/lstlang1.sty) (./tables/decision_a_facts.tex) (/home/box/.TinyTeX/texmf-dist/tex/latex/preprint/balance.sty) Excluding comment 'screenonly' Include comment 'printonly' Include comment 'anonsuppress' (/home/box/.TinyTeX/texmf-dist/tex/latex/l3kernel/l3backend-pdftex.def) (./main.aux) (/home/box/.TinyTeX/texmf-dist/tex/latex/newtx/omlnxlmi.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/newtx/untxexa.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/newtx/lmsntxsy.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/newtx/lmxntxexx.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/libertine/OT1LinuxLibertineT-TLF.fd)<<ot1.cmap>> (/home/box/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/newtx/untxmia.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/newtx/untxsym.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/newtx/untxsyc.fd) (./main.out) (./main.out) (/home/box/.TinyTeX/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/home/box/.TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+(/home/box/.TinyTeX/texmf-dist/tex/latex/upquote/upquote.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/libertine/T1LinuxBiolinumT-TLF.fd)
+
+Class acmart Warning: No city present for an affiliation.
+
+(/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.bdg) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/c70bsmi.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/c70bsmi.fdx)
+
+Class acmart Warning: No city present for an affiliation.
+
+(/home/box/.TinyTeX/texmf-dist/tex/latex/microtype/mt-msa.cfg) (/home/box/.TinyTeX/texmf-dist/tex/latex/microtype/mt-msb.cfg) (/home/box/.TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
+Underfull \vbox (badness 1540) has occurred while \output is active
+Underfull \vbox (badness 1939) has occurred while \output is active [1.1{/home/box/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/home/box/.TinyTeX/texmf-dist/fonts/enc/dvips/libertine/lbtn_76gpa5.enc}{/home/box/.TinyTeX/texmf-dist/fonts/enc/dvips/libertine/lbtn_25tcsq.enc}{/home/box/.TinyTeX/texmf-dist/fonts/enc/dvips/libertine/lbtn_nh77jq.enc}{/home/box/.TinyTeX/texmf-dist/fonts/enc/dvips/libertine/lbtn_7grukw.enc}{/home/box/.TinyTeX/texmf-dist/fonts/enc/dvips/libertine/lbtn_oexx6f.enc}{/home/box/.TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-4.enc}]
+Underfull \hbox (badness 1377) in paragraph at lines 115--116
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) stage MIP), cheap-est/strongest fixed routers, random-
+
+Underfull \hbox (badness 10000) in paragraph at lines 134--135
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) surveillance prac-tice and guid-ance em-pha-size mon-i-tor-ing,
+
+Underfull \hbox (badness 3138) in paragraph at lines 134--135
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) layer are in-spired by that \T1/LinuxLibertineT-TLF/m/it/9 (+20) en-force-ment \T1/LinuxLibertineT-TLF/m/n/9 (+20) toolkit. Con-tin-u-ous
+
+Underfull \hbox (badness 2073) in paragraph at lines 136--137
+ []\T1/LinuxLibertineT-TLF/m/it/9 (+20) Positioning.[] \T1/LinuxLibertineT-TLF/m/n/9 (+20) This pa-per cov-ers the platform-as-benchmark-
+
+Underfull \hbox (badness 2503) in paragraph at lines 136--137
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) leader-board con-tract. Whether fixed-rate au-dits change the
+[2.2] (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/c70gbsn.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/c70gbsn.fdx) [3.3 <./figures/fig1_five_layers.png>] (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr) [4.4] [5.5]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 342.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\times' on input line 342.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 342.
+
+(./tables/decision_a_main.tex)
+Underfull \hbox (badness 1048) in paragraph at lines 349--350
+\LMS/ntxsy/m/n/9 ^^U \OT1/LinuxLibertineT-TLF/m/n/9 (+20) 2$ \T1/LinuxLibertineT-TLF/m/n/9 (+20) of 3 learn-ers, none sig-nif-i-cantly re-versed, af-ter 84-test
+
+Underfull \hbox (badness 1442) in paragraph at lines 349--350
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) Holm cor-rec-tion. Per router, 8/8 means four counted lev-els
+
+Underfull \hbox (badness 1107) in paragraph at lines 429--430
+[]\T1/LinuxLibertineT-TLF/b/n/9 (+20) Synthetic ju-ris-dic-tions and mech-a-nism + cached
+
+Underfull \hbox (badness 2020) in paragraph at lines 429--430
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) le-gal ad-vice and not real KYC/data-transfer regimes.
+
+Underfull \hbox (badness 1097) in paragraph at lines 429--430
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) Cor-rect-ness uses two cached Qwen check-points plus
+
+Underfull \vbox (badness 10000) has occurred while \output is active [6.6]
+Underfull \vbox (badness 10000) has occurred while \output is active
+Underfull \vbox (badness 10000) has occurred while \output is active [7.7] (./main.bbl
+Underfull \vbox (badness 10000) has occurred while \output is active [8.8 <./figures/fig3_40seller_E_Q_vs_pi.pdf>])
+
+LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
+(Font)              using `T1/zi4/m/n' instead on input line 484.
+
+[9.9]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 580--581
+[]\T1/LinuxLibertineT-TLF/m/n/9 (+20) Table []10[] is gen-er-ated only from Re-search's adopted
+
+Underfull \hbox (badness 10000) in paragraph at lines 580--581
+\T1/zi4/m/n/9 scripts / pass16[]price[]ratio[]tables\OML/nxlmi/m/it/9 :\T1/zi4/m/n/9 py$ \T1/LinuxLibertineT-TLF/m/n/9 (+20) ver-i-fies the CSV
+
+Underfull \hbox (badness 1571) in paragraph at lines 580--581
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) were empty on 2026-11-10.[][][] There are no real mar-ket-place
+[10.10] (./tables/price_ratios.tex
+Underfull \hbox (badness 2158) in paragraph at lines 15--15
+[]\T1/LinuxLibertineT-TLF/b/n/9 (+20) Table 10: |De-scrip-tive price-ratio com-par-i-son only, not
+
+Underfull \hbox (badness 1817) in paragraph at lines 15--15
+\T1/LinuxLibertineT-TLF/b/n/9 (+20) Qwen/mock/strategic sell-ers to pub-lic SKUs. Sim-u-la-tor
+) [11.11] (./tables/decision_a_deltas.tex) [12.12] [13.13] (./tables/wp1_cascade.tex) (./tables/decision_a_lower_penalties.tex) [14.14] [15.15] [16.16 <./figures/fig2_40seller_pareto_EQ.pdf>]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 5475) in paragraph at lines 682--683
+ []$\OML/nxlmi/m/it/9 ^^Y[]$ \T1/LinuxLibertineT-TLF/m/it/9 (+20) crossover (T2, 40 sell-ers).[] $\U/ntxmia/m/it/9 ^^A\OML/nxlmi/m/it/9 J \U/ntxmia/m/it/9 = \OML/nxlmi/m/it/9 J\LMS/ntxsy/m/n/9 ¹[]º ^^@
+
+Underfull \hbox (badness 3098) in paragraph at lines 682--683
+[]\LMS/ntxsy/m/n/9 ¹\OML/nxlmi/m/it/9 J[]; J[]\LMS/ntxsy/m/n/9 º$ \T1/LinuxLibertineT-TLF/m/n/9 (+20) with the best ban-dit taken per seed,
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 2142) in paragraph at lines 716--717
+\T1/LinuxLibertineT-TLF/m/it/9 (+20) First batch (v0.1 scale). \T1/LinuxLibertineT-TLF/m/n/9 (+20) Un-der the same pre-registered rule,
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[17.17 <./figures/figC_40seller_Etok_vs_pi.pdf>]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[18.18] [19.19] [20.20]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+Underfull \hbox (badness 2932) in paragraph at lines 902--903
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) run. Af-ter the first (v0.1-scale) batch, two def-i-ni-tions that
+
+Underfull \hbox (badness 1831) in paragraph at lines 902--903
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) the pro-to-col left am-bigu-ous were clar-i-fied and recorded in
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Class acmart Warning: ACM reference format is mandatory 
+(acmart)              for papers over one page. 
+(acmart)              Please add printacmref=true to the 
+(acmart)              \settopmatter command..
+
+
+Class acmart Warning: CCS concepts are mandatory for papers over two pages.
+
+
+Package balance Warning: You have called \balance in second column
+(balance)                Columns might not be balanced.
+
+[21.21] [22.22 <./figures/fig2_v01scale_pareto_EQ.pdf> <./figures/fig3_v01scale_E_Q_vs_pi.pdf>] [23.23] (/home/box/.TinyTeX/texmf-dist/tex/generic/stringenc/se-pdfdoc.def) (/home/box/.TinyTeX/texmf-dist/tex/generic/stringenc/se-utf8.def) [24.23] (./main.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+LaTeX Warning: Temporary extra page added at the end. Rerun to get it removed.
+
+ )
+(see the transcript file for additional information)
+pdfTeX warning (dest): name{table.caption.99} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{table.caption.97} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{table.caption.91} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{table.caption.88} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{figure.caption.86} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{table.caption.85} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{figure.caption.82} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{table.caption.80} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{table.caption.71} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{table.caption.73} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{table.caption.100} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{table.caption.81} has been referenced but does not exist, replaced by a fixed one
+
+</home/box/.TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4b.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathMI.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathMI5.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathMI7.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathRM.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinBiolinumT.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinBiolinumTB.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineT.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineTB.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineTI.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/NewTXMI.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/NewTXMI7.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu59.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu5b.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu6a.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu6f.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu74.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu78.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu7a.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu7b.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu95.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu96.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu9a.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/gbsnu/gbsnu50.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/gbsnu/gbsnu5e.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/gbsnu/gbsnu80.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/txmiaX.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/txsys.pfb>
+Output written on main.pdf (24 pages, 876283 bytes).
+Transcript written on main.log.
+Latexmk: Getting log file 'main.log'
+Latexmk: Examining 'main.fls'
+Latexmk: Examining 'main.log'
+Latexmk: Found input bbl file 'main.bbl'
+Latexmk: References changed.
+Latexmk: References changed.
+Latexmk: Log file says output to 'main.pdf'
+Latexmk: Using bibtex to make bibliography file(s).
+  ===Source file 'main.bbl' for 'pdflatex'
+Latexmk: Found bibliography file(s):
+  ./refs.bib
+Latexmk: applying rule 'bibtex main'...
+Rule 'bibtex main':  Reasons for rerun
+Changed files or newly in use/created:
+  main.aux
+
+------------
+Run number 1 of rule 'bibtex main'
+------------
+------------
+Running 'bibtex  "main.aux"'
+------------
+This is BibTeX, Version 0.99e (TeX Live 2026)
+The top-level auxiliary file: main.aux
+The style file: ACM-Reference-Format.bst
+Database file #1: refs.bib
+Warning--empty address in avenhaus2002inspection
+Warning--empty publisher in li2026stageroute
+Warning--empty address in li2026stageroute
+Warning--page numbers missing in both pages and numpages fields in li2026stageroute
+(There were 4 warnings)
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  main.aux
+
+------------
+Run number 2 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -recorder  "main.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./main.tex
+LaTeX2e <2026-11-01>
+L3 programming layer <2026-09-09>
+(/home/box/.TinyTeX/texmf-dist/tex/latex/acmart/acmart.cls
+Document Class: acmart 2026/11/01 v2.21 Typesetting articles for the Association for Computing Machinery
+(/home/box/.TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/home/box/.TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex (/home/box/.TinyTeX/texmf-dist/tex/generic/xkeyval/keyval.tex)))) (/home/box/.TinyTeX/texmf-dist/tex/generic/xstring/xstring.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/xstring/xstring.tex)) (/home/box/.TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/amscls/amsart.cls
+Document Class: amsart 2020/05/29 v2.20.6
+(/home/box/.TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/home/box/.TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/microtype/microtype.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/microtype/microtype-pdftex.def) (/home/box/.TinyTeX/texmf-dist/tex/latex/microtype/microtype.cfg)) (/home/box/.TinyTeX/texmf-dist/tex/latex/booktabs/booktabs.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty) (/home/box/.TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/totpages/totpages.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/everyshi/everyshi.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/environ/environ.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/trimspaces/trimspaces.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/natbib/natbib.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty) (/home/box/.TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/home/box/.TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/nameref/nameref.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty))) (/home/box/.TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/home/box/.TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/home/box/.TinyTeX/texmf-dist/tex/latex/url/url.sty) (/home/box/.TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))) (/home/box/.TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def (/home/box/.TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty))) (/home/box/.TinyTeX/texmf-dist/tex/latex/hyperxmp/hyperxmp.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/ifmtarg/ifmtarg.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/base/ifthen.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/oberdiek/ifdraft.sty) (/home/box/.TinyTeX/texmf-dist/tex/generic/iftex/ifluatex.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/graphics/graphicx.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/graphics/graphics.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/graphics/trig.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/graphics-cfg/graphics.cfg) (/home/box/.TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def))) (/home/box/.TinyTeX/texmf-dist/tex/latex/xcolor/xcolor.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/home/box/.TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/home/box/.TinyTeX/texmf-dist/tex/latex/geometry/geometry.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/iftex/ifvtex.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/ncctools/manyfoot.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/ncctools/nccfoots.sty)) (/home/box/.TinyTeX/texmf-dist/tex/generic/pdftex/glyphtounicode.tex) (/home/box/.TinyTeX/texmf-dist/tex/latex/cmap/cmap.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/base/fontenc.sty<<t1.cmap>>) (/home/box/.TinyTeX/texmf-dist/tex/latex/libertine/libertine.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/iftex/ifxetex.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/base/textcomp.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/fontaxes/fontaxes.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/figureversions/figureversions.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/libertine/LinLibertine_I.tex)) (/home/box/.TinyTeX/texmf-dist/tex/latex/inconsolata/zi4.sty `inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe)) (/home/box/.TinyTeX/texmf-dist/tex/latex/newtx/newtxmath.sty `newtxmath' v1.754, 2024/09/22 Math macros based originally on txfonts (msharpe) (/home/box/.TinyTeX/texmf-dist/tex/latex/oberdiek/centernot.sty) (/home/box/.TinyTeX/texmf-dist/tex/generic/kastrup/binhex.tex)
+amsthm NOT loaded
+) (/home/box/.TinyTeX/texmf-dist/tex/latex/caption/caption.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/caption/caption3.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/caption/caption-ams-smf.sto))) (/home/box/.TinyTeX/texmf-dist/tex/latex/float/float.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/comment/comment.sty Excluding comment 'comment') Excluding comment 'CCSXML' (/home/box/.TinyTeX/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty) Special comment 'acks' (/home/box/.TinyTeX/texmf-dist/tex/latex/libertine/T1LinuxLibertineT-TLF.fd)) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/CJKutf8.sty (/home/box/.TinyTeX/texmf-dist/tex/generic/iftex/ifpdf.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/base/inputenc.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/CJK.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/mule/MULEenc.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/CJK.enc)) (/home/box/.TinyTeX/texmf-dist/tex/latex/base/fontenc.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/listings/listings.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/listings/lstpatch.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/listings/lstmisc.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/listings/listings.cfg)) (/home/box/.TinyTeX/texmf-dist/tex/latex/tools/tabularx.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/tools/array.sty)) (/home/box/.TinyTeX/texmf-dist/tex/latex/makecell/makecell.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/placeins/placeins.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/newunicodechar/newunicodechar.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/xurl/xurl.sty)
+
+Package newunicodechar Warning: Redefining Unicode character on input line 46.
+
+
+Package newunicodechar Warning: Redefining Unicode character on input line 50.
+
+(/home/box/.TinyTeX/texmf-dist/tex/latex/listings/lstlang1.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/listings/lstlang1.sty) (./tables/decision_a_facts.tex) (/home/box/.TinyTeX/texmf-dist/tex/latex/preprint/balance.sty) Excluding comment 'screenonly' Include comment 'printonly' Include comment 'anonsuppress' (/home/box/.TinyTeX/texmf-dist/tex/latex/l3kernel/l3backend-pdftex.def) (./main.aux) (/home/box/.TinyTeX/texmf-dist/tex/latex/newtx/omlnxlmi.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/newtx/untxexa.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/newtx/lmsntxsy.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/newtx/lmxntxexx.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/libertine/OT1LinuxLibertineT-TLF.fd)<<ot1.cmap>> (/home/box/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/newtx/untxmia.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/newtx/untxsym.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/newtx/untxsyc.fd) (./main.out) (./main.out) (/home/box/.TinyTeX/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/home/box/.TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty (/home/box/.TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+(/home/box/.TinyTeX/texmf-dist/tex/latex/upquote/upquote.sty) (/home/box/.TinyTeX/texmf-dist/tex/latex/libertine/T1LinuxBiolinumT-TLF.fd)
+
+Class acmart Warning: No city present for an affiliation.
+
+(/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.bdg) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/c70bsmi.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/c70bsmi.fdx)
+
+Class acmart Warning: No city present for an affiliation.
+
+(/home/box/.TinyTeX/texmf-dist/tex/latex/microtype/mt-msa.cfg) (/home/box/.TinyTeX/texmf-dist/tex/latex/microtype/mt-msb.cfg) (/home/box/.TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
+Underfull \vbox (badness 1540) has occurred while \output is active
+Underfull \vbox (badness 1939) has occurred while \output is active [1.1{/home/box/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/home/box/.TinyTeX/texmf-dist/fonts/enc/dvips/libertine/lbtn_76gpa5.enc}{/home/box/.TinyTeX/texmf-dist/fonts/enc/dvips/libertine/lbtn_25tcsq.enc}{/home/box/.TinyTeX/texmf-dist/fonts/enc/dvips/libertine/lbtn_nh77jq.enc}{/home/box/.TinyTeX/texmf-dist/fonts/enc/dvips/libertine/lbtn_7grukw.enc}{/home/box/.TinyTeX/texmf-dist/fonts/enc/dvips/libertine/lbtn_oexx6f.enc}{/home/box/.TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-4.enc}]
+Underfull \hbox (badness 1377) in paragraph at lines 115--116
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) stage MIP), cheap-est/strongest fixed routers, random-
+
+Underfull \hbox (badness 10000) in paragraph at lines 134--135
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) surveillance prac-tice and guid-ance em-pha-size mon-i-tor-ing,
+
+Underfull \hbox (badness 3138) in paragraph at lines 134--135
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) layer are in-spired by that \T1/LinuxLibertineT-TLF/m/it/9 (+20) en-force-ment \T1/LinuxLibertineT-TLF/m/n/9 (+20) toolkit. Con-tin-u-ous
+
+Underfull \hbox (badness 2073) in paragraph at lines 136--137
+ []\T1/LinuxLibertineT-TLF/m/it/9 (+20) Positioning.[] \T1/LinuxLibertineT-TLF/m/n/9 (+20) This pa-per cov-ers the platform-as-benchmark-
+
+Underfull \hbox (badness 2503) in paragraph at lines 136--137
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) leader-board con-tract. Whether fixed-rate au-dits change the
+[2.2] (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/c70gbsn.fd) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/c70gbsn.fdx) [3.3 <./figures/fig1_five_layers.png>] (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr) [4.4] [5.5]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 342.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\times' on input line 342.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 342.
+
+(./tables/decision_a_main.tex)
+Underfull \hbox (badness 1048) in paragraph at lines 349--350
+\LMS/ntxsy/m/n/9 ^^U \OT1/LinuxLibertineT-TLF/m/n/9 (+20) 2$ \T1/LinuxLibertineT-TLF/m/n/9 (+20) of 3 learn-ers, none sig-nif-i-cantly re-versed, af-ter 84-test
+
+Underfull \hbox (badness 1442) in paragraph at lines 349--350
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) Holm cor-rec-tion. Per router, 8/8 means four counted lev-els
+
+Underfull \hbox (badness 1107) in paragraph at lines 429--430
+[]\T1/LinuxLibertineT-TLF/b/n/9 (+20) Synthetic ju-ris-dic-tions and mech-a-nism + cached
+
+Underfull \hbox (badness 2020) in paragraph at lines 429--430
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) le-gal ad-vice and not real KYC/data-transfer regimes.
+
+Underfull \hbox (badness 1097) in paragraph at lines 429--430
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) Cor-rect-ness uses two cached Qwen check-points plus
+
+Underfull \vbox (badness 10000) has occurred while \output is active [6.6]
+Underfull \vbox (badness 10000) has occurred while \output is active
+Underfull \vbox (badness 10000) has occurred while \output is active [7.7] (./main.bbl
+Underfull \vbox (badness 10000) has occurred while \output is active [8.8 <./figures/fig3_40seller_E_Q_vs_pi.pdf>])
+
+LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
+(Font)              using `T1/zi4/m/n' instead on input line 484.
+
+[9.9]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 580--581
+[]\T1/LinuxLibertineT-TLF/m/n/9 (+20) Table []10[] is gen-er-ated only from Re-search's adopted
+
+Underfull \hbox (badness 10000) in paragraph at lines 580--581
+\T1/zi4/m/n/9 scripts / pass16[]price[]ratio[]tables\OML/nxlmi/m/it/9 :\T1/zi4/m/n/9 py$ \T1/LinuxLibertineT-TLF/m/n/9 (+20) ver-i-fies the CSV
+
+Underfull \hbox (badness 1571) in paragraph at lines 580--581
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) were empty on 2026-11-10.[][][] There are no real mar-ket-place
+[10.10] (./tables/price_ratios.tex
+Underfull \hbox (badness 2158) in paragraph at lines 15--15
+[]\T1/LinuxLibertineT-TLF/b/n/9 (+20) Table 10: |De-scrip-tive price-ratio com-par-i-son only, not
+
+Underfull \hbox (badness 1817) in paragraph at lines 15--15
+\T1/LinuxLibertineT-TLF/b/n/9 (+20) Qwen/mock/strategic sell-ers to pub-lic SKUs. Sim-u-la-tor
+) [11.11] (./tables/decision_a_deltas.tex) [12.12] [13.13] (./tables/wp1_cascade.tex) (./tables/decision_a_lower_penalties.tex) [14.14] [15.15] [16.16 <./figures/fig2_40seller_pareto_EQ.pdf>]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 5475) in paragraph at lines 682--683
+ []$\OML/nxlmi/m/it/9 ^^Y[]$ \T1/LinuxLibertineT-TLF/m/it/9 (+20) crossover (T2, 40 sell-ers).[] $\U/ntxmia/m/it/9 ^^A\OML/nxlmi/m/it/9 J \U/ntxmia/m/it/9 = \OML/nxlmi/m/it/9 J\LMS/ntxsy/m/n/9 ¹[]º ^^@
+
+Underfull \hbox (badness 3098) in paragraph at lines 682--683
+[]\LMS/ntxsy/m/n/9 ¹\OML/nxlmi/m/it/9 J[]; J[]\LMS/ntxsy/m/n/9 º$ \T1/LinuxLibertineT-TLF/m/n/9 (+20) with the best ban-dit taken per seed,
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 2142) in paragraph at lines 716--717
+\T1/LinuxLibertineT-TLF/m/it/9 (+20) First batch (v0.1 scale). \T1/LinuxLibertineT-TLF/m/n/9 (+20) Un-der the same pre-registered rule,
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[17.17 <./figures/figC_40seller_Etok_vs_pi.pdf>]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[18.18] [19.19] [20.20]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+Underfull \hbox (badness 2932) in paragraph at lines 902--903
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) run. Af-ter the first (v0.1-scale) batch, two def-i-ni-tions that
+
+Underfull \hbox (badness 1831) in paragraph at lines 902--903
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) the pro-to-col left am-bigu-ous were clar-i-fied and recorded in
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Class acmart Warning: ACM reference format is mandatory 
+(acmart)              for papers over one page. 
+(acmart)              Please add printacmref=true to the 
+(acmart)              \settopmatter command..
+
+
+Class acmart Warning: CCS concepts are mandatory for papers over two pages.
+
+
+Package balance Warning: You have called \balance in second column
+(balance)                Columns might not be balanced.
+
+[21.21] [22.22 <./figures/fig2_v01scale_pareto_EQ.pdf> <./figures/fig3_v01scale_E_Q_vs_pi.pdf>] (/home/box/.TinyTeX/texmf-dist/tex/generic/stringenc/se-pdfdoc.def) (/home/box/.TinyTeX/texmf-dist/tex/generic/stringenc/se-utf8.def) [23.23] (./main.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ )
+(see the transcript file for additional information)</home/box/.TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4b.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathMI.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathMI5.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathMI7.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathRM.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinBiolinumT.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinBiolinumTB.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineT.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineTB.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineTI.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/NewTXMI.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/NewTXMI7.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu59.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu5b.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu6a.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu6f.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu74.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu78.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu7a.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu7b.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu95.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu96.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu9a.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/gbsnu/gbsnu50.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/gbsnu/gbsnu5e.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/gbsnu/gbsnu80.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/txmiaX.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/txsys.pfb>
+Output written on main.pdf (23 pages, 875158 bytes).
+Transcript written on main.log.
+Latexmk: Getting log file 'main.log'
+Latexmk: Examining 'main.fls'
+Latexmk: Examining 'main.log'
+Latexmk: Found input bbl file 'main.bbl'
+Latexmk: Log file says output to 'main.pdf'
+Latexmk: Using bibtex to make bibliography file(s).
+  ===Source file 'main.bbl' for 'pdflatex'
+Latexmk: Found bibliography file(s):
+  ./refs.bib
+Latexmk: All targets (main.pdf) are up-to-date
+

@@ -1,0 +1,72 @@
+{
+  "date": "2026-11-15",
+  "kind": "documentation counts, not revised paper results",
+  "files": {
+    "data/raw/gsm8k_test.jsonl": {
+      "rows": 1319,
+      "sha256": "3730d312f6e3440559ace48831e51066acaca737f6eabec99bccb9e4b3c39d14",
+      "unique_question_texts": 1319
+    },
+    "data/raw/math500_test.jsonl": {
+      "rows": 500,
+      "sha256": "35dc41080a3680858b27fa7e0533d2d547825316fc5dafe5d316f4ccc5a06132",
+      "unique_question_texts": 500
+    },
+    "data/long_tasks.jsonl": {
+      "rows": 48,
+      "sha256": "87772e59cf6e4f6bdec5b19f4acc871e8efaa6a47108bf8829c0c72caf0d2701",
+      "unique_question_texts": 48,
+      "unique_ids": 48,
+      "by_source": {
+        "gsm8k": 28,
+        "math500": 20
+      }
+    },
+    "cache/llm_outputs.jsonl": {
+      "rows": 250,
+      "sha256": "64166a393a96ad43028c4c424ed0a83190c67767972695d55ecfa125d9df5d66",
+      "unique_cache_keys": 250,
+      "unique_prompt_hashes": 125,
+      "unique_pool_task_ids": 125,
+      "by_model": {
+        "Qwen/Qwen2.5-0.5B-Instruct": 125,
+        "Qwen/Qwen2.5-1.5B-Instruct": 125
+      },
+      "by_model_limit": {
+        "('Qwen/Qwen2.5-0.5B-Instruct', 256)": 77,
+        "('Qwen/Qwen2.5-1.5B-Instruct', 256)": 77,
+        "('Qwen/Qwen2.5-0.5B-Instruct', 512)": 48,
+        "('Qwen/Qwen2.5-1.5B-Instruct', 512)": 48
+      }
+    }
+  },
+  "pools": {
+    "configs/default.yaml": {
+      "rows": 80,
+      "unique_ids": 80,
+      "unique_questions": 77,
+      "by_source": {
+        "synthetic": 80
+      },
+      "task_seed": 1234
+    },
+    "configs/benchmark/production.yaml": {
+      "rows": 80,
+      "unique_ids": 80,
+      "unique_questions": 77,
+      "by_source": {
+        "synthetic": 80
+      },
+      "task_seed": 1234
+    },
+    "configs/v1.0/scale.yaml": {
+      "rows": 80,
+      "unique_ids": 80,
+      "unique_questions": 77,
+      "by_source": {
+        "synthetic": 80
+      },
+      "task_seed": 1234
+    }
+  }
+}

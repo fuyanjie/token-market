@@ -1,0 +1,3195 @@
+{
+  "documentation_date": "2026-11-15",
+  "scope": "formal 40-seller gate; egreedy vs fictitious_play",
+  "rule_source": "docs/PROTOCOL_v1.0.md \u00a71; \u53e3\u5f84\u8865\u6b63 2026-11-10 and \u5f00\u8dd1\u524d\u88c1\u5b9a item 2",
+  "implementation_source": "scripts/v1/analyze_scale_v1.py: Q-gate vs peer learner directory",
+  "rule": "At every pi: tau_a >= 0.6 AND unchanged lower-better (E,Q) front on methods with tail_trade_rate > 0.5 under both learners.",
+  "ties": "Analyzer stably sorts equal mean Q in ORDER and assigns distinct sequential ranks; pairwise Kendall uses (C-D)/(n*(n-1)/2). Equal E,Q points do not dominate each other. No epsilon tie threshold.",
+  "front_evidence": "available: derived from frozen main and main_fp per_seed.csv outputs",
+  "source_sha256": {
+    "docs/PROTOCOL_v1.0.md": "08077920b302a52b5190f491f536ec92d891c32ff9c844722ce4ecd76c687ee2",
+    "scripts/v1/analyze_scale_v1.py": "0b81324f361944b970bf0cbf116a9ce8143e66e9230ce9b75ec41d3273f9faeb",
+    "results/v1.0/main/per_seed.csv": "d86084ef11c7775f90cae3d3e1d98921c6eaa4b680ef1daf8f666c2c149c322b",
+    "results/v1.0/main_fp/per_seed.csv": "405adfc81fb2f53de44ef545d5c5b26ace60b404cd0dbe971dea45172d716c5f",
+    "results/v1.0/main/inference.json": "70fc9b2ac83825828567b0af16a64a7fb4be49f4091e5859002582fa2752a0dd"
+  },
+  "per_pi": [
+    {
+      "pi": 0.0,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.38804841937131085,
+          "Q": 0.7911111111111111,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.3822795629887533,
+          "Q": 0.6837037037037037,
+          "tail_trade_rate": 1.0
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.39797025508013095,
+          "Q": 0.7944284953884335,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.39465507682760687,
+          "Q": 0.6942441116989853,
+          "tail_trade_rate": 1.0
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "pilot": 6,
+        "strongest_fixed": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "pilot": 6,
+        "strongest_fixed": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    },
+    {
+      "pi": 0.02,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.3529187477916673,
+          "Q": 0.8250462962962963,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.18755712020061943,
+          "Q": 0.7163888888888889,
+          "tail_trade_rate": 1.0
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.36388453898990636,
+          "Q": 0.82487686990201,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.18717511844786877,
+          "Q": 0.7220092766439505,
+          "tail_trade_rate": 1.0
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    },
+    {
+      "pi": 0.04,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.2994814465358452,
+          "Q": 0.89875,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.11390118187198481,
+          "Q": 0.69625,
+          "tail_trade_rate": 0.85
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.31538357064196487,
+          "Q": 0.9008228477332508,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.12335734451896978,
+          "Q": 0.7097337940916815,
+          "tail_trade_rate": 0.85
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    },
+    {
+      "pi": 0.06,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.25864593577942335,
+          "Q": 0.8915277777777778,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.11464676384780696,
+          "Q": 0.6991666666666666,
+          "tail_trade_rate": 0.85
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.26446327601808234,
+          "Q": 0.8961981178143305,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.10822701223654074,
+          "Q": 0.7127694226915061,
+          "tail_trade_rate": 0.9
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    },
+    {
+      "pi": 0.08,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.23260114874304588,
+          "Q": 0.9026851851851851,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.10666533881724032,
+          "Q": 0.6924537037037037,
+          "tail_trade_rate": 1.0
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.2410120778668537,
+          "Q": 0.885341175816069,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.09699707852800064,
+          "Q": 0.7141608194052681,
+          "tail_trade_rate": 1.0
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    },
+    {
+      "pi": 0.1,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.23377152713879085,
+          "Q": 0.8952314814814815,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.09994569712929977,
+          "Q": 0.6886574074074074,
+          "tail_trade_rate": 0.9
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.24517710735694337,
+          "Q": 0.8970245558756608,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.09373132241275481,
+          "Q": 0.6993333419780682,
+          "tail_trade_rate": 0.9
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    },
+    {
+      "pi": 0.11,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.2257397943992307,
+          "Q": 0.8806018518518519,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.0944408815110287,
+          "Q": 0.6815740740740741,
+          "tail_trade_rate": 0.85
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.2385704682882687,
+          "Q": 0.9013514680525205,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.08692385676467583,
+          "Q": 0.6979341739906882,
+          "tail_trade_rate": 0.85
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    },
+    {
+      "pi": 0.12,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.2330785212987875,
+          "Q": 0.8839351851851852,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.08138321848067619,
+          "Q": 0.6594444444444444,
+          "tail_trade_rate": 0.95
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.2418332377759067,
+          "Q": 0.8934638453844845,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.08721030945420712,
+          "Q": 0.6849446457922997,
+          "tail_trade_rate": 0.95
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    },
+    {
+      "pi": 0.14,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.2232957020888972,
+          "Q": 0.8949537037037038,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.07570238709179175,
+          "Q": 0.6594444444444444,
+          "tail_trade_rate": 0.85
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.23441711284743563,
+          "Q": 0.9011511576794657,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.08470787533779595,
+          "Q": 0.6862559270922657,
+          "tail_trade_rate": 0.85
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    },
+    {
+      "pi": 0.16,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.21285223849053186,
+          "Q": 0.8896296296296295,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.08614725894365617,
+          "Q": 0.6643055555555556,
+          "tail_trade_rate": 0.9
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.22649096060910426,
+          "Q": 0.9087592961119457,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.07645202418436012,
+          "Q": 0.6725303253752684,
+          "tail_trade_rate": 0.85
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    },
+    {
+      "pi": 0.18,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.23220222783075445,
+          "Q": 0.8930092592592592,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.07680451658331443,
+          "Q": 0.6670833333333334,
+          "tail_trade_rate": 0.95
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.24597971184407158,
+          "Q": 0.9163982733770302,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.06670765954543208,
+          "Q": 0.6745979778244011,
+          "tail_trade_rate": 0.95
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    },
+    {
+      "pi": 0.2,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.216070320983789,
+          "Q": 0.9012500000000001,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.08161385429629864,
+          "Q": 0.6698611111111111,
+          "tail_trade_rate": 0.95
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.22791780986289675,
+          "Q": 0.899937423289545,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.06721081345293226,
+          "Q": 0.6774733164274113,
+          "tail_trade_rate": 0.9
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    },
+    {
+      "pi": 0.22,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.21658781599380342,
+          "Q": 0.9025925925925925,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.08054167465606396,
+          "Q": 0.6575,
+          "tail_trade_rate": 0.95
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.2241861198697328,
+          "Q": 0.9093749378638462,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.06745552410074387,
+          "Q": 0.6634950222955067,
+          "tail_trade_rate": 1.0
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    },
+    {
+      "pi": 0.24,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.2079589731264612,
+          "Q": 0.899074074074074,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.07634688486422826,
+          "Q": 0.6588425925925926,
+          "tail_trade_rate": 1.0
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.21871245706792183,
+          "Q": 0.9059044754796648,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.06350439398266927,
+          "Q": 0.6674310279781192,
+          "tail_trade_rate": 0.9
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    },
+    {
+      "pi": 0.26,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.20657299845974988,
+          "Q": 0.927824074074074,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.07575577022662205,
+          "Q": 0.6511574074074075,
+          "tail_trade_rate": 0.85
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.21638870024535076,
+          "Q": 0.901997721823761,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.07120045671935316,
+          "Q": 0.6661915210491056,
+          "tail_trade_rate": 0.85
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    },
+    {
+      "pi": 0.28,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.2051248307949908,
+          "Q": 0.9162037037037036,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.07512502075768968,
+          "Q": 0.6456481481481482,
+          "tail_trade_rate": 0.9
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.2149249415062286,
+          "Q": 0.906008574947562,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.07200757131465899,
+          "Q": 0.6603760430195107,
+          "tail_trade_rate": 0.8
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    },
+    {
+      "pi": 0.3,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.19735914784308195,
+          "Q": 0.9061574074074074,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.07531970344796658,
+          "Q": 0.6455092592592593,
+          "tail_trade_rate": 0.95
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.21224542863396395,
+          "Q": 0.910153134572022,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.06685881056849148,
+          "Q": 0.6556117505356591,
+          "tail_trade_rate": 0.95
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    },
+    {
+      "pi": 0.5,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.18510007092208441,
+          "Q": 0.93625,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.08078100139236019,
+          "Q": 0.631712962962963,
+          "tail_trade_rate": 0.95
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.18285159112288144,
+          "Q": 0.9128649105488978,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.06894278699160254,
+          "Q": 0.637985120346057,
+          "tail_trade_rate": 1.0
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    },
+    {
+      "pi": 1.0,
+      "eligible_main": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "eligible_peer": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "common": [
+        "pilot",
+        "stageroute",
+        "strongest_fixed",
+        "fixed_audit_a0.05",
+        "fixed_audit_a0.10",
+        "fixed_audit_a0.20",
+        "random_audit",
+        "risk_adaptive_audit"
+      ],
+      "excluded_main": [
+        "cheapest_fixed"
+      ],
+      "excluded_peer": [
+        "cheapest_fixed"
+      ],
+      "means_main": {
+        "pilot": {
+          "E": 0.16131661710429618,
+          "Q": 0.9173148148148147,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.055804650429215286,
+          "Q": 0.6093055555555555,
+          "tail_trade_rate": 0.85
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.507638888888889,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4456464653285381,
+          "Q": 0.7916203703703704,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.005122066851657814,
+          "Q": 0.5307407407407407,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.004726648776860977,
+          "Q": 0.5383333333333333,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.004314473957937038,
+          "Q": 0.518888888888889,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.004740447386451988,
+          "Q": 0.5327777777777778,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.004680670111146463,
+          "Q": 0.5358333333333334,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "means_peer": {
+        "pilot": {
+          "E": 0.1627516828661563,
+          "Q": 0.9195854845001439,
+          "tail_trade_rate": 1.0
+        },
+        "stageroute": {
+          "E": 0.05438813384846978,
+          "Q": 0.6233917969551529,
+          "tail_trade_rate": 0.85
+        },
+        "cheapest_fixed": {
+          "E": 0.0,
+          "Q": 0.5,
+          "tail_trade_rate": 0.0
+        },
+        "strongest_fixed": {
+          "E": 0.4549290998389832,
+          "Q": 0.8013644093332586,
+          "tail_trade_rate": 1.0
+        },
+        "fixed_audit_a0.05": {
+          "E": 0.003951003687645666,
+          "Q": 0.5217043050901866,
+          "tail_trade_rate": 0.65
+        },
+        "fixed_audit_a0.10": {
+          "E": 0.0036745587732369155,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        },
+        "fixed_audit_a0.20": {
+          "E": 0.0034144500233256265,
+          "Q": 0.5070170801132512,
+          "tail_trade_rate": 0.65
+        },
+        "random_audit": {
+          "E": 0.0038458794758190035,
+          "Q": 0.5338563810469961,
+          "tail_trade_rate": 0.65
+        },
+        "risk_adaptive_audit": {
+          "E": 0.003682253000855549,
+          "Q": 0.5195916447805942,
+          "tail_trade_rate": 0.6
+        }
+      },
+      "ranks_main": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.05": 1,
+        "random_audit": 2,
+        "risk_adaptive_audit": 3,
+        "fixed_audit_a0.10": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "ranks_peer": {
+        "fixed_audit_a0.20": 0,
+        "fixed_audit_a0.10": 1,
+        "risk_adaptive_audit": 2,
+        "fixed_audit_a0.05": 3,
+        "random_audit": 4,
+        "stageroute": 5,
+        "strongest_fixed": 6,
+        "pilot": 7
+      },
+      "concordant_pairs": 23,
+      "discordant_pairs": 5,
+      "tied_pairs": 0,
+      "kendall_tau_a": 0.6428571428571429,
+      "tau_ge_0_6": true,
+      "front_main": [
+        "fixed_audit_a0.20"
+      ],
+      "front_peer": [
+        "fixed_audit_a0.20"
+      ],
+      "front_unchanged": true,
+      "pass": true,
+      "matches_frozen_gate": true
+    }
+  ],
+  "pass_all_pi": true,
+  "matches_frozen_gate": true,
+  "paper_verdict_changed": false,
+  "excluded_checks": "EXP3 and historical Hedge check are appendix-only, not formal gate members"
+}

@@ -1,0 +1,729 @@
+{
+  "documentation_date": "2026-11-15",
+  "scope": "all 26 tables and 6 figures; input dependencies remain repository paths, not staged copies",
+  "common_dependencies": [
+    "cache/llm_outputs.jsonl",
+    "data/long_tasks.jsonl",
+    "data/raw/gsm8k_test.jsonl",
+    "data/raw/math500_test.jsonl",
+    "requirements.txt",
+    "pyproject.toml",
+    "tokenmarket/",
+    "scripts/",
+    "docs/latex-sigkdd-v1.0/refs.bib"
+  ],
+  "items": [
+    {
+      "label": "tab:layers",
+      "kind": "table",
+      "number": "1",
+      "inputs": [
+        "tokenmarket/gateway.py",
+        "tokenmarket/compliance.py",
+        "tokenmarket/portfolio.py",
+        "tokenmarket/sim.py",
+        "tokenmarket/feedback.py"
+      ],
+      "producer_command": "Manual LaTeX in main.tex; latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "existing manual table; compile flags recorded in paper README",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "Conceptual editorial table; no statistical data generator."
+    },
+    {
+      "label": "fig:layers",
+      "kind": "figure",
+      "number": "1",
+      "inputs": [
+        "docs/latex-sigkdd-v1.0/figures/fig1_five_layers.svg"
+      ],
+      "producer_command": "SVG source + frozen PNG; original raster-export command not recorded. Reconstructed: inkscape figures/fig1_five_layers.svg --export-type=png --export-filename=/tmp/fig1_five_layers.png",
+      "output": "docs/latex-sigkdd-v1.0/figures/fig1_five_layers.png",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "reconstructed command; historical producing argv not recorded",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "Conceptual drawing; reconstructed export not executed or byte-equivalence claimed."
+    },
+    {
+      "label": "tab:files",
+      "kind": "table",
+      "number": "2",
+      "inputs": [
+        "tokenmarket/benchmark_export.py",
+        "docs/DATA_SCHEMA.md"
+      ],
+      "producer_command": "Manual LaTeX in main.tex; latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "existing manual table; compile flags recorded in paper README",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "Schema descriptions; legacy five-file layout."
+    },
+    {
+      "label": "tab:samples",
+      "kind": "table",
+      "number": "3",
+      "inputs": [
+        "docs/DATA_SCHEMA.md",
+        "exports/production/orders.jsonl",
+        "exports/production/sellers.jsonl",
+        "exports/production/buyers.jsonl",
+        "exports/production/audits.jsonl",
+        "exports/production/episodes.jsonl"
+      ],
+      "producer_command": "Manual LaTeX in main.tex; latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "existing manual table; compile flags recorded in paper README",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "Schematic/truncated examples; not a new production-number table."
+    },
+    {
+      "label": "tab:labels",
+      "kind": "table",
+      "number": "4",
+      "inputs": [
+        "tokenmarket/t4_export.py",
+        "docs/PROTOCOL_v1.0.md"
+      ],
+      "producer_command": "Manual LaTeX in main.tex; latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "existing manual table; compile flags recorded in paper README",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "Whitelist rules, not classifier results."
+    },
+    {
+      "label": "tab:t1",
+      "kind": "table",
+      "number": "5",
+      "inputs": [
+        "results/v1.1/v1.2_decision_a_eval/cells.csv",
+        "results/v1.1/v1.2_decision_a_eval/contrasts.csv",
+        "results/v1.1/v1.2_decision_a_eval/direction_consistency.csv",
+        "results/v1.1/v1.2_decision_a_eval/decision_a_eval.json",
+        "results/v1.1/v1.2_decision_a_eval/decision_a_eval.md",
+        "results/v1.1/v1.2_decision_a/run_meta.json",
+        "results/v1.1/v1.2_decision_a/manifest.json",
+        "results/v1.1/v1.2_decision_a/factorial/per_seed.csv"
+      ],
+      "producer_command": "python scripts/pass12_decision_a_tables.py (no flags; hard-coded paper output, run only in scratch mirror)",
+      "output": "docs/latex-sigkdd-v1.0/tables/decision_a_main.tex",
+      "protocol": "docs/v1.1/PROTOCOL_v1.2.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "renderer invocation documented; L2 scratch execution verified exact bytes",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": ""
+    },
+    {
+      "label": "tab:t2",
+      "kind": "table",
+      "number": "6",
+      "inputs": [
+        "results/v1.0/main/per_seed.csv",
+        "results/v1.0/main/run_meta.json",
+        "results/v1.0/main/inference.json",
+        "results/v1.0/main/inference.md"
+      ],
+      "producer_command": "python scripts/v1/analyze_scale_v1.py --in results/v1.0/main --peer results/v1.0/main_fp --out /tmp/pass17-main-analysis; manual selection/formatting in main.tex; latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "reconstructed command; historical producing argv not recorded",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "No standalone automated LaTeX generator recorded for this table. Analyzer generates inference.json/md and diagnostic plots; paper table is frozen manual LaTeX."
+    },
+    {
+      "label": "fig:t2",
+      "kind": "figure",
+      "number": "2",
+      "inputs": [
+        "results/v1.0/main/inference.json",
+        "results/v1.0/main/per_seed.csv",
+        "results/v1.0/main/run_meta.json"
+      ],
+      "producer_command": "python scripts/figures_nature.py (no flags; hard-coded output, run only in scratch mirror)",
+      "output": "docs/latex-sigkdd-v1.0/figures/fig3_40seller_E_Q_vs_pi.pdf",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "renderer documented; L2 scratch run succeeds; no binary-PDF tolerance recorded",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": ""
+    },
+    {
+      "label": "tab:a2",
+      "kind": "table",
+      "number": "7",
+      "inputs": [
+        "results/v1.0/a2_filter_off/A2_paired.json",
+        "results/v1.0/a2_filter_off/A2_paired.md",
+        "results/v1.0/a2_filter_off/per_seed.csv",
+        "results/v1.0/main/per_seed.csv"
+      ],
+      "producer_command": "Original standalone A2 readout producer/argv not recorded; manual LaTeX + latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "producer gap explicitly recorded",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "Stored bootstrap metadata exists; do not substitute v0.1-scale D3-only script. L2 verifies frozen bytes/checksums rather than inventing RNG call order."
+    },
+    {
+      "label": "tab:repro",
+      "kind": "table",
+      "number": "8",
+      "inputs": [
+        "docs/PROTOCOL_v1.0.md",
+        "docs/v1.1/PROTOCOL_v1.2.md",
+        "release/v1.0/MANIFEST.json",
+        "requirements.txt",
+        "pyproject.toml",
+        "results/v1.0/main/run_meta.json",
+        "results/v1.1/v1.2_decision_a_eval/decision_a_eval.json"
+      ],
+      "producer_command": "Manual LaTeX in main.tex; latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "existing manual table; compile flags recorded in paper README",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "Editorial path/version table; no standalone generator."
+    },
+    {
+      "label": "tab:codemap",
+      "kind": "table",
+      "number": "9",
+      "inputs": [
+        "tokenmarket/gateway.py",
+        "tokenmarket/matching.py",
+        "tokenmarket/portfolio.py",
+        "tokenmarket/baselines.py",
+        "tokenmarket/audit_v6.py",
+        "tokenmarket/strategic.py",
+        "tokenmarket/feedback.py",
+        "tokenmarket/logging_schema.py"
+      ],
+      "producer_command": "Manual LaTeX in main.tex; latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "existing manual table; compile flags recorded in paper README",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "Editorial source-to-layer mapping."
+    },
+    {
+      "label": "tab:price-ratios",
+      "kind": "table",
+      "number": "10",
+      "inputs": [
+        "results/v1.1/v1.2_price_representativeness/ratios.csv",
+        "results/v1.1/v1.2_price_representativeness/MAPPING_RULE.md",
+        "results/v1.1/v1.2_price_representativeness/compute_ratios.py",
+        "results/v1.1/v1.2_price_representativeness/FINDINGS.md",
+        "configs/v1.0/frozen/prices.yaml",
+        "configs/v1.0/frozen/scale.yaml"
+      ],
+      "producer_command": "python scripts/pass16_price_ratio_tables.py (no flags; scratch mirror only)",
+      "output": "docs/latex-sigkdd-v1.0/tables/price_ratios.tex",
+      "protocol": "MAPPING_RULE.md descriptive comparison; not an applied protocol price mapping",
+      "config": [
+        "configs/v1.0/frozen/prices.yaml",
+        "configs/v1.0/frozen/scale.yaml"
+      ],
+      "command_provenance": "renderer documented; L2 exact bytes",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "Snapshot raw SKU rows and exclusions retained; no price updates."
+    },
+    {
+      "label": "tab:decision-a-pilot",
+      "kind": "table",
+      "number": "11",
+      "inputs": [
+        "results/v1.1/v1.2_decision_a_eval/cells.csv",
+        "results/v1.1/v1.2_decision_a_eval/contrasts.csv",
+        "results/v1.1/v1.2_decision_a_eval/direction_consistency.csv",
+        "results/v1.1/v1.2_decision_a_eval/decision_a_eval.json",
+        "results/v1.1/v1.2_decision_a_eval/decision_a_eval.md",
+        "results/v1.1/v1.2_decision_a/run_meta.json",
+        "results/v1.1/v1.2_decision_a/manifest.json",
+        "results/v1.1/v1.2_decision_a/factorial/per_seed.csv"
+      ],
+      "producer_command": "python scripts/pass12_decision_a_tables.py (no flags; hard-coded paper output, run only in scratch mirror)",
+      "output": "docs/latex-sigkdd-v1.0/tables/decision_a_deltas.tex",
+      "protocol": "docs/v1.1/PROTOCOL_v1.2.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "renderer invocation documented; L2 scratch execution verified exact bytes",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": ""
+    },
+    {
+      "label": "tab:decision-a-strongest",
+      "kind": "table",
+      "number": "12",
+      "inputs": [
+        "results/v1.1/v1.2_decision_a_eval/cells.csv",
+        "results/v1.1/v1.2_decision_a_eval/contrasts.csv",
+        "results/v1.1/v1.2_decision_a_eval/direction_consistency.csv",
+        "results/v1.1/v1.2_decision_a_eval/decision_a_eval.json",
+        "results/v1.1/v1.2_decision_a_eval/decision_a_eval.md",
+        "results/v1.1/v1.2_decision_a/run_meta.json",
+        "results/v1.1/v1.2_decision_a/manifest.json",
+        "results/v1.1/v1.2_decision_a/factorial/per_seed.csv"
+      ],
+      "producer_command": "python scripts/pass12_decision_a_tables.py (no flags; hard-coded paper output, run only in scratch mirror)",
+      "output": "docs/latex-sigkdd-v1.0/tables/decision_a_deltas.tex",
+      "protocol": "docs/v1.1/PROTOCOL_v1.2.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "renderer invocation documented; L2 scratch execution verified exact bytes",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": ""
+    },
+    {
+      "label": "tab:wp1-cascade",
+      "kind": "table",
+      "number": "13",
+      "inputs": [
+        "results/v1.1/wp1_eval/wp1_eval.json",
+        "results/v1.1/wp1_eval/contrasts.csv",
+        "results/v1.1/wp1_eval/wp1_eval.md"
+      ],
+      "producer_command": "python scripts/pass12_decision_a_tables.py (no flags; hard-coded paper output, run only in scratch mirror)",
+      "output": "docs/latex-sigkdd-v1.0/tables/wp1_cascade.tex",
+      "protocol": "docs/v1.1/PROTOCOL_v1.1.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "renderer documented; L2 exact bytes; separate WP1 diagnostic",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": ""
+    },
+    {
+      "label": "tab:decision-a-p4",
+      "kind": "table",
+      "number": "14",
+      "inputs": [
+        "results/v1.1/v1.2_decision_a_eval/cells.csv",
+        "results/v1.1/v1.2_decision_a_eval/contrasts.csv",
+        "results/v1.1/v1.2_decision_a_eval/direction_consistency.csv",
+        "results/v1.1/v1.2_decision_a_eval/decision_a_eval.json",
+        "results/v1.1/v1.2_decision_a_eval/decision_a_eval.md",
+        "results/v1.1/v1.2_decision_a/run_meta.json",
+        "results/v1.1/v1.2_decision_a/manifest.json",
+        "results/v1.1/v1.2_decision_a/factorial/per_seed.csv"
+      ],
+      "producer_command": "python scripts/pass12_decision_a_tables.py (no flags; hard-coded paper output, run only in scratch mirror)",
+      "output": "docs/latex-sigkdd-v1.0/tables/decision_a_lower_penalties.tex",
+      "protocol": "docs/v1.1/PROTOCOL_v1.2.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "renderer invocation documented; L2 scratch execution verified exact bytes",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": ""
+    },
+    {
+      "label": "tab:decision-a-p16",
+      "kind": "table",
+      "number": "15",
+      "inputs": [
+        "results/v1.1/v1.2_decision_a_eval/cells.csv",
+        "results/v1.1/v1.2_decision_a_eval/contrasts.csv",
+        "results/v1.1/v1.2_decision_a_eval/direction_consistency.csv",
+        "results/v1.1/v1.2_decision_a_eval/decision_a_eval.json",
+        "results/v1.1/v1.2_decision_a_eval/decision_a_eval.md",
+        "results/v1.1/v1.2_decision_a/run_meta.json",
+        "results/v1.1/v1.2_decision_a/manifest.json",
+        "results/v1.1/v1.2_decision_a/factorial/per_seed.csv"
+      ],
+      "producer_command": "python scripts/pass12_decision_a_tables.py (no flags; hard-coded paper output, run only in scratch mirror)",
+      "output": "docs/latex-sigkdd-v1.0/tables/decision_a_lower_penalties.tex",
+      "protocol": "docs/v1.1/PROTOCOL_v1.2.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "renderer invocation documented; L2 scratch execution verified exact bytes",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": ""
+    },
+    {
+      "label": "tab:t1-v10",
+      "kind": "table",
+      "number": "16",
+      "inputs": [
+        "results/v1.0/main/per_seed.csv",
+        "results/v1.0/main/run_meta.json",
+        "results/v1.0/main/inference.json",
+        "results/v1.0/main/inference.md"
+      ],
+      "producer_command": "python scripts/v1/analyze_scale_v1.py --in results/v1.0/main --peer results/v1.0/main_fp --out /tmp/pass17-main-analysis; manual selection/formatting in main.tex; latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "reconstructed command; historical producing argv not recorded",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "No standalone automated LaTeX generator recorded for this table. Analyzer generates inference.json/md and diagnostic plots; paper table is frozen manual LaTeX."
+    },
+    {
+      "label": "fig:pareto",
+      "kind": "figure",
+      "number": "3",
+      "inputs": [
+        "results/v1.0/main/inference.json",
+        "results/v1.0/main/per_seed.csv",
+        "results/v1.0/main/run_meta.json"
+      ],
+      "producer_command": "python scripts/figures_nature.py (no flags; hard-coded output, run only in scratch mirror)",
+      "output": "docs/latex-sigkdd-v1.0/figures/fig2_40seller_pareto_EQ.pdf",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "renderer documented; L2 scratch run succeeds; no binary-PDF tolerance recorded",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": ""
+    },
+    {
+      "label": "tab:j",
+      "kind": "table",
+      "number": "17",
+      "inputs": [
+        "results/v1.0/main/per_seed.csv",
+        "results/v1.0/main/run_meta.json",
+        "results/v1.0/main/inference.json",
+        "results/v1.0/main/inference.md"
+      ],
+      "producer_command": "python scripts/v1/analyze_scale_v1.py --in results/v1.0/main --peer results/v1.0/main_fp --out /tmp/pass17-main-analysis; manual selection/formatting in main.tex; latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "reconstructed command; historical producing argv not recorded",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "No standalone automated LaTeX generator recorded for this table. Analyzer generates inference.json/md and diagnostic plots; paper table is frozen manual LaTeX."
+    },
+    {
+      "label": "fig:etok",
+      "kind": "figure",
+      "number": "4",
+      "inputs": [
+        "results/v1.0/main/inference.json",
+        "results/v1.0/main/per_seed.csv",
+        "results/v1.0/main/run_meta.json"
+      ],
+      "producer_command": "python scripts/figures_nature.py (no flags; hard-coded output, run only in scratch mirror)",
+      "output": "docs/latex-sigkdd-v1.0/figures/figC_40seller_Etok_vs_pi.pdf",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "renderer documented; L2 scratch run succeeds; no binary-PDF tolerance recorded",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": ""
+    },
+    {
+      "label": "tab:pistar",
+      "kind": "table",
+      "number": "18",
+      "inputs": [
+        "results/v1.0/main/per_seed.csv",
+        "results/v1.0/main/run_meta.json",
+        "results/v1.0/main/inference.json",
+        "results/v1.0/main/inference.md"
+      ],
+      "producer_command": "python scripts/v1/analyze_scale_v1.py --in results/v1.0/main --peer results/v1.0/main_fp --out /tmp/pass17-main-analysis; manual selection/formatting in main.tex; latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "reconstructed command; historical producing argv not recorded",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "No standalone automated LaTeX generator recorded for this table. Analyzer generates inference.json/md and diagnostic plots; paper table is frozen manual LaTeX."
+    },
+    {
+      "label": "tab:qmode",
+      "kind": "table",
+      "number": "19",
+      "inputs": [
+        "results/v1.0/main/per_seed.csv",
+        "results/v1.0/main/run_meta.json",
+        "results/v1.0/main/inference.json",
+        "results/v1.0/main/inference.md"
+      ],
+      "producer_command": "python scripts/v1/analyze_scale_v1.py --in results/v1.0/main --peer results/v1.0/main_fp --out /tmp/pass17-main-analysis; manual selection/formatting in main.tex; latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "reconstructed command; historical producing argv not recorded",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "No standalone automated LaTeX generator recorded for this table. Analyzer generates inference.json/md and diagnostic plots; paper table is frozen manual LaTeX."
+    },
+    {
+      "label": "tab:qmodeb",
+      "kind": "table",
+      "number": "20",
+      "inputs": [
+        "results/v1.0/main/per_seed.csv",
+        "results/v1.0/main/run_meta.json",
+        "results/v1.0/main/inference.json",
+        "results/v1.0/main/inference.md"
+      ],
+      "producer_command": "python scripts/v1/analyze_scale_v1.py --in results/v1.0/main --peer results/v1.0/main_fp --out /tmp/pass17-main-analysis; manual selection/formatting in main.tex; latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "reconstructed command; historical producing argv not recorded",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "No standalone automated LaTeX generator recorded for this table. Analyzer generates inference.json/md and diagnostic plots; paper table is frozen manual LaTeX."
+    },
+    {
+      "label": "tab:exp3",
+      "kind": "table",
+      "number": "21",
+      "inputs": [
+        "results/v1.0/main_exp3/inference.json",
+        "results/v1.0/main_exp3/per_seed.csv",
+        "results/v1.0/main_exp3/run_meta.json"
+      ],
+      "producer_command": "python scripts/v1/analyze_scale_v1.py --in results/v1.0/main_exp3 --out /tmp/pass17-exp3-analysis; manual LaTeX + latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "reconstructed command; historical producing argv not recorded",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": ""
+    },
+    {
+      "label": "tab:t4counts",
+      "kind": "table",
+      "number": "22",
+      "inputs": [
+        "results/v1.0/t4_eval/export/labels_train.csv",
+        "results/v1.0/t4_eval/export/labels_test.csv",
+        "results/v1.0/t4_eval/export/t4_manifest.json"
+      ],
+      "producer_command": "Count nonempty fraud_future and per-type labels by split; manual LaTeX + latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "reconstructed command; historical producing argv not recorded",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "Counts use nonempty target labels; feature rows with no target service excluded. Export recipe T4-E in REPRODUCE_v1.md; no original count-table generator recorded."
+    },
+    {
+      "label": "tab:t4pilotcounts",
+      "kind": "table",
+      "number": "23",
+      "inputs": [
+        "results/v1.0/t4_pilot_eval/export/labels_train.csv",
+        "results/v1.0/t4_pilot_eval/export/labels_test.csv",
+        "results/v1.0/t4_pilot_eval/export/t4_manifest.json"
+      ],
+      "producer_command": "Count nonempty fraud_future and per-type labels by split; manual LaTeX + latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "reconstructed command; historical producing argv not recorded",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "Counts use nonempty target labels; feature rows with no target service excluded. Export recipe T4-E in REPRODUCE_v1.md; no original count-table generator recorded."
+    },
+    {
+      "label": "tab:t4pilot",
+      "kind": "table",
+      "number": "24",
+      "inputs": [
+        "results/v1.0/t4_pilot_eval/export/features_train.csv",
+        "results/v1.0/t4_pilot_eval/export/features_test.csv",
+        "results/v1.0/t4_pilot_eval/export/labels_train.csv",
+        "results/v1.0/t4_pilot_eval/export/labels_test.csv",
+        "results/v1.0/t4_pilot_eval/t4_eval.json"
+      ],
+      "producer_command": "python scripts/run_t4_eval.py --export-dir results/v1.0/t4_pilot_eval/export --out /tmp/pass17-t4-pilot --n-boot 2000; manual LaTeX + latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "reconstructed eval command; L2 parsed result fields exact; historical argv not recorded",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": ""
+    },
+    {
+      "label": "tab:t2v01",
+      "kind": "table",
+      "number": "25",
+      "inputs": [
+        "results/v1.0/T2_v01scale_20seed.json",
+        "results/v1.0/raw/T2_v01scale_20seed_episodes.jsonl"
+      ],
+      "producer_command": "Historical scripts/v1/recompute_q_v1.py + scripts/v1/make_report_v1.py (no flags; scratch clone only); manual LaTeX + latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "reconstructed command; historical producing argv not recorded",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "Historical v0.1 scale; two Q modes. Scripts hard-code results output; L3 only, never run on frozen checkout."
+    },
+    {
+      "label": "fig:paretov01",
+      "kind": "figure",
+      "number": "5",
+      "inputs": [
+        "results/v1.0/T2_v01scale_20seed.json"
+      ],
+      "producer_command": "python scripts/figures_nature.py (no flags; hard-coded output, run only in scratch mirror)",
+      "output": "docs/latex-sigkdd-v1.0/figures/fig2_v01scale_pareto_EQ.pdf",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "renderer documented; L2 scratch run succeeds; no binary-PDF tolerance recorded",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": ""
+    },
+    {
+      "label": "fig:t2v01",
+      "kind": "figure",
+      "number": "6",
+      "inputs": [
+        "results/v1.0/T2_v01scale_20seed.json"
+      ],
+      "producer_command": "python scripts/figures_nature.py (no flags; hard-coded output, run only in scratch mirror)",
+      "output": "docs/latex-sigkdd-v1.0/figures/fig3_v01scale_E_Q_vs_pi.pdf",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "renderer documented; L2 scratch run succeeds; no binary-PDF tolerance recorded",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": ""
+    },
+    {
+      "label": "tab:rq",
+      "kind": "table",
+      "number": "26",
+      "inputs": [
+        "docs/PROTOCOL_v1.0.md",
+        "docs/v1.1/PROTOCOL_v1.2.md",
+        "results/v1.1/v1.2_decision_a_eval/decision_a_eval.json",
+        "results/v1.0/main/inference.json",
+        "results/v1.0/t4_pilot_eval/t4_eval.json"
+      ],
+      "producer_command": "Manual LaTeX in main.tex; latexmk -pdf -interaction=nonstopmode main.tex (cwd docs/latex-sigkdd-v1.0)",
+      "output": "docs/latex-sigkdd-v1.0/main.tex",
+      "protocol": "docs/PROTOCOL_v1.0.md",
+      "config": [
+        "configs/v1.0/scale.yaml",
+        "configs/benchmark/production.yaml",
+        "configs/default.yaml"
+      ],
+      "command_provenance": "existing manual table; compile flags recorded in paper README",
+      "tolerance": "not recorded unless explicitly listed in REPRODUCE_v1.md",
+      "notes": "Editorial task status table; no standalone generator."
+    }
+  ]
+}

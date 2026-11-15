@@ -1,0 +1,17 @@
+# Data card — documentation version 1 (2026-11-15)
+
+Purpose: support research on procurement, audits, strategic fraud and sparse correctness feedback using the paper's compliance-constrained reasoning-token market simulator. This card describes the existing artifact; it changes no experiment, target scenario, claim or release status.
+
+The market participants, budgets, stakes, fees, compliance tags and transaction histories are simulated. Source math problems and cached Qwen generations are distinct from synthetic market records. No real marketplace participant logs or transactions are used. The long-task subset's presence does not imply it fed the official main experiments. See [TASKS_AND_CACHE](TASKS_AND_CACHE.md) and its dated machine-readable inventory.
+
+Intended uses mirror the paper's Ethics: procurement, audit and feedback research; same-seed method comparisons; inspection of simulator mechanisms and their limitations. Prohibited uses: real seller sanctions, national-risk rankings, evading real marketplace detection, or presenting scenario controls as legal advice or measured country-level fraud rates. Respect the paper's Feature/Label separation and evaluate only permitted features. Synthetic country tags are experimental controls. Math-only, repeated tasks, two cached models plus mock, simulated latency and synthetic prices limit transfer; classifiers may learn simulator shortcuts.
+
+Coverage and exclusions: [REPRESENTATIVENESS](REPRESENTATIVENESS.md) lists each dimension and its unsupported external inference. Table 10 compares internal price spreads descriptively; it supplies no evidence of real-market transactions. [SCHEMA_v1](SCHEMA_v1.md) separates the legacy five-file export, official CSV boards, Decision A readouts and T4 exports, with keys, units, nulls and label roles. [T4_FEATURES](T4_FEATURES.md) documents the run split and shared task/cache resources. [METRICS_INTERPRETATION](METRICS_INTERPRETATION.md) and [STATISTICS](STATISTICS.md) explain valid interpretation and uncertainty.
+
+Project code/data license: **TBD (傅老师 to choose/confirm)**. Factually, the current top-level `LICENSE` is MIT, and `docs/LICENSE_NOTES.md` records a 2026-11-10 owner note of CC BY 4.0 for derived data. This card makes no final license choice. Preserve upstream terms; see [component matrix](../../../release/v1.0/THIRD_PARTY_LICENSES.md) and [license status](../../../release/v1.0/LICENSE_TBD.md).
+
+Access: **TBD (傅老师): public repository or archival URL**. `release/v1.0/` remains staging and is not a self-contained public package. The [artifact map](ARTIFACT_MAP.md) and repository-path SHA256 manifest identify dependencies without copying data.
+
+Maintenance: **TBD (傅老师): maintainer / public host / DOI / badge pledge**. A public issue/contact channel, support period and rights/privacy complaint or takedown process are not recorded. No IRB approval or completed privacy screening is asserted. The paper identifies public task subsets and research fixtures; it does not document a separate text privacy audit. Before public distribution the owner must resolve access, rights/privacy contacts and the pending component questions; this is a description of pending release work, not an additional experimental claim.
+
+Reproduction: [REPRODUCE_v1](REPRODUCE_v1.md) distinguishes smoke tests, frozen-output verification/rendering and unexecuted full regeneration. [ENVIRONMENT](ENVIRONMENT.md) records the environment validated 2026-11-15, not the historical Decision A environment.

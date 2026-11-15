@@ -457,6 +457,8 @@ Budgets, stakes, corridor fees, and compliance rule identifiers are \textbf{synt
 \section{Schema field cheat-sheet}
 \label{app:schema}
 
+\paragraph{Versioned dictionaries.} \code{docs/v1.1/db/SCHEMA_v1.md} records field types, units, nulls, row units, keys, joins, label roles, and frozen examples separately for the legacy export, official board, Decision A readouts, and T4; \code{DATA_CARD.md} in the same directory records uses and limitations.
+
 \code{docs/DATA_SCHEMA.md} supplies legacy dictionaries/samples; where it disagrees, \S\ref{sec:featlabel} governs T4. There is no single official 40-seller \code{episodes.jsonl}. The official board is \code{results/v1.0/main/per_seed.csv} (3420 rows), whose exact header is:
 \begin{lstlisting}[language={}]
 method, label, policy, pi, seed, E, E_tok, fraud_share, fraud_share_swap, fraud_share_theft, fraud_share_downgrade, Q, Q_swap, Q_theft, Q_downgrade, tail_trade, tail_trade_sellers, tail_sales, n_strategic, Q_present_rounds, delisted_rounds_tail, q_delisted_mean, J, quality, cost, cost_per_task, audit_cost, n_audits, audit_rate_realised, violation_rate, fill_rate, n_served, seller_learner, audit_rule, compliance_filter, roster_seed, config_hash
@@ -471,6 +473,10 @@ This legacy schema still has \code{active_attack_rate} and lacks \code{Q}, \code
 
 \section{Reproducibility and Artifact Paths}
 \label{app:repro}
+
+\paragraph{Dated documentation supplement.} Added 2026-11-15, \code{docs/v1.1/db/ARTIFACT_MAP.md} maps every table and figure to frozen inputs, producing commands or recorded gaps, outputs, and protocol/config versions; \code{release/v1.0/SHA256SUMS} hashes the referenced repository paths without copying data. \code{REPRODUCE_v1.md} separates smoke checks, frozen-output verification/re-rendering, and unexecuted full regeneration; \code{ENVIRONMENT.md} and its lock inventory describe the environment validated on that date, not the historical Decision A environment. The dated selected-suite log \code{pytest_2026-11-15.log} records 256 passed and five cache-preparation cases deselected; \code{L2_REPORT.json} records scratch-output checks. This evidence supplements the historical collect-only statement. Staging remains staging; \code{release/v1.0/README.md} lists completeness gaps, and \code{THIRD_PARTY_LICENSES.md} there indexes component provenance and upstream terms with unresolved project licensing left to the owner.
+
+\paragraph{Statistical conventions.} \code{docs/v1.1/db/STATISTICS.md} consolidates the analysis code's resampling units, RNGs, marginal versus paired-difference intervals, Holm families, undefined-run handling, and T4 run-level intervals. Same-seed contrasts resample paired run differences, whereas marginal intervals summarize individual conditions; these intervals have different meanings. Seed-level uncertainty reflects simulation variability under a fixed roster and reused task pool; T4 separately resamples rosters but shares task/cache resources. \code{TASKS_AND_CACHE.md}, \code{T4_FEATURES.md}, and \code{METRICS_INTERPRETATION.md} document task reuse, feature construction, and denominator conventions.
 
 Paths below refer to this checkout, not public download endpoints. \code{release/v1.0/} is a staging subset (\code{MANIFEST.json}: \code{staging=true}, \code{not_a_release=true}), containing reproduction/license notes, task notices, the two-Qwen cache and manifest, older \code{results/pi_dense/}, and \code{results/benchmark/production/T2_episodes.jsonl}. It lacks a top-level license, requirements, data card, and production exports; use repository \code{LICENSE}, \code{requirements.txt}, and \code{docs/LICENSE_NOTES.md}. Its reproduction notes retain historical supplement paths. It is not self-contained and does not contain all v1.0 or Decision A results. Frozen \code{release/v0.1/} is unchanged.
 
@@ -569,6 +575,8 @@ Layer & Code map \\
 \section{Descriptive public-list price-ratio comparison}
 \label{app:price-ratios}
 
+\paragraph{Inspectable source rows.} The raw SKU/date/input/output rows are in \code{configs/v1.0/frozen/prices.yaml}; \code{ratios.csv}, \code{MAPPING_RULE.md}, and \code{compute_ratios.py} in \code{results/v1.1/v1.2_price_representativeness/} retain the adopted comparison and exclusions. \code{docs/v1.1/db/REPRESENTATIVENESS.md} indexes those inputs and lists coverage, external evidence, and unsupported dimensions; this remains a descriptive comparison only.
+
 Table~\ref{tab:price-ratios} is generated only from Research's adopted {\def\UrlBreaks{\do\/}\def\UrlBigBreaks{}\Urlmuskip=0mu\code{results/v1.1/v1.2_price_representativeness/ratios.csv}} at commit \code{9072b0d}, following that directory's \code{MAPPING_RULE.md}; {\def\UrlBreaks{\do\/}\def\UrlBigBreaks{}\Urlmuskip=0mu\code{scripts/pass16_price_ratio_tables.py}} verifies the CSV and frozen-input hashes before rendering. This is a descriptive comparison of internal price spreads, not protocol \S7 calibration, not evidence that prices are calibrated, and not a claim that the simulator represents a real API market. Simulator \code{price_per_1k} is a single synthetic unit without an input/output split; Qwen 0.5B/1.5B, mock, and strategic sellers are not mapped to named public SKUs. Public rows require both input and output prices: Google has only two filled models, excluding unverified \code{gemini-3.1-flash-lite}; its spread is not a full-catalog estimate. DeepSeek and Alibaba were empty on 2026-11-10.\footnote{The \code{gemini-4-argon} schedule from 2026-12-01 is footnote-only and excluded from primary max/min; the primary set uses the access-date prices.} There are no real marketplace transaction logs, so latency, volume, jurisdictions, and executed trades cannot be compared quantitatively. The snapshot was not applied, simulator prices were not rescaled, and official Decision A / Result 1 tables and numbers are unchanged.
 
 \input{tables/price_ratios.tex}
@@ -595,6 +603,8 @@ Tables~\ref{tab:decision-a-pilot} and~\ref{tab:decision-a-strongest} contain eve
 
 \section{v1.0 48-round baseline Pareto view}
 \label{app:t1-v10}
+
+\paragraph{Gate audit trail.} \code{docs/v1.1/db/Q_GATE_REPORT.json} and its Markdown companion record both frozen Q-gate predicates at every reveal probability, eligible methods, tie handling, front membership, and the protocol rule source; they do not revise the reported verdict.
 
 The following preserves the v1.0 setting and interpretation: 48 rounds, egreedy, identity-only checks on non-cascade paths, identity+length on cascade audit arms. It is distinct from the v1.2 router $\times$ audit experiment.
 
