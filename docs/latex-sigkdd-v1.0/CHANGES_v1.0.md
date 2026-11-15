@@ -390,3 +390,68 @@ tables/decision_a_main.tex
 tables/decision_a_lower_penalties.tex
 tables/wp1_cascade.tex
 ```
+
+
+## Pass 15 — Engineering TBD fills (2026-11-15, Asia/Shanghai)
+
+Starting point: branch `v1.1`, HEAD `2378793`. Sole authority for values/sources: `ENGINEERING_TBD_FILL.md`, read in full before editing and left unchanged. Brief-and-implement only; no commit or push. No experiment, table generation, pytest execution/collection, or clean-environment experiment rerun was performed in this pass. Handoff collection evidence is attributed to that file.
+
+All **17 engineering TBD invocations** were replaced as follows (line numbers are incoming Pass 14 sites, not final positions):
+
+| # | Incoming site / item | Pass 15 fill and absence wording |
+|---:|---|---|
+| 1 | 179 — price sources/date/mapping | Retained “the simulator's existing price ratios, not a public-list calibration”; labelled units synthetic. Appendix B records the unused 2026-11-10 snapshot, exact YAML paths/hash, three filled provider URLs/access date, and unapplied mapping. No calibrated prices claimed. |
+| 2 | 250 — calibrated sample price | Omitted the numeric value; `list_price` is a “schematic synthetic sample.” Sample caption now says synthetic/legacy and distinguishes the official board. No 0.2 calibration. |
+| 3 | 254 — board fields/hash sample | Points to `results/v1.0/main/per_seed.csv` and 16-character per-run prefixes, distinct from the already-cited frozen scale file hash. No single production hash invented. The five-file description also stops attributing Q/delist fields to legacy episodes. |
+| 4 | 268 — T4 submission/interface | “No public submission channel or external scoring service is recorded”; public access awaits the owner URL decision. Existing local `scripts/run_t4_eval.py` and train/test feature/label/manifest directory interface are described, with exact files/paths/options in Appendix B. Removed the unsupported submission-service completion implication. |
+| 5 | 297 — body pytest count | “No official v1.0 full-suite pass log is recorded; historical snapshots exist. The handoff collected 261 tests without executing them.” Owner hosting marker untouched. No current-tree tests-passed claim. |
+| 6 | 302 — coverage price mapping | “Prices are simulated, not public-list calibrated”; removed Coding marker and retained exact owner representativeness marker. |
+| 7 | 429 — Limitations price mapping | “prices remain uncalibrated”; simulation scope retained. |
+| 8 | 446 — Ethics price source/date/calibration | “prices are uncalibrated (the 2026-11-10 public-list snapshot was not applied; Appendix B).” Exact source path, sha256 and provider URLs are in the appendix to keep Ethics compact. All Ethics protections and final sentence retained. |
+| 9 | 460 — episodes field names | Appendix A prints the exact official 3420-row `per_seed.csv` header and exact legacy `EPISODE_FIELDS`. Explicitly states there is no single official 40-seller `episodes.jsonl`; desired names are not one checked-in schema; `a` is encoded in `method`/`audit_rule`, not a CSV column. Legacy `active_attack_rate` remains and Q/delist fields are on the CSV. |
+| 10 | 476 — final command lines | Appendix B includes all four official 40-seller run argv and all three Decision A/run-analysis-render recipes from fill §F. Grid argv is distinguished from the analysis recipe (no stored analysis argv) and frozen table rendering; older recipes stay separate. Removed “full experiment recipes remain pending.” No recipe was executed. Cache-backed timing is not a clean-room measurement; official inference argv is not stored. |
+| 11 | 511 — production config_hash | Renamed row “Per-run config_hash”: “No single production hash.” Values are 16-character SHA-256 prefixes of per-run config JSON, not the frozen scale file hash already in the table. Appendix gives exact serialization semantics and the verified PILOT example, not a universal hash. |
+| 12 | 513 — repro pytest evidence | No official v1.0 full-suite pass log; historical snapshot paths `results/benchmark/pytest_after_draft.txt` and `results/v1.1/wp1_impl_validation/pytest_final.log` only. Handoff collect-only inventory is 261 tests in 13 files, not executed; pinned runner `pytest==9.2.0`. No single frozen official pass count is asserted. |
+| 13 | 598 — T1-secondary 95% CIs | “defined but not reported in this manuscript”; intervals absent from official `results/v1.0/main/inference.json`. Means exist in `summary.md`/`per_seed.csv`, without official intervals here. No CI invented or borrowed from Decision A. |
+| 14 | 737 — T3-delist | “defined but not reported in this manuscript (no official v1.0 40-seller T3-delist table exists in this checkout).” No legacy readout substituted. |
+| 15 | 739 — T3-adaptive | “defined but not reported in this manuscript (no official v1.0 40-seller T3-adaptive table exists in this checkout).” No legacy readout substituted. |
+| 16 | 742 — official post-5b T4 | Future work, defined but not reported: “not implemented; no post-5b export or evaluation exists in this checkout.” No completed second release implied. |
+| 17 | 762 — supplemental post-5b T4 | Same explicit future/not-implemented/no-export-or-evaluation status; current supplemental results unchanged. |
+
+**Decision A environment honesty:** Appendix B explicitly says its `run_meta` records no Python/package versions. Requirements/pyproject are the stated source for `requires-python >=3.13`, `tokenmarket` 0.2.0 and core pins; Python 3.13.5 (CPython, GCC 14.2.0), `/workspace/tmvenv` are attributed to the documented v0.1 environment, never to official Decision A metadata. No undocumented inference command, public T4 service, hash, interval, price or pass record was invented. T4 JSON bootstrap records (D3 2000, per-run recompute 10000, PILOT 2000) are identified as JSON records without argv.
+
+**Remaining invocations: exactly 3 owner TBDs**, byte-identical to incoming payloads (macro definition excluded):
+
+1. `傅老师: public repository or archival URL (this checkout's GitHub remote is not publicly accessible)`
+2. `傅老师: maintainer, public host, optional artifact-badge pledge`
+3. `傅老师: whether additional representativeness evidence will be collected`
+
+**Build and pagination:** `latexmk -pdf -interaction=nonstopmode main.tex` from `docs/latex-sigkdd-v1.0/`, and the same command from a clean unzip in `/tmp/kdd-pass15-clean-t1ug9_tq`: both **22 pages, 0 errors, 0 undefined references/citations, 0 overfull hbox/vbox**. `pdftotext -layout` independently confirms the complete Ethics statement, including final “overstated detection performance.” sentence, on **page 8**, References starting on **page 8**, Appendix A on **page 9**. Appendix expansion accounts for the extra total page. Long Decision A command hashes wrap with local listing continuation indentation disabled; no font-size/margin change was made. Existing nonfatal ACM/font warnings remain.
+
+**Invariants:** author/affiliation/shortauthors block and exact three owner payloads compare equal to starting HEAD. The entire Benchmark Protocol through results sections (including Result 1) compare byte-for-byte; all numerical `tabular` blocks and five `tables/*.tex` inputs are unchanged. Locked default-P EXP3 wording, 8/8 scope, pre-run three-learner rule, raw `p<2\times10^{-4}`, Decision A Holm ≤0.017, and cascade family's own ≤0.009 are preserved. Figures, `results/`, `release/`, both named protocols, `ENGINEERING_TBD_FILL.md`, and `KDD_v1.0_benchmark.pdf` have no changes. Submission cycle/front matter are untouched. No outside project was accessed, no other CLI job was interrupted, and pre-existing untracked results/build bookkeeping remain unadded (build bookkeeping restored to incoming contents after compilation).
+
+**Documentation:** README updated to Pass 15, 22 pages and “3 owner TBDs remain,” with engineering absence statuses and recipe/environment provenance. Check file adds the short Pass 15 update and exact current three-marker list; all original issue text and Pass 14 disposition rows are preserved, with the old inventory labelled historical. Earlier CHANGES entries are unchanged.
+
+**Overleaf zip:** rebuilt `docs/kdd_overleaf_v1.0.zip` with exactly the same **19 compile members as Pass 14**, verified byte-identical to repository sources after source and clean builds. No CHECK/REQUIREMENTS/CHANGES/BRIEF/ENGINEERING Markdown, PDF build output, bookkeeping, or results paths were added. Exact membership:
+
+```text
+figures/fig1_five_layers.png
+figures/fig2_40seller_pareto_EQ.pdf
+figures/fig2_40seller_pareto_EQ.png
+figures/fig2_v01scale_pareto_EQ.pdf
+figures/fig2_v01scale_pareto_EQ.png
+figures/fig3_40seller_E_Q_vs_pi.pdf
+figures/fig3_40seller_E_Q_vs_pi.png
+figures/fig3_v01scale_E_Q_vs_pi.pdf
+figures/fig3_v01scale_E_Q_vs_pi.png
+figures/figC_40seller_Etok_vs_pi.pdf
+figures/figC_40seller_Etok_vs_pi.png
+main.bbl
+main.tex
+refs.bib
+tables/decision_a_deltas.tex
+tables/decision_a_facts.tex
+tables/decision_a_main.tex
+tables/decision_a_lower_penalties.tex
+tables/wp1_cascade.tex
+```

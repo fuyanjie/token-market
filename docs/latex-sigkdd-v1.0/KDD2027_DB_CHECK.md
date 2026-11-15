@@ -7,6 +7,20 @@
 - **Checklist authority:** [KDD2027_DB_REQUIREMENTS.md](KDD2027_DB_REQUIREMENTS.md), read in full. Clause names below refer to that file. Official sources checked: [2027 D&B CFP](https://kdd2027.kdd.org/datasets-and-benchmarks-track-call-for-papers/), [conference home](https://kdd2027.kdd.org/), and [FAQs](https://kdd2027.kdd.org/frequently-asked-questions/). No KDD 2026 requirements are substituted.
 - **Original Round A scope (historical):** review only. Proposed changes below are for a subsequent authorized round; no paper, table, figure, result, release, frozen protocol, or zip was changed. Public hosting and submission-form facts cannot be certified from this checkout.
 
+## Pass 15 engineering fill update (2026-11-15, Asia/Shanghai)
+
+Starting HEAD `2378793`, branch `v1.1`. Sole authority: [ENGINEERING_TBD_FILL.md](ENGINEERING_TBD_FILL.md), read in full. All **17 engineering TBDs** are resolved with verified values or explicit absence/current-status wording; **3 owner TBDs remain**. Prices are uncalibrated (snapshot not applied); the official board is `per_seed.csv` with per-run prefixes; T4 has a local evaluator/export interface but no recorded public service. No official full-suite pass, secondary CIs, official 40-seller T3 tables, post-5b implementation/results, or Decision A environment record is claimed. Recipes and source-qualified environment details are in Appendix B. No experiment, test suite, or table generator was executed; no commit/push was made.
+
+Source and clean-zip builds: **22 pages, 0 errors, 0 undefined references/citations, 0 overfull boxes**. Ethics, including its final sentence, ends on **page 8**; References begin on **page 8**. The zip has exactly the same **19 compile members as Pass 14**, byte-identical to repository sources. Original issue text, original-placeholder inventory, and Pass 14 disposition table below are preserved as historical records; their engineering-pending counts are superseded by this update. Owner access/representativeness/hosting decisions remain open; this is not a compliance sign-off.
+
+### Current Pass 15 placeholders (3 owner TBDs remain)
+
+| Current source line | Exact placeholder payload |
+|---:|---|
+| 221 | `傅老师: public repository or archival URL (this checkout's GitHub remote is not publicly accessible)` |
+| 297 | `傅老师: maintainer, public host, optional artifact-badge pledge` |
+| 302 | `傅老师: whether additional representativeness evidence will be collected` |
+
 ## Pass 14 implementation update (2026-11-15, Asia/Shanghai)
 
 Text-only P0/P1 fixes are implemented; this is still **not a compliance sign-off**. C1/C2 remain partial, C3 is an owner process decision, and a complete public pack, hosting/maintenance, operational details, and unreported results remain pending. The unauthenticated 404 was independently verified in this checkout on 2026-11-15 as supplied to Round B; the GitHub remote is not printed as a reviewer download URL. A repeat shell request in this sandbox returned no HTTP response, so it does not establish any change in accessibility. No experiments or table generators were run. Results, release directories, frozen protocols, table numbers, and Result 1 are unchanged.
@@ -175,7 +189,7 @@ Original line/page numbers and payloads below refer to Pass 13b and are retained
 
 Original Pass 13b page totals: p.2 = 2, p.4 = 5, p.5 = 2, p.7 = 1, p.8 = 1, p.9 = 2, p.10 = 4, p.15 = 1, p.16 = 4. The macro definition at line 60 is not an invocation. Literal venue TBDs and commented venue/author/CCS TODOs are not counted as red content placeholders.
 
-## Current Pass 14 placeholders (20 invocations)
+## Historical Pass 14 placeholders (20 invocations; superseded by Pass 15)
 
 Five original placeholders were filled from evidence (baseline gap, two third-model placeholders, grid config path, leakage script); 17 original entries remain or are narrowed/renamed. Three new owner placeholders concern public URL, representativeness evidence, and maintainer/hosting/optional badge pledge. All remain visibly red; the macro only adds CJK support for 傅老师. Repeated price/test/post-5b entries count separately. The generated list below gives current source lines.
 

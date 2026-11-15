@@ -1,11 +1,11 @@
 # Cross-Border KDD 2027 D&B manuscript
 
-Current text: **Pass 14**, 2026-11-15 (Asia/Shanghai), based on Pass 13b (`2616240`) on `v1.1`. This manuscript has evolved beyond the original v0.1 format conversion. See [CHANGES_v1.0.md](CHANGES_v1.0.md), [compliance check](KDD2027_DB_CHECK.md), and [official requirements](KDD2027_DB_REQUIREMENTS.md).
+Current text: **Pass 15**, 2026-11-15 (Asia/Shanghai), starting HEAD `2378793` on `v1.1`. The 17 engineering TBDs are resolved solely from [ENGINEERING_TBD_FILL.md](ENGINEERING_TBD_FILL.md); **3 owner TBDs remain**. This manuscript has evolved beyond the original v0.1 format conversion. See [CHANGES_v1.0.md](CHANGES_v1.0.md), [compliance check](KDD2027_DB_CHECK.md), and [official requirements](KDD2027_DB_REQUIREMENTS.md).
 
 ## Current status and files
 
 - `main.tex`: ACM `sigconf,review`, single-blind; Yanjie Fu, both affiliations, and short author line unchanged.
-- `main.pdf`: **21 pages**; the body and complete Ethics statement end on **page 8**, References start on **page 8**, Appendix A starts on **page 9**. Verified after Pass 14 source and clean-zip builds: **0 errors, 0 undefined references/citations, 0 overfull boxes**.
+- `main.pdf`: **22 pages**; the body and complete Ethics statement end on **page 8**, References start on **page 8**, Appendix A starts on **page 9**. Verified after Pass 15 source and clean-zip builds: **0 errors, 0 undefined references/citations, 0 overfull boxes**.
 - §4 now contains artifact availability, intended licenses, actual checkout paths, dependency/runner/rendering entry points, and generation/coverage limits. Appendix B gives detailed, version-labelled paths and recipes. The v1.0 staging subset is not a complete public release; no public artifact URL is available. C1/C2 remain partial and C3 requires 傅老师's cycle/status decision.
 - The manuscript's T4 feature contract governs; `docs/DATA_SCHEMA.md` contains legacy descriptions where they disagree. Two cached Qwen checkpoints and `sim-fast-mock` are distinguished. T3, secondary cost/accuracy intervals, and post-5b T4 are defined but not reported.
 - `refs.bib` / `main.bbl`: bibliography; `tables/`: five frozen-result LaTeX inputs. Table numbers/values and locked Decision A wording/statistical conventions are unchanged.
@@ -19,15 +19,17 @@ From this directory:
 latexmk -pdf -interaction=nonstopmode main.tex
 ```
 
-Requires TeX Live with `acmart` (v2.21 in this checkout), CJK/CJKutf8 (`bsmi` for the existing affiliation and `gbsn` for owner TBDs), `xurl`, `makecell`, `tabularx`, `listings`, and `newunicodechar`. Experiments and table generators were not run in Pass 14. Existing font-substitution / ACM metadata warnings are not undefined references or citations.
+Requires TeX Live with `acmart` (v2.21 in this checkout), CJK/CJKutf8 (`bsmi` for the existing affiliation and `gbsn` for owner TBDs), `xurl`, `makecell`, `tabularx`, `listings`, and `newunicodechar`. Experiments, table generators, and pytest were not run in Pass 15. The handoff reports 261 collected tests, not an executed suite; no official v1.0 full-suite pass log is recorded. Existing font-substitution / ACM metadata warnings are not undefined references or citations.
 
 ## Overleaf bundle
 
-Upload `docs/kdd_overleaf_v1.0.zip`, choose pdfLaTeX, and set `main.tex` as the main document. It contains the same **19 compile members as Pass 13b**: `main.tex`, `main.bbl`, `refs.bib`, five `tables/*.tex` inputs, and eleven figure files. Every member is byte-identical to the repository source. CHECK, REQUIREMENTS, CHANGES, BRIEF, and other Markdown files are excluded. A clean unzip was compiled with the command above.
+Upload `docs/kdd_overleaf_v1.0.zip`, choose pdfLaTeX, and set `main.tex` as the main document. It contains the same **19 compile members as Pass 14**: `main.tex`, `main.bbl`, `refs.bib`, five `tables/*.tex` inputs, and eleven figure files. Every member is byte-identical to the repository source. CHECK, REQUIREMENTS, CHANGES, BRIEF, and other Markdown files are excluded. A clean unzip was compiled with the command above.
 
 ## Pending decisions
 
-The check file inventories all 22 original TBDs and the 20 remaining/current invocations, including the three added owner decisions (public URL, additional representativeness evidence, maintainer/hosting/optional badge). Exact run recipes, final board fields/config hashes, submission interface, test logs/counts, and price calibration remain explicitly pending where unverified.
+The check file preserves the original 22-placeholder inventory and Pass 14 dispositions. **3 owner TBDs remain**: public repository/archive URL; maintainer/public host/optional artifact-badge pledge; whether to collect additional representativeness evidence.
+
+Appendix B now gives the official 40-seller and Decision A recipes, per-run hash semantics, local T4 interface, and documented environment provenance. Prices remain synthetic and uncalibrated; the 2026-11-10 public-list snapshot was not applied. No single production config hash, public T4 service, official full-suite pass log, official T1-secondary intervals, official 40-seller T3 tables, or implemented post-5b T4 result is claimed. Decision A metadata records no Python/package versions.
 
 Venue date/location now follow the [official KDD 2027 home](https://kdd2027.kdd.org/): August 1–5, 2027, San Jose, California. DOI/ISBN remain empty, copyright remains `none`, and CCS remains commented out; no author details or funding were added. Submission/cycle eligibility is an owner decision recorded outside the PDF; no target cycle was silently changed.
 
@@ -35,7 +37,7 @@ Submission keeps the full appendix. Later camera-ready preparation must fit **12
 
 ## Historical v0.1 conversion notes (superseded)
 
-The notes below preserve the old conversion history, labels, line numbers, and pending-marker plans. They do not describe the current metric contract, results, page count, artifact status, or outstanding work; use the current manuscript and Pass 14 checklist above.
+The notes below preserve the old conversion history, labels, line numbers, and pending-marker plans. They do not describe the current metric contract, results, page count, artifact status, or outstanding work; use the current manuscript and Pass 15 checklist above.
 
 ## §6.1 table change (team decision)
 - The column order is now `active_attack_rate`, `fraud_share`, learned q (side), and J (secondary) last.

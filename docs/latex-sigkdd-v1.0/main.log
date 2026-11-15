@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.11.10)  15 NOV 2026 12:31
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.11.10)  15 NOV 2026 12:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1141,16 +1141,11 @@ File: figures/fig1_five_layers.png Graphic file (type png)
 <use figures/fig1_five_layers.png>
 Package pdftex.def Info: figures/fig1_five_layers.png  used on input line 168.
 (pdftex.def)             Requested size: 241.14749pt x 130.83168pt.
-(/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
-File: UTF8.enc 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
-File: UTF8.chr 2021/10/16 4.8.5
-)
 LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 9.0pt on input line 180.
+(Font)              scaled to size 9.0pt on input line 181.
 LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 7.0pt on input line 180.
- [2.2]
+(Font)              scaled to size 7.0pt on input line 181.
+[2.2]
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
 (Font)              scaled to size 6.6pt on input line 210.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
@@ -1165,27 +1160,7 @@ LaTeX Font Info:    Trying to load font information for C70+gbsn on input line 2
 File: c70gbsn.fd 2021/10/16 4.8.5
 ) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/c70gbsn.fdx
 File: c70gbsn.fdx 2021/10/16 4.8.5
-) [3.3 <./figures/fig1_five_layers.png>] (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
-File: UTF8.enc 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
-File: UTF8.chr 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
-File: UTF8.enc 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
-File: UTF8.chr 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
-File: UTF8.enc 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
-File: UTF8.chr 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
-File: UTF8.enc 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
-File: UTF8.chr 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
-File: UTF8.enc 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
-File: UTF8.chr 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
+) [3.3 <./figures/fig1_five_layers.png>] (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
 File: UTF8.enc 2021/10/16 4.8.5
 ) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
 File: UTF8.chr 2021/10/16 4.8.5
@@ -1252,7 +1227,7 @@ Underfull \hbox (badness 1442) in paragraph at lines 349--350
 \T1/LinuxLibertineT-TLF/m/n/9 (+20) Holm cor-rec-tion. Per router, 8/8 means four counted lev-els
  []
 
-<figures/fig3_40seller_E_Q_vs_pi.pdf, id=311, 520.68546pt x 142.26378pt>
+<figures/fig3_40seller_E_Q_vs_pi.pdf, id=317, 520.68546pt x 142.26378pt>
 File: figures/fig3_40seller_E_Q_vs_pi.pdf Graphic file (type pdf)
 <use figures/fig3_40seller_E_Q_vs_pi.pdf>
 Package pdftex.def Info: figures/fig3_40seller_E_Q_vs_pi.pdf  used on input line 382.
@@ -1273,106 +1248,88 @@ LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
 (Font)              scaled to size 6.5pt on input line 406.
 LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
 (Font)              scaled to size 6.5pt on input line 406.
-(/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
-File: UTF8.enc 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
-File: UTF8.chr 2021/10/16 4.8.5
-)
+
 Underfull \hbox (badness 1107) in paragraph at lines 429--430
 []\T1/LinuxLibertineT-TLF/b/n/9 (+20) Synthetic ju-ris-dic-tions and mech-a-nism + cached
  []
 
-[6.6]
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [6.6]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [7.7] (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
-File: UTF8.enc 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
-File: UTF8.chr 2021/10/16 4.8.5
-) (./main.bbl
+ [7.7] (./main.bbl
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/it' will be
 (Font)              scaled to size 7.0pt on input line 61.
-
-Underfull \vbox (badness 2469) has occurred while \output is active []
-
  [8.8 <./figures/fig3_40seller_E_Q_vs_pi.pdf>]
 LaTeX Info: Redefining \tempurl on input line 136.
 LaTeX Info: Redefining \tempurl on input line 147.
 LaTeX Info: Redefining \tempurl on input line 171.
 LaTeX Info: Redefining \tempurl on input line 185.
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
-File: UTF8.enc 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
-File: UTF8.chr 2021/10/16 4.8.5
 )
-LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
-(Font)              scaled to size 7.0pt on input line 468.
+Underfull \hbox (badness 1584) in paragraph at lines 460--461
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) where it dis-agrees, Ÿ[]4.2[] gov-erns T4. There is no sin-gle of-
+ []
 
+
+Underfull \hbox (badness 4518) in paragraph at lines 460--461
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) fi-cial 40-seller $\T1/zi4/m/n/9 e p i s o d e s . j s o nl$\T1/LinuxLibertineT-TLF/m/n/9 (+20) . The of-fi-cial board is
+ []
+
+LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
+(Font)              scaled to size 7.0pt on input line 461.
 
 LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
-(Font)              using `T1/zi4/m/n' instead on input line 468.
+(Font)              using `T1/zi4/m/n' instead on input line 478.
 
 LaTeX Font Info:    Font shape `T1/zi4/m/it' will be
-(Font)              scaled to size 7.0pt on input line 468.
-(/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
-File: UTF8.enc 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
-File: UTF8.chr 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
-File: UTF8.enc 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
-File: UTF8.chr 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
-File: UTF8.enc 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
-File: UTF8.chr 2021/10/16 4.8.5
-)
+(Font)              scaled to size 7.0pt on input line 478.
+LaTeX Font Info:    Font shape `T1/zi4/b/n' will be
+(Font)              scaled to size 7.0pt on input line 492.
+[9.9]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-(./tables/decision_a_deltas.tex) [9.9] [10.10
+(./tables/decision_a_deltas.tex) [10.10] [11.11
 
-] [11.11] (./tables/wp1_cascade.tex) (./tables/decision_a_lower_penalties.tex
+] [12.12] (./tables/wp1_cascade.tex) (./tables/decision_a_lower_penalties.tex
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/b/n' will be
 (Font)              scaled to size 6.6pt on input line 4.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/b/n' will be
 (Font)              scaled to size 5.5pt on input line 4.
-) [12.12
+) [13.13
 
 
-] [13.13]
-<figures/fig2_40seller_pareto_EQ.pdf, id=455, 253.22952pt x 119.50157pt>
+] [14.14]
+<figures/fig2_40seller_pareto_EQ.pdf, id=492, 253.22952pt x 119.50157pt>
 File: figures/fig2_40seller_pareto_EQ.pdf Graphic file (type pdf)
 <use figures/fig2_40seller_pareto_EQ.pdf>
-Package pdftex.def Info: figures/fig2_40seller_pareto_EQ.pdf  used on input line 584.
+Package pdftex.def Info: figures/fig2_40seller_pareto_EQ.pdf  used on input line 618.
 (pdftex.def)             Requested size: 241.14749pt x 113.803pt.
- [14.14 <./figures/fig2_40seller_pareto_EQ.pdf>] (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
-File: UTF8.enc 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
-File: UTF8.chr 2021/10/16 4.8.5
-)
-<figures/figC_40seller_Etok_vs_pi.pdf, id=483, 253.22952pt x 156.49016pt>
+ [15.15 <./figures/fig2_40seller_pareto_EQ.pdf>]
+<figures/figC_40seller_Etok_vs_pi.pdf, id=520, 253.22952pt x 156.49016pt>
 File: figures/figC_40seller_Etok_vs_pi.pdf Graphic file (type pdf)
 <use figures/figC_40seller_Etok_vs_pi.pdf>
-Package pdftex.def Info: figures/figC_40seller_Etok_vs_pi.pdf  used on input line 623.
+Package pdftex.def Info: figures/figC_40seller_Etok_vs_pi.pdf  used on input line 657.
 (pdftex.def)             Requested size: 241.14749pt x 149.02774pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 5475) in paragraph at lines 630--631
+Underfull \hbox (badness 5475) in paragraph at lines 664--665
  []$\OML/nxlmi/m/it/9 ^^Y[]$ \T1/LinuxLibertineT-TLF/m/it/9 (+20) crossover (T2, 40 sell-ers).[] $\U/ntxmia/m/it/9 ^^A\OML/nxlmi/m/it/9 J \U/ntxmia/m/it/9 = \OML/nxlmi/m/it/9 J\LMS/ntxsy/m/n/9 ¹[]º ^^@
  []
 
 
-Underfull \hbox (badness 3098) in paragraph at lines 630--631
+Underfull \hbox (badness 3098) in paragraph at lines 664--665
 []\LMS/ntxsy/m/n/9 ¹\OML/nxlmi/m/it/9 J[]; J[]\LMS/ntxsy/m/n/9 º$ \T1/LinuxLibertineT-TLF/m/n/9 (+20) with the best ban-dit taken per seed,
  []
 
@@ -1380,7 +1337,7 @@ Underfull \hbox (badness 3098) in paragraph at lines 630--631
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 2142) in paragraph at lines 664--665
+Underfull \hbox (badness 2142) in paragraph at lines 698--699
 \T1/LinuxLibertineT-TLF/m/it/9 (+20) First batch (v0.1 scale). \T1/LinuxLibertineT-TLF/m/n/9 (+20) Un-der the same pre-registered rule,
  []
 
@@ -1390,53 +1347,35 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[15.15 <./figures/figC_40seller_Etok_vs_pi.pdf>]
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-(/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
-File: UTF8.enc 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
-File: UTF8.chr 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
-File: UTF8.enc 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
-File: UTF8.chr 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
-File: UTF8.enc 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
-File: UTF8.chr 2021/10/16 4.8.5
-)
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-(/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.enc
-File: UTF8.enc 2021/10/16 4.8.5
-) (/home/box/.TinyTeX/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
-File: UTF8.chr 2021/10/16 4.8.5
-)
+[16.16 <./figures/figC_40seller_Etok_vs_pi.pdf>]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[16.16] [17.17] [18.18]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<figures/fig2_v01scale_pareto_EQ.pdf, id=540, 253.22952pt x 130.88269pt>
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[17.17] [18.18] [19.19]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<figures/fig2_v01scale_pareto_EQ.pdf, id=579, 253.22952pt x 130.88269pt>
 File: figures/fig2_v01scale_pareto_EQ.pdf Graphic file (type pdf)
 <use figures/fig2_v01scale_pareto_EQ.pdf>
-Package pdftex.def Info: figures/fig2_v01scale_pareto_EQ.pdf  used on input line 825.
+Package pdftex.def Info: figures/fig2_v01scale_pareto_EQ.pdf  used on input line 859.
 (pdftex.def)             Requested size: 253.14749pt x 130.8444pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<figures/fig3_v01scale_E_Q_vs_pi.pdf, id=541, 520.68546pt x 156.49016pt>
+<figures/fig3_v01scale_E_Q_vs_pi.pdf, id=580, 520.68546pt x 156.49016pt>
 File: figures/fig3_v01scale_E_Q_vs_pi.pdf Graphic file (type pdf)
 <use figures/fig3_v01scale_E_Q_vs_pi.pdf>
-Package pdftex.def Info: figures/fig3_v01scale_E_Q_vs_pi.pdf  used on input line 833.
+Package pdftex.def Info: figures/fig3_v01scale_E_Q_vs_pi.pdf  used on input line 867.
 (pdftex.def)             Requested size: 506.295pt x 152.17253pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -1461,13 +1400,13 @@ Class acmart Warning: CCS concepts are mandatory for papers over two pages.
 Package balance Warning: You have called \balance in second column
 (balance)                Columns might not be balanced.
 
-[19.19
+[20.20
 
-] [20.20 <./figures/fig2_v01scale_pareto_EQ.pdf> <./figures/fig3_v01scale_E_Q_vs_pi.pdf>] (/home/box/.TinyTeX/texmf-dist/tex/generic/stringenc/se-pdfdoc.def
+] [21.21 <./figures/fig2_v01scale_pareto_EQ.pdf> <./figures/fig3_v01scale_E_Q_vs_pi.pdf>] (/home/box/.TinyTeX/texmf-dist/tex/generic/stringenc/se-pdfdoc.def
 File: se-pdfdoc.def 2019/11/29 v1.12 stringenc: PDFDocEncoding
 ) (/home/box/.TinyTeX/texmf-dist/tex/generic/stringenc/se-utf8.def
 File: se-utf8.def 2019/11/29 v1.12 stringenc: UTF-8
-) [21.21] (./main.aux)
+) [22.22] (./main.aux)
  ***********
 LaTeX2e <2026-11-01>
 L3 programming layer <2026-09-09>
@@ -1480,18 +1419,18 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: AA250F7F16CCF0AF865A1A83B79D1D7E;5576.
  ) 
 Here is how much of TeX's memory you used:
- 25772 strings out of 468915
- 418245 string characters out of 5453417
- 1183018 words of memory out of 5000000
- 53321 multiletter control sequences out of 15000+600000
- 866390 words of font info for 641 fonts, out of 8000000 for 9000
+ 25782 strings out of 468915
+ 413291 string characters out of 5453417
+ 1324018 words of memory out of 5000000
+ 53403 multiletter control sequences out of 15000+600000
+ 867496 words of font info for 646 fonts, out of 8000000 for 9000
  197 hyphenation exceptions out of 8191
- 89i,16n,131p,2070b,1261s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,16n,131p,2070b,1257s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </home/box/.TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4b.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathMI.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathMI5.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathMI7.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathRM.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinBiolinumT.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinBiolinumTB.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineT.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineTB.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineTI.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/NewTXMI.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/NewTXMI7.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu59.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu5b.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu6a.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu6f.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu74.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu78.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu7a.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu7b.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu95.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu96.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu9a.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/gbsnu/gbsnu50.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/gbsnu/gbsnu5e.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/gbsnu/gbsnu80.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/txmiaX.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/txsys.pfb>
-Output written on main.pdf (21 pages, 856466 bytes).
+Output written on main.pdf (22 pages, 865279 bytes).
 PDF statistics:
- 762 PDF objects out of 1000 (max. 8388607)
- 609 compressed objects within 7 object streams
- 186 named destinations out of 1000 (max. 500000)
- 110939 words of extra memory for PDF output out of 128383 (max. 10000000)
+ 803 PDF objects out of 1000 (max. 8388607)
+ 645 compressed objects within 7 object streams
+ 206 named destinations out of 1000 (max. 500000)
+ 111451 words of extra memory for PDF output out of 128383 (max. 10000000)
 
