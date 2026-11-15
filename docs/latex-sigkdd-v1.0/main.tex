@@ -165,7 +165,7 @@ Layer & Role \\
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\linewidth]{figures/fig1_five_layers.png}
+  \includegraphics[width=0.9\linewidth]{figures/fig1_five_layers.png}
   \caption{Five platform layers (admission $\rightarrow$ routing/portfolio procurement $\rightarrow$ escrow $\rightarrow$ oversight $\rightarrow$ feedback/trails). Posted-price market; not a CLOB.}
   \Description{Block diagram of the five platform layers of the reasoning-token market: admission and compliance, routing and portfolio procurement, escrow settlement, oversight, and feedback and trails.}
   \label{fig:layers}
@@ -379,10 +379,12 @@ $\pi$ & $\Emet$ PILOT & $\Emet$ StageRoute & $\Emet$ D3-ref & $\Qmet$ PILOT & $\
 
 \begin{figure*}[t]
   \centering
-  \includegraphics[width=\textwidth]{figures/fig3_40seller_E_Q_vs_pi.pdf}
+  \includegraphics[width=0.9\textwidth]{figures/fig3_40seller_E_Q_vs_pi.pdf}
+  \vspace{-6pt}
   \caption{Buyer exposure $\Emet$ (a) and seller intent $\Qmet$ (b) vs.\ reveal probability $\pi$ at 40 sellers. Lines are means over $n=20$ seeds; bands are 95\% paired-bootstrap CIs (10,000 resamples). The five audit arms share one colour and differ by line style. $\pi$ axis: symlog, linear below 0.08. $\Qmet$ markers: solid 17--20/20 tail-trade runs; half-filled 12--13/20 (audits, just identifiable); hollow 0/20 (cheapest). Audit and fixed-router curves are flat in $\pi$ by construction and are not reported as a finding.}
   \Description{Two line charts against reveal probability pi at 40 sellers. Left: E for PILOT and StageRoute rises as pi falls and the two are close at pi = 0; cheapest stays at 0; strongest is flat near 0.45; audit arms are flat near 0. Right: Q for PILOT stays high and dips only at the lowest pi; StageRoute Q, drawn solid, rises as pi falls; cheapest Q is hollow throughout; audit arms are flat and drawn half-filled (just identifiable, 12-13 of 20 runs).}
   \label{fig:t2}
+  \vspace{-6pt}
 \end{figure*}
 
 \paragraph{Reading.} At 40 sellers, $\Emet$ of both bandit routers is significantly worse at every $\pi<1$ than at $\pi=1$ (paired, Holm over $\pi$). StageRoute's $\Qmet$ is identifiable (tail-trade runs 85--100\%) and is significantly higher at every lower $\pi$ than at $\pi=1$. PILOT always has 20/20 tail-trade runs; its $\Emet$ is significantly worse at every lower $\pi$, while for $\pi\ge 0.04$ its $\Qmet$ is 0.88--0.94 with no significant rise vs.\ $\pi=1$, and is significantly lower only at $\pi=0$ (0.791) and $\pi=0.02$ (0.825); we do not interpret this as deterrence. At $\pi=0$, PILOT and StageRoute $\Emet$ are already close and not significantly different: $+0.006$ [$-0.007$, $+0.019$], $p_{\mathrm{Holm}}=1.0$. Cheapest remains at $\Emet=0$ with $\Qmet$ not identifiable. The v1.0 48-round audit arms are as in Appendix~\ref{app:t1-v10} (low $\Emet$ by rare trade with strategic sellers, not deterrence); their flatness in $\pi$ is by construction. The $J$ crossover is an appendix result; under the pre-registered rule the interval $(0.10,0.12)$ is not kept.
@@ -447,6 +449,7 @@ Budgets, stakes, corridor fees, and compliance rule identifiers are \textbf{synt
 
 %% =====================================================================
 \FloatBarrier
+\clearpage
 \nocite{bester2001strategic,cumming2019capital}
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{refs}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.11.10)  15 NOV 2026 20:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.11.10)  15 NOV 2026 20:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1140,7 +1140,7 @@ LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
 File: figures/fig1_five_layers.png Graphic file (type png)
 <use figures/fig1_five_layers.png>
 Package pdftex.def Info: figures/fig1_five_layers.png  used on input line 168.
-(pdftex.def)             Requested size: 241.14749pt x 130.83168pt.
+(pdftex.def)             Requested size: 217.03127pt x 117.7502pt.
 LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/m/n' will be
 (Font)              scaled to size 9.0pt on input line 181.
 LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/m/n' will be
@@ -1223,45 +1223,42 @@ Underfull \hbox (badness 1442) in paragraph at lines 349--350
 \T1/LinuxLibertineT-TLF/m/n/9 (+20) Holm cor-rec-tion. Per router, 8/8 means four counted lev-els
  []
 
-<figures/fig3_40seller_E_Q_vs_pi.pdf, id=321, 520.68546pt x 142.26378pt>
+<figures/fig3_40seller_E_Q_vs_pi.pdf, id=322, 520.68546pt x 142.26378pt>
 File: figures/fig3_40seller_E_Q_vs_pi.pdf Graphic file (type pdf)
 <use figures/fig3_40seller_E_Q_vs_pi.pdf>
 Package pdftex.def Info: figures/fig3_40seller_E_Q_vs_pi.pdf  used on input line 382.
-(pdftex.def)             Requested size: 506.295pt x 138.33867pt.
-
-Underfull \vbox (badness 5475) has occurred while \output is active []
-
+(pdftex.def)             Requested size: 455.6624pt x 124.50436pt.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 6.5pt on input line 406.
+(Font)              scaled to size 6.5pt on input line 408.
 LaTeX Font Info:    Font shape `OML/nxlmi/m/it' will be
-(Font)              scaled to size 6.5pt on input line 406.
+(Font)              scaled to size 6.5pt on input line 408.
 LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
-(Font)              scaled to size 6.5pt on input line 406.
+(Font)              scaled to size 6.5pt on input line 408.
 LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
-(Font)              scaled to size 6.5pt on input line 406.
+(Font)              scaled to size 6.5pt on input line 408.
 LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
-(Font)              scaled to size 6.5pt on input line 406.
+(Font)              scaled to size 6.5pt on input line 408.
 LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
-(Font)              scaled to size 6.5pt on input line 406.
+(Font)              scaled to size 6.5pt on input line 408.
 LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
-(Font)              scaled to size 6.5pt on input line 406.
+(Font)              scaled to size 6.5pt on input line 408.
 LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
-(Font)              scaled to size 6.5pt on input line 406.
+(Font)              scaled to size 6.5pt on input line 408.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [6.6]
-Underfull \hbox (badness 1107) in paragraph at lines 429--430
+Underfull \hbox (badness 1107) in paragraph at lines 431--432
 []\T1/LinuxLibertineT-TLF/b/n/9 (+20) Synthetic ju-ris-dic-tions and mech-a-nism + cached
  []
 
 
-Underfull \hbox (badness 2020) in paragraph at lines 429--430
+Underfull \hbox (badness 2020) in paragraph at lines 431--432
 \T1/LinuxLibertineT-TLF/m/n/9 (+20) le-gal ad-vice and not real KYC/data-transfer regimes.
  []
 
 
-Underfull \hbox (badness 1097) in paragraph at lines 429--430
+Underfull \hbox (badness 1097) in paragraph at lines 431--432
 \T1/LinuxLibertineT-TLF/m/n/9 (+20) Cor-rect-ness uses two cached Qwen check-points plus
  []
 
@@ -1271,10 +1268,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [7.7]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [8.8 <./figures/fig3_40seller_E_Q_vs_pi.pdf>] (./main.bbl
+ [7.7] [8.8 <./figures/fig3_40seller_E_Q_vs_pi.pdf>] (./main.bbl
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/it' will be
 (Font)              scaled to size 7.0pt on input line 61.
 LaTeX Info: Redefining \tempurl on input line 136.
@@ -1283,34 +1277,38 @@ LaTeX Info: Redefining \tempurl on input line 171.
 LaTeX Info: Redefining \tempurl on input line 185.
 )
 LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
-(Font)              scaled to size 7.0pt on input line 463.
- [9.9]
+(Font)              scaled to size 7.0pt on input line 466.
+
 
 LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
-(Font)              using `T1/zi4/m/n' instead on input line 484.
+(Font)              using `T1/zi4/m/n' instead on input line 487.
 
 LaTeX Font Info:    Font shape `T1/zi4/m/it' will be
-(Font)              scaled to size 7.0pt on input line 484.
+(Font)              scaled to size 7.0pt on input line 487.
+[9.9
+
+]
 LaTeX Font Info:    Font shape `T1/zi4/b/n' will be
-(Font)              scaled to size 7.0pt on input line 498.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
+(Font)              scaled to size 7.0pt on input line 501.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 580--581
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 583--584
 []\T1/LinuxLibertineT-TLF/m/n/9 (+20) Table []10[] is gen-er-ated only from Re-search's adopted
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 580--581
+Underfull \hbox (badness 10000) in paragraph at lines 583--584
 \T1/zi4/m/n/9 scripts / pass16[]price[]ratio[]tables\OML/nxlmi/m/it/9 :\T1/zi4/m/n/9 py$ \T1/LinuxLibertineT-TLF/m/n/9 (+20) ver-i-fies the CSV
  []
 
 
-Underfull \hbox (badness 1571) in paragraph at lines 580--581
+Underfull \hbox (badness 1571) in paragraph at lines 583--584
 \T1/LinuxLibertineT-TLF/m/n/9 (+20) were empty on 2026-11-10.[][][] There are no real mar-ket-place
  []
 
@@ -1333,25 +1331,25 @@ LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/b/n' will be
 <figures/fig2_40seller_pareto_EQ.pdf, id=512, 253.22952pt x 119.50157pt>
 File: figures/fig2_40seller_pareto_EQ.pdf Graphic file (type pdf)
 <use figures/fig2_40seller_pareto_EQ.pdf>
-Package pdftex.def Info: figures/fig2_40seller_pareto_EQ.pdf  used on input line 636.
+Package pdftex.def Info: figures/fig2_40seller_pareto_EQ.pdf  used on input line 639.
 (pdftex.def)             Requested size: 241.14749pt x 113.803pt.
  [16.16 <./figures/fig2_40seller_pareto_EQ.pdf>]
 <figures/figC_40seller_Etok_vs_pi.pdf, id=541, 253.22952pt x 156.49016pt>
 File: figures/figC_40seller_Etok_vs_pi.pdf Graphic file (type pdf)
 <use figures/figC_40seller_Etok_vs_pi.pdf>
-Package pdftex.def Info: figures/figC_40seller_Etok_vs_pi.pdf  used on input line 675.
+Package pdftex.def Info: figures/figC_40seller_Etok_vs_pi.pdf  used on input line 678.
 (pdftex.def)             Requested size: 241.14749pt x 149.02774pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 5475) in paragraph at lines 682--683
+Underfull \hbox (badness 5475) in paragraph at lines 685--686
  []$\OML/nxlmi/m/it/9 ^^Y[]$ \T1/LinuxLibertineT-TLF/m/it/9 (+20) crossover (T2, 40 sell-ers).[] $\U/ntxmia/m/it/9 ^^A\OML/nxlmi/m/it/9 J \U/ntxmia/m/it/9 = \OML/nxlmi/m/it/9 J\LMS/ntxsy/m/n/9 ¹[]º ^^@
  []
 
 
-Underfull \hbox (badness 3098) in paragraph at lines 682--683
+Underfull \hbox (badness 3098) in paragraph at lines 685--686
 []\LMS/ntxsy/m/n/9 ¹\OML/nxlmi/m/it/9 J[]; J[]\LMS/ntxsy/m/n/9 º$ \T1/LinuxLibertineT-TLF/m/n/9 (+20) with the best ban-dit taken per seed,
  []
 
@@ -1359,7 +1357,7 @@ Underfull \hbox (badness 3098) in paragraph at lines 682--683
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 2142) in paragraph at lines 716--717
+Underfull \hbox (badness 2142) in paragraph at lines 719--720
 \T1/LinuxLibertineT-TLF/m/it/9 (+20) First batch (v0.1 scale). \T1/LinuxLibertineT-TLF/m/n/9 (+20) Un-der the same pre-registered rule,
  []
 
@@ -1389,7 +1387,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/fig2_v01scale_pareto_EQ.pdf, id=600, 253.22952pt x 130.88269pt>
 File: figures/fig2_v01scale_pareto_EQ.pdf Graphic file (type pdf)
 <use figures/fig2_v01scale_pareto_EQ.pdf>
-Package pdftex.def Info: figures/fig2_v01scale_pareto_EQ.pdf  used on input line 877.
+Package pdftex.def Info: figures/fig2_v01scale_pareto_EQ.pdf  used on input line 880.
 (pdftex.def)             Requested size: 253.14749pt x 130.8444pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -1397,7 +1395,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/fig3_v01scale_E_Q_vs_pi.pdf, id=601, 520.68546pt x 156.49016pt>
 File: figures/fig3_v01scale_E_Q_vs_pi.pdf Graphic file (type pdf)
 <use figures/fig3_v01scale_E_Q_vs_pi.pdf>
-Package pdftex.def Info: figures/fig3_v01scale_E_Q_vs_pi.pdf  used on input line 885.
+Package pdftex.def Info: figures/fig3_v01scale_E_Q_vs_pi.pdf  used on input line 888.
 (pdftex.def)             Requested size: 506.295pt x 152.17253pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -1406,12 +1404,12 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
-Underfull \hbox (badness 2932) in paragraph at lines 902--903
+Underfull \hbox (badness 2932) in paragraph at lines 905--906
 \T1/LinuxLibertineT-TLF/m/n/9 (+20) run. Af-ter the first (v0.1-scale) batch, two def-i-ni-tions that
  []
 
 
-Underfull \hbox (badness 1831) in paragraph at lines 902--903
+Underfull \hbox (badness 1831) in paragraph at lines 905--906
 \T1/LinuxLibertineT-TLF/m/n/9 (+20) the pro-to-col left am-bigu-ous were clar-i-fied and recorded in
  []
 
@@ -1452,13 +1450,13 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 Here is how much of TeX's memory you used:
  25828 strings out of 468915
  414059 string characters out of 5453417
- 1333018 words of memory out of 5000000
+ 1283018 words of memory out of 5000000
  53420 multiletter control sequences out of 15000+600000
  870356 words of font info for 661 fonts, out of 8000000 for 9000
  197 hyphenation exceptions out of 8191
- 89i,16n,131p,2070b,1643s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,17n,131p,2070b,2281s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </home/box/.TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4b.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathMI.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathMI5.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathMI7.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/LibertineMathRM.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinBiolinumT.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinBiolinumTB.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineT.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineTB.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineTI.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/NewTXMI.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/NewTXMI7.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu59.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu5b.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu6a.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu6f.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu74.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu78.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu7a.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu7b.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu95.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu96.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/bsmiu/bsmiu9a.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/gbsnu/gbsnu50.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/gbsnu/gbsnu5e.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/arphic/gbsnu/gbsnu80.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/txmiaX.pfb></home/box/.TinyTeX/texmf-dist/fonts/type1/public/newtx/txsys.pfb>
-Output written on main.pdf (23 pages, 876475 bytes).
+Output written on main.pdf (23 pages, 876401 bytes).
 PDF statistics:
  825 PDF objects out of 1000 (max. 8388607)
  666 compressed objects within 7 object streams
