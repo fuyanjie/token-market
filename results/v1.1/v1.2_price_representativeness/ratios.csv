@@ -1,0 +1,57 @@
+scope,metric,numerator,denominator,numerator_value,denominator_value,value,notes
+source,prices_yaml_sha256,configs/v1.0/frozen/prices.yaml,,,,c26293cc3d890c6220491d02c06988372c79d0a5856899d2f165004bd8f9840f,access_date=2026-11-10
+source,scale_yaml_sha256,configs/v1.0/frozen/scale.yaml,,,,780e9b961d89bad6fd520c9cbfd5710055ff2d5d3e0ff3bcfbd745709eb0da6c,"synthetic market units, not rescaled"
+public:openai,output_max/output_min,output_max,output_min,0.05,0.00125,40,primary; accessed=2026-11-10; https://developers.openai.com/api/docs/pricing; n=4
+public:openai,input_max/input_min,input_max,input_min,0.01,0.0002,50,primary; accessed=2026-11-10; https://developers.openai.com/api/docs/pricing; n=4
+public:openai,output/input_min,output/input,min of group,5,,5,primary; accessed=2026-11-10; https://developers.openai.com/api/docs/pricing; n=4
+public:openai,output/input_median,output/input,median of group,5.5,,5.5,primary; accessed=2026-11-10; https://developers.openai.com/api/docs/pricing; n=4
+public:openai,output/input_max,output/input,max of group,6.25,,6.25,primary; accessed=2026-11-10; https://developers.openai.com/api/docs/pricing; n=4
+public:openai,output/input,gpt-5.4-nano,input,0.00125,0.0002,6.25,output=0.00125; input=0.0002; source=https://developers.openai.com/api/docs/pricing
+public:openai,output/input,gpt-5.4-mini,input,0.0045,0.00075,6,output=0.0045; input=0.00075; source=https://developers.openai.com/api/docs/pricing
+public:openai,output/input,gpt-6.1-sol,input,0.01,0.002,5,output=0.01; input=0.002; source=https://developers.openai.com/api/docs/pricing
+public:openai,output/input,gpt-6-astra,input,0.05,0.01,5,output=0.05; input=0.01; source=https://developers.openai.com/api/docs/pricing
+public:anthropic,output_max/output_min,output_max,output_min,0.04,0.0005,80,primary; accessed=2026-11-10; https://claude.com/pricing; n=4
+public:anthropic,input_max/input_min,input_max,input_min,0.008,0.0001,80,primary; accessed=2026-11-10; https://claude.com/pricing; n=4
+public:anthropic,output/input_min,output/input,min of group,5,,5,primary; accessed=2026-11-10; https://claude.com/pricing; n=4
+public:anthropic,output/input_median,output/input,median of group,5,,5,primary; accessed=2026-11-10; https://claude.com/pricing; n=4
+public:anthropic,output/input_max,output/input,max of group,5,,5,primary; accessed=2026-11-10; https://claude.com/pricing; n=4
+public:anthropic,output/input,claude-haiku-5-5,input,0.0005,0.0001,5,output=0.0005; input=0.0001; source=https://claude.com/pricing
+public:anthropic,output/input,claude-sonnet-5-5,input,0.01,0.002,5,output=0.01; input=0.002; source=https://claude.com/pricing
+public:anthropic,output/input,claude-opus-5-5,input,0.02,0.004,5,output=0.02; input=0.004; source=https://claude.com/pricing
+public:anthropic,output/input,claude-fable-5-2,input,0.04,0.008,5,output=0.04; input=0.008; source=https://claude.com/pricing
+public:google,output_max/output_min,output_max,output_min,0.012,0.01,1.2,primary; accessed=2026-11-10; https://aistudio.google.com/docs/pricing; n=2
+public:google,input_max/input_min,input_max,input_min,0.002,0.002,1,primary; accessed=2026-11-10; https://aistudio.google.com/docs/pricing; n=2
+public:google,output/input_min,output/input,min of group,5,,5,primary; accessed=2026-11-10; https://aistudio.google.com/docs/pricing; n=2
+public:google,output/input_median,output/input,median of group,5.5,,5.5,primary; accessed=2026-11-10; https://aistudio.google.com/docs/pricing; n=2
+public:google,output/input_max,output/input,max of group,6,,6,primary; accessed=2026-11-10; https://aistudio.google.com/docs/pricing; n=2
+public:google,output/input,gemini-3.1-pro-preview,input,0.012,0.002,6,output=0.012; input=0.002; source=https://aistudio.google.com/docs/pricing
+public:google,output/input,gemini-4-argon,input,0.01,0.002,5,output=0.01; input=0.002; source=https://aistudio.google.com/docs/pricing
+public:pool,output_max/output_min,output_max,output_min,0.05,0.0005,100,primary pool OpenAI+Anthropic+Google; n=10; from_2026_12_01 not included
+public:pool,input_max/input_min,input_max,input_min,0.01,0.0001,100,primary pool OpenAI+Anthropic+Google; n=10; from_2026_12_01 not included
+public:pool,output/input_min,output/input,min of group,5,,5,primary pool OpenAI+Anthropic+Google; n=10; from_2026_12_01 not included
+public:pool,output/input_median,output/input,median of group,5,,5,primary pool OpenAI+Anthropic+Google; n=10; from_2026_12_01 not included
+public:pool,output/input_max,output/input,max of group,6.25,,6.25,primary pool OpenAI+Anthropic+Google; n=10; from_2026_12_01 not included
+public:pool,output/input,gpt-5.4-nano,input,0.00125,0.0002,6.25,output=0.00125; input=0.0002; source=https://developers.openai.com/api/docs/pricing
+public:pool,output/input,gpt-5.4-mini,input,0.0045,0.00075,6,output=0.0045; input=0.00075; source=https://developers.openai.com/api/docs/pricing
+public:pool,output/input,gpt-6.1-sol,input,0.01,0.002,5,output=0.01; input=0.002; source=https://developers.openai.com/api/docs/pricing
+public:pool,output/input,gpt-6-astra,input,0.05,0.01,5,output=0.05; input=0.01; source=https://developers.openai.com/api/docs/pricing
+public:pool,output/input,claude-haiku-5-5,input,0.0005,0.0001,5,output=0.0005; input=0.0001; source=https://claude.com/pricing
+public:pool,output/input,claude-sonnet-5-5,input,0.01,0.002,5,output=0.01; input=0.002; source=https://claude.com/pricing
+public:pool,output/input,claude-opus-5-5,input,0.02,0.004,5,output=0.02; input=0.004; source=https://claude.com/pricing
+public:pool,output/input,claude-fable-5-2,input,0.04,0.008,5,output=0.04; input=0.008; source=https://claude.com/pricing
+public:pool,output/input,gemini-3.1-pro-preview,input,0.012,0.002,6,output=0.012; input=0.002; source=https://aistudio.google.com/docs/pricing
+public:pool,output/input,gemini-4-argon,input,0.01,0.002,5,output=0.01; input=0.002; source=https://aistudio.google.com/docs/pricing
+sensitivity:gemini-4-argon@from_2026_12_01,output/input,gemini-4-argon@from_2026_12_01,input,0.02,0.004,5,footnote only; not mixed into primary max/min
+roster:midpoint,1.5B/0.5B,honest_1.5B mid,honest_0.5B mid,0.205,0.1,2.05,primary; midpoint=(lo+hi)/2
+roster:midpoint,1.5B/mock,honest_1.5B mid,honest_mock mid,0.205,0.065,3.153846154,primary; midpoint=(lo+hi)/2
+roster:midpoint,0.5B/mock,honest_0.5B mid,honest_mock mid,0.1,0.065,1.538461538,primary; midpoint=(lo+hi)/2
+roster:midpoint,strategic/1.5B,strategic mid,honest_1.5B mid,0.18,0.205,0.8780487805,"overlap note only, not a representativeness claim"
+roster:sensitivity_lows,1.5B/0.5B,honest_1.5B,honest_0.5B,0.17,0.08,2.125,"sensitivity; uses range lows, not primary"
+roster:sensitivity_lows,1.5B/mock,honest_1.5B,honest_mock,0.17,0.05,3.4,"sensitivity; uses range lows, not primary"
+roster:sensitivity_lows,0.5B/mock,honest_0.5B,honest_mock,0.08,0.05,1.6,"sensitivity; uses range lows, not primary"
+roster:sensitivity_highs,1.5B/0.5B,honest_1.5B,honest_0.5B,0.24,0.12,2,"sensitivity; uses range highs, not primary"
+roster:sensitivity_highs,1.5B/mock,honest_1.5B,honest_mock,0.24,0.08,3,"sensitivity; uses range highs, not primary"
+roster:sensitivity_highs,0.5B/mock,honest_0.5B,honest_mock,0.12,0.08,1.5,"sensitivity; uses range highs, not primary"
+excluded,not_in_primary,google,gemini-3.1-flash-lite,,,,verify on source page; source=https://aistudio.google.com/docs/pricing
+excluded,not_in_primary,deepseek,,,,,price table not retrievable on 2026-11-10; source=https://api-docs.deepseek.com/quick_start/pricing
+excluded,not_in_primary,alibaba_model_studio,,,,,prices not shown on the public model page on 2026-11-10; source=https://www.alibabacloud.com/help/en/model-studio/models
