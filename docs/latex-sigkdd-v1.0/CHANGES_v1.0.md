@@ -455,3 +455,14 @@ tables/decision_a_main.tex
 tables/decision_a_lower_penalties.tex
 tables/wp1_cascade.tex
 ```
+
+## Pass 16 — public-list price-ratio comparison (2026-11-15, Asia/Shanghai)
+
+- Authority: Research's official `results/v1.1/v1.2_price_representativeness/` readout at commit `9072b0d`; no other ratio source or new analysis was used.
+- Added `scripts/pass16_price_ratio_tables.py`, verifying the CSV bytes against that commit, all eleven required primary figures, and both frozen YAML hashes before rendering exact CSV strings to `tables/price_ratios.tex`. Deterministic output and fail-closed guards were checked; the official computation and experiments were not rerun.
+- Removed the generation/coverage representativeness owner TBD and replaced it with a bounded appendix pointer. Updated the unused-snapshot and Ethics pointers; added one Limitations sentence about the unavailable transaction-log comparisons. Appendix C / Table 10 distinguishes synthetic midpoint ratios from public input/output spreads, excludes incomplete/unverified rows, and confines the future Gemini schedule to a footnote.
+- Explicitly not calibration, not production-market validation, not protocol §7 robustness, not applied to official runs. No rescaling, SKU mapping, or quantitative transaction/latency/volume/jurisdiction validation is claimed. C2 remains partial, not a D&B compliance sign-off.
+- Source and clean-unzip `latexmk -pdf -interaction=nonstopmode main.tex`: **24 pages, 0 errors, 0 undefined references/citations, 0 overfull boxes**. Complete Ethics ends on **page 8**; References and Appendix A begin on **page 9**. Appendix C starts on page 10; its generated Table 10 is on page 12. Existing ACM metadata/font-substitution and bibliography-field warnings remain non-fatal.
+- Rebuilt `docs/kdd_overleaf_v1.0.zip`: previous 19 compile members plus `tables/price_ratios.tex`, **20 total**, byte-identical to repository sources. No Markdown, generator, results paths, or build databases were added. No Overleaf upload.
+- **2 owner TBDs remain unchanged:** public repository/archive URL; maintainer/public host/optional artifact-badge pledge. Broader external representativeness, transaction-level evidence, and legally realistic corridors remain unestablished.
+- Results, release, protocols, `KDD_v1.0_benchmark.pdf`, existing result-table inputs, official Decision A/Result 1 values/text, title, and author lines are unchanged. Later appendix/table numbering shifts after insertion. No commit or push.

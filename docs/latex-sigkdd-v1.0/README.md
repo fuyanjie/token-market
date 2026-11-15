@@ -1,14 +1,14 @@
 # Cross-Border KDD 2027 D&B manuscript
 
-Current text: **Pass 15**, 2026-11-15 (Asia/Shanghai), starting HEAD `2378793` on `v1.1`. The 17 engineering TBDs are resolved solely from [ENGINEERING_TBD_FILL.md](ENGINEERING_TBD_FILL.md); **3 owner TBDs remain**. This manuscript has evolved beyond the original v0.1 format conversion. See [CHANGES_v1.0.md](CHANGES_v1.0.md), [compliance check](KDD2027_DB_CHECK.md), and [official requirements](KDD2027_DB_REQUIREMENTS.md).
+Current text: **Pass 16**, 2026-11-15 (Asia/Shanghai), starting HEAD `9072b0d` on `v1.1`. Research's adopted descriptive price-ratio comparison is now Appendix C / Table 10; **2 owner TBDs remain**. This is not calibration, production-market validation, or a D&B compliance sign-off. See [CHANGES_v1.0.md](CHANGES_v1.0.md), [compliance check](KDD2027_DB_CHECK.md), and [official requirements](KDD2027_DB_REQUIREMENTS.md).
 
 ## Current status and files
 
 - `main.tex`: ACM `sigconf,review`, single-blind; Yanjie Fu, both affiliations, and short author line unchanged.
-- `main.pdf`: **22 pages**; the body and complete Ethics statement end on **page 8**, References start on **page 8**, Appendix A starts on **page 9**. Verified after Pass 15 source and clean-zip builds: **0 errors, 0 undefined references/citations, 0 overfull boxes**.
+- `main.pdf`: **24 pages**; the body and complete Ethics statement end on **page 8**, References start on **page 9**, Appendix A starts on **page 9**. Verified after Pass 16 source and clean-zip builds: **0 errors, 0 undefined references/citations, 0 overfull boxes**.
 - §4 now contains artifact availability, intended licenses, actual checkout paths, dependency/runner/rendering entry points, and generation/coverage limits. Appendix B gives detailed, version-labelled paths and recipes. The v1.0 staging subset is not a complete public release; no public artifact URL is available. C1/C2 remain partial and C3 requires 傅老师's cycle/status decision.
 - The manuscript's T4 feature contract governs; `docs/DATA_SCHEMA.md` contains legacy descriptions where they disagree. Two cached Qwen checkpoints and `sim-fast-mock` are distinguished. T3, secondary cost/accuracy intervals, and post-5b T4 are defined but not reported.
-- `refs.bib` / `main.bbl`: bibliography; `tables/`: five frozen-result LaTeX inputs. Table numbers/values and locked Decision A wording/statistical conventions are unchanged.
+- `refs.bib` / `main.bbl`: bibliography; `tables/`: five unchanged frozen-result inputs plus the generated descriptive `price_ratios.tex` input. Existing result values and locked Decision A wording/statistical conventions are unchanged; later appendix/table numbering shifts to accommodate Appendix C / Table 10.
 - Figures: layer schematic PNG; PDF+PNG versions of the 40-seller and historical v0.1 Pareto / E–Q-versus-π plots, plus the 40-seller token-weighted-exposure plot. No figures were regenerated.
 
 ## Compile
@@ -19,15 +19,15 @@ From this directory:
 latexmk -pdf -interaction=nonstopmode main.tex
 ```
 
-Requires TeX Live with `acmart` (v2.21 in this checkout), CJK/CJKutf8 (`bsmi` for the existing affiliation and `gbsn` for owner TBDs), `xurl`, `makecell`, `tabularx`, `listings`, and `newunicodechar`. Experiments, table generators, and pytest were not run in Pass 15. The handoff reports 261 collected tests, not an executed suite; no official v1.0 full-suite pass log is recorded. Existing font-substitution / ACM metadata warnings are not undefined references or citations.
+Requires TeX Live with `acmart` (v2.21 in this checkout), CJK/CJKutf8 (`bsmi` for the existing affiliation and `gbsn` for owner TBDs), `xurl`, `makecell`, `tabularx`, `listings`, and `newunicodechar`. Experiments, the official ratio computation, existing result-table generators, and pytest were not run in Pass 16. Only `python3 scripts/pass16_price_ratio_tables.py` was run from the repository root to render the adopted CSV; deterministic output and fail-closed CSV/primary-value/YAML-hash guards were checked. No repository lint/typecheck command is configured in `pyproject.toml`. The handoff reports 261 collected tests, not an executed suite; no official v1.0 full-suite pass log is recorded. Existing font-substitution / ACM metadata warnings are not undefined references or citations.
 
 ## Overleaf bundle
 
-Upload `docs/kdd_overleaf_v1.0.zip`, choose pdfLaTeX, and set `main.tex` as the main document. It contains the same **19 compile members as Pass 14**: `main.tex`, `main.bbl`, `refs.bib`, five `tables/*.tex` inputs, and eleven figure files. Every member is byte-identical to the repository source. CHECK, REQUIREMENTS, CHANGES, BRIEF, and other Markdown files are excluded. A clean unzip was compiled with the command above.
+Upload `docs/kdd_overleaf_v1.0.zip`, choose pdfLaTeX, and set `main.tex` as the main document. It contains the previous **19 compile members plus the new table (20 total)**: `main.tex`, `main.bbl`, `refs.bib`, six `tables/*.tex` inputs, and eleven figure files. Every member is byte-identical to the repository source. CHECK, REQUIREMENTS, CHANGES, BRIEF, and other Markdown files are excluded. A clean unzip was compiled with the command above.
 
 ## Pending decisions
 
-The check file preserves the original 22-placeholder inventory and Pass 14 dispositions. **3 owner TBDs remain**: public repository/archive URL; maintainer/public host/optional artifact-badge pledge; whether to collect additional representativeness evidence.
+The check file preserves the original 22-placeholder inventory and Pass 14 dispositions. **2 owner TBDs remain**: public repository/archive URL; maintainer/public host/optional artifact-badge pledge. The representativeness-evidence decision is resolved only as the bounded, adopted snapshot ratio comparison; transaction-level and legally realistic corridor evidence remain unavailable.
 
 Appendix B now gives the official 40-seller and Decision A recipes, per-run hash semantics, local T4 interface, and documented environment provenance. Prices remain synthetic and uncalibrated; the 2026-11-10 public-list snapshot was not applied. No single production config hash, public T4 service, official full-suite pass log, official T1-secondary intervals, official 40-seller T3 tables, or implemented post-5b T4 result is claimed. Decision A metadata records no Python/package versions.
 
@@ -37,7 +37,7 @@ Submission keeps the full appendix. Later camera-ready preparation must fit **12
 
 ## Historical v0.1 conversion notes (superseded)
 
-The notes below preserve the old conversion history, labels, line numbers, and pending-marker plans. They do not describe the current metric contract, results, page count, artifact status, or outstanding work; use the current manuscript and Pass 15 checklist above.
+The notes below preserve the old conversion history, labels, line numbers, and pending-marker plans. They do not describe the current metric contract, results, page count, artifact status, or outstanding work; use the current manuscript and Pass 16 status above.
 
 ## §6.1 table change (team decision)
 - The column order is now `active_attack_rate`, `fraud_share`, learned q (side), and J (secondary) last.
