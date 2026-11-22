@@ -1,0 +1,238 @@
+{
+ "task": "T5 task-conditioned model/seller recommendation (docs/PROTOCOL_T5.md)",
+ "protocol_sha256": "4301f4b281e90b1b835d1e7868e3b00c98bc8eaee382cf29f8646c6fa7272542",
+ "scale_yaml_sha256": "780e9b961d89bad6fd520c9cbfd5710055ff2d5d3e0ff3bcfbd745709eb0da6c",
+ "unit": "(run_id, task_id, seller_key)",
+ "label": "y_correct_clean",
+ "label_definition": "1 iff final_correct and attack_mode == 'none' on served purchase; else 0",
+ "key_columns": [
+  "run_id",
+  "seed",
+  "task_id",
+  "seller_key"
+ ],
+ "feature_columns": [
+  "task_type",
+  "difficulty",
+  "sensitivity",
+  "buyer_jurisdiction",
+  "budget_remaining",
+  "consent",
+  "claimed_model",
+  "list_price",
+  "listed_quality",
+  "seller_jurisdiction",
+  "is_eligible",
+  "hist_n_served",
+  "hist_billed_tokens_mean",
+  "hist_served_share"
+ ],
+ "categorical_columns": [
+  "task_type",
+  "sensitivity",
+  "buyer_jurisdiction",
+  "claimed_model",
+  "seller_jurisdiction"
+ ],
+ "numeric_columns": [
+  "difficulty",
+  "budget_remaining",
+  "consent",
+  "list_price",
+  "listed_quality",
+  "is_eligible",
+  "hist_n_served",
+  "hist_billed_tokens_mean",
+  "hist_served_share"
+ ],
+ "whitelist": {
+  "task_type": [
+   "task_side",
+   "categorical task type"
+  ],
+  "difficulty": [
+   "task_side",
+   "numeric task difficulty"
+  ],
+  "sensitivity": [
+   "task_side",
+   "categorical data sensitivity"
+  ],
+  "buyer_jurisdiction": [
+   "task_side",
+   "categorical buyer jurisdiction"
+  ],
+  "budget_remaining": [
+   "task_side",
+   "numeric pre-decision buyer remaining budget"
+  ],
+  "consent": [
+   "task_side",
+   "binary 0/1 specific_consent task flag"
+  ],
+  "claimed_model": [
+   "seller_side",
+   "categorical declared model"
+  ],
+  "list_price": [
+   "seller_side",
+   "numeric posted price_per_1k"
+  ],
+  "listed_quality": [
+   "seller_side",
+   "numeric public model accuracy at task difficulty (else mean)"
+  ],
+  "seller_jurisdiction": [
+   "seller_side",
+   "categorical seller jurisdiction"
+  ],
+  "is_eligible": [
+   "seller_side",
+   "binary 0/1 eligible after hard compliance filter"
+  ],
+  "hist_n_served": [
+   "seller_side",
+   "count of served purchases by seller in rounds < current_round"
+  ],
+  "hist_billed_tokens_mean": [
+   "seller_side",
+   "mean billed_tokens of seller in rounds < current_round (nullable)"
+  ],
+  "hist_served_share": [
+   "seller_side",
+   "seller share of run served purchases in rounds < current_round"
+  ]
+ },
+ "blacklist_exact": [
+  "actual_cost",
+  "actual_model",
+  "actual_tokens",
+  "answer",
+  "attack",
+  "attack_mode",
+  "audit_cost",
+  "audit_type",
+  "audited",
+  "ban_until",
+  "banned_until_round",
+  "billed_minus_actual",
+  "buyer_surplus",
+  "confidence",
+  "correct",
+  "cost_overrun",
+  "delist_rounds",
+  "downgrade_prob",
+  "escrow_held",
+  "escrow_released",
+  "escrow_slashed",
+  "final_answer",
+  "final_correct",
+  "fraud_realized",
+  "gen_time_s",
+  "gold",
+  "hit",
+  "label_correct",
+  "latency",
+  "latency_ms",
+  "miss",
+  "pool_task_id",
+  "prompt",
+  "prompt_hash",
+  "prompt_sha256",
+  "question",
+  "reasoning_tokens",
+  "round",
+  "seller_id",
+  "seller_key",
+  "seller_profit",
+  "slash_amount",
+  "stake_remaining",
+  "swap_detected",
+  "swap_prob",
+  "theft_detected",
+  "theft_prob",
+  "token_inflation",
+  "tokens_actual",
+  "tokens_actual_minus_billed",
+  "tokens_billed_minus_actual",
+  "y_correct_clean"
+ ],
+ "blacklist_patterns": [
+  "actual_model",
+  "tokens?_actual",
+  "actual_tokens?",
+  "reasoning_tokens?",
+  "token_inflation",
+  "billed_minus_actual",
+  "actual_minus_billed",
+  "token_gap",
+  "attack",
+  "learned_q",
+  "latent_q",
+  "fraud",
+  "slash",
+  "delist",
+  "(^|_)ban",
+  "escrow",
+  "audit",
+  "detected",
+  "(^|_)(hit|miss)(_|$)",
+  "label",
+  "confidence",
+  "latency",
+  "gen_time",
+  "correct",
+  "answer",
+  "gold",
+  "prompt",
+  "question",
+  "pool_task",
+  "seller_id",
+  "swap_prob",
+  "theft_prob",
+  "downgrade",
+  "profit",
+  "surplus",
+  "trust",
+  "q_hat",
+  "leakref"
+ ],
+ "holdout_rng_seed": "t5-prompt-holdout-20261122",
+ "holdout_prompt_hashes": [
+  "095f477b49975675ad3d60aba932d252371f222b23e769505d456f43ffdfffd8",
+  "1aef566aaed9894155534f8416105871da47e47e314f2e7ae5ac780d5b509a7a",
+  "33ea5eae3ba1a6a130abfd6007f6b1613618f1a0cb7ea34b537384a92dcf4503",
+  "3795af9d9129d372544c9e364898e88c25ed45c28a1a16ed1ec30f73b9c1d34f",
+  "5127611a7f82038192a8e4127a640b1aae203bf46f8fb0dbdfb029f87252014e",
+  "530e5a584f5d0569a7610fe617a61a674cc97eec816d70cbc24ff7fce381872a",
+  "73bae2b0f46b5b4ed52ca86a84d2fd4cad29b955fb27eead8a43e49f3b342af0",
+  "87552cdecf88b2a90b4ad5e4ecb4ae742537eecbbc759d78ee810fd1d4f742f6",
+  "97e7c02b4de62818cb9e055b413aa1e523ecb46d11f0ee682f547e7d4f16b602",
+  "b2bbcb50331166ff51ef3250182885425652d6063b5f08de9222f03d47f8129b",
+  "ce177bcaad841c5c162111f453ff458ac146b16564aa2a62a3d70dd8a33188bf",
+  "d79694689a270f4642f9d24144e701774269a759d70acc24bdcde379e68b269d",
+  "d9e556cf4252a3465a7a647bff5a3d532a2310c5f8a9e3eaf698479524b7c68e",
+  "ed8963f25cafc1528a044afea9bdd7a60ed98786d3bbb41c4060b3a11db509ee",
+  "ef5ec8f4d73ecdacba79a8aa593294711f93881394e5aa940f2b2cd172ec0f54"
+ ],
+ "n_train_rows": 5017,
+ "n_train_pos": 4093,
+ "train_seeds": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13
+ ],
+ "smoke": false,
+ "behavior_epsilon": 0.2
+}

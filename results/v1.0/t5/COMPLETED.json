@@ -1,0 +1,30 @@
+{
+ "status": "COMPLETED",
+ "smoke": false,
+ "finished_at": "2026-11-22T10:59:44+0800",
+ "elapsed_s": 22.22,
+ "n_eval_runs": 126,
+ "leakage_passed": true,
+ "audit_summary": {
+  "configured_audit_rate": 0.1,
+  "configured_audit_rule": "fixed",
+  "configured_audit_checks": [
+   "identity",
+   "length"
+  ],
+  "trust_feedback": false,
+  "audit_v11_enabled": false,
+  "train_n_runs": 14,
+  "train_mean_n_audits": 43.42857142857143,
+  "train_min_n_audits": 31,
+  "train_max_n_audits": 57,
+  "train_mean_audit_rate_realised": 0.09819331779783493,
+  "eval_n_runs": 126,
+  "eval_mean_n_audits": 45.182539682539684,
+  "eval_min_n_audits": 35,
+  "eval_max_n_audits": 56,
+  "eval_mean_audit_rate_realised": 0.1002907809910683
+ },
+ "protocol_sha256": "4301f4b281e90b1b835d1e7868e3b00c98bc8eaee382cf29f8646c6fa7272542",
+ "scale_yaml_sha256": "780e9b961d89bad6fd520c9cbfd5710055ff2d5d3e0ff3bcfbd745709eb0da6c"
+}

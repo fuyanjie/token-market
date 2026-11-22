@@ -1,0 +1,794 @@
+{
+ "logreg": {
+  "model_kind": "logreg",
+  "selected_tau": 0.9,
+  "floor_rule_triggered": true,
+  "strongest_val_accuracy_non_holdout": 0.8006410256410257,
+  "chosen_row": {
+   "tau": 0.9,
+   "val_accuracy_non_holdout": 0.792948717948718,
+   "val_cost_per_task_non_holdout": 0.024982345918589742,
+   "val_E_non_holdout": 0.0255467696394081,
+   "val_fill_rate_non_holdout": 0.9044871794871795,
+   "meets_strongest_floor": false,
+   "per_seed": [
+    {
+     "seed": 10,
+     "accuracy": 0.8025641025641026,
+     "cost_per_task": 0.026110870305128205,
+     "E": 0.02535211267605634,
+     "fill_rate": 0.9102564102564102
+    },
+    {
+     "seed": 11,
+     "accuracy": 0.782051282051282,
+     "cost_per_task": 0.024467184361538462,
+     "E": 0.03142857142857143,
+     "fill_rate": 0.8974358974358975
+    },
+    {
+     "seed": 12,
+     "accuracy": 0.8076923076923077,
+     "cost_per_task": 0.025261335764102565,
+     "E": 0.00847457627118644,
+     "fill_rate": 0.9076923076923077
+    },
+    {
+     "seed": 13,
+     "accuracy": 0.7794871794871795,
+     "cost_per_task": 0.024089993243589743,
+     "E": 0.036931818181818184,
+     "fill_rate": 0.9025641025641026
+    }
+   ]
+  },
+  "grid": [
+   {
+    "tau": 0.5,
+    "val_accuracy_non_holdout": 0.6429487179487179,
+    "val_cost_per_task_non_holdout": 0.010349762975000001,
+    "val_E_non_holdout": 0.05448717948717949,
+    "val_fill_rate_non_holdout": 1.0,
+    "meets_strongest_floor": false,
+    "per_seed": [
+     {
+      "seed": 10,
+      "accuracy": 0.6538461538461539,
+      "cost_per_task": 0.010729478330769232,
+      "E": 0.06923076923076923,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 11,
+      "accuracy": 0.6641025641025641,
+      "cost_per_task": 0.011065008874358974,
+      "E": 0.04358974358974359,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 12,
+      "accuracy": 0.6076923076923076,
+      "cost_per_task": 0.00984869417948718,
+      "E": 0.05128205128205128,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 13,
+      "accuracy": 0.6461538461538462,
+      "cost_per_task": 0.009755870515384615,
+      "E": 0.05384615384615385,
+      "fill_rate": 1.0
+     }
+    ]
+   },
+   {
+    "tau": 0.55,
+    "val_accuracy_non_holdout": 0.6487179487179487,
+    "val_cost_per_task_non_holdout": 0.011515155608974358,
+    "val_E_non_holdout": 0.053920691711389385,
+    "val_fill_rate_non_holdout": 0.9980769230769231,
+    "meets_strongest_floor": false,
+    "per_seed": [
+     {
+      "seed": 10,
+      "accuracy": 0.6538461538461539,
+      "cost_per_task": 0.011408330287179488,
+      "E": 0.07179487179487179,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 11,
+      "accuracy": 0.6615384615384615,
+      "cost_per_task": 0.012403724884615384,
+      "E": 0.041025641025641026,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 12,
+      "accuracy": 0.6923076923076923,
+      "cost_per_task": 0.01116009886923077,
+      "E": 0.0641025641025641,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 13,
+      "accuracy": 0.5871794871794872,
+      "cost_per_task": 0.011088468394871794,
+      "E": 0.03875968992248062,
+      "fill_rate": 0.9923076923076923
+     }
+    ]
+   },
+   {
+    "tau": 0.6,
+    "val_accuracy_non_holdout": 0.639102564102564,
+    "val_cost_per_task_non_holdout": 0.01289619101602564,
+    "val_E_non_holdout": 0.0626068376068376,
+    "val_fill_rate_non_holdout": 0.9923076923076923,
+    "meets_strongest_floor": false,
+    "per_seed": [
+     {
+      "seed": 10,
+      "accuracy": 0.658974358974359,
+      "cost_per_task": 0.012833736012820512,
+      "E": 0.05384615384615385,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 11,
+      "accuracy": 0.6102564102564103,
+      "cost_per_task": 0.013886406892307692,
+      "E": 0.06923076923076923,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 12,
+      "accuracy": 0.6435897435897436,
+      "cost_per_task": 0.01295954273846154,
+      "E": 0.07179487179487179,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 13,
+      "accuracy": 0.6435897435897436,
+      "cost_per_task": 0.01190507842051282,
+      "E": 0.05555555555555555,
+      "fill_rate": 0.9692307692307692
+     }
+    ]
+   },
+   {
+    "tau": 0.65,
+    "val_accuracy_non_holdout": 0.6955128205128205,
+    "val_cost_per_task_non_holdout": 0.014687856141025642,
+    "val_E_non_holdout": 0.07931022896139175,
+    "val_fill_rate_non_holdout": 0.9807692307692308,
+    "meets_strongest_floor": false,
+    "per_seed": [
+     {
+      "seed": 10,
+      "accuracy": 0.6948717948717948,
+      "cost_per_task": 0.01440042347948718,
+      "E": 0.06459948320413436,
+      "fill_rate": 0.9923076923076923
+     },
+     {
+      "seed": 11,
+      "accuracy": 0.717948717948718,
+      "cost_per_task": 0.015897910635897437,
+      "E": 0.07179487179487179,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 12,
+      "accuracy": 0.7282051282051282,
+      "cost_per_task": 0.014717022305128205,
+      "E": 0.06084656084656084,
+      "fill_rate": 0.9692307692307692
+     },
+     {
+      "seed": 13,
+      "accuracy": 0.6410256410256411,
+      "cost_per_task": 0.013736068143589745,
+      "E": 0.12,
+      "fill_rate": 0.9615384615384616
+     }
+    ]
+   },
+   {
+    "tau": 0.7,
+    "val_accuracy_non_holdout": 0.682051282051282,
+    "val_cost_per_task_non_holdout": 0.016167555291666667,
+    "val_E_non_holdout": 0.10835937538805118,
+    "val_fill_rate_non_holdout": 0.9564102564102563,
+    "meets_strongest_floor": false,
+    "per_seed": [
+     {
+      "seed": 10,
+      "accuracy": 0.6974358974358974,
+      "cost_per_task": 0.016017925384615384,
+      "E": 0.08222811671087533,
+      "fill_rate": 0.9666666666666667
+     },
+     {
+      "seed": 11,
+      "accuracy": 0.7230769230769231,
+      "cost_per_task": 0.017008112566666667,
+      "E": 0.047872340425531915,
+      "fill_rate": 0.9641025641025641
+     },
+     {
+      "seed": 12,
+      "accuracy": 0.6717948717948717,
+      "cost_per_task": 0.015965569805128206,
+      "E": 0.12398921832884097,
+      "fill_rate": 0.9512820512820512
+     },
+     {
+      "seed": 13,
+      "accuracy": 0.6358974358974359,
+      "cost_per_task": 0.01567861341025641,
+      "E": 0.1793478260869565,
+      "fill_rate": 0.9435897435897436
+     }
+    ]
+   },
+   {
+    "tau": 0.75,
+    "val_accuracy_non_holdout": 0.7224358974358975,
+    "val_cost_per_task_non_holdout": 0.01776657007179487,
+    "val_E_non_holdout": 0.05560617263462546,
+    "val_fill_rate_non_holdout": 0.9455128205128205,
+    "meets_strongest_floor": false,
+    "per_seed": [
+     {
+      "seed": 10,
+      "accuracy": 0.7076923076923077,
+      "cost_per_task": 0.01726311748974359,
+      "E": 0.03783783783783784,
+      "fill_rate": 0.9487179487179487
+     },
+     {
+      "seed": 11,
+      "accuracy": 0.7128205128205128,
+      "cost_per_task": 0.018806647576923075,
+      "E": 0.06702412868632708,
+      "fill_rate": 0.9564102564102565
+     },
+     {
+      "seed": 12,
+      "accuracy": 0.7384615384615385,
+      "cost_per_task": 0.01787098681282051,
+      "E": 0.056451612903225805,
+      "fill_rate": 0.9538461538461539
+     },
+     {
+      "seed": 13,
+      "accuracy": 0.7307692307692307,
+      "cost_per_task": 0.017125528407692308,
+      "E": 0.06111111111111111,
+      "fill_rate": 0.9230769230769231
+     }
+    ]
+   },
+   {
+    "tau": 0.8,
+    "val_accuracy_non_holdout": 0.742948717948718,
+    "val_cost_per_task_non_holdout": 0.019484682912179488,
+    "val_E_non_holdout": 0.05569379860041228,
+    "val_fill_rate_non_holdout": 0.9256410256410256,
+    "meets_strongest_floor": false,
+    "per_seed": [
+     {
+      "seed": 10,
+      "accuracy": 0.7743589743589744,
+      "cost_per_task": 0.019471095817948716,
+      "E": 0.03296703296703297,
+      "fill_rate": 0.9333333333333333
+     },
+     {
+      "seed": 11,
+      "accuracy": 0.7410256410256411,
+      "cost_per_task": 0.019922892828205127,
+      "E": 0.04709141274238227,
+      "fill_rate": 0.9256410256410257
+     },
+     {
+      "seed": 12,
+      "accuracy": 0.7692307692307693,
+      "cost_per_task": 0.019915505620512818,
+      "E": 0.027548209366391185,
+      "fill_rate": 0.9307692307692308
+     },
+     {
+      "seed": 13,
+      "accuracy": 0.6871794871794872,
+      "cost_per_task": 0.018629237382051283,
+      "E": 0.1151685393258427,
+      "fill_rate": 0.9128205128205128
+     }
+    ]
+   },
+   {
+    "tau": 0.85,
+    "val_accuracy_non_holdout": 0.7589743589743589,
+    "val_cost_per_task_non_holdout": 0.02196743114230769,
+    "val_E_non_holdout": 0.04287614946320477,
+    "val_fill_rate_non_holdout": 0.9115384615384615,
+    "meets_strongest_floor": false,
+    "per_seed": [
+     {
+      "seed": 10,
+      "accuracy": 0.7282051282051282,
+      "cost_per_task": 0.022320526715384613,
+      "E": 0.06460674157303371,
+      "fill_rate": 0.9128205128205128
+     },
+     {
+      "seed": 11,
+      "accuracy": 0.7794871794871795,
+      "cost_per_task": 0.022015117928205128,
+      "E": 0.031073446327683617,
+      "fill_rate": 0.9076923076923077
+     },
+     {
+      "seed": 12,
+      "accuracy": 0.764102564102564,
+      "cost_per_task": 0.022289222928205125,
+      "E": 0.03899721448467967,
+      "fill_rate": 0.9205128205128205
+     },
+     {
+      "seed": 13,
+      "accuracy": 0.764102564102564,
+      "cost_per_task": 0.021244856997435897,
+      "E": 0.036827195467422094,
+      "fill_rate": 0.9051282051282051
+     }
+    ]
+   },
+   {
+    "tau": 0.9,
+    "val_accuracy_non_holdout": 0.792948717948718,
+    "val_cost_per_task_non_holdout": 0.024982345918589742,
+    "val_E_non_holdout": 0.0255467696394081,
+    "val_fill_rate_non_holdout": 0.9044871794871795,
+    "meets_strongest_floor": false,
+    "per_seed": [
+     {
+      "seed": 10,
+      "accuracy": 0.8025641025641026,
+      "cost_per_task": 0.026110870305128205,
+      "E": 0.02535211267605634,
+      "fill_rate": 0.9102564102564102
+     },
+     {
+      "seed": 11,
+      "accuracy": 0.782051282051282,
+      "cost_per_task": 0.024467184361538462,
+      "E": 0.03142857142857143,
+      "fill_rate": 0.8974358974358975
+     },
+     {
+      "seed": 12,
+      "accuracy": 0.8076923076923077,
+      "cost_per_task": 0.025261335764102565,
+      "E": 0.00847457627118644,
+      "fill_rate": 0.9076923076923077
+     },
+     {
+      "seed": 13,
+      "accuracy": 0.7794871794871795,
+      "cost_per_task": 0.024089993243589743,
+      "E": 0.036931818181818184,
+      "fill_rate": 0.9025641025641026
+     }
+    ]
+   }
+  ],
+  "inner_fit_n_rows": 3593,
+  "inner_fit_n_pos": 2922,
+  "inner_fit_fallback_model_billed": {
+   "Qwen/Qwen2.5-0.5B-Instruct": 159.9360465116279,
+   "Qwen/Qwen2.5-1.5B-Instruct": 145.03660412180867,
+   "sim-fast-mock": 112.59411764705882
+  },
+  "inner_fit_fallback_global_billed": 144.214862232118
+ },
+ "gbdt": {
+  "model_kind": "gbdt",
+  "selected_tau": 0.9,
+  "floor_rule_triggered": false,
+  "strongest_val_accuracy_non_holdout": 0.8006410256410257,
+  "chosen_row": {
+   "tau": 0.9,
+   "val_accuracy_non_holdout": 0.8230769230769232,
+   "val_cost_per_task_non_holdout": 0.026657189816666666,
+   "val_E_non_holdout": 0.01722285347297698,
+   "val_fill_rate_non_holdout": 0.8935897435897436,
+   "meets_strongest_floor": true,
+   "per_seed": [
+    {
+     "seed": 10,
+     "accuracy": 0.8051282051282052,
+     "cost_per_task": 0.025747063212820515,
+     "E": 0.008595988538681949,
+     "fill_rate": 0.8948717948717949
+    },
+    {
+     "seed": 11,
+     "accuracy": 0.8358974358974359,
+     "cost_per_task": 0.028298398720512822,
+     "E": 0.005747126436781609,
+     "fill_rate": 0.8923076923076924
+    },
+    {
+     "seed": 12,
+     "accuracy": 0.8205128205128205,
+     "cost_per_task": 0.028266182028205127,
+     "E": 0.03735632183908046,
+     "fill_rate": 0.8923076923076924
+    },
+    {
+     "seed": 13,
+     "accuracy": 0.8307692307692308,
+     "cost_per_task": 0.024317115305128204,
+     "E": 0.017191977077363897,
+     "fill_rate": 0.8948717948717949
+    }
+   ]
+  },
+  "grid": [
+   {
+    "tau": 0.5,
+    "val_accuracy_non_holdout": 0.6333333333333333,
+    "val_cost_per_task_non_holdout": 0.009437533273717949,
+    "val_E_non_holdout": 0.020512820512820513,
+    "val_fill_rate_non_holdout": 1.0,
+    "meets_strongest_floor": false,
+    "per_seed": [
+     {
+      "seed": 10,
+      "accuracy": 0.6512820512820513,
+      "cost_per_task": 0.009348797192307691,
+      "E": 0.023076923076923078,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 11,
+      "accuracy": 0.6487179487179487,
+      "cost_per_task": 0.009739734594871794,
+      "E": 0.015384615384615385,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 12,
+      "accuracy": 0.6205128205128205,
+      "cost_per_task": 0.009547582092307692,
+      "E": 0.023076923076923078,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 13,
+      "accuracy": 0.6128205128205129,
+      "cost_per_task": 0.009114019215384616,
+      "E": 0.020512820512820513,
+      "fill_rate": 1.0
+     }
+    ]
+   },
+   {
+    "tau": 0.55,
+    "val_accuracy_non_holdout": 0.641025641025641,
+    "val_cost_per_task_non_holdout": 0.009921024140384614,
+    "val_E_non_holdout": 0.0019230769230769232,
+    "val_fill_rate_non_holdout": 1.0,
+    "meets_strongest_floor": false,
+    "per_seed": [
+     {
+      "seed": 10,
+      "accuracy": 0.6564102564102564,
+      "cost_per_task": 0.010202003976923077,
+      "E": 0.0,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 11,
+      "accuracy": 0.6307692307692307,
+      "cost_per_task": 0.010149919448717949,
+      "E": 0.0,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 12,
+      "accuracy": 0.6153846153846154,
+      "cost_per_task": 0.009815434569230768,
+      "E": 0.0,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 13,
+      "accuracy": 0.6615384615384615,
+      "cost_per_task": 0.009516738566666665,
+      "E": 0.007692307692307693,
+      "fill_rate": 1.0
+     }
+    ]
+   },
+   {
+    "tau": 0.6,
+    "val_accuracy_non_holdout": 0.6596153846153846,
+    "val_cost_per_task_non_holdout": 0.010323556056410256,
+    "val_E_non_holdout": 0.0019230769230769232,
+    "val_fill_rate_non_holdout": 1.0,
+    "meets_strongest_floor": false,
+    "per_seed": [
+     {
+      "seed": 10,
+      "accuracy": 0.6435897435897436,
+      "cost_per_task": 0.01055652314871795,
+      "E": 0.0,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 11,
+      "accuracy": 0.6871794871794872,
+      "cost_per_task": 0.010723240164102565,
+      "E": 0.0,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 12,
+      "accuracy": 0.658974358974359,
+      "cost_per_task": 0.010057664107692307,
+      "E": 0.002564102564102564,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 13,
+      "accuracy": 0.6487179487179487,
+      "cost_per_task": 0.009956796805128204,
+      "E": 0.005128205128205128,
+      "fill_rate": 1.0
+     }
+    ]
+   },
+   {
+    "tau": 0.65,
+    "val_accuracy_non_holdout": 0.6557692307692308,
+    "val_cost_per_task_non_holdout": 0.010849619062179485,
+    "val_E_non_holdout": 0.009000929985385944,
+    "val_fill_rate_non_holdout": 0.9974358974358974,
+    "meets_strongest_floor": false,
+    "per_seed": [
+     {
+      "seed": 10,
+      "accuracy": 0.6846153846153846,
+      "cost_per_task": 0.01098398461025641,
+      "E": 0.007692307692307693,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 11,
+      "accuracy": 0.6692307692307692,
+      "cost_per_task": 0.01133222285128205,
+      "E": 0.002564102564102564,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 12,
+      "accuracy": 0.6538461538461539,
+      "cost_per_task": 0.01075311802051282,
+      "E": 0.015384615384615385,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 13,
+      "accuracy": 0.6153846153846154,
+      "cost_per_task": 0.010329150766666666,
+      "E": 0.010362694300518135,
+      "fill_rate": 0.9897435897435898
+     }
+    ]
+   },
+   {
+    "tau": 0.7,
+    "val_accuracy_non_holdout": 0.657051282051282,
+    "val_cost_per_task_non_holdout": 0.011537961475641026,
+    "val_E_non_holdout": 0.02064169511950191,
+    "val_fill_rate_non_holdout": 0.9955128205128205,
+    "meets_strongest_floor": false,
+    "per_seed": [
+     {
+      "seed": 10,
+      "accuracy": 0.6333333333333333,
+      "cost_per_task": 0.01144210904871795,
+      "E": 0.02564102564102564,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 11,
+      "accuracy": 0.6717948717948717,
+      "cost_per_task": 0.01181442305128205,
+      "E": 0.020512820512820513,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 12,
+      "accuracy": 0.676923076923077,
+      "cost_per_task": 0.011346073225641025,
+      "E": 0.007692307692307693,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 13,
+      "accuracy": 0.6461538461538462,
+      "cost_per_task": 0.011549240576923078,
+      "E": 0.028720626631853787,
+      "fill_rate": 0.982051282051282
+     }
+    ]
+   },
+   {
+    "tau": 0.75,
+    "val_accuracy_non_holdout": 0.658974358974359,
+    "val_cost_per_task_non_holdout": 0.013009267958333334,
+    "val_E_non_holdout": 0.028441295546558706,
+    "val_fill_rate_non_holdout": 0.9935897435897436,
+    "meets_strongest_floor": false,
+    "per_seed": [
+     {
+      "seed": 10,
+      "accuracy": 0.6512820512820513,
+      "cost_per_task": 0.012965401607692308,
+      "E": 0.03333333333333333,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 11,
+      "accuracy": 0.6666666666666666,
+      "cost_per_task": 0.013677437284615384,
+      "E": 0.03333333333333333,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 12,
+      "accuracy": 0.6820512820512821,
+      "cost_per_task": 0.01309164573076923,
+      "E": 0.010256410256410256,
+      "fill_rate": 1.0
+     },
+     {
+      "seed": 13,
+      "accuracy": 0.6358974358974359,
+      "cost_per_task": 0.012302587210256411,
+      "E": 0.03684210526315789,
+      "fill_rate": 0.9743589743589743
+     }
+    ]
+   },
+   {
+    "tau": 0.8,
+    "val_accuracy_non_holdout": 0.6641025641025641,
+    "val_cost_per_task_non_holdout": 0.01486903149551282,
+    "val_E_non_holdout": 0.04808289618001452,
+    "val_fill_rate_non_holdout": 0.960897435897436,
+    "meets_strongest_floor": false,
+    "per_seed": [
+     {
+      "seed": 10,
+      "accuracy": 0.717948717948718,
+      "cost_per_task": 0.01543330673076923,
+      "E": 0.046632124352331605,
+      "fill_rate": 0.9897435897435898
+     },
+     {
+      "seed": 11,
+      "accuracy": 0.6205128205128205,
+      "cost_per_task": 0.014929996128205128,
+      "E": 0.0748663101604278,
+      "fill_rate": 0.958974358974359
+     },
+     {
+      "seed": 12,
+      "accuracy": 0.6846153846153846,
+      "cost_per_task": 0.014962760856410257,
+      "E": 0.010723860589812333,
+      "fill_rate": 0.9564102564102565
+     },
+     {
+      "seed": 13,
+      "accuracy": 0.6333333333333333,
+      "cost_per_task": 0.014150062266666666,
+      "E": 0.060109289617486336,
+      "fill_rate": 0.9384615384615385
+     }
+    ]
+   },
+   {
+    "tau": 0.85,
+    "val_accuracy_non_holdout": 0.7461538461538462,
+    "val_cost_per_task_non_holdout": 0.019157584296153843,
+    "val_E_non_holdout": 0.061471794956542446,
+    "val_fill_rate_non_holdout": 0.916025641025641,
+    "meets_strongest_floor": false,
+    "per_seed": [
+     {
+      "seed": 10,
+      "accuracy": 0.717948717948718,
+      "cost_per_task": 0.017567764494871796,
+      "E": 0.10112359550561797,
+      "fill_rate": 0.9128205128205128
+     },
+     {
+      "seed": 11,
+      "accuracy": 0.7230769230769231,
+      "cost_per_task": 0.019310379723076924,
+      "E": 0.0743801652892562,
+      "fill_rate": 0.9307692307692308
+     },
+     {
+      "seed": 12,
+      "accuracy": 0.7769230769230769,
+      "cost_per_task": 0.02039049042051282,
+      "E": 0.02824858757062147,
+      "fill_rate": 0.9076923076923077
+     },
+     {
+      "seed": 13,
+      "accuracy": 0.7666666666666667,
+      "cost_per_task": 0.019361702546153846,
+      "E": 0.042134831460674156,
+      "fill_rate": 0.9128205128205128
+     }
+    ]
+   },
+   {
+    "tau": 0.9,
+    "val_accuracy_non_holdout": 0.8230769230769232,
+    "val_cost_per_task_non_holdout": 0.026657189816666666,
+    "val_E_non_holdout": 0.01722285347297698,
+    "val_fill_rate_non_holdout": 0.8935897435897436,
+    "meets_strongest_floor": true,
+    "per_seed": [
+     {
+      "seed": 10,
+      "accuracy": 0.8051282051282052,
+      "cost_per_task": 0.025747063212820515,
+      "E": 0.008595988538681949,
+      "fill_rate": 0.8948717948717949
+     },
+     {
+      "seed": 11,
+      "accuracy": 0.8358974358974359,
+      "cost_per_task": 0.028298398720512822,
+      "E": 0.005747126436781609,
+      "fill_rate": 0.8923076923076924
+     },
+     {
+      "seed": 12,
+      "accuracy": 0.8205128205128205,
+      "cost_per_task": 0.028266182028205127,
+      "E": 0.03735632183908046,
+      "fill_rate": 0.8923076923076924
+     },
+     {
+      "seed": 13,
+      "accuracy": 0.8307692307692308,
+      "cost_per_task": 0.024317115305128204,
+      "E": 0.017191977077363897,
+      "fill_rate": 0.8948717948717949
+     }
+    ]
+   }
+  ],
+  "inner_fit_n_rows": 3593,
+  "inner_fit_n_pos": 2922,
+  "inner_fit_fallback_model_billed": {
+   "Qwen/Qwen2.5-0.5B-Instruct": 159.9360465116279,
+   "Qwen/Qwen2.5-1.5B-Instruct": 145.03660412180867,
+   "sim-fast-mock": 112.59411764705882
+  },
+  "inner_fit_fallback_global_billed": 144.214862232118
+ }
+}
