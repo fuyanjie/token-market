@@ -1,0 +1,71 @@
+{
+ "passed": true,
+ "threshold": 0.95,
+ "offenders": [],
+ "notes": [],
+ "diagnostics": {
+  "n_feature_rows": 5018,
+  "max_abs_corr": {
+   "difficulty": 0.446186,
+   "budget_remaining": 0.025678,
+   "consent": 0.029167,
+   "list_price": 0.078019,
+   "listed_quality": 0.396097,
+   "is_eligible": 0.0,
+   "hist_n_served": 0.286844,
+   "hist_billed_tokens_mean": 0.066876,
+   "hist_served_share": 0.385334
+  },
+  "correlations": {
+   "difficulty": {
+    "leakref_tokens_actual": 0.41973,
+    "leakref_billed_minus_actual": 0.00504,
+    "leakref_latency_ms": 0.446186,
+    "y_correct_clean": -0.167388
+   },
+   "budget_remaining": {
+    "leakref_tokens_actual": 0.010327,
+    "leakref_billed_minus_actual": -0.01669,
+    "leakref_latency_ms": -0.015993,
+    "y_correct_clean": 0.025678
+   },
+   "consent": {
+    "leakref_tokens_actual": -0.014032,
+    "leakref_billed_minus_actual": 0.011408,
+    "leakref_latency_ms": 0.006663,
+    "y_correct_clean": -0.029167
+   },
+   "list_price": {
+    "leakref_tokens_actual": 0.01851,
+    "leakref_billed_minus_actual": 0.042574,
+    "leakref_latency_ms": 0.034969,
+    "y_correct_clean": 0.078019
+   },
+   "listed_quality": {
+    "leakref_tokens_actual": -0.396097,
+    "leakref_billed_minus_actual": 0.091154,
+    "leakref_latency_ms": -0.379682,
+    "y_correct_clean": 0.082445
+   },
+   "is_eligible": {},
+   "hist_n_served": {
+    "leakref_tokens_actual": -0.101534,
+    "leakref_billed_minus_actual": 0.199485,
+    "leakref_latency_ms": 0.044665,
+    "y_correct_clean": -0.286844
+   },
+   "hist_billed_tokens_mean": {
+    "leakref_tokens_actual": 0.013074,
+    "leakref_billed_minus_actual": -0.021225,
+    "leakref_latency_ms": 0.028246,
+    "y_correct_clean": -0.066876
+   },
+   "hist_served_share": {
+    "leakref_tokens_actual": -0.13288,
+    "leakref_billed_minus_actual": 0.274613,
+    "leakref_latency_ms": 0.05625,
+    "y_correct_clean": -0.385334
+   }
+  }
+ }
+}

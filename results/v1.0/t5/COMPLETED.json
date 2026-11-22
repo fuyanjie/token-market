@@ -1,0 +1,10 @@
+{
+ "status": "COMPLETED",
+ "smoke": false,
+ "finished_at": "2026-11-22T10:43:55+0800",
+ "elapsed_s": 22.44,
+ "n_eval_runs": 126,
+ "leakage_passed": true,
+ "protocol_sha256": "4301f4b281e90b1b835d1e7868e3b00c98bc8eaee382cf29f8646c6fa7272542",
+ "scale_yaml_sha256": "780e9b961d89bad6fd520c9cbfd5710055ff2d5d3e0ff3bcfbd745709eb0da6c"
+}
