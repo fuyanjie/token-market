@@ -34,6 +34,9 @@
 \usepackage{newunicodechar}
 \usepackage{xurl}        % allow line breaks anywhere inside \code{} identifiers/paths
 \setlength{\emergencystretch}{3em}
+\setlength{\textfloatsep}{7pt plus 1pt minus 2pt}
+\setlength{\dbltextfloatsep}{7pt plus 1pt minus 2pt}
+\setlength{\floatsep}{6pt plus 1pt minus 2pt}
 
 %% Inline code / identifiers / paths: breakable typewriter text.
 \DeclareUrlCommand\code{\urlstyle{tt}}
@@ -84,7 +87,7 @@
 \begin{abstract}
 Cross-border procurement of LLM inference increasingly looks like a marketplace: buyers route tasks under jurisdiction constraints, sellers post prices and capacities, and quality---and fraud---are revealed only partially and late. Existing simulators either study exchange microstructure (limit-order books, high-frequency trading) or bandit-style routing under \emph{immediate} correctness labels. Neither couples \textbf{hard compliance filters}, \textbf{strategic seller fraud} (model swap, token theft, and selective downgrade on hard questions), \textbf{escrow / slash settlement}, and \textbf{sparse or delayed outcome labels} in one reproducible generator.
 
-We present a \textbf{compliance-constrained reasoning-token market simulator}---not a CLOB---with a five-file JSONL schema, export scripts, a leakage-checked buyer feature view, and a protocol frozen before the 40-seller main table (clarifications in Appendix~\ref{app:amend}); public artifact access is pending (\S\ref{sec:data}). The platform has five layers: admission/compliance, routing and portfolio procurement, escrow settlement, oversight audit, and feedback/audit trails. Evaluation is \textbf{two-dimensional}: buyer exposure $\Emet$ (\code{fraud_share}) and seller intent $\Qmet$ (strategic sellers' learned attack probability while listed). Policies are shown as points on an $(\Emet,\Qmet)$ Pareto plot with intervals; we do not declare a winner, and the joint objective $J$ is an appendix column; secondary cost/accuracy intervals are not reported. Protocol tasks cover router $\times$ fixed-rate audit effects (T1), degradation of bandit routers as labels become sparse (T2), equal-budget adaptive audit (T3, defined but not reported), and seller risk ranking from buyer-observable features (T4). Baselines include market-adapted implementations of PILOT and StageRoute (with its stage MIP), fixed routers, and random, fixed-rate, and risk-adaptive audits. Results use at least 20 seeds, paired-by-seed bootstrap intervals, and Holm correction. At 40 sellers, both bandit routers' $\Emet$ rises significantly as labels vanish; StageRoute's $\Qmet$ is identifiable and rises as $\pi$ falls, while PILOT's $\Qmet$ does not rise relative to $\pi=1$ (and is lower only at $\pi=0$ and $0.02$); the v1.0 48-round audit arms sit at low $\Emet$ mainly by rarely trading with strategic sellers. In this simulator at default parameters and 1000 rounds, audit rates at/above frozen break-even ($a\in\{0.05,0.10,0.20\}$) and risk-adaptive lower $\Emet$ and $\Qmet$ for PILOT and strongest by the pre-run three-learner direction rule (Decision A result 1, \S\ref{sec:t1}). Official T4 (D3) is not scorable; a PILOT, $\pi=1$ supplement is in \S\ref{sec:t4}.
+We present a \textbf{compliance-constrained reasoning-token market simulator}---not a CLOB---with a five-file JSONL schema, export scripts, a leakage-checked buyer feature view, and a protocol frozen before the 40-seller main table (clarifications in Appendix~\ref{app:amend}); public artifact access is pending (\S\ref{sec:data}). The platform has five layers: admission/compliance, routing and portfolio procurement, escrow settlement, oversight audit, and feedback/audit trails. Evaluation is \textbf{two-dimensional}: buyer exposure $\Emet$ (\code{fraud_share}) and seller intent $\Qmet$ (strategic sellers' learned attack probability while listed). Policies are shown as points on an $(\Emet,\Qmet)$ Pareto plot with intervals; we do not declare a winner, and the joint objective $J$ is an appendix column; v1.0 secondary cost/accuracy intervals are not reported. Protocol tasks cover router $\times$ fixed-rate audit effects (T1), degradation of bandit routers as labels become sparse (T2), equal-budget adaptive audit (T3, defined but not reported), seller risk ranking from buyer-observable features (T4), and task-conditioned model/seller recommendation (T5, defined but not reported). Baselines include market-adapted implementations of PILOT and StageRoute (with its stage MIP), fixed routers, and random, fixed-rate, and risk-adaptive audits. Results use at least 20 seeds, paired-by-seed bootstrap intervals, and Holm correction. At 40 sellers, both bandit routers' $\Emet$ rises significantly as labels vanish; StageRoute's $\Qmet$ is identifiable and rises as $\pi$ falls, while PILOT's $\Qmet$ does not rise relative to $\pi=1$ (and is lower only at $\pi=0$ and $0.02$); the v1.0 48-round audit arms sit at low $\Emet$ mainly by rarely trading with strategic sellers. In this simulator at default parameters and 1000 rounds, audit rates at/above frozen break-even ($a\in\{0.05,0.10,0.20\}$) and risk-adaptive lower $\Emet$ and $\Qmet$ for PILOT and strongest by the pre-run three-learner direction rule (Decision A result 1, \S\ref{sec:t1}). Official T4 (D3) is not scorable; a PILOT, $\pi=1$ supplement is in \S\ref{sec:t4}.
 We do not propose a new deterrence or routing method; the contribution is the generator, schema, and protocol.
 \end{abstract}
 
@@ -111,7 +114,7 @@ Two nearby literatures miss the coupling. Market-microstructure and exchange sim
 \begin{enumerate}
 \item \textbf{Five-layer trading platform} for compliance-constrained reasoning-service trades: admission $\rightarrow$ routing/portfolio procurement $\rightarrow$ escrow settlement $\rightarrow$ oversight $\rightarrow$ feedback and trails. Design principle: borrow \emph{audit economics} (sampling, slash, freeze); do \textbf{not} port CLOB, HFT, circuit breakers, or multi-CCP clearing.
 \item \textbf{Five-file JSONL schema} (\code{sellers}, \code{buyers}, \code{orders}, \code{audits}, \code{episodes}) with join keys, a leakage-checked buyer feature view, and separate labels; repository scripts and staging artifacts (intended code MIT, derived data CC BY 4.0; public pack pending).
-\item \textbf{Tasks T1--T4} under a protocol frozen before the 40-seller main table: a two-dimensional primary evaluation $(\Emet,\Qmet)$ reported as a Pareto plot without a declared winner; in this simulator at default parameters and 1000 rounds, audit rates at/above frozen break-even ($a\in\{0.05,0.10,0.20\}$) and risk-adaptive lower $\Emet$ and $\Qmet$ for PILOT and strongest by the pre-run three-learner direction rule (result 1); T2 reports sparse-label changes; T4 ranks sellers by future fraud risk from a fixed buyer-observable feature whitelist.
+\item \textbf{Tasks T1--T5} under a protocol frozen before the 40-seller main table (plus frozen T5): a two-dimensional primary evaluation $(\Emet,\Qmet)$ reported as a Pareto plot without a declared winner; in this simulator at default parameters and 1000 rounds, audit rates at/above frozen break-even ($a\in\{0.05,0.10,0.20\}$) and risk-adaptive lower $\Emet$ and $\Qmet$ for PILOT and strongest by the pre-run three-learner direction rule (result 1); T2 reports sparse-label changes; T4 ranks sellers by future fraud risk from a fixed buyer-observable feature whitelist; T5 defines task-conditioned, price-constrained model/seller recommendation from simulation logs (defined, not reported).
 \item \textbf{Baselines}: market-adapted PILOT and StageRoute (with stage MIP), cheapest/strongest fixed routers, random-intensity audit ($a_t\sim U(0,2a)$ with $a=0.1$), fixed-rate audits $a\in\{0.05,0.1,0.2\}$ (the $a=0.1$ arm is the D3 reference baseline, not our method), and risk-adaptive audit; for T4, logistic regression, GBDT, and a rule.
 \end{enumerate}
 
@@ -147,7 +150,8 @@ The artifact is a \textbf{posted-price reasoning-service market} with jurisdicti
 \begin{table}[t]
 \caption{Five platform layers and their roles (code map in Appendix~\ref{app:repro}).}
 \label{tab:layers}
-\small
+\footnotesize
+\renewcommand{\arraystretch}{0.92}
 \begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm} X@{}}
 \toprule
 Layer & Role \\
@@ -165,10 +169,12 @@ Layer & Role \\
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.9\linewidth]{figures/fig1_five_layers.png}
+  \includegraphics[width=0.80\linewidth]{figures/fig1_five_layers.png}
+  \vspace{-4pt}
   \caption{Five platform layers (admission $\rightarrow$ routing/portfolio procurement $\rightarrow$ escrow $\rightarrow$ oversight $\rightarrow$ feedback/trails). Posted-price market; not a CLOB.}
   \Description{Block diagram of the five platform layers of the reasoning-token market: admission and compliance, routing and portfolio procurement, escrow settlement, oversight, and feedback and trails.}
   \label{fig:layers}
+  \vspace{-4pt}
 \end{figure}
 
 \subsection{Market primitives}
@@ -209,7 +215,7 @@ Do \textbf{not} build: CLOB, price--time priority matching, HFT makers, circuit 
 \begin{equation}
 J = \mathrm{accuracy} - \lambda \cdot \mathrm{violation\_rate} - \mu \cdot \Emet,
 \end{equation}
-with $\lambda=1.0$, $\mu=0.5$, is reported only in Appendix~\ref{app:secondary}; secondary cost/accuracy intervals are defined but not reported. Accuracy is task-level (portfolio answer vs gold); violation rate is compliance breaches per task.
+with $\lambda=1.0$, $\mu=0.5$, is reported only in Appendix~\ref{app:secondary}; for the v1.0 main table, secondary cost/accuracy intervals are defined but not reported. Existing official Decision A \code{accuracy} and \code{cost_per_task} intervals are tabulated in Appendix~\ref{app:secondary} (not used for main-text ranking and do not change $\Emet/\Qmet$). Accuracy is task-level (portfolio answer vs gold); violation rate is compliance breaches per task.
 
 %% =====================================================================
 \section{Data Release}
@@ -242,7 +248,8 @@ File & Role \\
 \begin{table*}[t]
 \caption{Sample fields (truncated; no secrets). Legacy small-scale schema illustrations; prices are synthetic. The official 40-seller board is separate.}
 \label{tab:samples}
-\small
+\footnotesize
+\renewcommand{\arraystretch}{0.90}
 \begin{tabularx}{\textwidth}{@{}l X@{}}
 \toprule
 File & Compact sample keys $\rightarrow$ values \\
@@ -270,7 +277,8 @@ Board & Official 40-seller \code{results/v1.0/main/per_seed.csv}: \code{config_h
 \begin{table}[t]
 \caption{T4 feature whitelist and label blacklist (fixed before running).}
 \label{tab:labels}
-\small
+\footnotesize
+\renewcommand{\arraystretch}{0.90}
 \begin{tabularx}{\columnwidth}{@{}l X@{}}
 \toprule
 & Fields \\
@@ -301,6 +309,10 @@ Dependencies are in top-level \code{requirements.txt}; \code{scripts/run_v1.py} 
 
 \paragraph{Generation and coverage.} The synthetic pool is seeded, cycles task types/difficulties, and is reused via per-run shuffled permutations. Decision A cycles the 80-task pool; the v1.0 board also reuses that pool. Separately, \code{data/long_tasks.jsonl} contains the documented GSM8K / MATH-500 subset: seeded selection of long-solution GSM8K items and integer-answer, level-filtered MATH-500 items (\code{LICENSES/DATA_LICENSES.md}); its existence does not establish long-task coverage for the main results. The staged cache contains generations, parsed answers, gold correctness, and token counts from \code{Qwen/Qwen2.5-0.5B-Instruct} and \code{Qwen/Qwen2.5-1.5B-Instruct}. Frozen \code{configs/v1.0/frozen/scale.yaml} also uses \code{sim-fast-mock} (\code{backend: mock}), which samples correctness/tokens from configured profiles, not a third cached LLM. Marketplace audits, feedback, budgets, and strategic learning are simulated. These facts and the roster in \S\ref{sec:primitives} quantify workload coverage inside the simulator, not external representativeness. Prices are simulated, not public-list calibrated; CN/SG/BR tags are simplified controls, not real legal regimes. Appendix~\ref{app:price-ratios} reports a quantitative, descriptive price-ratio comparison with the unused 2026-11-10 public-list snapshot: price evidence only, not production-market validation or calibration, and not applied to official runs.
 
+\subsection{Internal coverage and data-quality checks}
+\label{sec:data-quality}
+Reproducibility rests on the v0.1 regression gate (\S\ref{sec:protocol}) and leakage checks (\S\ref{sec:featlabel}). Appendix~\ref{app:data-quality} documents internal task-pool/cache coverage (80 pool IDs vs.\ 77 distinct prompts, a documentation distinction that does not alter the 80-task pool wording) separately from price ratios. Appendix~\ref{app:price-ratios}/Table~\ref{tab:price-ratios} gives descriptive price ratios only, not calibration. There are no real transaction logs and no claim of external representativeness.
+
 %% =====================================================================
 \section{Benchmark Protocol}
 \label{sec:protocol}
@@ -330,6 +342,10 @@ The protocol (\code{docs/PROTOCOL_v1.0.md}) was frozen and reviewed before the 4
 \paragraph{Split.} By run: seeds 0--13 train, seeds 14--19 test (70/30 rounded when more seeds are run); no test run appears in training. The main table uses a fixed seller roster; T4 resamples the roster (\code{--resample-roster}), otherwise quote price, declared model, and jurisdiction can identify strategic sellers.
 \paragraph{Models and ablations.} Logistic regression, GBDT, and a rule baseline (under-priced quote plus anomalous billed tokens). A \textbf{without-latency} ablation drops latency, because simulated latency may be determined by the served model and make swaps trivially visible. Current-simulator results use seven features; the post-5b evaluation is future work (\S\ref{sec:featlabel}), defined but not reported.
 
+\subsection*{T5 --- Task-conditioned model/seller recommendation (defined, not reported)}
+\label{sec:t5protocol}
+\paragraph{Goal, features, split, and baselines.} Frozen in \code{docs/PROTOCOL_T5.md}, distinct from online policies (T1/T2) and T4 risk ranking: given a task, recommend one compliant eligible seller/model at minimum expected billed cost with predicted $P(\text{correct}\wedge\neg\text{attacked})\ge\tau$ ($\tau$ frozen on train). Whitelist-only task and pre-decision seller features (no \code{actual_model}, \code{tokens_actual}, attack/audit fields, current latency, gold, prompt text/hash, or raw seller IDs); leakage check required before scoring. Resampled roster (\code{--resample-roster}): $\pi=1$ train logs (seeds 0--13, $\varepsilon=0.20$ random/strongest policy), online test evaluation (seeds 14--19, $n=6$, $\pi\in\{1,0.1,0\}$) plus a 15-prompt hold-out side table (not catalog-/cache-disjoint). Two-stage LR/GBDT baselines vs.\ cheapest, strongest, random, PILOT, and StageRoute on accuracy, \code{cost_per_task}, violation rate, $\Emet$, \code{fill_rate}, and side oracle regret. Defined, not reported here.
+
 \subsection*{A2 --- Compliance control}
 The compliance filter is the only reason violation rates are zero; a \textbf{filter-off} control reports the violation-rate difference.
 
@@ -358,7 +374,7 @@ Decision A has 2880 runs: 48 factorial cells $\times$ 3 learners $\times$ 20 see
 \label{tab:t2}
 \footnotesize
 \setlength{\tabcolsep}{2.4pt}
-\renewcommand{\arraystretch}{0.92}
+\renewcommand{\arraystretch}{0.86}
 \begin{tabular}{@{}rccccccc@{}}
 \toprule
 $\pi$ & $\Emet$ PILOT & $\Emet$ StageRoute & $\Emet$ D3-ref & $\Qmet$ PILOT & $\Qmet$ StageRoute & $\Qmet$ D3-ref & Tail-trade runs \\
@@ -379,15 +395,15 @@ $\pi$ & $\Emet$ PILOT & $\Emet$ StageRoute & $\Emet$ D3-ref & $\Qmet$ PILOT & $\
 
 \begin{figure*}[t]
   \centering
-  \includegraphics[width=0.9\textwidth]{figures/fig3_40seller_E_Q_vs_pi.pdf}
-  \vspace{-6pt}
+  \includegraphics[width=0.68\textwidth]{figures/fig3_40seller_E_Q_vs_pi.pdf}
+  \vspace{-8pt}
   \caption{Buyer exposure $\Emet$ (a) and seller intent $\Qmet$ (b) vs.\ reveal probability $\pi$ at 40 sellers. Lines are means over $n=20$ seeds; bands are 95\% paired-bootstrap CIs (10,000 resamples). The five audit arms share one colour and differ by line style. $\pi$ axis: symlog, linear below 0.08. $\Qmet$ markers: solid 17--20/20 tail-trade runs; half-filled 12--13/20 (audits, just identifiable); hollow 0/20 (cheapest). Audit and fixed-router curves are flat in $\pi$ by construction and are not reported as a finding.}
   \Description{Two line charts against reveal probability pi at 40 sellers. Left: E for PILOT and StageRoute rises as pi falls and the two are close at pi = 0; cheapest stays at 0; strongest is flat near 0.45; audit arms are flat near 0. Right: Q for PILOT stays high and dips only at the lowest pi; StageRoute Q, drawn solid, rises as pi falls; cheapest Q is hollow throughout; audit arms are flat and drawn half-filled (just identifiable, 12-13 of 20 runs).}
   \label{fig:t2}
-  \vspace{-6pt}
+  \vspace{-8pt}
 \end{figure*}
 
-\paragraph{Reading.} At 40 sellers, $\Emet$ of both bandit routers is significantly worse at every $\pi<1$ than at $\pi=1$ (paired, Holm over $\pi$). StageRoute's $\Qmet$ is identifiable (tail-trade runs 85--100\%) and is significantly higher at every lower $\pi$ than at $\pi=1$. PILOT always has 20/20 tail-trade runs; its $\Emet$ is significantly worse at every lower $\pi$, while for $\pi\ge 0.04$ its $\Qmet$ is 0.88--0.94 with no significant rise vs.\ $\pi=1$, and is significantly lower only at $\pi=0$ (0.791) and $\pi=0.02$ (0.825); we do not interpret this as deterrence. At $\pi=0$, PILOT and StageRoute $\Emet$ are already close and not significantly different: $+0.006$ [$-0.007$, $+0.019$], $p_{\mathrm{Holm}}=1.0$. Cheapest remains at $\Emet=0$ with $\Qmet$ not identifiable. The v1.0 48-round audit arms are as in Appendix~\ref{app:t1-v10} (low $\Emet$ by rare trade with strategic sellers, not deterrence); their flatness in $\pi$ is by construction. The $J$ crossover is an appendix result; under the pre-registered rule the interval $(0.10,0.12)$ is not kept.
+\paragraph{Reading.} T2 shows that dense-label classical routers (PILOT, StageRoute) have significantly worse buyer exposure $\Emet$ when labels become sparse---problem detection under this setting, not a critique of those methods in their original paper settings. At 40 sellers, $\Emet$ of both bandit routers is significantly worse at every $\pi<1$ than at $\pi=1$ (paired, Holm over $\pi$). StageRoute's $\Qmet$ is identifiable (tail-trade runs 85--100\%) and is significantly higher at every lower $\pi$ than at $\pi=1$. PILOT always has 20/20 tail-trade runs; its $\Emet$ is significantly worse at every lower $\pi$, while for $\pi\ge 0.04$ its $\Qmet$ is 0.88--0.94 with no significant rise vs.\ $\pi=1$, and is significantly lower only at $\pi=0$ (0.791) and $\pi=0.02$ (0.825); we do not interpret this as deterrence. At $\pi=0$, PILOT and StageRoute $\Emet$ are already close and not significantly different: $+0.006$ [$-0.007$, $+0.019$], $p_{\mathrm{Holm}}=1.0$. Cheapest remains at $\Emet=0$ with $\Qmet$ not identifiable. The v1.0 48-round audit arms are as in Appendix~\ref{app:t1-v10} (low $\Emet$ by rare trade with strategic sellers, not deterrence); their flatness in $\pi$ is by construction. The $J$ crossover is an appendix result; under the pre-registered rule the interval $(0.10,0.12)$ is not kept.
 
 \subsection{T4 --- Seller risk ranking}
 \label{sec:t4}
@@ -397,30 +413,7 @@ A PILOT, $\pi=1$ supplement on the current simulator (before the 5b change), wit
 
 \subsection{A2 --- Compliance control}
 \label{sec:a2}
-With the filter off at $\pi=1$ over seeds 0--19 (Table~\ref{tab:a2}), every method's violation rate rises significantly from 0 (PILOT 0.156 [0.152, 0.159], StageRoute 0.178 [0.169, 0.188], cheapest 0.065 [0.062, 0.068], strongest 0.191 [0.185, 0.197], D3-ref and the other audit arms $\approx$0.166--0.167). Fill rates have no significant change after Holm. The zeros in the v1.0 baseline table therefore come from the filter, not from an absence of violating buyer--seller pairs. The D3 filter-off arm is \code{fixed_audit_a0.10} with \code{--no-compliance-filter}. $\Emet$ of PILOT, StageRoute, and cheapest does not change significantly; strongest rises significantly (0.446$\rightarrow$0.519). The audit $\Emet$ dip is significant, but with the filter off their tail-trade runs fall to 1/20, so $\Qmet$ is not identifiable---we do not report those $\Qmet$ values, and we do not read the dip as a reduction in attacks from turning the filter off. StageRoute's filter-off tail-trade runs are 11/20, just over the identifiability line, and $\Qmet$ is almost unchanged; we draw no strong reading. This control is only at $\pi=1$.
-
-\begin{table}[!htbp]
-\caption{A2 filter control, 40 sellers, $\pi=1$, seeds 0--19, paired (mean [95\% CI]). Viol.\ ON $=0$ for every method. Fill-rate off$-$on differences are all Holm-n.s.\ (not shown). D3 OFF is \texttt{fixed\_audit\_a0.10} with \texttt{--no-compliance-filter}. Audit filter-off $\Qmet$ omitted (1/20 tail trades, not identifiable).}
-\label{tab:a2}
-\scriptsize
-\setlength{\tabcolsep}{2.2pt}
-\renewcommand{\arraystretch}{0.9}
-\begin{tabular}{@{}lcccc@{}}
-\toprule
-Policy & Viol.\ OFF & $\Emet$ ON & $\Emet$ OFF & Tail ON / OFF \\
-\midrule
-PILOT & \cil{0.156}{0.152}{0.159} & \cil{0.161}{0.154}{0.168} & \cil{0.159}{0.154}{0.164} & 20/20 / 20/20 \\
-StageRoute & \cil{0.178}{0.169}{0.188} & \cil{0.056}{0.045}{0.068} & \cil{0.050}{0.036}{0.066} & 17/20 / 11/20 \\
-Cheapest & \cil{0.065}{0.062}{0.068} & \cil{0.000}{0.000}{0.000} & \cil{0.000}{0.000}{0.000} & 0/20 / 0/20 \\
-Strongest & \cil{0.191}{0.185}{0.197} & \cil{0.446}{0.436}{0.455} & \cil{0.519}{0.512}{0.526} & 20/20 / 20/20 \\
-Random-intensity & \cil{0.166}{0.159}{0.173} & \cil{0.005}{0.004}{0.005} & \cil{0.001}{0.001}{0.002} & 13/20 / 1/20 \\
-Fixed-rate $a=0.05$ & \cil{0.167}{0.160}{0.174} & \cil{0.005}{0.004}{0.006} & \cil{0.001}{0.001}{0.002} & 13/20 / 1/20 \\
-D3-ref ($a=0.1$) & \cil{0.166}{0.159}{0.173} & \cil{0.005}{0.004}{0.006} & \cil{0.001}{0.001}{0.002} & 13/20 / 1/20 \\
-Fixed-rate $a=0.2$ & \cil{0.167}{0.161}{0.174} & \cil{0.004}{0.003}{0.005} & \cil{0.001}{0.001}{0.002} & 13/20 / 1/20 \\
-Risk-adaptive & \cil{0.166}{0.159}{0.172} & \cil{0.005}{0.004}{0.006} & \cil{0.001}{0.001}{0.002} & 12/20 / 1/20 \\
-\bottomrule
-\end{tabular}
-\end{table}
+With the filter off at $\pi=1$ over seeds 0--19 (Table~\ref{tab:a2}, Appendix~\ref{app:secondary}), every method's violation rate rises significantly from 0 (PILOT 0.156 [0.152, 0.159], StageRoute 0.178 [0.169, 0.188], cheapest 0.065 [0.062, 0.068], strongest 0.191 [0.185, 0.197], D3-ref and the other audit arms $\approx$0.166--0.167). Fill rates have no significant change after Holm. The zeros in the v1.0 baseline table therefore come from the filter, not from an absence of violating buyer--seller pairs. The D3 filter-off arm is \code{fixed_audit_a0.10} with \code{--no-compliance-filter}. $\Emet$ of PILOT, StageRoute, and cheapest does not change significantly; strongest rises significantly (0.446$\rightarrow$0.519). The audit $\Emet$ dip is significant, but with the filter off their tail-trade runs fall to 1/20, so $\Qmet$ is not identifiable---we do not report those $\Qmet$ values, and we do not read the dip as a reduction in attacks from turning the filter off. StageRoute's filter-off tail-trade runs are 11/20, just over the identifiability line, and $\Qmet$ is almost unchanged; we draw no strong reading. This control is only at $\pi=1$.
 %% =====================================================================
 \section{Limitations}
 \label{sec:limitations}
@@ -433,19 +426,20 @@ Risk-adaptive & \cil{0.166}{0.159}{0.172} & \cil{0.005}{0.004}{0.006} & \cil{0.0
 \item \textbf{T4 realism.} Before the 5b change, the simulator does not separate hidden reasoning from visible answers, so several realistic buyer signals (answer length, quality) are excluded for leakage; latency may be more revealing than in real markets, hence the without-latency ablation.
 \item \textbf{Simulation-only audit effect.} Decision A shows an audit effect only in this simulator under default parameters ($P=0.25$, $\pi=1$), 1000 rounds, and the three seller rules (egreedy, fictitious play, EXP3). Under EXP3 at default $P=0.25$, $\Qmet$ stays $\approx0.5$, PILOT's $\Emet$ shows no significant change, and PILOT's qualifying $\Qmet$ decreases are small. This does not establish effects in real API markets or deployments. T3's equal-budget comparison and long delist are defined but not reported.
 \item \textbf{No resale / rewrite / distill event graph.} No \code{event_type}$\in$\{\code{resale},\code{rewrite},\code{distill}\} layer, parent/source order links, or content/output hashes; strong provenance is deferred to a later event layer.
+\item \textbf{Narrow catalog, prompt reuse, and T5 scope.} Official backends are \code{Qwen2.5-0.5B}, \code{Qwen2.5-1.5B}, and \code{sim-fast-mock} (two real checkpoints); reused tasks permit prompt memorization. T5 (defined, not reported) only tests whether simulation logs train a task-level, price-constrained recommender baseline under this catalog and synthetic prices, not coverage of real multi-model procurement.
 \end{enumerate}
 
 %% =====================================================================
 \section{Conclusion}
 \label{sec:conclusion}
 
-We present a \textbf{compliance-constrained reasoning-token market simulator}, schema, and protocol for strategic fraud and sparse feedback; public release remains pending (\S\ref{sec:data}). The platform is deliberately \emph{not} a CLOB: it exposes admission, routing, escrow, oversight, and feedback trails as a joinable five-file export with a leakage-checked feature view. Evaluation is two-dimensional (buyer exposure $\Emet$, seller intent $\Qmet$) and reported as a Pareto plot without a declared winner. At 40 sellers, both bandit routers' $\Emet$ rises significantly as labels vanish; StageRoute's $\Qmet$ is identifiable and rises as $\pi$ falls, while PILOT's $\Qmet$ does not rise relative to $\pi=1$ (and is lower only at $\pi=0$ and $0.02$). The v1.0 48-round audit arms sit at low $\Emet$ mainly by rarely trading with strategic sellers, which is not read as deterrence. In this simulator at default parameters and 1000 rounds, audit rates at/above frozen break-even ($a\in\{0.05,0.10,0.20\}$) and risk-adaptive lower $\Emet$ and $\Qmet$ for PILOT and strongest by the pre-run three-learner direction rule (result 1; EXP3 caveat in \S\ref{sec:t1}). T4 is defined, but under the official D3 setting the test set has only two positives and most test runs cannot yield a per-protocol AUROC, so we do not report detection performance. A PILOT, $\pi=1$ supplement is scorable and is reported in \S\ref{sec:t4}; it is not a new official main result. Designing methods that move the Pareto front is left to future work. T3, secondary cost/accuracy intervals, and post-5b T4 are defined but not reported in this manuscript.
+We present a \textbf{compliance-constrained reasoning-token market simulator}, schema, and protocol for strategic fraud and sparse feedback; public release remains pending (\S\ref{sec:data}). The platform is deliberately \emph{not} a CLOB: it exposes admission, routing, escrow, oversight, and feedback trails as a joinable five-file export with a leakage-checked feature view. Evaluation is two-dimensional (buyer exposure $\Emet$, seller intent $\Qmet$) and reported as a Pareto plot without a declared winner. At 40 sellers, both bandit routers' $\Emet$ rises significantly as labels vanish; StageRoute's $\Qmet$ is identifiable and rises as $\pi$ falls, while PILOT's $\Qmet$ does not rise relative to $\pi=1$ (and is lower only at $\pi=0$ and $0.02$). The v1.0 48-round audit arms sit at low $\Emet$ mainly by rarely trading with strategic sellers, which is not read as deterrence. In this simulator at default parameters and 1000 rounds, audit rates at/above frozen break-even ($a\in\{0.05,0.10,0.20\}$) and risk-adaptive lower $\Emet$ and $\Qmet$ for PILOT and strongest by the pre-run three-learner direction rule (result 1; EXP3 caveat in \S\ref{sec:t1}). T4 is defined, but under the official D3 setting the test set has only two positives and most test runs cannot yield a per-protocol AUROC, so we do not report detection performance. A PILOT, $\pi=1$ supplement is scorable and is reported in \S\ref{sec:t4}; it is not a new official main result. Designing methods that move the Pareto front is left to future work. T3, T5, v1.0 secondary cost/accuracy intervals, and post-5b T4 are defined but not reported in this manuscript.
 
 %% =====================================================================
 \section*{Ethics and Synthetic-Data Statement}
 \label{sec:ethics}
 
-Budgets, stakes, corridor fees, and compliance rule identifiers are \textbf{synthetic}; prices are uncalibrated (the 2026-11-10 public-list snapshot was not applied; Appendix~\ref{app:price-ratios}). No real marketplace participant logs or transactions are used; GSM8K / MATH-500 are public MIT-licensed task subsets, not human-subject market data. CN/SG/BR tags are scenario controls, not measured country-level fraud rates or legal advice. Math-only/reused tasks, two cached models plus mock, simulated latency, and uncalibrated prices limit transfer; classifiers may learn simulator shortcuts. Scores must not support real seller sanctions or national-risk rankings. Runs require no commercial API calls or keys; cached outputs are research fixtures. The intended use is procurement, audit, and feedback research, not evading real marketplace detection. Users must respect Feature/Label separation (\S\ref{sec:featlabel}) to avoid leakage and overstated detection performance.
+Budgets, stakes, corridor fees, and compliance rule identifiers are \textbf{synthetic}; prices are uncalibrated (the 2026-11-10 public-list snapshot was not applied; Appendix~\ref{app:price-ratios}). No real marketplace participant logs or transactions are used; GSM8K / MATH-500 are public MIT-licensed task subsets, not human-subject market data. CN/SG/BR tags are scenario controls, not measured country-level fraud rates or legal advice. Math-only/reused tasks, two cached models plus mock, simulated latency, and uncalibrated prices limit transfer; classifiers may learn simulator shortcuts. Scores and any trained recommenders must not support real seller sanctions, procurement sanctions, production vendor selection, or national-risk rankings. Runs require no commercial API calls or keys; cached outputs are research fixtures. The intended use is procurement, audit, and feedback research, not evading real marketplace detection. Users must respect Feature/Label separation (\S\ref{sec:featlabel}) to avoid leakage and overstated detection performance.
 
 %% =====================================================================
 \FloatBarrier
@@ -585,6 +579,33 @@ Table~\ref{tab:price-ratios} is generated only from Research's adopted {\def\Url
 \input{tables/price_ratios.tex}
 \FloatBarrier
 
+\section{Internal data quality and coverage}
+\label{app:data-quality}
+
+This appendix records internal reproducibility, leakage hygiene, and workload-coverage checks separately from the descriptive price-ratio comparison in Appendix~\ref{app:price-ratios}. It does \textbf{not} upgrade Appendix~\ref{app:price-ratios} / Table~\ref{tab:price-ratios} into price calibration or external market validation.
+
+\paragraph{Process checks.} Before scaling to 40 sellers, the v0.1 regression gate (\S\ref{sec:protocol}) verified 1350 compared values across seeds 0--2 with maximum $|\Delta|=0$. Feature/label separation (\S\ref{sec:featlabel}) enforces whitelists and blacklists via \code{scripts/check_t4_leakage.py} for T4 and the locked T5 whitelist/blacklist in \code{docs/PROTOCOL_T5.md}.
+
+\paragraph{Task-pool and cache coverage.} Table~\ref{tab:data-quality} summarizes internal asset counts documented in \code{docs/v1.1/db/TASKS_AND_CACHE.md}. In the seeded synthetic pool (\code{task-pool-1234}, cycling arithmetic, word problems, sequence, and logic across difficulties 1--3), 80 pool IDs map to 77 distinct question texts because three synthetic templates repeat; this is a documentation distinction, not a correction to the main-text 80-task pool wording. The cache \code{cache/llm_outputs.jsonl} holds 250 unique keys (125 per Qwen checkpoint: 77 short + 48 long), keyed by \code{(model_name, prompt_sha256, max_new_tokens)} rather than task ID or seed. \code{sim-fast-mock} samples from configured profiles. The pool and cache are shared across run seeds and train/test splits (not task- or cache-disjoint), and the separate \code{data/long_tasks.jsonl} subset (28 GSM8K + 20 MATH-500) is not main-experiment coverage.
+
+\begin{table*}[h]
+\caption{Internal task-pool and model-cache coverage (from \texttt{docs/v1.1/db/TASKS\_AND\_CACHE.md}). Internal workload inventory only; not external representativeness.}
+\label{tab:data-quality}
+\small
+\begin{tabularx}{\textwidth}{@{}l r r X@{}}
+\toprule
+Asset & Rows / IDs & Distinct prompts & Scope \\
+\midrule
+Synthetic pool (default/scale/Decision A) & 80 IDs & 77 & Seeded (\code{task-pool-1234}); 3 repeated templates (documentation distinction, does not alter main-text 80-task pool wording) \\
+\code{data/long_tasks.jsonl} & 48 IDs & 48 & 28 GSM8K + 20 MATH-500 (separate asset; not main-table coverage) \\
+\code{cache/llm_outputs.jsonl} & 250 keys & 125 & 125 per Qwen checkpoint (\code{Qwen2.5-0.5B}, \code{Qwen2.5-1.5B}); 77 short + 48 long each; \code{sim-fast-mock} uses configured profiles \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\paragraph{External dimensions with no quantitative evidence.} Table~\ref{tab:price-ratios} (Appendix~\ref{app:price-ratios}) compares internal price spreads descriptively and is not calibration. Because no real marketplace transaction logs are used, there is no external quantitative validation for latency distributions, transaction volume, executed trades, seller populations, fraud prevalence, jurisdiction compliance regimes, or production API pricing (\code{docs/v1.1/db/REPRESENTATIVENESS.md}).
+\FloatBarrier
+
 \section{Decision A paired contrasts (v1.2)}
 \label{app:decision-a}
 
@@ -649,8 +670,36 @@ Risk-adaptive audit & \cil{0.005}{0.004}{0.006} & \cil{0.006}{0.005}{0.007} & \c
 \section{Secondary results}
 \label{app:secondary}
 
+\paragraph{A2 compliance filter control (40 sellers, $\pi=1$).}
+Table~\ref{tab:a2} preserves the frozen A2 filter-off table referenced in \S\ref{sec:a2} with all numbers unchanged.
+
+\begin{table}[!htbp]
+\caption{A2 filter control, 40 sellers, $\pi=1$, seeds 0--19, paired (mean [95\% CI]). Viol.\ ON $=0$ for every method. Fill-rate off$-$on differences are all Holm-n.s.\ (not shown). D3 OFF is \texttt{fixed\_audit\_a0.10} with \texttt{--no-compliance-filter}. Audit filter-off $\Qmet$ omitted (1/20 tail trades, not identifiable).}
+\label{tab:a2}
+\scriptsize
+\setlength{\tabcolsep}{2.2pt}
+\renewcommand{\arraystretch}{0.9}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Policy & Viol.\ OFF & $\Emet$ ON & $\Emet$ OFF & Tail ON / OFF \\
+\midrule
+PILOT & \cil{0.156}{0.152}{0.159} & \cil{0.161}{0.154}{0.168} & \cil{0.159}{0.154}{0.164} & 20/20 / 20/20 \\
+StageRoute & \cil{0.178}{0.169}{0.188} & \cil{0.056}{0.045}{0.068} & \cil{0.050}{0.036}{0.066} & 17/20 / 11/20 \\
+Cheapest & \cil{0.065}{0.062}{0.068} & \cil{0.000}{0.000}{0.000} & \cil{0.000}{0.000}{0.000} & 0/20 / 0/20 \\
+Strongest & \cil{0.191}{0.185}{0.197} & \cil{0.446}{0.436}{0.455} & \cil{0.519}{0.512}{0.526} & 20/20 / 20/20 \\
+Random-intensity & \cil{0.166}{0.159}{0.173} & \cil{0.005}{0.004}{0.005} & \cil{0.001}{0.001}{0.002} & 13/20 / 1/20 \\
+Fixed-rate $a=0.05$ & \cil{0.167}{0.160}{0.174} & \cil{0.005}{0.004}{0.006} & \cil{0.001}{0.001}{0.002} & 13/20 / 1/20 \\
+D3-ref ($a=0.1$) & \cil{0.166}{0.159}{0.173} & \cil{0.005}{0.004}{0.006} & \cil{0.001}{0.001}{0.002} & 13/20 / 1/20 \\
+Fixed-rate $a=0.2$ & \cil{0.167}{0.161}{0.174} & \cil{0.004}{0.003}{0.005} & \cil{0.001}{0.001}{0.002} & 13/20 / 1/20 \\
+Risk-adaptive & \cil{0.166}{0.159}{0.172} & \cil{0.005}{0.004}{0.006} & \cil{0.001}{0.001}{0.002} & 12/20 / 1/20 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \paragraph{$J$ and $\Emet_{\mathrm{tok}}$ (v1.0 48-round setting, $\pi=1$).}
-Table~\ref{tab:j} reports the joint objective $J$ (mean [95\% CI], 20 seeds). Secondary cost/accuracy intervals are defined but not reported in this manuscript; they are absent from \code{results/v1.0/main/inference.json}. Means exist in \code{summary.md}/\code{per_seed.csv}, without official intervals here. $\Emet_{\mathrm{tok}}$ is the billed-token-weighted side column of the v1.0 Table~\ref{tab:t1-v10}; Figure~\ref{fig:etok} shows the same 19-point $\pi$ sweep. The primary $\Emet$ stays per purchase.
+Table~\ref{tab:j} reports the joint objective $J$ (mean [95\% CI], 20 seeds). For the v1.0 main table, secondary cost/accuracy intervals are defined but not reported in this manuscript; they are absent from \code{results/v1.0/main/inference.json}. Means exist in \code{summary.md}/\code{per_seed.csv}, without official intervals here. Separately, Tables~\ref{tab:decision-a-acccost-p025}--\ref{tab:decision-a-acccost-p16} copy the already-existing official Decision A \code{accuracy} and \code{cost_per_task} intervals verbatim from \code{results/v1.1/v1.2_decision_a_eval/cells.csv} (not recomputed, not used for main-text ranking, and do not modify Decision A $\Emet/\Qmet$ conclusions). $\Emet_{\mathrm{tok}}$ is the billed-token-weighted side column of the v1.0 Table~\ref{tab:t1-v10}; Figure~\ref{fig:etok} shows the same 19-point $\pi$ sweep. The primary $\Emet$ stays per purchase.
+
+\input{tables/decision_a_acc_cost.tex}
 
 \begin{table}[h]
 \caption{Appendix $J$ at $\pi=1$, $L=0$, 40 sellers, 20 seeds (mean [95\% CI]). Not used to rank methods in the body.}
@@ -924,6 +973,7 @@ RQ & Example task & Inputs & Labels / supervision & Metrics & Coverage \\
 \midrule
 \textbf{T1--T3 (protocol)} & Router $\times$ audit effect; sparse-label degradation; equal-budget adaptive (appendix) & \code{episodes} (+\code{orders}/\code{audits}) & episode eval only & $\Emet$, $\Qmet$ (primary, gated); \code{n_audits} for T3 & \textbf{v1.0} T1/T2; T3 defined, not reported \\
 \textbf{T4 seller risk ranking} & Rank sellers by future fraud & 7 whitelisted features & held-out fraud labels (rounds 33--48) & AUROC, AP, P@10 & \textbf{v1.0 current simulator}; post-5b not reported \\
+\textbf{T5 task-conditioned recommendation} & Recommend compliant seller/model at lowest expected cost subject to $p\ge\tau$ & task + pre-decision seller whitelist & served \code{correct} $\wedge\neg$\code{attacked} on $\pi=1$ train logs & accuracy, cost, violation, $\Emet$, fill rate, oracle regret (side) & \textbf{defined, not reported} (\code{PROTOCOL_T5.md}) \\
 \textbf{A2 multi-jurisdiction compliance} & Hard-filter violation / route reachability; filter-off control & \code{buyers}+\code{orders}(+\code{sellers}) & path $\times$ \code{compliance_profile} (derived) & violation rate, fill rate & \textbf{v1.0 basic} --- not a full regulatory rule library \\
 \textbf{A1 provenance (weak)} & Order $\rightarrow$ claimed/actual model $\rightarrow$ audit trail & \code{orders}$\bowtie$\code{audits}$\bowtie$\code{sellers} & \code{actual_model} (label) & trail completeness; weak ID accuracy & \textbf{v1.0 weak} --- trade/audit trail only \\
 \textbf{A1 provenance (strong)} & Content-level provenance chain & needs hashes + parent links & content/output match & provenance-chain accuracy & \textbf{later} \\
