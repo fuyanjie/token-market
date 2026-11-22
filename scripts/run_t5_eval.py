@@ -137,6 +137,7 @@ def _t5_cfg(base: Dict, pi: float, seed: int, n_tasks: Optional[int] = None, n_r
     over: Dict = {
         "market": {
             "compliance_filter": True,
+            "t5_fixed_audit": True,
             "feedback": {
                 "mode": "sparse" if pi < 1.0 else "immediate",
                 "delay_L": 0,
@@ -184,12 +185,22 @@ def _run_behavior_seed(job: Dict) -> Tuple[int, List[Dict], List[Dict], Dict]:
         backend_override=job.get("backend_override"),
         t5_policy=pol, run_id_override=run_id, t5_observer=obs,
     )
+    expected_a = float(cfg["market"]["audited"]["audit_rate"])
+    assert abs(float(m["audit_rate"]) - expected_a) < 1e-12, f"unexpected train audit_rate {m['audit_rate']}"
+    assert m["audit_rule"] == "fixed", f"unexpected train audit_rule {m['audit_rule']}"
+    assert m["trust_feedback"] is False, "T5 training must not enable D3 trust_feedback"
+    assert set(m["audit_checks"]) == {"identity", "length"}, f"unexpected train audit_checks {m['audit_checks']}"
     summ = obs.summarize(holdout_only=None)
     summ["seed"] = seed
     summ["run_id"] = run_id
     summ["roster_seed"] = roster_seed(cfg["roster"], seed)
     summ["n_train_rows_collected"] = len(obs.train_features)
     summ["n_train_pos_collected"] = sum(int(r[LABEL]) for r in obs.train_labels)
+    summ["n_audits"] = int(m["n_audits"])
+    summ["audit_rate"] = float(m["audit_rate"])
+    summ["audit_rate_realised"] = float(m["n_audits"] / max(1, m["n_purchases"]))
+    summ["audit_rule"] = str(m["audit_rule"])
+    summ["audit_checks"] = list(m["audit_checks"])
     return seed, obs.train_features, obs.train_labels, summ
 
 
@@ -248,7 +259,12 @@ def _run_eval_job(job: Dict) -> Dict:
     hold_s = obs.summarize(holdout_only=True)
     nonhold_s = obs.summarize(holdout_only=False)
 
-    # Sanity-check that observer full-task metrics match simulator run_metrics
+    # Sanity-check that observer full-task metrics match simulator run_metrics and v1.0 fixed audit is active
+    expected_a = float(cfg["market"]["audited"]["audit_rate"])
+    assert abs(float(m["audit_rate"]) - expected_a) < 1e-12, f"unexpected eval audit_rate {m['audit_rate']}"
+    assert m["audit_rule"] == "fixed", f"unexpected eval audit_rule {m['audit_rule']}"
+    assert m["trust_feedback"] is False, "T5 eval must not enable D3 trust_feedback"
+    assert set(m["audit_checks"]) == {"identity", "length"}, f"unexpected eval audit_checks {m['audit_checks']}"
     assert abs(all_s["accuracy"] - m["task_accuracy"]) < 1e-12
     assert abs(all_s["cost_per_task"] - m["mean_cost_per_task_incl_audit"]) < 1e-12
     assert abs(all_s["violation_rate"] - m["compliance_violation_rate"]) < 1e-12
@@ -269,6 +285,10 @@ def _run_eval_job(job: Dict) -> Dict:
             "Q": int_m["Q"],
             "tail_trade": bool(int_m["tail_trade"]),
             "n_audits": int(m["n_audits"]),
+            "audit_rate": float(m["audit_rate"]),
+            "audit_rate_realised": float(m["n_audits"] / max(1, m["n_purchases"])),
+            "audit_rule": str(m["audit_rule"]),
+            "audit_checks": list(m["audit_checks"]),
         },
         "holdout": {
             **hold_s,
@@ -510,7 +530,7 @@ def _write_per_seed_csv(eval_rows: Sequence[Dict], subset_key: str, path: Path) 
     metrics = PRIMARY_METRICS + (SIDE_METRICS if subset_key == "all" else SIDE_METRICS[:4])
     cols = ["method", "label", "family", "pi", "seed", "run_id", "roster_seed", "n_tasks"] + list(metrics)
     if subset_key == "all":
-        cols += ["tail_trade", "n_audits"]
+        cols += ["n_served", "tail_trade", "n_audits", "audit_rate", "audit_rate_realised", "audit_rule"]
     with path.open("w", encoding="utf-8", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(cols)
@@ -519,7 +539,14 @@ def _write_per_seed_csv(eval_rows: Sequence[Dict], subset_key: str, path: Path) 
             row = [r["method"], r["label"], r["family"], r["pi"], r["seed"], r["run_id"], r["roster_seed"], sub["n_tasks"]]
             row += ["" if sub.get(m) is None else repr(sub[m]) for m in metrics]
             if subset_key == "all":
-                row += [sub.get("tail_trade"), sub.get("n_audits")]
+                row += [
+                    sub.get("n_served"),
+                    sub.get("tail_trade"),
+                    sub.get("n_audits"),
+                    "" if sub.get("audit_rate") is None else repr(sub["audit_rate"]),
+                    "" if sub.get("audit_rate_realised") is None else repr(sub["audit_rate_realised"]),
+                    sub.get("audit_rule"),
+                ]
             w.writerow(row)
 
 
@@ -612,9 +639,18 @@ def render_markdown(payload: Dict) -> str:
               "> **WARNING: NON-OFFICIAL SMOKE RUN. DO NOT USE IN PAPER.**", ""]
     else:
         L += ["# Official T5 Readout (docs/PROTOCOL_T5.md, frozen 2026-11-22)", ""]
+    audit_s = payload.get("audit_summary", {})
     L += [
         f"- Protocol sha256: `{payload['hashes']['protocol_sha256']}`",
         f"- `configs/v1.0/scale.yaml` sha256: `{payload['hashes']['scale_yaml_sha256']}`",
+        f"- Fixed audit (v1.0 default): `audit_rate={audit_s.get('configured_audit_rate')}`, "
+        f"`audit_rule={audit_s.get('configured_audit_rule')}`, "
+        f"`audit_checks={audit_s.get('configured_audit_checks')}`, `trust_feedback=False`, `audit_v11=off`; "
+        f"train mean `n_audits={audit_s.get('train_mean_n_audits', 0):.2f}` "
+        f"(realised rate `{audit_s.get('train_mean_audit_rate_realised', 0):.4f}`); "
+        f"eval mean `n_audits={audit_s.get('eval_mean_n_audits', 0):.2f}` "
+        f"(min `{audit_s.get('eval_min_n_audits', 0)}`, max `{audit_s.get('eval_max_n_audits', 0)}`, "
+        f"realised rate `{audit_s.get('eval_mean_audit_rate_realised', 0):.4f}`).",
         f"- Train seeds: `{payload['train_seeds']}` (inner fit `{payload['inner_fit_seeds']}`, inner val `{payload['inner_val_seeds']}`); "
         f"Test seeds: `{payload['test_seeds']}` (**n = {len(payload['test_seeds'])} test runs**, NOT 20).",
         f"- Bootstrap: B = {payload['n_boot']}, 95% percentile CIs, paired two-sided bootstrap p-values, "
@@ -932,10 +968,32 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     pdf_fig, png_fig = plot_pareto(cells_all, out_dir, is_smoke=bool(args.smoke))
 
     elapsed = round(time.time() - t0, 2)
+    train_n_aud = [int(s["n_audits"]) for s in behavior_summaries]
+    train_r_aud = [float(s["audit_rate_realised"]) for s in behavior_summaries]
+    eval_n_aud = [int(r["all"]["n_audits"]) for r in eval_rows]
+    eval_r_aud = [float(r["all"]["audit_rate_realised"]) for r in eval_rows]
+    audit_summary = {
+        "configured_audit_rate": float(base["market"]["audited"]["audit_rate"]),
+        "configured_audit_rule": str(base["market"]["audited"].get("audit_rule", "fixed")),
+        "configured_audit_checks": list(base["market"]["audited"].get("audit_types", ["identity", "length"])),
+        "trust_feedback": False,
+        "audit_v11_enabled": False,
+        "train_n_runs": len(behavior_summaries),
+        "train_mean_n_audits": float(np.mean(train_n_aud)) if train_n_aud else 0.0,
+        "train_min_n_audits": int(min(train_n_aud)) if train_n_aud else 0,
+        "train_max_n_audits": int(max(train_n_aud)) if train_n_aud else 0,
+        "train_mean_audit_rate_realised": float(np.mean(train_r_aud)) if train_r_aud else 0.0,
+        "eval_n_runs": len(eval_rows),
+        "eval_mean_n_audits": float(np.mean(eval_n_aud)) if eval_n_aud else 0.0,
+        "eval_min_n_audits": int(min(eval_n_aud)) if eval_n_aud else 0,
+        "eval_max_n_audits": int(max(eval_n_aud)) if eval_n_aud else 0,
+        "eval_mean_audit_rate_realised": float(np.mean(eval_r_aud)) if eval_r_aud else 0.0,
+    }
     payload = {
         "task": "T5 task-conditioned model/seller recommendation",
         "smoke": bool(args.smoke),
         "hashes": hashes,
+        "audit_summary": audit_summary,
         "train_seeds": list(train_seeds),
         "inner_fit_seeds": list(inner_fit_seeds),
         "inner_val_seeds": list(inner_val_seeds),
@@ -967,9 +1025,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     md = render_markdown(payload)
     (out_dir / "t5_eval.md").write_text(md, encoding="utf-8")
 
-    # Remove IN_PROGRESS and write COMPLETED only now that everything finished cleanly.
+    # Remove IN_PROGRESS (and temporary SUPERSEDED.md placeholder on official completion) and write COMPLETED.
     if in_progress_path.exists():
         in_progress_path.unlink()
+    superseded_path = out_dir / "SUPERSEDED.md"
+    if not args.smoke and superseded_path.exists():
+        superseded_path.unlink()
     completed_path.write_text(json.dumps({
         "status": "COMPLETED",
         "smoke": bool(args.smoke),
@@ -977,6 +1038,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "elapsed_s": elapsed,
         "n_eval_runs": len(eval_rows),
         "leakage_passed": True,
+        "audit_summary": audit_summary,
         **hashes,
     }, indent=1), encoding="utf-8")
 

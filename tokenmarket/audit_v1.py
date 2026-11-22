@@ -23,12 +23,23 @@ import random
 from typing import Dict, List, Optional
 
 AUDIT_RULES = ("fixed", "random", "risk_adaptive")
+T5_FIXED_AUDIT_POLICIES = ("t5_recommender_compliant",)
 
 
 def audit_v11(cfg: Dict) -> Optional[Dict]:
     """Explicit opt-in; disabled/missing blocks leave all legacy paths unchanged."""
     block = cfg.get("market", {}).get("audit_v11", {})
     return block if block.get("enabled", False) else None
+
+
+def t5_fixed_audit_on(cfg: Dict, policy: str) -> bool:
+    """Narrowly-scoped T5 opt-in (docs/PROTOCOL_T5.md §1): use v1.0 default fixed audit
+    (market.audited.audit_rate, market.audited.audit_types, and market.audited.audit_rule)
+    WITHOUT expanding AUDITED_POLICIES (no cascade/trust path) and WITHOUT enabling audit_v11."""
+    m = cfg.get("market", {})
+    if "t5_fixed_audit" in m:
+        return bool(m["t5_fixed_audit"])
+    return policy in T5_FIXED_AUDIT_POLICIES
 
 
 def trust_feedback_on(cfg: Dict, policy: str, audited_policies) -> bool:
@@ -38,7 +49,7 @@ def trust_feedback_on(cfg: Dict, policy: str, audited_policies) -> bool:
 
 def audit_rule(cfg: Dict, policy: str, audited_policies) -> str:
     block = audit_v11(cfg)
-    if block is None and policy not in audited_policies:
+    if block is None and policy not in audited_policies and not t5_fixed_audit_on(cfg, policy):
         return "fixed"
     source = block if block is not None else cfg.get("market", {}).get("audited", {})
     rule = str(source.get("audit_rule", "fixed"))

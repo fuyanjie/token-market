@@ -27,7 +27,7 @@ from .strategic import (IdentityCheckDetector, TokenLengthAuditor, TrustModel, a
 from .audit_v6 import (AdaptiveAuditAllocator, EscrowBook, audit_trail_record, d3_adaptive_audit, d3_escrow,
                        d3_reputation_rounds, make_purchase_id)
 from .audit_v1 import (RandomAuditRate, RiskAdaptiveAudit, audit_rule, audit_v11,
-                       compliance_filter_on, trust_feedback_on)
+                       compliance_filter_on, t5_fixed_audit_on, trust_feedback_on)
 from .tasks import build_task_pool, sample_run_tasks
 from .verification import TrustingVerifier
 
@@ -55,23 +55,25 @@ def _base_record(run_id, mechanism, policy, seed, rnd, buyer, task, fb_L=0) -> D
 
 
 def policy_audit_rate(cfg: Dict, policy: str) -> float:
-    """Use the opt-in v1.1 rate for any policy; otherwise preserve legacy policy-specific rates."""
+    """Use the opt-in v1.1 rate for any policy; otherwise preserve legacy policy-specific rates
+    (plus the narrowly-scoped T5 fixed-audit opt-in reading market.audited.audit_rate)."""
     m = cfg["market"]
     block = audit_v11(cfg)
     if block is not None:
         return float(block.get("rate", 0.0))
-    if policy in AUDITED_POLICIES:
+    if policy in AUDITED_POLICIES or t5_fixed_audit_on(cfg, policy):
         return float(m.get("audited", {}).get("audit_rate", 0.1))
     return float(m.get("audit", {}).get("rate", 0.0))
 
 
 def policy_audit_checks(cfg: Dict, policy: str) -> List[str]:
-    """Use opt-in v1.1 checks uniformly; legacy D3 defaults to both, other policies to identity only."""
+    """Use opt-in v1.1 checks uniformly; legacy D3 (and T5 fixed-audit opt-in) defaults to
+    market.audited.audit_types (both identity and length), other policies to identity only."""
     m = cfg["market"]
     block = audit_v11(cfg)
     if block is not None:
         return list(block.get("types", ["identity", "length"]))
-    if policy in AUDITED_POLICIES:
+    if policy in AUDITED_POLICIES or t5_fixed_audit_on(cfg, policy):
         return list(m.get("audited", {}).get("audit_types", ["identity", "length"]))
     return list(m.get("audit", {}).get("types", ["identity"]))
 

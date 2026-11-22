@@ -178,3 +178,101 @@ def test_t5_online_policies_and_oracle_with_cache():
         assert abs(s_all["accuracy"] - m["task_accuracy"]) < 1e-12
         assert s_all["oracle_defined_rate"] is not None and s_all["oracle_defined_rate"] > 0.5
         assert s_all["violation_rate"] == 0.0
+
+
+def test_t5_audit_wiring_isolation_and_audited_policies_unchanged():
+    """T5 policies/PILOT/StageRoute must stay out of AUDITED_POLICIES and audit_v11 must stay off,
+    while T5 config gets v1.0 fixed audit a=0.10 (identity+length) without altering ordinary T1/T2/T4."""
+    from tokenmarket.audit_v1 import audit_rule, audit_v11, trust_feedback_on
+    from tokenmarket.portfolio import AUDITED_POLICIES
+    from tokenmarket.sim import policy_audit_checks, policy_audit_rate
+
+    _runner_spec = importlib.util.spec_from_file_location("run_t5_eval", ROOT / "scripts/run_t5_eval.py")
+    _runner_mod = importlib.util.module_from_spec(_runner_spec)
+    _runner_spec.loader.exec_module(_runner_mod)
+
+    # AUDITED_POLICIES must remain strictly D3 policies only (no cascade/trust leak to T5/PILOT/StageRoute)
+    assert AUDITED_POLICIES == ("audited_compliance_cascade", "audited_cascade_unfiltered")
+    for p in ("t5_recommender_compliant", "pilot_v1_compliant", "stageroute_v1_compliant",
+              "single_cheapest_compliant", "single_best_compliant"):
+        assert p not in AUDITED_POLICIES
+
+    base = load_config(str(ROOT / "configs/v1.0/scale.yaml"))
+    assert audit_v11(base) is None
+
+    # Ordinary non-T5 runs on scale.yaml MUST keep legacy rates/checks untouched (T1/T2/T4 safety)
+    for p in ("pilot_v1_compliant", "stageroute_v1_compliant", "single_cheapest_compliant", "single_best_compliant"):
+        assert policy_audit_rate(base, p) == 0.0
+        assert policy_audit_checks(base, p) == ["identity"]
+        assert audit_rule(base, p, AUDITED_POLICIES) == "fixed"
+        assert trust_feedback_on(base, p, AUDITED_POLICIES) is False
+
+    # T5 runner config (_t5_cfg) must give fixed a=0.10 and both checks to all T5 eval/train policies
+    t5_cfg = _runner_mod._t5_cfg(base, 1.0, 14)
+    assert audit_v11(t5_cfg) is None
+    for p in ("t5_recommender_compliant", "pilot_v1_compliant", "stageroute_v1_compliant"):
+        assert policy_audit_rate(t5_cfg, p) == pytest.approx(0.10)
+        assert policy_audit_checks(t5_cfg, p) == ["identity", "length"]
+        assert audit_rule(t5_cfg, p, AUDITED_POLICIES) == "fixed"
+        assert trust_feedback_on(t5_cfg, p, AUDITED_POLICIES) is False
+
+
+def test_t5_train_and_eval_realized_audit_rate_at_official_scale():
+    """Official-scale T5 train and eval run_single paths must realize ~a=0.10 fixed audits (not 0),
+    with both identity+length checks and no D3 trust/cascade dispatch."""
+    _runner_spec = importlib.util.spec_from_file_location("run_t5_eval", ROOT / "scripts/run_t5_eval.py")
+    _runner_mod = importlib.util.module_from_spec(_runner_spec)
+    _runner_spec.loader.exec_module(_runner_mod)
+
+    base = load_config(str(ROOT / "configs/v1.0/scale.yaml"))
+
+    class _L:
+        def __init__(self):
+            self.records = []
+
+        def write(self, r):
+            self.records.append(r)
+
+    # 1) Training path (seed 0, pi=1.0, T5BehaviorPolicy)
+    cfg_tr = _runner_mod._t5_cfg(base, 1.0, 0)
+    pool, cache, stats, _ = prepare(cfg_tr, None, str(ROOT / "cache/llm_outputs.jsonl"), None, lambda *a: None)
+    backends = build_backends(cfg_tr, {s.get("backend", "mock") for s in cfg_tr["sellers"]}, cache)
+    rep = Reputation(cfg_tr["models"], stats)
+    lg_tr = _L()
+    m_tr = run_single(
+        cfg_tr, "posted_price", "t5_recommender_compliant", 0, backends, rep, lg_tr, pool,
+        t5_policy=T5BehaviorPolicy(cfg_tr, 0), run_id_override="t5__test_beh__seed0",
+    )
+    rate_tr = m_tr["n_audits"] / max(1, m_tr["n_purchases"])
+    assert m_tr["audit_rate"] == pytest.approx(0.10)
+    assert m_tr["audit_rule"] == "fixed"
+    assert m_tr["audit_checks"] == ["identity", "length"]
+    assert m_tr["trust_feedback"] is False
+    assert "trust_q_hat" not in m_tr
+    assert m_tr["purchases_per_task"] <= 1.0 + 1e-12
+    assert m_tr["n_audits"] > 0 and 0.04 <= rate_tr <= 0.18
+    assert all(r["audit_type"] == "both" for r in lg_tr.records if r["audited"])
+
+    # 2) Official eval paths (seed 14, pi=1.0): t5_recommender_compliant, pilot_v1_compliant, stageroute_v1_compliant
+    cfg_ev = _runner_mod._t5_cfg(base, 1.0, 14)
+    backends_ev = build_backends(cfg_ev, {s.get("backend", "mock") for s in cfg_ev["sellers"]}, cache)
+    rep_ev = Reputation(cfg_ev["models"], stats)
+    for sim_policy, t5_pol in (
+        ("t5_recommender_compliant", T5StrongestPolicy(cfg_ev, 14)),
+        ("pilot_v1_compliant", None),
+        ("stageroute_v1_compliant", None),
+    ):
+        lg = _L()
+        m = run_single(
+            cfg_ev, "posted_price", sim_policy, 14, backends_ev, rep_ev, lg, pool,
+            t5_policy=t5_pol, run_id_override=f"t5__test_{sim_policy}__seed14",
+        )
+        realized = m["n_audits"] / max(1, m["n_purchases"])
+        assert m["audit_rate"] == pytest.approx(0.10)
+        assert m["audit_rule"] == "fixed"
+        assert m["audit_checks"] == ["identity", "length"]
+        assert m["trust_feedback"] is False
+        assert "trust_q_hat" not in m
+        assert m["purchases_per_task"] <= 1.0 + 1e-12
+        assert m["n_audits"] > 0 and 0.04 <= realized <= 0.18, f"{sim_policy}: n_audits={m['n_audits']}, realized={realized}"
+        assert all(r["audit_type"] == "both" for r in lg.records if r["audited"])
