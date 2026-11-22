@@ -90,7 +90,8 @@ def joint_weights(cfg: Dict):
 
 def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict, rep: Reputation,
                logger: TransactionLogger, pool, n_tasks: Optional[int] = None,
-               backend_override: Optional[str] = None) -> Dict:
+               backend_override: Optional[str] = None, t5_policy=None,
+               run_id_override: Optional[str] = None, t5_observer=None) -> Dict:
     run_cfg, mcfg = cfg["run"], cfg["market"]
     n_tasks = int(n_tasks or run_cfg["n_tasks"])
     n_rounds = max(1, int(run_cfg.get("n_rounds", 1)))
@@ -132,7 +133,7 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
     models = cfg["models"]
     auction_cfg = mcfg["auction"]
     lat_scale = float(local_cfg(cfg).get("latency_scale", 1.0))
-    run_id = f"{mechanism}__{policy}__seed{seed}"
+    run_id = run_id_override if run_id_override is not None else f"{mechanism}__{policy}__seed{seed}"
     rng_backend = random.Random(f"backend-{seed}")
     rng_market = random.Random(f"market-{seed}")
     rng_latency = random.Random(f"latency-{seed}")
@@ -190,6 +191,10 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
                         delisted_rounds[s.id].append(rnd)
             if rand_rate is not None:
                 rand_rate.start_round()
+            if t5_policy is not None:
+                t5_policy.on_round(rnd)
+            if t5_observer is not None:
+                t5_observer.on_round(rnd)
         # v5: deliver labels due by step i BEFORE this task's routing decision (non-bandit policies ignore them)
         if router is not None:
             router.step = i
@@ -362,8 +367,21 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
             return Purchase(s, rec["answer"], res.confidence, quality(s), correct=bool(correct),
                             actual_cost=actual)
 
+        if t5_observer is not None:
+            t5_observer.before_task(run_id, rnd, task, buyer, cands.sellers, reason)
         if reason:
             dec = None
+        elif t5_policy is not None:
+            sel = t5_policy.choose(run_id, rnd, task, buyer, cands.sellers)
+            p = buy(sel, prices[sel.id], 0) if sel is not None else None
+            if p is None:
+                from .portfolio import Decision
+                dec = Decision(None, [], "budget")
+            else:
+                from .portfolio import Decision
+                dec = Decision(p.answer if p.served else None, [p], "single")
+            if not lines:
+                reason = "MKT-BUDGET-EXHAUSTED"
         else:
             dec = run_policy(policy, cands.sellers, lambda s: prices[s.id], exp_cost, quality, buy, mcfg,
                              router=router, task=task, buyer=buyer)
@@ -379,6 +397,10 @@ def run_single(cfg: Dict, mechanism: str, policy: str, seed: int, backends: Dict
         last.update(final=True, final_answer=final_answer,
                     final_correct=final_answer is not None and final_answer == task.gold)
         last["buyer_surplus"] += buyer.value_per_correct * last["final_correct"]
+        if t5_policy is not None:
+            t5_policy.after_task(rnd, lines)
+        if t5_observer is not None:
+            t5_observer.after_task(rnd, task, lines)
         for rec in lines:
             logger.write(rec)
         records.extend(lines)

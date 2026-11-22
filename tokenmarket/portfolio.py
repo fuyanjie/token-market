@@ -19,7 +19,9 @@ HARD_POLICIES = ("single_cheapest_compliant", "single_best_compliant", "cascade_
                  # v3: literature baselines + compliance filter, and OUR audited policy (D3)
                  "pilot_compliant", "stageroute_compliant", "audited_compliance_cascade",
                  # v1.0: faithful PILOT / StageRoute reimplementations + compliance filter (baselines.py)
-                 "pilot_v1_compliant", "stageroute_v1_compliant")
+                 "pilot_v1_compliant", "stageroute_v1_compliant",
+                 # v1.0 T5: task-conditioned single-seller recommender + compliance filter
+                 "t5_recommender_compliant")
 BASELINE_POLICIES = ("compliance_unaware_cheapest",
                      # v3: our simplified reimplementations of PILOT / StageRoute (no compliance filter)
                      "pilot", "stageroute",
@@ -28,7 +30,8 @@ BASELINE_POLICIES = ("compliance_unaware_cheapest",
                      # v1.0: faithful PILOT / StageRoute without the compliance filter
                      "pilot_v1", "stageroute_v1")
 POLICIES = HARD_POLICIES + BASELINE_POLICIES
-SINGLE_POLICIES = ("single_cheapest_compliant", "single_best_compliant", "compliance_unaware_cheapest")
+SINGLE_POLICIES = ("single_cheapest_compliant", "single_best_compliant", "compliance_unaware_cheapest",
+                   "t5_recommender_compliant")
 ROUTER_POLICIES = ("pilot", "pilot_compliant", "stageroute", "stageroute_compliant",
                    "pilot_v1", "pilot_v1_compliant", "stageroute_v1", "stageroute_v1_compliant")
 AUDITED_POLICIES = ("audited_compliance_cascade", "audited_cascade_unfiltered")
