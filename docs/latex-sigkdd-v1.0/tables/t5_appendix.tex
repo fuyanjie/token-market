@@ -1,6 +1,6 @@
 % Generated directly from results/v1.0/t5/{cells.csv,cells_holdout.csv,tau_selection.json}.
 \begin{table*}[h]
-\caption{Official T5 frozen $\tau$ selection on inner-validation seeds 10--13 (non-holdout tasks only, $\pi=1$, fixed audit $a=0.10$). Two-stage LR triggered the strongest-accuracy floor rule; GBDT did not. Official settings were not altered.}
+\caption{Official task-conditioned recommendation evaluation: frozen $\tau$ selection on inner-validation seeds 10--13 (non-holdout tasks only, $\pi=1$, fixed audit $a=0.10$). Two-stage LR triggered the strongest-accuracy floor rule; GBDT did not. Official settings were not altered.}
 \label{tab:t5-tau}
 \centering\footnotesize
 \setlength{\tabcolsep}{6pt}
@@ -15,7 +15,7 @@ Two-stage GBDT & 0.90 & No & 0.8006 & 0.8231 & 0.02666 \\
 \end{table*}
 
 \begin{table*}[!htbp]
-\caption{Official T5 all test tasks at $\pi=1$ (main table, complete with violation rate and side oracle regret; seeds 14--19, $n=6$, fixed audit $a=0.10$, mean [95\% CI]). Violation rate is $0.0000$ [0.0000, 0.0000] for all seven methods largely by construction (compliance-filtered eligible set). Oracle regret is a side metric only; no single winner is declared.}
+\caption{Official task-conditioned recommendation evaluation: all test tasks at $\pi=1$ (main table, complete with violation rate and side oracle regret; seeds 14--19, $n=6$, fixed audit $a=0.10$, mean [95\% CI]). Violation rate is $0.0000$ [0.0000, 0.0000] for all seven methods largely by construction (compliance-filtered eligible set). Oracle regret is a side metric only; no single winner is declared.}
 \label{tab:t5-all-pi1}
 \centering\scriptsize
 \setlength{\tabcolsep}{2.6pt}
@@ -37,7 +37,7 @@ StageRoute (\code{stageroute_v1}) & \cil{0.7681}{0.7490}{0.7889} & \cil{0.02435}
 \end{table*}
 
 \begin{table*}[!htbp]
-\caption{Official T5 all test tasks at $\pi=0.1$ (required side table; offline-frozen learners are $\pi$-invariant by design; seeds 14--19, $n=6$, fixed audit $a=0.10$, mean [95\% CI]). Violation rate is $0.0000$ [0.0000, 0.0000] for all seven methods largely by construction (compliance-filtered eligible set). Oracle regret is a side metric only; no single winner is declared.}
+\caption{Official task-conditioned recommendation evaluation: all test tasks at $\pi=0.1$ (required side table; offline-frozen learners are $\pi$-invariant by design; seeds 14--19, $n=6$, fixed audit $a=0.10$, mean [95\% CI]). Violation rate is $0.0000$ [0.0000, 0.0000] for all seven methods largely by construction (compliance-filtered eligible set). Oracle regret is a side metric only; no single winner is declared.}
 \label{tab:t5-all-pi01}
 \centering\scriptsize
 \setlength{\tabcolsep}{2.6pt}
@@ -59,7 +59,7 @@ StageRoute (\code{stageroute_v1}) & \cil{0.7434}{0.7139}{0.7712} & \cil{0.02210}
 \end{table*}
 
 \begin{table*}[!htbp]
-\caption{Official T5 all test tasks at $\pi=0$ (required side table; offline-frozen learners are $\pi$-invariant by design; seeds 14--19, $n=6$, fixed audit $a=0.10$, mean [95\% CI]). Violation rate is $0.0000$ [0.0000, 0.0000] for all seven methods largely by construction (compliance-filtered eligible set). Oracle regret is a side metric only; no single winner is declared.}
+\caption{Official task-conditioned recommendation evaluation: all test tasks at $\pi=0$ (required side table; offline-frozen learners are $\pi$-invariant by design; seeds 14--19, $n=6$, fixed audit $a=0.10$, mean [95\% CI]). Violation rate is $0.0000$ [0.0000, 0.0000] for all seven methods largely by construction (compliance-filtered eligible set). Oracle regret is a side metric only; no single winner is declared.}
 \label{tab:t5-all-pi0}
 \centering\scriptsize
 \setlength{\tabcolsep}{2.6pt}
@@ -81,7 +81,7 @@ StageRoute (\code{stageroute_v1}) & \cil{0.7333}{0.7101}{0.7573} & \cil{0.02086}
 \end{table*}
 
 \begin{table*}[!htbp]
-\caption{Official T5 unique-prompt hold-out side table at $\pi=1$ (15 unique prompt hashes excluded from training and $\tau$ selection; seeds 14--19, $n=6$, fixed audit $a=0.10$, mean [95\% CI]). Violation rate is $0.0000$ [0.0000, 0.0000] for all seven methods largely by construction. Oracle regret is a side metric only.}
+\caption{Official task-conditioned recommendation evaluation: unique-prompt hold-out side table at $\pi=1$ (15 unique prompt hashes excluded from training and $\tau$ selection; seeds 14--19, $n=6$, fixed audit $a=0.10$, mean [95\% CI]). Violation rate is $0.0000$ [0.0000, 0.0000] for all seven methods largely by construction. Oracle regret is a side metric only.}
 \label{tab:t5-ho-pi1}
 \centering\scriptsize
 \setlength{\tabcolsep}{2.6pt}
@@ -103,7 +103,7 @@ StageRoute (\code{stageroute_v1}) & \cil{0.6889}{0.6648}{0.7111} & \cil{0.02172}
 \end{table*}
 
 \begin{table*}[!htbp]
-\caption{Official T5 unique-prompt hold-out side table at $\pi=0.1$ (15 unique prompt hashes excluded from training and $\tau$ selection; seeds 14--19, $n=6$, fixed audit $a=0.10$, mean [95\% CI]). Violation rate is $0.0000$ [0.0000, 0.0000] for all seven methods largely by construction. Oracle regret is a side metric only.}
+\caption{Official task-conditioned recommendation evaluation: unique-prompt hold-out side table at $\pi=0.1$ (15 unique prompt hashes excluded from training and $\tau$ selection; seeds 14--19, $n=6$, fixed audit $a=0.10$, mean [95\% CI]). Violation rate is $0.0000$ [0.0000, 0.0000] for all seven methods largely by construction. Oracle regret is a side metric only.}
 \label{tab:t5-ho-pi01}
 \centering\scriptsize
 \setlength{\tabcolsep}{2.6pt}
@@ -125,7 +125,7 @@ StageRoute (\code{stageroute_v1}) & \cil{0.6815}{0.6463}{0.7130} & \cil{0.02008}
 \end{table*}
 
 \begin{table*}[!htbp]
-\caption{Official T5 unique-prompt hold-out side table at $\pi=0$ (15 unique prompt hashes excluded from training and $\tau$ selection; seeds 14--19, $n=6$, fixed audit $a=0.10$, mean [95\% CI]). Violation rate is $0.0000$ [0.0000, 0.0000] for all seven methods largely by construction. Oracle regret is a side metric only.}
+\caption{Official task-conditioned recommendation evaluation: unique-prompt hold-out side table at $\pi=0$ (15 unique prompt hashes excluded from training and $\tau$ selection; seeds 14--19, $n=6$, fixed audit $a=0.10$, mean [95\% CI]). Violation rate is $0.0000$ [0.0000, 0.0000] for all seven methods largely by construction. Oracle regret is a side metric only.}
 \label{tab:t5-ho-pi0}
 \centering\scriptsize
 \setlength{\tabcolsep}{2.6pt}

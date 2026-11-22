@@ -33,12 +33,13 @@
 \usepackage{placeins}
 \usepackage{newunicodechar}
 \usepackage{xurl}        % allow line breaks anywhere inside \code{} identifiers/paths
+\usepackage{enumitem}
 \setlength{\emergencystretch}{3em}
-\setlength{\textfloatsep}{5pt plus 1pt minus 2pt}
-\setlength{\dbltextfloatsep}{5pt plus 1pt minus 2pt}
-\setlength{\floatsep}{4pt plus 1pt minus 2pt}
-\setlength{\abovecaptionskip}{3pt}
-\setlength{\belowcaptionskip}{2pt}
+\setlength{\textfloatsep}{4pt plus 1pt minus 2pt}
+\setlength{\dbltextfloatsep}{4pt plus 1pt minus 2pt}
+\setlength{\floatsep}{3pt plus 1pt minus 1pt}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{1pt}
 
 %% Inline code / identifiers / paths: breakable typewriter text.
 \DeclareUrlCommand\code{\urlstyle{tt}}
@@ -87,10 +88,7 @@
 \renewcommand{\shortauthors}{Yanjie Fu}
 
 \begin{abstract}
-Cross-border procurement of LLM inference increasingly looks like a marketplace: buyers route tasks under jurisdiction constraints, sellers post prices and capacities, and quality---and fraud---are revealed only partially and late. Existing simulators either study exchange microstructure (limit-order books, high-frequency trading) or bandit-style routing under \emph{immediate} correctness labels. Neither couples \textbf{hard compliance filters}, \textbf{strategic seller fraud} (model swap, token theft, and selective downgrade on hard questions), \textbf{escrow / slash settlement}, and \textbf{sparse or delayed outcome labels} in one reproducible generator.
-
-We present a \textbf{compliance-constrained reasoning-token market simulator}---not a CLOB---with a five-file JSONL schema, export scripts, a leakage-checked buyer feature view, and a protocol frozen before the 40-seller main table (clarifications in Appendix~\ref{app:amend}); the public repository is at \url{https://github.com/fuyanjie/token-market} (\S\ref{sec:data}). The platform has five layers: admission/compliance, routing and portfolio procurement, escrow settlement, oversight audit, and feedback/audit trails. Evaluation is \textbf{two-dimensional}: buyer exposure $\Emet$ (\code{fraud_share}) and seller intent $\Qmet$ (strategic sellers' learned attack probability while listed). Policies are shown as points on an $(\Emet,\Qmet)$ Pareto plot with intervals; we do not declare a winner, and the joint objective $J$ is an appendix column; v1.0 secondary cost/accuracy intervals are not reported. Protocol tasks cover router $\times$ fixed-rate audit effects (T1), degradation of bandit routers as labels become sparse (T2), equal-budget adaptive audit (T3, defined but not reported), seller risk ranking from buyer-observable features (T4), and task-conditioned model/seller recommendation (T5). Baselines include market-adapted implementations of PILOT and StageRoute (with its stage MIP), fixed routers, and random, fixed-rate, and risk-adaptive audits. Main-table T1/T2/A2 results use $\ge$20 seeds (T4/T5 test on 6 runs, seeds 14--19), paired-by-seed bootstrap intervals, and Holm correction. At 40 sellers, both bandit routers' $\Emet$ rises significantly as labels vanish; StageRoute's $\Qmet$ is identifiable and rises as $\pi$ falls, while PILOT's $\Qmet$ does not rise relative to $\pi=1$ (and is lower only at $\pi=0$ and $0.02$); the v1.0 48-round audit arms sit at low $\Emet$ mainly by rarely trading with strategic sellers. In this simulator at default parameters and 1000 rounds, audit rates at/above frozen break-even ($a\in\{0.05,0.10,0.20\}$) and risk-adaptive lower $\Emet$ and $\Qmet$ for PILOT and strongest by the pre-run three-learner direction rule (Decision A result 1, \S\ref{sec:t1}). Official T4 (D3) is not scorable; a PILOT, $\pi=1$ supplement is in \S\ref{sec:t4}. Official T5 (\S\ref{sec:t5}, $n=6$, fixed $a=0.10$) reports all seven methods with no single winner: at $\pi=1$, neither log-trained baseline (LR, GBDT) beats strongest in accuracy, both lower $\Emet$ vs.\ strongest and PILOT (not StageRoute), GBDT beats PILOT/StageRoute/cheapest in accuracy at higher cost and lower fill, and its lead over LR is not retained on a 15-prompt hold-out.
-We do not propose a new deterrence or routing method; the contribution is the generator, schema, and protocol.
+Cross-border procurement of LLM inference is increasingly organized as a marketplace: buyers route work under jurisdiction constraints, sellers post prices and capacities, and both quality and fraud become visible only partially and late. Evaluating routing, audit, and recommendation in this setting is essential, because methods that look reliable under immediate correctness labels can understate buyer exposure once feedback is sparse and sellers can cheat. The research task is to provide a reproducible benchmark for compliance-constrained reasoning-token procurement: buyers allocate tasks under hard compliance filters, strategic sellers may swap models, steal tokens, or selectively downgrade hard questions, and settlement uses escrow and slashing under sparse or delayed outcome labels. The core difficulties are partial and delayed supervision, hard admissibility constraints, and strategic fraud that price or claimed model identity does not reveal. Existing simulators either adopt an exchange-microstructure architecture (limit-order books, high-frequency trading) that is orthogonal to posted-price reasoning services, or evaluate bandit-style routers under immediate labels and without strategic sellers or escrowed payments; these are limitations of the evaluation setting and system architecture, not of a missing parameter tweak in those routers. We address this gap by treating the research artifact as a platform that generates a stable benchmark, rather than proposing a new router or auditor. We present a compliance-constrained reasoning-token market simulator---not a central limit-order book---with a five-file JSONL schema, export scripts, a leakage-checked buyer feature view, and a protocol frozen before the 40-seller main table. The platform runs in five layers---admission and compliance, routing and portfolio procurement, escrow settlement, oversight audit, and feedback trails---and reports two-dimensional results: buyer exposure $\Emet$ (fraud share) and seller intent $\Qmet$ (strategic sellers' learned attack probability while listed), shown as points on a Pareto plot with intervals and without a declared winner. At 40 sellers, both bandit routers' $\Emet$ rises significantly as labels vanish; StageRoute's $\Qmet$ is identifiable and rises as $\pi$ falls, while PILOT's $\Qmet$ does not rise relative to $\pi=1$ (and is lower only at $\pi=0$ and $0.02$); the 48-round audit arms sit at low $\Emet$ mainly by rarely trading with strategic sellers. In this simulator at default parameters and 1000 rounds, audit rates at or above the frozen break-even ($a\in\{0.05,0.10,0.20\}$) and risk-adaptive audit lower $\Emet$ and $\Qmet$ for PILOT and strongest under the pre-run three-learner direction rule. Official seller risk-ranking detection is not scorable; a PILOT, $\pi=1$ supplement is reported. The official task-conditioned recommendation evaluation ($n=6$, fixed $a=0.10$) reports all seven methods with no single winner: at $\pi=1$, neither log-trained baseline (LR, GBDT) beats strongest in accuracy, both lower $\Emet$ versus strongest and PILOT (not StageRoute), GBDT beats PILOT, StageRoute, and cheapest in accuracy at higher cost and lower fill, and its lead over LR is not retained on a 15-prompt hold-out. We do not propose a new deterrence or routing method; the contribution is the generator, schema, and protocol. Code and artifacts are publicly available at \url{https://github.com/fuyanjie/token-market} (\S\ref{sec:data}).
 \end{abstract}
 
 %% TODO(CCS): generate the official CCS XML + \ccsdesc lines with
@@ -113,11 +111,11 @@ Two nearby literatures miss the coupling. Market-microstructure and exchange sim
 \textbf{This paper} treats the research artifact as a \textbf{platform that generates benchmarks}. We ask: can one simulator expose a stable evaluation surface for (i) audit effects under fixed audit budgets, (ii) sparse/delayed labels, (iii) audit-cost efficiency, and (iv) detecting risky sellers from what a buyer can actually observe---without claiming a new ``best router'' or ``best auditor''?
 
 \paragraph{Contributions.}
-\begin{enumerate}\setlength{\itemsep}{1pt}\setlength{\parskip}{0pt}\setlength{\parsep}{0pt}
+\begin{enumerate}[leftmargin=1.3em,topsep=2pt,itemsep=1pt,parsep=0pt]
 \item \textbf{Five-layer trading platform} for compliance-constrained reasoning-service trades: admission $\rightarrow$ routing/portfolio procurement $\rightarrow$ escrow settlement $\rightarrow$ oversight $\rightarrow$ feedback and trails. Design principle: borrow \emph{audit economics} (sampling, slash, freeze); do \textbf{not} port CLOB, HFT, circuit breakers, or multi-CCP clearing.
 \item \textbf{Five-file JSONL schema} (\code{sellers}, \code{buyers}, \code{orders}, \code{audits}, \code{episodes}) with join keys, a leakage-checked buyer feature view, and separate labels; repository scripts and staging artifacts (intended code MIT, derived data CC BY 4.0; public repository at \url{https://github.com/fuyanjie/token-market}).
-\item \textbf{Tasks T1--T5} under a protocol frozen before the 40-seller main table (plus frozen T5): a two-dimensional primary evaluation $(\Emet,\Qmet)$ reported as a Pareto plot without a declared winner; in this simulator at default parameters and 1000 rounds, audit rates at/above frozen break-even ($a\in\{0.05,0.10,0.20\}$) and risk-adaptive lower $\Emet$ and $\Qmet$ for PILOT and strongest by the pre-run three-learner direction rule (result 1); T2 reports sparse-label changes; T4 ranks sellers by future fraud risk from a fixed buyer-observable feature whitelist; T5 evaluates task-conditioned recommendation from logs ($n=6$ test runs, all 7 methods, no winner, \S\ref{sec:t5}).
-\item \textbf{Baselines}: market-adapted PILOT and StageRoute (with stage MIP), cheapest/strongest fixed routers, random-intensity audit ($a_t\sim U(0,2a)$ with $a=0.1$), fixed-rate audits $a\in\{0.05,0.1,0.2\}$ (the $a=0.1$ arm is the D3 reference baseline, not our method), and risk-adaptive audit; for T4, logistic regression, GBDT, and a rule; for T5, two-stage LR/GBDT plus five untrained baselines.
+\item \textbf{Evaluation suite} under a protocol frozen before the 40-seller main table (plus the frozen task-conditioned recommendation protocol): a two-dimensional primary evaluation $(\Emet,\Qmet)$ reported as a Pareto plot without a declared winner; in the 1000-round audit study at default parameters, audit rates at or above frozen break-even ($a\in\{0.05,0.10,0.20\}$) and risk-adaptive audit lower $\Emet$ and $\Qmet$ for PILOT and strongest under the pre-run three-learner direction rule (the pre-registered result of the 1000-round audit study); the sparse-label evaluation reports changes as labels vanish; the seller risk-ranking evaluation ranks sellers by future fraud risk from a fixed buyer-observable feature whitelist; the task-conditioned recommendation evaluation tests log-trained recommenders ($n=6$ test runs, all 7 methods, no winner, \S\ref{sec:t5}); and the audit-cost efficiency evaluation is defined but not reported.
+\item \textbf{Baselines}: market-adapted PILOT and StageRoute (with stage MIP), cheapest/strongest fixed routers, random-intensity audit ($a_t\sim U(0,2a)$ with $a=0.1$), fixed-rate audits $a\in\{0.05,0.1,0.2\}$ (the $a=0.1$ arm is the fixed-audit $a=0.10$ reference baseline, not our method), and risk-adaptive audit; for seller risk-ranking evaluation, logistic regression, GBDT, and a rule; for task-conditioned recommendation evaluation, two-stage LR/GBDT plus five untrained baselines.
 \end{enumerate}
 
 \paragraph{Scope.} This paper contributes the generator, the evaluation protocol, and the leaderboard contract; it does not propose or claim a new deterrence, routing, or detection method, and deterrence theory is out of scope.
@@ -134,11 +132,11 @@ We situate the artifact against five nearby literatures. The gap we target is th
 
 \paragraph{Prediction-market dispute resolution and delayed labels.} Prediction markets separate trading from outcome resolution: optimistic oracles and dispute bonds (e.g., UMA-style resolution used by Polymarket) delay settlement until a challenge window closes or a vote completes~\cite{wolfers2004prediction,hanson2003combinatorial,uma2024optimistic,polymarket2024resolution}. That is a useful \emph{label-timing} analogy. In our platform the label channel $(\pi, L)$ is orthogonal to payment escrow: billed cost is observed immediately on the buyer side, while correctness may be delayed or dropped; audits update trust/slash on their own clock.
 
-\paragraph{Bandit / portfolio LLM routing under immediate feedback.} PILOT~\cite{panda2025pilot} casts budgeted LLM routing as a preference-prior contextual bandit (LinUCB + online multi-choice knapsack). StageRoute~\cite{li2026stageroute} couples stage-wise deployment (a mixed-integer program over the deployed model set) with per-query budget/throughput LPs and near-optimal $\tilde{\mathcal{O}}(T^{2/3})$ regret. Our implementations include StageRoute's stage MIP and market-setting adaptations documented in \code{docs/BASELINES_v1.0.md}. Isolated algorithmic unit checks do not reproduce the published results: RouterBench and the original inputs are absent; the gap is one of setting. Both are designed for dense correctness labels; T2 measures how they behave when labels become sparse, which is a property of the setting, not a criticism of the methods.
+\paragraph{Bandit / portfolio LLM routing under immediate feedback.} PILOT~\cite{panda2025pilot} casts budgeted LLM routing as a preference-prior contextual bandit (LinUCB + online multi-choice knapsack). StageRoute~\cite{li2026stageroute} couples stage-wise deployment (a mixed-integer program over the deployed model set) with per-query budget/throughput LPs and near-optimal $\tilde{\mathcal{O}}(T^{2/3})$ regret. Our implementations include StageRoute's stage MIP and market-setting adaptations documented in \code{docs/BASELINES_v1.0.md}. Isolated algorithmic unit checks do not reproduce the published results: RouterBench and the original inputs are absent; the gap is one of setting. Both are designed for dense correctness labels; the sparse-label evaluation measures how they behave when labels become sparse, which is a property of the setting, not a criticism of the methods.
 
 \paragraph{Exchange surveillance vs.\ order-book microstructure.} Market-surveillance practice and guidance emphasize monitoring, investigation, and temporary freezes on suspicious activity~\cite{iosco2009surveillance,cumming2008surveillance}. Escrow, stake slash, and post-catch listing pauses in our oversight layer are inspired by that \emph{enforcement} toolkit. Continuous limit-order books, maker--taker fees, HFT latency races, and circuit breakers are explicitly \textbf{out of scope}---the market is posted-price routing / portfolio procurement, not a CLOB.
 
-\paragraph{Positioning.} This paper covers the platform-as-benchmark-generator, five-file schema, Feature/Label hygiene, and the T1--T5 leaderboard contract. Whether fixed-rate audits change the strategic sellers' $\Qmet$ is posed as an empirical protocol question (T1, \S\ref{sec:protocol}), measured with the same metrics as every other arm; we claim no methodological novelty for audit design.
+\paragraph{Positioning.} This paper covers the platform-as-benchmark-generator, five-file schema, Feature/Label hygiene, and the evaluation leaderboard contract (router--audit, sparse-label, audit-cost efficiency, seller risk-ranking, and task-conditioned recommendation evaluations). Whether fixed-rate audits change the strategic sellers' $\Qmet$ is posed as an empirical protocol question (router--audit evaluation, \S\ref{sec:protocol}), measured with the same metrics as every other arm; we claim no methodological novelty for audit design.
 
 %% =====================================================================
 \section{Platform Design}
@@ -152,9 +150,9 @@ The artifact is a \textbf{posted-price reasoning-service market} with jurisdicti
 \begin{table}[t]
 \caption{Five platform layers and their roles (code map in Appendix~\ref{app:repro}).}
 \label{tab:layers}
-\footnotesize
-\renewcommand{\arraystretch}{0.85}
-\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm} X@{}}
+\scriptsize
+\renewcommand{\arraystretch}{0.78}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{2.4cm} X@{}}
 \toprule
 Layer & Role \\
 \midrule
@@ -165,18 +163,19 @@ Layer & Role \\
 5. Feedback \& trails & Label channel $(\pi, L)$ orthogonal to payment; structured audit fields \\
 \bottomrule
 \end{tabularx}
+\vspace{-4pt}
 \end{table}
 
 \paragraph{External surface.} Place order; delivery receipt; audit verdict; settlement; trail query (via joinable \code{orders}/\code{audits} exports).
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.62\linewidth]{figures/fig1_five_layers.png}
-  \vspace{-4pt}
+  \includegraphics[width=0.52\linewidth]{figures/fig1_five_layers.png}
+  \vspace{-5pt}
   \caption{Five platform layers (admission $\rightarrow$ routing/portfolio procurement $\rightarrow$ escrow $\rightarrow$ oversight $\rightarrow$ feedback/trails). Posted-price market; not a CLOB.}
   \Description{Block diagram of the five platform layers of the reasoning-token market: admission and compliance, routing and portfolio procurement, escrow settlement, oversight, and feedback and trails.}
   \label{fig:layers}
-  \vspace{-4pt}
+  \vspace{-6pt}
 \end{figure}
 
 \subsection{Market primitives}
@@ -188,7 +187,7 @@ Layer & Role \\
 
 \paragraph{Buyers.} Per-buyer budgets and strategy ids. Portfolio policies may purchase from multiple sellers per task under budget.
 
-\paragraph{Audits.} A sampled audit runs identity and length checks with detection probabilities $d_{\mathrm{identity}}=d_{\mathrm{length}}=0.9$ and penalty $P=0.25$ in headline configs. Audits update slash / optional delist \textbf{immediately} and do not consume correctness labels. Decision A uses \code{trust_feedback=false} and sets \code{reputation_rounds=0}; all 2880 runs have zero tail delisted rounds. Its routing rule is identical across audit levels; its $\Emet$ drops are not v1.0-style avoidance/delisting (Appendix~\ref{app:t1-v10}).
+\paragraph{Audits.} A sampled audit runs identity and length checks with detection probabilities $d_{\mathrm{identity}}=d_{\mathrm{length}}=0.9$ and penalty $P=0.25$ in headline configs. Audits update slash / optional delist \textbf{immediately} and do not consume correctness labels. The 1000-round audit study uses \code{trust_feedback=false} and sets \code{reputation_rounds=0}; all 2880 runs have zero tail delisted rounds. Its routing rule is identical across audit levels; its $\Emet$ drops are not v1.0-style avoidance/delisting (Appendix~\ref{app:t1-v10}).
 
 \paragraph{Escrow (optional).} When enabled, seller proceeds are held until the audit decision; slash is taken from the hold. Escrow is \textbf{orthogonal} to label delay $L$.
 
@@ -205,19 +204,19 @@ Do \textbf{not} build: CLOB, price--time priority matching, HFT makers, circuit 
 
 \paragraph{Buyer exposure $\Emet$.} $\Emet=$ \code{fraud_share} $=$ attacked served purchases / served purchases, where a purchase is attacked if it was swapped, token-stolen, or selectively downgraded (this is the formula in the simulator's metrics code; lower is better). $\Emet$ measures attacks that \emph{reach buyers}. The v0.1 column \code{active_attack_rate} used the same formula and is dropped. A billed-token-weighted variant $\Emet_{\mathrm{tok}}$ is a secondary side column in the v1.0 baseline Table~\ref{tab:t1-v10} and in Appendix~\ref{app:secondary}.
 
-\paragraph{Seller intent $\Qmet$.} For each strategic seller, the attack probability $q$ it plays in each round, averaged \textbf{without weighting} over the last quarter of rounds (12 of 48 in v1.0; 250 of 1000 in Decision A) and \textbf{only over rounds in which the seller is listed}. Suspended rounds would otherwise move learned $q$ through missing observations, so the number of suspended rounds and the $q$ during suspension are reported separately and excluded from $\Qmet$. Per-mode columns $q_{\mathrm{swap}}$, $q_{\mathrm{theft}}$, $q_{\mathrm{downgrade}}$ are listed separately; the primary $\Qmet$ is their simple average (no token weighting). $\Qmet$ measures \emph{attack intent}, not attacks that reach buyers (lower is better).
+\paragraph{Seller intent $\Qmet$.} For each strategic seller, the attack probability $q$ it plays in each round, averaged \textbf{without weighting} over the last quarter of rounds (12 of 48 in v1.0; 250 of 1000 in the 1000-round audit study) and \textbf{only over rounds in which the seller is listed}. Suspended rounds would otherwise move learned $q$ through missing observations, so the number of suspended rounds and the $q$ during suspension are reported separately and excluded from $\Qmet$. Per-mode columns $q_{\mathrm{swap}}$, $q_{\mathrm{theft}}$, $q_{\mathrm{downgrade}}$ are listed separately; the primary $\Qmet$ is their simple average (no token weighting). $\Qmet$ measures \emph{attack intent}, not attacks that reach buyers (lower is better).
 
 \paragraph{Identifiability of $\Qmet$.} This is a protocol trade-support screen, not statistical identifiability. A cell is called identifiable if and only if strictly more than half of the runs have at least one strategic-seller trade in the last quarter ($\texttt{tail\_trade\_rate}>0.5$); otherwise the point is drawn hollow and $\Qmet$ receives no deterrence interpretation, and it does not enter Q-gate front membership or the Kendall ranking set. $\Qmet$ itself is the unweighted mean of the attack probability played in listed (not delisted) tail rounds and does not require a sale; reported means and intervals average all 20 seeds, including runs with no tail-segment trade.
 
 \paragraph{Pareto reading, no winner.} Each policy is one $(\Emet,\Qmet)$ point with 95\% interval bars on identifiable $\Qmet$. The text does not rank policies, declare a Pareto-front winner, or treat front membership from point estimates as a finding.
 
-\paragraph{v1.0 gate for $\Qmet$ as a primary axis.} $\Qmet$ depends on how sellers learn. It stays a primary axis only if, at the 40-seller scale with the full baselines and \emph{at every} $\pi$, rerunning with fictitious play (the formal alternative) keeps the ordering of policies by $\Qmet$ (Kendall $\tau\ge 0.6$) \emph{and}, for points where $\Qmet$ is identifiable, the Pareto-front membership unchanged; otherwise $\Qmet$ is demoted to a side column and only $\Emet$ is primary. The pre-run mechanical rule passes: 8 identifiable methods under both egreedy and fictitious play, at every $\pi$, Kendall $\tau_a=0.643$ (23 concordant pairs, 5 discordant), just over 0.6, so $\Qmet$ remains primary. We do not call this ordering stable. Front membership in the gate computation is a point-estimate artifact and is not reported as a finding. A Hedge check on the first batch and an EXP3 check at 40 sellers are in Appendix~\ref{app:secondary}; neither counts toward this v1.0 gate. Decision A instead uses the pre-run multi-learner direction rule in \S\ref{sec:protocol}.
+\paragraph{v1.0 gate for $\Qmet$ as a primary axis.} $\Qmet$ depends on how sellers learn. It stays a primary axis only if, at the 40-seller scale with the full baselines and \emph{at every} $\pi$, rerunning with fictitious play (the formal alternative) keeps the ordering of policies by $\Qmet$ (Kendall $\tau\ge 0.6$) \emph{and}, for points where $\Qmet$ is identifiable, the Pareto-front membership unchanged; otherwise $\Qmet$ is demoted to a side column and only $\Emet$ is primary. The pre-run mechanical rule passes: 8 identifiable methods under both egreedy and fictitious play, at every $\pi$, Kendall $\tau_a=0.643$ (23 concordant pairs, 5 discordant), just over 0.6, so $\Qmet$ remains primary. We do not call this ordering stable. Front membership in the gate computation is a point-estimate artifact and is not reported as a finding. A Hedge check on the first batch and an EXP3 check at 40 sellers are in Appendix~\ref{app:secondary}; neither counts toward this v1.0 gate. The 1000-round audit study instead uses the pre-run multi-learner direction rule in \S\ref{sec:protocol}.
 
 \paragraph{Secondary (appendix).} The joint objective
 \begin{equation}
 J = \mathrm{accuracy} - \lambda \cdot \mathrm{violation\_rate} - \mu \cdot \Emet,
 \end{equation}
-with $\lambda=1.0$, $\mu=0.5$, is reported only in Appendix~\ref{app:secondary}; for the v1.0 main table, secondary cost/accuracy intervals are defined but not reported. Existing official Decision A \code{accuracy} and \code{cost_per_task} intervals are tabulated in Appendix~\ref{app:secondary} (not used for main-text ranking and do not change $\Emet/\Qmet$). Accuracy is task-level (portfolio answer vs gold); violation rate is compliance breaches per task.
+with $\lambda=1.0$, $\mu=0.5$, is reported only in Appendix~\ref{app:secondary}; for the v1.0 main table, secondary cost/accuracy intervals are defined but not reported. Existing official 1000-round audit study \code{accuracy} and \code{cost_per_task} intervals are tabulated in Appendix~\ref{app:secondary} (not used for main-text ranking and do not change $\Emet/\Qmet$). Accuracy is task-level (portfolio answer vs gold); violation rate is compliance breaches per task.
 
 %% =====================================================================
 \section{Data Release}
@@ -226,13 +225,13 @@ with $\lambda=1.0$, $\mu=0.5$, is reported only in Appendix~\ref{app:secondary};
 \subsection{Five JSONL files}
 \label{sec:files}
 
-\paragraph{Availability.} The public repository is \url{https://github.com/fuyanjie/token-market}. Intended licenses are MIT for code and CC BY 4.0 for the five-file export, derived boards, and derived cache fields. In the repository, \code{exports/production/} and frozen \code{release/v0.1/exports/production/} hold small-scale five-file boards, not the 40-seller main table; \code{release/v1.0/} is a staging subset. Decision A readouts are in \code{results/v1.1/v1.2_decision_a_eval/}; Appendix~\ref{app:repro} gives recipes and paths.
+\paragraph{Availability.} The public repository is \url{https://github.com/fuyanjie/token-market}. Intended licenses are MIT for code and CC BY 4.0 for the five-file export, derived boards, and derived cache fields. In the repository, \code{exports/production/} and frozen \code{release/v0.1/exports/production/} hold small-scale five-file boards, not the 40-seller main table; \code{release/v1.0/} is a staging subset. Readouts for the 1000-round audit study are in \code{results/v1.1/v1.2_decision_a_eval/}; Appendix~\ref{app:repro} gives recipes and paths.
 
 \begin{table}[t]
 \caption{The five JSONL files.}
 \label{tab:files}
-\footnotesize
-\renewcommand{\arraystretch}{0.88}
+\scriptsize
+\renewcommand{\arraystretch}{0.78}
 \begin{tabularx}{\columnwidth}{@{}l X@{}}
 \toprule
 File & Role \\
@@ -244,27 +243,10 @@ File & Role \\
 \code{episodes.jsonl} & Legacy board, one row per \code{(run_id, seed)}; official 40-seller metrics use \code{per_seed.csv} (Appendix~\ref{app:schema}) \\
 \bottomrule
 \end{tabularx}
+\vspace{-4pt}
 \end{table}
 
-\paragraph{Sample fields.} Table~\ref{tab:samples} shows compact sample keys; full dictionaries and three-row samples are in the schema documentation (Appendix~\ref{app:repro}).
-
-\begin{table*}[t]
-\caption{Sample fields (truncated; no secrets). Legacy small-scale schema illustrations; prices are synthetic. The official 40-seller board is separate.}
-\label{tab:samples}
-\scriptsize
-\renewcommand{\arraystretch}{0.85}
-\begin{tabularx}{\textwidth}{@{}l X@{}}
-\toprule
-File & Compact sample keys $\rightarrow$ values \\
-\midrule
-\code{sellers} & \code{seller_id=seller_cn}, \code{jurisdiction=CN}, \code{claimed_model=Qwen/Qwen2.5-1.5B-Instruct}, \code{list_price} (schematic synthetic sample), \code{listed_quality}, \code{seed=0} \\
-\code{buyers} & \code{buyer_id=buyer_cn_1}, \code{jurisdiction=CN}, \code{budget_total}, \code{strategy_id}, \code{seed=0} \\
-\code{orders} & \code{order_id=}\ldots\code{|t0000_p059|0|seller_br}, \code{state=settled}, \code{tokens_billed}, \code{latency_ms}, \code{attack_mode} \emph{(held-out label)} \\
-\code{audits} & \code{sampled}, \code{reveal_pi}, \code{label_delay_L}; \code{hit}, \code{slash_amount}, \code{fraud_realized} \emph{(held-out labels)} \\
-Board & Official 40-seller \code{results/v1.0/main/per_seed.csv}: \code{config_hash} is a 16-character per-run prefix, not the frozen \code{scale.yaml} file hash (Appendix~\ref{app:repro}) \\
-\bottomrule
-\end{tabularx}
-\end{table*}
+\paragraph{Sample fields.} Table~\ref{tab:samples} (Appendix~\ref{app:schema}) shows compact sample keys; full dictionaries and three-row samples are in the schema documentation (Appendix~\ref{app:repro}).
 
 \paragraph{Join keys.} \code{run_id}, \code{seed}, \code{order_id} (= \code{purchase_id} when served), \code{config_hash} (sha256 prefix of config).
 
@@ -273,15 +255,15 @@ Board & Official 40-seller \code{results/v1.0/main/per_seed.csv}: \code{config_h
 \subsection{Feature / Label separation}
 \label{sec:featlabel}
 
-\textbf{Evaluation labels} used as inputs \textbf{leak} supervision. The T4 exporter strips the blacklist (Table~\ref{tab:labels}); its column check rejects non-whitelisted inputs, including \code{tokens_actual}$-$\code{tokens_billed}. Training labels are provided for fitting. Test labels are excluded from the feature files, but in this checkout they are present in \code{labels_test.csv} under the official local export directories \code{results/v1.0/t4_eval/export/} and \code{results/v1.0/t4_pilot_eval/export/}, because \code{scripts/run_t4_eval.py} scores locally from that directory. No public hidden-label submission channel or external scoring service is recorded. This manuscript's feature contract governs T4; conflicting metric and safe-feature descriptions in \code{docs/DATA_SCHEMA.md} are legacy.
+\textbf{Evaluation labels} used as inputs \textbf{leak} supervision. The seller risk-ranking exporter strips the blacklist (Table~\ref{tab:labels}); its column check rejects non-whitelisted inputs, including \code{tokens_actual}$-$\code{tokens_billed}. Training labels are provided for fitting. Test labels are excluded from the feature files, but in this checkout they are present in \code{labels_test.csv} under the official local export directories \code{results/v1.0/t4_eval/export/} and \code{results/v1.0/t4_pilot_eval/export/}, because \code{scripts/run_t4_eval.py} scores locally from that directory. No public hidden-label submission channel or external scoring service is recorded. This manuscript's feature contract governs the seller risk-ranking evaluation; conflicting metric and safe-feature descriptions in \code{docs/DATA_SCHEMA.md} are legacy.
 
-\paragraph{Local entry contract.} T4 defines one risk score per (test run, seller). \code{scripts/run_t4_eval.py} evaluates an export directory of train/test features, labels, and a manifest (Appendix~\ref{app:repro}). No public submission channel or external scoring service is recorded; the scripts and exports are in the public repository (\S\ref{sec:files}).
+\paragraph{Local entry contract.} The seller risk-ranking evaluation defines one risk score per (test run, seller). \code{scripts/run_t4_eval.py} evaluates an export directory of train/test features, labels, and a manifest (Appendix~\ref{app:repro}). No public submission channel or external scoring service is recorded; the scripts and exports are in the public repository (\S\ref{sec:files}).
 
 \begin{table}[t]
-\caption{T4 feature whitelist and label blacklist (fixed before running).}
+\caption{Seller risk-ranking feature whitelist and label blacklist (fixed before running).}
 \label{tab:labels}
-\footnotesize
-\renewcommand{\arraystretch}{0.85}
+\scriptsize
+\renewcommand{\arraystretch}{0.78}
 \begin{tabularx}{\columnwidth}{@{}l X@{}}
 \toprule
 & Fields \\
@@ -291,6 +273,7 @@ Blacklist & \code{tokens_actual} and \code{tokens_actual}$-$\code{tokens_billed}
 Excluded (leak) & answer length (theft truncates the served output, so length tracks \code{tokens_actual}); any quality score (the existing score uses audit-revealed identity; correctness uses gold); seller self-reported confidence (computed from the actually served model's output, near-binary after theft truncation, and drawn from correctness-dependent distributions in mock mode) \\
 \bottomrule
 \end{tabularx}
+\vspace{-4pt}
 \end{table}
 
 \paragraph{Future simulator change (5b).} Hidden reasoning and visible answers are not currently separated. A future change would make theft truncate only hidden reasoning; visible answer length could return to the whitelist only after another leakage check. No post-5b result is reported here.
@@ -303,12 +286,12 @@ Code is MIT (top-level \code{LICENSE}); the intended v1.0 five-file export, deri
 \subsection{Repository entry points}
 \label{sec:scripts}
 
-Dependencies are in top-level \code{requirements.txt}; \code{scripts/run_v1.py} is the 40-seller runner. From the repository root, \code{python3}\ \code{scripts/pass12_decision_a_tables.py} renders frozen Decision A tables, without rerunning experiments. Appendix~\ref{app:repro} distinguishes older export/T1--T3 recipes and T4 entry points. No official v1.0 full-suite pass log is recorded; historical snapshots exist. The handoff collected 261 tests without executing them. The repository is publicly hosted at \url{https://github.com/fuyanjie/token-market}; a named maintainer, archival DOI, and any artifact-badge pledge remain to be finalized: \TBD{傅老师: maintainer, optional DOI/artifact-badge pledge}.
+Dependencies are in top-level \code{requirements.txt}; \code{scripts/run_v1.py} is the 40-seller runner. From the repository root, \code{python3}\ \code{scripts/pass12_decision_a_tables.py} renders frozen tables for the 1000-round audit study, without rerunning experiments. Appendix~\ref{app:repro} distinguishes older export/demo recipes and seller risk-ranking entry points. No official v1.0 full-suite pass log is recorded; historical snapshots exist. The handoff collected 261 tests without executing them. The repository is publicly hosted at \url{https://github.com/fuyanjie/token-market}; a named maintainer, archival DOI, and any artifact-badge pledge remain to be finalized: \TBD{傅老师: maintainer, optional DOI/artifact-badge pledge}.
 
 \subsection{Mechanism vs.\ model cache}
 \label{sec:cache}
 
-\paragraph{Generation and coverage.} The synthetic pool is seeded, cycles task types/difficulties, and is reused via per-run shuffled permutations. Decision A cycles the 80-task pool; the v1.0 board also reuses that pool. Separately, \code{data/long_tasks.jsonl} contains the documented GSM8K / MATH-500 subset: seeded selection of long-solution GSM8K items and integer-answer, level-filtered MATH-500 items (\code{LICENSES/DATA_LICENSES.md}); its existence does not establish long-task coverage for the main results. The staged cache contains generations, parsed answers, gold correctness, and token counts from \code{Qwen/Qwen2.5-0.5B-Instruct} and \code{Qwen/Qwen2.5-1.5B-Instruct}. Frozen \code{configs/v1.0/frozen/scale.yaml} also uses \code{sim-fast-mock} (\code{backend: mock}), which samples correctness/tokens from configured profiles, not a third cached LLM. Marketplace audits, feedback, budgets, and strategic learning are simulated. These facts and the roster in \S\ref{sec:primitives} quantify workload coverage inside the simulator, not external representativeness. Prices are simulated, not public-list calibrated; CN/SG/BR tags are simplified controls, not real legal regimes. Appendix~\ref{app:price-ratios} reports a quantitative, descriptive price-ratio comparison with the unused 2026-11-10 public-list snapshot: price evidence only, not production-market validation or calibration, and not applied to official runs.
+\paragraph{Generation and coverage.} The synthetic pool is seeded, cycles task types/difficulties, and is reused via per-run shuffled permutations. The 1000-round audit study cycles the 80-task pool; the v1.0 board also reuses that pool. Separately, \code{data/long_tasks.jsonl} contains the documented GSM8K / MATH-500 subset: seeded selection of long-solution GSM8K items and integer-answer, level-filtered MATH-500 items (\code{LICENSES/DATA_LICENSES.md}); its existence does not establish long-task coverage for the main results. The staged cache contains generations, parsed answers, gold correctness, and token counts from \code{Qwen/Qwen2.5-0.5B-Instruct} and \code{Qwen/Qwen2.5-1.5B-Instruct}. Frozen \code{configs/v1.0/frozen/scale.yaml} also uses \code{sim-fast-mock} (\code{backend: mock}), which samples correctness/tokens from configured profiles, not a third cached LLM. Marketplace audits, feedback, budgets, and strategic learning are simulated. These facts and the roster in \S\ref{sec:primitives} quantify workload coverage inside the simulator, not external representativeness. Prices are simulated, not public-list calibrated; CN/SG/BR tags are simplified controls, not real legal regimes. Appendix~\ref{app:price-ratios} reports a quantitative, descriptive price-ratio comparison with the unused 2026-11-10 public-list snapshot: price evidence only, not production-market validation or calibration, and not applied to official runs.
 
 \subsection{Internal coverage and data-quality checks}
 \label{sec:data-quality}
@@ -318,68 +301,68 @@ Reproducibility rests on the v0.1 regression gate (\S\ref{sec:protocol}) and lea
 \section{Benchmark Protocol}
 \label{sec:protocol}
 
-The protocol (\code{docs/PROTOCOL_v1.0.md}) was frozen and reviewed before the 40-seller main table was run; thresholds and reading rules are not changed after results arrive. Two post-batch clarifications are in Appendix~\ref{app:amend}. T1 adds the separately frozen v1.2 protocol (\code{docs/v1.1/PROTOCOL_v1.2.md}, \S1.1--1.4).
+The protocol (\code{docs/PROTOCOL_v1.0.md}) was frozen and reviewed before the 40-seller main table was run; thresholds and reading rules are not changed after results arrive. Two post-batch clarifications are in Appendix~\ref{app:amend}. The router--audit evaluation adds the separately frozen v1.2 protocol (\code{docs/v1.1/PROTOCOL_v1.2.md}, \S1.1--1.4).
 
 \paragraph{Regression gate.} Before scaling up, seeds 0--2 are re-run with the v0.1 configuration and must reproduce the frozen v0.1 numbers item by item ($|\Delta|\le 10^{-9}$); scale-up proceeds only if this passes. Result: all 1350 compared values (90 rows $\times$ 15 fields) match the frozen v0.1 file, maximum $|\Delta|=0$; the gate passes.
 
 \paragraph{v1.0 scale and statistics.} $\ge$40 sellers ($\ge$3 strategic), three attack types, $\ge$20 seeds for the main table, \code{n_rounds=48}, budget multiplier $2.0$. Policies are compared by same-seed paired differences with 95\% intervals from 10{,}000 bootstrap resamples; multiple comparisons are Holm-corrected over policy pairs.
 
-\paragraph{v1.0 baselines.} (i) Market-adapted PILOT and StageRoute (with stage MIP), each behind the compliance filter and with audit rate 0; (ii) cheapest and strongest fixed routers; (iii) random-intensity audit ($a_t\sim U(0,2a)$ with $a=0.1$); (iv) fixed-rate audits $a\in\{0.05,0.1,0.2\}$, of which the $a=0.1$ arm is the \textbf{D3 reference baseline} (\code{audited_compliance_cascade})---one row, not a separate method; (v) risk-adaptive audit. None of these is the paper's method.
+\paragraph{v1.0 baselines.} (i) Market-adapted PILOT and StageRoute (with stage MIP), each behind the compliance filter and with audit rate 0; (ii) cheapest and strongest fixed routers; (iii) random-intensity audit ($a_t\sim U(0,2a)$ with $a=0.1$); (iv) fixed-rate audits $a\in\{0.05,0.1,0.2\}$, of which the $a=0.1$ arm is the \textbf{fixed-audit $a=0.10$ reference arm} (\code{audited_compliance_cascade})---one row, not a separate method; (v) risk-adaptive audit. None of these is the paper's method.
 
-\subsection*{T1 --- Router $\times$ audit effect}
-\paragraph{Goal.} The v1.2 router $\times$ audit factorial tests each audit against $a=0$ within router, penalty, and seller learning rule at $\pi=1$. Decision A uses WP2's recommended 1000 rounds and egreedy, fictitious play, and EXP3. The classification rule was fixed before running: a qualifying default-parameter effect requires significant same-sign decreases in at least two rules and no significant reversal. Frozen \S1.2 pools PILOT and strongest at $P=0.25$, $\pi=1$. We additionally pool three learners into one 84-test Holm family (all nonzero audits, $\Emet$ and $\Qmet$). By the Holm subset property, this is at least as strict as per-learner 28-test families; both give the same verdict. Frozen $a^*(P)$ intervals are $[0.044,0.050]$ at $P=0.25$, $[0.18,0.20]$ at $P/4$, and $[0.71,0.80]$ at $P/16$; $P/16$ is descriptive only. The v1.0 48-round baseline Pareto view is preserved in Appendix~\ref{app:t1-v10}.
+\subsection*{Router--audit evaluation}
+\paragraph{Goal.} The v1.2 router $\times$ audit factorial tests each audit against $a=0$ within router, penalty, and seller learning rule at $\pi=1$. The 1000-round audit study uses the pre-selected 1000-round horizon and egreedy, fictitious play, and EXP3. The classification rule was fixed before running: a qualifying default-parameter effect requires significant same-sign decreases in at least two rules and no significant reversal. Frozen \S1.2 pools PILOT and strongest at $P=0.25$, $\pi=1$. We additionally pool three learners into one 84-test Holm family (all nonzero audits, $\Emet$ and $\Qmet$). By the Holm subset property, this is at least as strict as per-learner 28-test families; both give the same verdict. Frozen $a^*(P)$ intervals are $[0.044,0.050]$ at $P=0.25$, $[0.18,0.20]$ at $P/4$, and $[0.71,0.80]$ at $P/16$; $P/16$ is descriptive only. The v1.0 48-round baseline Pareto view is preserved in Appendix~\ref{app:t1-v10}.
 
-\subsection*{T2 --- Bandit routers under sparse labels}
-\paragraph{Goal.} Sweep reveal probability $\pi\in\{0,0.02,\ldots,0.30,0.5,1.0\}$ at $L=0$ and report how the bandit routers' $\Emet$ and $\Qmet$ change as labels vanish, with intervals and tail-trade fractions. Audit-based arms do not consume correctness labels, so their insensitivity to $\pi$ holds \emph{by construction} and is not reported as a finding. T2 uses \code{reputation_rounds=0}: no seller is suspended and no rounds are excluded from $\Qmet$.
+\subsection*{Bandit routers under sparse labels}
+\paragraph{Goal.} Sweep reveal probability $\pi\in\{0,0.02,\ldots,0.30,0.5,1.0\}$ at $L=0$ and report how the bandit routers' $\Emet$ and $\Qmet$ change as labels vanish, with intervals and tail-trade fractions. Audit-based arms do not consume correctness labels, so their insensitivity to $\pi$ holds \emph{by construction} and is not reported as a finding. The sparse-label evaluation uses \code{reputation_rounds=0}: no seller is suspended and no rounds are excluded from $\Qmet$.
 \paragraph{Crossover (appendix, pre-registered rule).} The $J$ crossover $\pistar$ between the reference baseline and the best bandit is moved to Appendix~\ref{app:secondary} and reported as a per-seed distribution. Rule fixed before running: the interval $(0.10,0.12)$ is kept only if the paired 95\% interval of $\Delta J$ lies entirely below 0 at $\pi=0.12$ and entirely above 0 at $\pi=0.10$; otherwise the paper reports a conditional range together with the per-seed distribution.
 
-\subsection*{T3 --- Audit-cost efficiency (defined, not reported)}
+\subsection*{Audit-cost efficiency evaluation (defined, not reported)}
 \paragraph{Goal.} Same expected audit budget: fixed Bernoulli vs risk-targeted adaptive allocation; report $\Emet$, $\Qmet$, and \code{n_audits}. \textbf{Not} primary novelty. A delist sweep \code{reputation_rounds} $\in\{0,5,20\}$ reports $\Emet$, $\Qmet$ over listed rounds, and suspended rounds separately.
 
-\subsection*{T4 --- Seller risk ranking}
+\subsection*{Seller risk-ranking evaluation}
 \label{sec:t4protocol}
 \paragraph{Task.} From a seller's public behavior in rounds 1--32, rank sellers by whether they commit fraud in rounds 33--48. Metrics: AUROC, average precision (AP), and precision@10, each computed per test run on sellers who traded in the target window (not the full roster), then averaged over runs with both classes; if fewer than four of six test runs are definable, detection performance is not reported.
 \paragraph{Features.} Full set: the seven whitelisted buyer-observable fields of Table~\ref{tab:labels}; the without-latency ablation uses the remaining six. The blacklist is stripped and the leakage check must pass.
-\paragraph{Split.} By run: seeds 0--13 train, seeds 14--19 test (70/30 rounded when more seeds are run); no test run appears in training. The main table uses a fixed seller roster; T4 resamples the roster (\code{--resample-roster}), otherwise quote price, declared model, and jurisdiction can identify strategic sellers.
+\paragraph{Split.} By run: seeds 0--13 train, seeds 14--19 test (70/30 rounded when more seeds are run); no test run appears in training. The main table uses a fixed seller roster; the seller risk-ranking evaluation resamples the roster (\code{--resample-roster}), otherwise quote price, declared model, and jurisdiction can identify strategic sellers.
 \paragraph{Models and ablations.} Logistic regression, GBDT, and a rule baseline (under-priced quote plus anomalous billed tokens). A \textbf{without-latency} ablation drops latency, because simulated latency may be determined by the served model and make swaps trivially visible. Current-simulator results use seven features; the post-5b evaluation is future work (\S\ref{sec:featlabel}), defined but not reported.
 
-\subsection*{T5 --- Task-conditioned model/seller recommendation}
+\subsection*{Task-conditioned recommendation evaluation}
 \label{sec:t5protocol}
-\paragraph{Task, features, split, and methods.} Frozen in \code{docs/PROTOCOL_T5.md} (distinct from online T1/T2 policies and T4 ranking): per task, recommend one compliance-eligible seller/model at minimum expected billed cost with predicted $P(\text{correct}\wedge\neg\text{attacked})\ge\tau$ (fallback: highest predicted probability), inheriting \code{scale.yaml} (48 rounds, 480 tasks, fixed audit $a=0.10$) with \code{--resample-roster}. Whitelist-only task and pre-decision seller features (no \code{actual_model}, \code{tokens_actual}, attack/audit fields, current latency, gold, prompt text/hash, or raw seller IDs); \code{scripts/check_t5_leakage.py} passed (5{,}017 train rows, 0 offenders). Train logs: $\pi=1$, seeds 0--13 ($\varepsilon=0.20$ random/strongest; inner fit 0--9, inner val 10--13 to freeze $\tau\in\{0.50,\dots,0.90\}$ per learner under a strongest-accuracy floor rule, then refit on 0--13). Online test: seeds 14--19 ($n=6$, not 20), $\pi\in\{1,0.1,0\}$ plus a 15-prompt hold-out side table (not catalog-/cache-disjoint). All seven methods are reported---two log-trained (two-stage LR, GBDT) and five untrained (cheapest, strongest, random, PILOT, StageRoute)---on accuracy, \code{cost_per_task}, violation rate, $\Emet$, and \code{fill_rate} (paired bootstrap $B=10{,}000$, 95\% CIs, 21-pair Holm per $(\pi,\text{metric})$, $\alpha=0.05$; oracle regret appendix-only; $J$ not used for ranking).
+\paragraph{Task, features, split, and methods.} Frozen in \code{docs/PROTOCOL_T5.md} (distinct from online router--audit / sparse-label policies and seller risk ranking): per task, recommend one compliance-eligible seller/model at minimum expected billed cost with predicted $P(\text{correct}\wedge\neg\text{attacked})\ge\tau$ (fallback: highest predicted probability), inheriting \code{scale.yaml} (48 rounds, 480 tasks, fixed audit $a=0.10$) with \code{--resample-roster}. Whitelist-only task and pre-decision seller features (no \code{actual_model}, \code{tokens_actual}, attack/audit fields, current latency, gold, prompt text/hash, or raw seller IDs); \code{scripts/check_t5_leakage.py} passed (5{,}017 train rows, 0 offenders). Train logs: $\pi=1$, seeds 0--13 ($\varepsilon=0.20$ random/strongest; inner fit 0--9, inner val 10--13 to freeze $\tau\in\{0.50,\dots,0.90\}$ per learner under a strongest-accuracy floor rule, then refit on 0--13). Online test: seeds 14--19 ($n=6$, not 20), $\pi\in\{1,0.1,0\}$ plus a 15-prompt hold-out side table (not catalog-/cache-disjoint). All seven methods are reported---two log-trained (two-stage LR, GBDT) and five untrained (cheapest, strongest, random, PILOT, StageRoute)---on accuracy, \code{cost_per_task}, violation rate, $\Emet$, and \code{fill_rate} (paired bootstrap $B=10{,}000$, 95\% CIs, 21-pair Holm per $(\pi,\text{metric})$, $\alpha=0.05$; oracle regret appendix-only; $J$ not used for ranking).
 
-\subsection*{A2 --- Compliance control}
+\subsection*{Compliance-filter control}
 The compliance filter is the only reason violation rates are zero; a \textbf{filter-off} control reports the violation-rate difference.
 
 %% =====================================================================
 \section{Platform Capability Results}
 \label{sec:results}
 
-T1 uses the official v1.2 Decision A readout; T2, T4, T5, A2, and the baseline Pareto view use official v1.0 settings (Appendix~\ref{app:repro}). Main T1/T2/A2 runs use 20 seeds (0--19) and a fixed 40-seller roster (31 honest + 9 strategic: 3 swap / 3 theft / 3 downgrade), whereas T4 and T5 resample the roster per run and evaluate on 6 test runs (seeds 14--19). The v1.0 board uses 480 tasks, 48 rounds, egreedy, compliance on, no delist, and a 19-point $\pi$ grid. The first 3-seller batch remains appendix-only.
+The router--audit evaluation uses the official v1.2 1000-round audit study readout; the sparse-label, seller risk-ranking, and task-conditioned recommendation evaluations, the compliance-filter control, and the baseline Pareto view use official v1.0 settings (Appendix~\ref{app:repro}). Main router--audit, sparse-label, and compliance-filter control runs use 20 seeds (0--19) and a fixed 40-seller roster (31 honest + 9 strategic: 3 swap / 3 theft / 3 downgrade), whereas the seller risk-ranking and task-conditioned recommendation evaluations resample the roster per run and evaluate on 6 test runs (seeds 14--19). The v1.0 board uses 480 tasks, 48 rounds, egreedy, compliance on, no delist, and a 19-point $\pi$ grid. The first 3-seller batch remains appendix-only.
 
-\subsection{T1 --- Router $\times$ audit}
+\subsection{Router--audit evaluation}
 \label{sec:t1}
 
 \input{tables/decision_a_main.tex}
 
-Decision A has 2880 runs: 48 factorial cells $\times$ 3 learners $\times$ 20 seeds, each with 1000 rounds / 10{,}000 tasks cycling through an 80-task pool. Routers are PILOT and strongest; $\pi=1$; audits are the eight levels in Table~\ref{tab:t1}; $P\in\{0.25,0.0625,0.015625\}$. \textbf{All routers use identity+length checks}, unlike v1.0's identity-only non-cascade checks, so audit-arm numbers are not directly comparable. With \code{trust_feedback=false}, \code{reputation_rounds=0}, and zero tail delisted rounds in all runs, the routing rule is identical across audit levels. These $\Emet$ drops are not v1.0-style avoidance/delisting (Appendix~\ref{app:t1-v10}).
+The 1000-round audit study has 2880 runs: 48 factorial cells $\times$ 3 learners $\times$ 20 seeds, each with 1000 rounds / 10{,}000 tasks cycling through an 80-task pool. Routers are PILOT and strongest; $\pi=1$; audits are the eight levels in Table~\ref{tab:t1}; $P\in\{0.25,0.0625,0.015625\}$. \textbf{All routers use identity+length checks}, unlike v1.0's identity-only non-cascade checks, so audit-arm numbers are not directly comparable. With \code{trust_feedback=false}, \code{reputation_rounds=0}, and zero tail delisted rounds in all runs, the routing rule is identical across audit levels. These $\Emet$ drops are not v1.0-style avoidance/delisting (Appendix~\ref{app:t1-v10}).
 
-\paragraph{Decision A: result 1.} At default $P=0.25$, $\pi=1$ and 1000 rounds in this simulator, each counted level satisfies the pre-run rule for both $\Emet$ and $\Qmet$: significant same-sign decreases under $\ge2$ of 3 learners, none significantly reversed, after 84-test Holm correction. Per router, 8/8 means four counted levels $\{0.05,0.10,0.20,\text{risk-adaptive}\}\times\{\Emet,\Qmet\}$. \textbf{PILOT: 8/8}, with $\Emet$ via egreedy+fictitious play and $\Qmet$ via all three; \textbf{strongest: 8/8}, via all three for both metrics. PILOT $\times$ egreedy $\Emet$ is \DecisionAExample{} from $a=0$ to $0.10$. $a=0.05$ is the upper edge of frozen $a^*=[0.044,0.050]$ ($\dagger$). Significant learner responses also occur below static break-even ($a=0.01$--$0.03$), so result 1 does not confirm the $a^*$ model; these levels are not counted. Cascade is outside this 1000-round grid; its separate WP1 diagnostic is in Appendix~\ref{app:other-audit-cells}.
+\paragraph{Pre-registered result of the 1000-round audit study.} At default $P=0.25$, $\pi=1$ and 1000 rounds in this simulator, each counted level satisfies the pre-run rule for both $\Emet$ and $\Qmet$: significant same-sign decreases under $\ge2$ of 3 learners, none significantly reversed, after 84-test Holm correction. Per router, 8/8 means four counted levels $\{0.05,0.10,0.20,\text{risk-adaptive}\}\times\{\Emet,\Qmet\}$. \textbf{PILOT: 8/8}, with $\Emet$ via egreedy+fictitious play and $\Qmet$ via all three; \textbf{strongest: 8/8}, via all three for both metrics. PILOT $\times$ egreedy $\Emet$ is \DecisionAExample{} from $a=0$ to $0.10$. $a=0.05$ is the upper edge of frozen $a^*=[0.044,0.050]$ ($\dagger$). Significant learner responses also occur below static break-even ($a=0.01$--$0.03$), so this pre-registered result does not confirm the $a^*$ model; these levels are not counted. Cascade is outside this 1000-round grid; its separate 48-round cascade diagnostic is in Appendix~\ref{app:other-audit-cells}.
 
-\paragraph{Learning-rule caveat.} Under EXP3 at default $P=0.25$, $\Qmet$ stays near $0.5$; on PILOT, $\Emet$ barely changes with $a$ (no significant change), while the qualifying $\Qmet$ decreases are significant but small (\DecisionAExpQRange{}). EXP3 still participates in every direction vote under the frozen protocol: WP2's non-convergence exclusion is not triggered, and there is no significant reversal. Full paired deltas and 95\% CIs are in Appendix~\ref{app:decision-a}; the separate v1.0 48-round baseline reading is in Appendix~\ref{app:t1-v10}.
+\paragraph{Learning-rule caveat.} Under EXP3 at default $P=0.25$, $\Qmet$ stays near $0.5$; on PILOT, $\Emet$ barely changes with $a$ (no significant change), while the qualifying $\Qmet$ decreases are significant but small (\DecisionAExpQRange{}). EXP3 still participates in every direction vote under the frozen protocol: the pre-registered non-convergence exclusion is not triggered, and there is no significant reversal. Full paired deltas and 95\% CIs are in Appendix~\ref{app:decision-a}; the separate v1.0 48-round baseline reading is in Appendix~\ref{app:t1-v10}.
 
-\subsection{T2 --- Bandit routers under sparse labels}
+\subsection{Bandit routers under sparse labels}
 \label{sec:t2}
 
 \begin{table*}[t]
-\caption{T2 at 40 sellers, 20 seeds, $L=0$ (mean [95\% CI]): $\Emet$ and $\Qmet$ for PILOT, StageRoute, and the D3 reference ($a=0.1$), with tail-trade runs (StageRoute / PILOT / D3). $\Qmet$ is the simple mean of $q_{\mathrm{swap}}$, $q_{\mathrm{theft}}$, $q_{\mathrm{downgrade}}$. D3 values are constant in $\pi$ by construction (not a finding).}
+\caption{Sparse-label evaluation at 40 sellers, 20 seeds, $L=0$ (mean [95\% CI]): $\Emet$ and $\Qmet$ for PILOT, StageRoute, and the fixed-audit $a=0.10$ reference arm, with tail-trade runs (StageRoute / PILOT / audit-ref). $\Qmet$ is the simple mean of $q_{\mathrm{swap}}$, $q_{\mathrm{theft}}$, $q_{\mathrm{downgrade}}$. Fixed-audit reference values are constant in $\pi$ by construction (not a finding).}
 \label{tab:t2}
 \scriptsize
-\setlength{\tabcolsep}{2.4pt}
-\renewcommand{\arraystretch}{0.74}
-\renewcommand{\cil}[3]{\makecell[c]{#1\\[-1.8pt]{\scriptsize [#2, #3]}}}
+\setlength{\tabcolsep}{2.2pt}
+\renewcommand{\arraystretch}{0.66}
+\renewcommand{\cil}[3]{\makecell[c]{#1\\[-2.2pt]{\scriptsize [#2, #3]}}}
 \begin{tabular}{@{}rccccccc@{}}
 \toprule
-$\pi$ & $\Emet$ PILOT & $\Emet$ StageRoute & $\Emet$ D3-ref & $\Qmet$ PILOT & $\Qmet$ StageRoute & $\Qmet$ D3-ref & Tail-trade runs \\
+$\pi$ & $\Emet$ PILOT & $\Emet$ StageRoute & $\Emet$ audit-ref & $\Qmet$ PILOT & $\Qmet$ StageRoute & $\Qmet$ audit-ref & Tail-trade runs \\
 \midrule
 1 & \cil{0.161}{0.154}{0.168} & \cil{0.056}{0.044}{0.068} & \cil{0.005}{0.004}{0.006} & \cil{0.917}{0.890}{0.942} & \cil{0.609}{0.590}{0.628} & \cil{0.538}{0.508}{0.566} & 17/20 / 20/20 / 13/20 \\
 0.5 & \cil{0.185}{0.177}{0.194} & \cil{0.081}{0.066}{0.097} & \cil{0.005}{0.004}{0.006} & \cil{0.936}{0.918}{0.951} & \cil{0.632}{0.609}{0.654} & \cil{0.538}{0.509}{0.566} & 19/20 / 20/20 / 13/20 \\
@@ -396,47 +379,47 @@ $\pi$ & $\Emet$ PILOT & $\Emet$ StageRoute & $\Emet$ D3-ref & $\Qmet$ PILOT & $\
 \vspace{-6pt}
 \end{table*}
 
-\paragraph{Reading.} T2 (Table~\ref{tab:t2}; curves in Figure~\ref{fig:t2}, Appendix~\ref{app:secondary}) shows that dense-label classical routers (PILOT, StageRoute) have significantly worse buyer exposure $\Emet$ when labels become sparse---problem detection under this setting, not a critique of those methods in their original paper settings. At 40 sellers, $\Emet$ of both bandit routers is significantly worse at every $\pi<1$ than at $\pi=1$ (paired, Holm over $\pi$). StageRoute's $\Qmet$ is identifiable (tail-trade runs 85--100\%) and is significantly higher at every lower $\pi$ than at $\pi=1$. PILOT always has 20/20 tail-trade runs; its $\Emet$ is significantly worse at every lower $\pi$, while for $\pi\ge 0.04$ its $\Qmet$ is 0.88--0.94 with no significant rise vs.\ $\pi=1$, and is significantly lower only at $\pi=0$ (0.791) and $\pi=0.02$ (0.825); we do not interpret this as deterrence. At $\pi=0$, PILOT and StageRoute $\Emet$ are already close and not significantly different: $+0.006$ [$-0.007$, $+0.019$], $p_{\mathrm{Holm}}=1.0$. Cheapest remains at $\Emet=0$ with $\Qmet$ not identifiable. The v1.0 48-round audit arms are as in Appendix~\ref{app:t1-v10} (low $\Emet$ by rare trade with strategic sellers, not deterrence); their flatness in $\pi$ is by construction. The $J$ crossover is an appendix result; under the pre-registered rule the interval $(0.10,0.12)$ is not kept.
+\paragraph{Reading.} The sparse-label evaluation (Table~\ref{tab:t2}; curves in Figure~\ref{fig:t2}, Appendix~\ref{app:secondary}) shows that dense-label classical routers (PILOT, StageRoute) have significantly worse buyer exposure $\Emet$ when labels become sparse---problem detection under this setting, not a critique of those methods in their original paper settings. At 40 sellers, $\Emet$ of both bandit routers is significantly worse at every $\pi<1$ than at $\pi=1$ (paired, Holm over $\pi$). StageRoute's $\Qmet$ is identifiable (tail-trade runs 85--100\%) and is significantly higher at every lower $\pi$ than at $\pi=1$. PILOT always has 20/20 tail-trade runs; its $\Emet$ is significantly worse at every lower $\pi$, while for $\pi\ge 0.04$ its $\Qmet$ is 0.88--0.94 with no significant rise vs.\ $\pi=1$, and is significantly lower only at $\pi=0$ (0.791) and $\pi=0.02$ (0.825); we do not interpret this as deterrence. At $\pi=0$, PILOT and StageRoute $\Emet$ are already close and not significantly different: $+0.006$ [$-0.007$, $+0.019$], $p_{\mathrm{Holm}}=1.0$. Cheapest remains at $\Emet=0$ with $\Qmet$ not identifiable. The v1.0 48-round audit arms are as in Appendix~\ref{app:t1-v10} (low $\Emet$ by rare trade with strategic sellers, not deterrence); their flatness in $\pi$ is by construction. The $J$ crossover is an appendix result; under the pre-registered rule the interval $(0.10,0.12)$ is not kept.
 
-\subsection{T4 --- Seller risk ranking}
+\subsection{Seller risk-ranking evaluation}
 \label{sec:t4}
-Under the official D3 setting at $\pi=1$ with a resampled roster, the test set has only two positives among 89 scored sellers (those who traded in the target window, not all 40 on each roster), and only two of six test runs have both classes. We therefore do not report detection performance and do not interpret the latency ablation; a pooled-over-sellers calculation, which does not follow the protocol, is noted in Appendix~\ref{app:secondary}.
+Under the official detection setting (fixed-audit $a=0.10$ reference arm) at $\pi=1$ with a resampled roster, the test set has only two positives among 89 scored sellers (those who traded in the target window, not all 40 on each roster), and only two of six test runs have both classes. We therefore do not report detection performance and do not interpret the latency ablation; a pooled-over-sellers calculation, which does not follow the protocol, is noted in Appendix~\ref{app:secondary}.
 
-A PILOT, $\pi=1$ supplement on the current simulator (before the 5b change), with the same split and a resampled roster, is scorable (6/6 test runs) but is not a new official main result; we do not read it as detection already succeeding or as buyers generally detecting fraud. Positives in this batch (49/215; $\Emet=0.158$) come from PILOT still trading with strategic sellers, not from solving scarce positives under D3, and not a general claim that trading with attackers makes detection scorable. Table~\ref{tab:t4pilot}: \code{any} logistic AUROC $0.970$ [$0.941$, $0.991$], $0.895$ without latency (above the rule $0.703$ in all six test runs; this setting only, not equally strong without latency); latency contributes on \code{any} but not for every attack type, and types must not be collapsed into a single $0.97$.
+A PILOT, $\pi=1$ supplement on the current simulator (before the 5b change), with the same split and a resampled roster, is scorable (6/6 test runs) but is not a new official main result; we do not read it as detection already succeeding or as buyers generally detecting fraud. Positives in this batch (49/215; $\Emet=0.158$) come from PILOT still trading with strategic sellers, not from solving scarce positives under the official fixed-audit $a=0.10$ setting, and not a general claim that trading with attackers makes detection scorable. Table~\ref{tab:t4pilot}: \code{any} logistic AUROC $0.970$ [$0.941$, $0.991$], $0.895$ without latency (above the rule $0.703$ in all six test runs; this setting only, not equally strong without latency); latency contributes on \code{any} but not for every attack type, and types must not be collapsed into a single $0.97$.
 
-\subsection{T5 --- Task-conditioned recommendation}
+\subsection{Task-conditioned recommendation evaluation}
 \label{sec:t5}
 
-\paragraph{Reading.} Official T5 (\code{results/v1.0/t5/}, fixed audit $a=0.10$, realized eval rate $\approx0.10$) tests $n=6$ runs (seeds 14--19, not 20), reporting all seven methods with no winner (Table~\ref{tab:t5-all-pi1}, Appendix~\ref{app:t5}). On inner validation (seeds 10--13), both learners froze $\tau=0.90$: LR triggered the floor rule (val acc 0.7929 vs.\ strongest 0.8006), GBDT did not (0.8231 $\ge$ 0.8006), and settings were unchanged. At $\pi=1$ (21-pair Holm, $n=6$, $\alpha=0.05$), neither learner significantly beats strongest in accuracy (GBDT $p_{\mathrm{Holm}}=0.8452$; LR $0.6048$; LR vs.\ GBDT $0.0504$, n.s.). GBDT significantly exceeds PILOT, StageRoute, cheapest, and random in accuracy, but at significantly higher cost/task than all six other methods and lower fill than strongest, PILOT, and cheapest. Both learners significantly lower $\Emet$ vs.\ strongest, PILOT, and random, but not vs.\ StageRoute (LR $p_{\mathrm{Holm}}=0.127$; GBDT $1.0$). Cheapest is significantly cheapest with $\Emet=0$, lowest accuracy, and fill $=1.0000$. Violation $=0$ across all methods holds largely by construction (dataflow compliance filter, not fraud detection; fraud exposure is tracked via $\Emet$). Offline-frozen learners are $\pi$-invariant by design (not a finding); $\pi\in\{0.1,0\}$ side tables inspect online baselines only, and T2 remains the official sparse-feedback result (Appendix~\ref{app:t5}). On the 15-prompt hold-out (Appendix~\ref{app:t5}), GBDT's accuracy lead over LR is not retained ($\pi=1$: GBDT 0.7519 [0.7333, 0.7667] vs.\ LR 0.7852 [0.7648, 0.8056]); strongest, random, and StageRoute drop similarly, so this alone does not establish prompt memorization, and we do not claim generalization to unseen prompts.
+\paragraph{Reading.} The official task-conditioned recommendation evaluation (\code{results/v1.0/t5/}, fixed audit $a=0.10$, realized eval rate $\approx0.10$) tests $n=6$ runs (seeds 14--19, not 20), reporting all seven methods with no winner (Table~\ref{tab:t5-all-pi1}, Appendix~\ref{app:t5}). On inner validation (seeds 10--13), both learners froze $\tau=0.90$: LR triggered the floor rule (val acc 0.7929 vs.\ strongest 0.8006), GBDT did not (0.8231 $\ge$ 0.8006), and settings were unchanged. At $\pi=1$ (21-pair Holm, $n=6$, $\alpha=0.05$), neither learner significantly beats strongest in accuracy (GBDT $p_{\mathrm{Holm}}=0.8452$; LR $0.6048$; LR vs.\ GBDT $0.0504$, n.s.). GBDT significantly exceeds PILOT, StageRoute, cheapest, and random in accuracy, but at significantly higher cost/task than all six other methods and lower fill than strongest, PILOT, and cheapest. Both learners significantly lower $\Emet$ vs.\ strongest, PILOT, and random, but not vs.\ StageRoute (LR $p_{\mathrm{Holm}}=0.127$; GBDT $1.0$). Cheapest is significantly cheapest with $\Emet=0$, lowest accuracy, and fill $=1.0000$. Violation $=0$ across all methods holds largely by construction (dataflow compliance filter, not fraud detection; fraud exposure is tracked via $\Emet$). Offline-frozen learners are $\pi$-invariant by design (not a finding); $\pi\in\{0.1,0\}$ side tables inspect online baselines only, and the sparse-label evaluation remains the official sparse-feedback result (Appendix~\ref{app:t5}). On the 15-prompt hold-out (Appendix~\ref{app:t5}), GBDT's accuracy lead over LR is not retained ($\pi=1$: GBDT 0.7519 [0.7333, 0.7667] vs.\ LR 0.7852 [0.7648, 0.8056]); strongest, random, and StageRoute drop similarly, so this alone does not establish prompt memorization, and we do not claim generalization to unseen prompts.
 
-\subsection{A2 --- Compliance control}
+\subsection{Compliance-filter control}
 \label{sec:a2}
-With the filter off at $\pi=1$ over seeds 0--19 (Table~\ref{tab:a2}, Appendix~\ref{app:secondary}), every method's violation rate rises significantly from 0 (PILOT 0.156 [0.152, 0.159], StageRoute 0.178 [0.169, 0.188], cheapest 0.065 [0.062, 0.068], strongest 0.191 [0.185, 0.197], D3-ref and the other audit arms $\approx$0.166--0.167). Fill rates have no significant change after Holm. The zeros in the v1.0 baseline table therefore come from the filter, not from an absence of violating buyer--seller pairs. The D3 filter-off arm is \code{fixed_audit_a0.10} with \code{--no-compliance-filter}. $\Emet$ of PILOT, StageRoute, and cheapest does not change significantly; strongest rises significantly (0.446$\rightarrow$0.519). The audit $\Emet$ dip is significant, but with the filter off their tail-trade runs fall to 1/20, so $\Qmet$ is not identifiable---we do not report those $\Qmet$ values, and we do not read the dip as a reduction in attacks from turning the filter off. StageRoute's filter-off tail-trade runs are 11/20, just over the identifiability line, and $\Qmet$ is almost unchanged; we draw no strong reading. This control is only at $\pi=1$.
+With the filter off at $\pi=1$ over seeds 0--19 (Table~\ref{tab:a2}, Appendix~\ref{app:secondary}), every method's violation rate rises significantly from 0 (PILOT 0.156 [0.152, 0.159], StageRoute 0.178 [0.169, 0.188], cheapest 0.065 [0.062, 0.068], strongest 0.191 [0.185, 0.197], the fixed-audit $a=0.10$ reference and the other audit arms $\approx$0.166--0.167). Fill rates have no significant change after Holm. The zeros in the v1.0 baseline table therefore come from the filter, not from an absence of violating buyer--seller pairs. The $a=0.10$ reference filter-off arm is \code{fixed_audit_a0.10} with \code{--no-compliance-filter}. $\Emet$ of PILOT, StageRoute, and cheapest does not change significantly; strongest rises significantly (0.446$\rightarrow$0.519). The audit $\Emet$ dip is significant, but with the filter off their tail-trade runs fall to 1/20, so $\Qmet$ is not identifiable---we do not report those $\Qmet$ values, and we do not read the dip as a reduction in attacks from turning the filter off. StageRoute's filter-off tail-trade runs are 11/20, just over the identifiability line, and $\Qmet$ is almost unchanged; we draw no strong reading. This control is only at $\pi=1$.
 %% =====================================================================
-\vspace{-3pt}
+\vspace{-4pt}
 \section{Limitations}
 \label{sec:limitations}
 
-\begin{enumerate}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}\setlength{\parsep}{0pt}
+\begin{enumerate}[leftmargin=1.3em,topsep=2pt,itemsep=0pt,parsep=0pt]
 \item \textbf{Single-platform auditor; no multi-buyer congestion.} Multi-buyer competition for capacity and multi-auditor games are deferred. Congestion externalities are outside the leaderboard contract.
 \item \textbf{Not a CLOB.} Posted prices + routing/portfolio procurement only; no price--time priority book, maker--taker fees, HFT makers, or circuit breakers.
 \item \textbf{Synthetic jurisdictions and mechanism + cached model answers.} Corridor tags (CN/SG/BR) and compliance profiles are simplified simulation devices---not legal advice and not real KYC/data-transfer regimes. Correctness uses two cached Qwen checkpoints plus the mock backend; prices, budgets, audits, and learning rules are simulated; prices remain uncalibrated. Without marketplace transaction logs, latency, volume, jurisdictions, and executed trades cannot be compared quantitatively (Appendix~\ref{app:price-ratios}).
-\item \textbf{$\Qmet$ depends on the seller learning rule and on trading.} For v1.0, it is primary only if it passes the learning-rule gate (\S\ref{sec:metrics}); Decision A uses its separate direction rule. It is not identifiable for sellers that a router avoids completely.
-\item \textbf{T4 realism.} Before the 5b change, the simulator does not separate hidden reasoning from visible answers, so several realistic buyer signals (answer length, quality) are excluded for leakage; latency may be more revealing than in real markets, hence the without-latency ablation.
-\item \textbf{Simulation-only audit effect.} Decision A shows an audit effect only in this simulator under default parameters ($P=0.25$, $\pi=1$), 1000 rounds, and the three seller rules (egreedy, fictitious play, EXP3). Under EXP3 at default $P=0.25$, $\Qmet$ stays $\approx0.5$, PILOT's $\Emet$ shows no significant change, and PILOT's qualifying $\Qmet$ decreases are small. This does not establish effects in real API markets or deployments. T3's equal-budget comparison and long delist are defined but not reported.
+\item \textbf{$\Qmet$ depends on the seller learning rule and on trading.} For v1.0, it is primary only if it passes the learning-rule gate (\S\ref{sec:metrics}); the 1000-round audit study uses its separate direction rule. It is not identifiable for sellers that a router avoids completely.
+\item \textbf{Seller risk-ranking realism.} Before the 5b change, the simulator does not separate hidden reasoning from visible answers, so several realistic buyer signals (answer length, quality) are excluded for leakage; latency may be more revealing than in real markets, hence the without-latency ablation.
+\item \textbf{Simulation-only audit effect.} The 1000-round audit study shows an audit effect only in this simulator under default parameters ($P=0.25$, $\pi=1$), 1000 rounds, and the three seller rules (egreedy, fictitious play, EXP3). Under EXP3 at default $P=0.25$, $\Qmet$ stays $\approx0.5$, PILOT's $\Emet$ shows no significant change, and PILOT's qualifying $\Qmet$ decreases are small. This does not establish effects in real API markets or deployments. The audit-cost efficiency evaluation's equal-budget comparison and long delist are defined but not reported.
 \item \textbf{No resale / rewrite / distill event graph.} No \code{event_type}$\in$\{\code{resale},\code{rewrite},\code{distill}\} layer, parent/source order links, or content/output hashes; strong provenance is deferred to a later event layer.
-\item \textbf{Narrow catalog, prompt reuse, and T5 scope.} Official backends are \code{Qwen2.5-0.5B}, \code{Qwen2.5-1.5B}, and \code{sim-fast-mock} (two real checkpoints); reused tasks permit prompt memorization and T5 tests on $n=6$ runs (seeds 14--19). T5 only shows whether simulation logs can train a task-conditioned, price-constrained recommendation baseline under this catalog and synthetic prices---not coverage of real multi-model procurement, and uncalibrated prices are not market validation.
+\item \textbf{Narrow catalog, prompt reuse, and recommendation scope.} Official backends are \code{Qwen2.5-0.5B}, \code{Qwen2.5-1.5B}, and \code{sim-fast-mock} (two real checkpoints); reused tasks permit prompt memorization and the task-conditioned recommendation evaluation tests on $n=6$ runs (seeds 14--19). This evaluation only shows whether simulation logs can train a task-conditioned, price-constrained recommendation baseline under this catalog and synthetic prices---not coverage of real multi-model procurement, and uncalibrated prices are not market validation.
 \end{enumerate}
 
 %% =====================================================================
-\vspace{-3pt}
+\vspace{-4pt}
 \section{Conclusion}
 \label{sec:conclusion}
 
-We present a \textbf{compliance-constrained reasoning-token market simulator}, schema, and protocol for strategic fraud and sparse feedback; the public repository is at \url{https://github.com/fuyanjie/token-market} (\S\ref{sec:data}). Deliberately \emph{not} a CLOB, it exposes admission, routing, escrow, oversight, and feedback trails as a joinable five-file export with a leakage-checked feature view. Primary evaluation is two-dimensional ($(\Emet,\Qmet)$ Pareto plot, no declared winner). At 40 sellers, both bandit routers' $\Emet$ rises significantly as labels vanish; StageRoute's identifiable $\Qmet$ rises as $\pi$ falls, whereas PILOT's $\Qmet$ does not rise vs.\ $\pi=1$ (lower only at $\pi=0,0.02$). The v1.0 48-round audit arms sit at low $\Emet$ mainly by rarely trading with strategic sellers (not deterrence). At default parameters and 1000 rounds in this simulator, audits $a\in\{0.05,0.10,0.20\}$ and risk-adaptive lower $\Emet$ and $\Qmet$ for PILOT and strongest under the pre-run three-learner direction rule (result 1; EXP3 caveat in \S\ref{sec:t1}). Official T4 (D3) has only two test positives and is not scorable; a PILOT, $\pi=1$ supplement is in \S\ref{sec:t4} (not a new official main result). Official T5 (\S\ref{sec:t5}, $n=6$, fixed $a=0.10$) reports all seven methods with no winner: at $\pi=1$, neither learner beats strongest in accuracy, both lower $\Emet$ vs.\ strongest and PILOT (not StageRoute), GBDT trades higher cost and lower fill for accuracy over PILOT/StageRoute/cheapest, and its lead over LR is not retained on the 15-prompt hold-out. Designing methods that move the Pareto front is future work; T3, v1.0 secondary cost/accuracy intervals, and post-5b T4 remain defined but not reported here.
+Cross-border procurement of LLM inference is increasingly organized as a marketplace in which quality and fraud are revealed only partially and late. The research task is to evaluate routing, audit, and recommendation under hard compliance filters, strategic seller fraud, escrow settlement, and sparse or delayed outcome labels. Existing simulators and routers do not jointly provide this coupling as a reproducible benchmark, so buyer exposure and seller intent cannot be measured on one evaluation surface. This paper presents a compliance-constrained reasoning-token market simulator, a five-file JSONL schema, and a frozen protocol; the public repository is at \url{https://github.com/fuyanjie/token-market} (\S\ref{sec:data}). The platform exposes admission, routing, escrow, oversight, and feedback trails, and reports policies as points on an $(\Emet,\Qmet)$ Pareto plot with intervals and no declared winner. A central observation is that low buyer exposure need not mean deterrence: the 48-round audit arms sit at low $\Emet$ mainly by rarely trading with strategic sellers. At 40 sellers, both bandit routers' $\Emet$ rises significantly as labels vanish; StageRoute's identifiable $\Qmet$ rises as $\pi$ falls, whereas PILOT's $\Qmet$ does not rise versus $\pi=1$ (lower only at $\pi=0$ and $0.02$). In this simulator at default parameters and 1000 rounds, audits $a\in\{0.05,0.10,0.20\}$ and risk-adaptive audit lower $\Emet$ and $\Qmet$ for PILOT and strongest under the pre-run three-learner direction rule (EXP3 caveat in \S\ref{sec:t1}). Official seller risk-ranking detection has only two test positives and is not scorable; a PILOT, $\pi=1$ supplement is reported (\S\ref{sec:t4}, not a new official main result). The official task-conditioned recommendation evaluation (\S\ref{sec:t5}, $n=6$, fixed $a=0.10$) reports all seven methods with no winner: at $\pi=1$, neither learner beats strongest in accuracy, both lower $\Emet$ versus strongest and PILOT (not StageRoute), GBDT trades higher cost and lower fill for accuracy over PILOT, StageRoute, and cheapest, and its lead over LR is not retained on the 15-prompt hold-out. These findings suggest that a single scalar score is insufficient when feedback sparsity and seller learning change exposure and intent in different directions, so a two-dimensional evaluation is the appropriate contract. The artifact is intended for procurement, audit, and feedback research; it is not a basis for real seller sanctions, production vendor selection, or national-risk rankings. Official seller risk-ranking detection remains unscorable, and audit-cost efficiency, v1.0 secondary cost/accuracy intervals, and post-5b seller risk ranking remain defined but not reported; designing methods that move the Pareto front is future work.
 
 %% =====================================================================
-\vspace{-3pt}
+\vspace{-4pt}
 \section*{Ethics and Synthetic-Data Statement}
 \label{sec:ethics}
 
@@ -455,9 +438,27 @@ Budgets, stakes, corridor fees, and compliance rule identifiers are \textbf{synt
 \section{Schema field cheat-sheet}
 \label{app:schema}
 
-\paragraph{Versioned dictionaries.} \code{docs/v1.1/db/SCHEMA_v1.md} records field types, units, nulls, row units, keys, joins, label roles, and frozen examples separately for the legacy export, official board, Decision A readouts, and T4; \code{DATA_CARD.md} in the same directory records uses and limitations.
+\begin{table*}[h]
+\caption{Sample fields (truncated; no secrets). Legacy small-scale schema illustrations; prices are synthetic. The official 40-seller board is separate.}
+\label{tab:samples}
+\scriptsize
+\renewcommand{\arraystretch}{0.85}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\toprule
+File & Compact sample keys $\rightarrow$ values \\
+\midrule
+\code{sellers} & \code{seller_id=seller_cn}, \code{jurisdiction=CN}, \code{claimed_model=Qwen/Qwen2.5-1.5B-Instruct}, \code{list_price} (schematic synthetic sample), \code{listed_quality}, \code{seed=0} \\
+\code{buyers} & \code{buyer_id=buyer_cn_1}, \code{jurisdiction=CN}, \code{budget_total}, \code{strategy_id}, \code{seed=0} \\
+\code{orders} & \code{order_id=}\ldots\code{|t0000_p059|0|seller_br}, \code{state=settled}, \code{tokens_billed}, \code{latency_ms}, \code{attack_mode} \emph{(held-out label)} \\
+\code{audits} & \code{sampled}, \code{reveal_pi}, \code{label_delay_L}; \code{hit}, \code{slash_amount}, \code{fraud_realized} \emph{(held-out labels)} \\
+Board & Official 40-seller \code{results/v1.0/main/per_seed.csv}: \code{config_hash} is a 16-character per-run prefix, not the frozen \code{scale.yaml} file hash (Appendix~\ref{app:repro}) \\
+\bottomrule
+\end{tabularx}
+\end{table*}
 
-\code{docs/DATA_SCHEMA.md} supplies legacy dictionaries/samples; where it disagrees, \S\ref{sec:featlabel} governs T4. There is no single official 40-seller \code{episodes.jsonl}. The official board is \code{results/v1.0/main/per_seed.csv} (3420 rows), whose exact header is:
+\paragraph{Versioned dictionaries.} \code{docs/v1.1/db/SCHEMA_v1.md} records field types, units, nulls, row units, keys, joins, label roles, and frozen examples separately for the legacy export, official board, 1000-round audit study readouts, and seller risk-ranking evaluation; \code{DATA_CARD.md} in the same directory records uses and limitations.
+
+\code{docs/DATA_SCHEMA.md} supplies legacy dictionaries/samples; where it disagrees, \S\ref{sec:featlabel} governs the seller risk-ranking evaluation. There is no single official 40-seller \code{episodes.jsonl}. The official board is \code{results/v1.0/main/per_seed.csv} (3420 rows), whose exact header is:
 \begin{lstlisting}[language={}]
 method, label, policy, pi, seed, E, E_tok, fraud_share, fraud_share_swap, fraud_share_theft, fraud_share_downgrade, Q, Q_swap, Q_theft, Q_downgrade, tail_trade, tail_trade_sellers, tail_sales, n_strategic, Q_present_rounds, delisted_rounds_tail, q_delisted_mean, J, quality, cost, cost_per_task, audit_cost, n_audits, audit_rate_realised, violation_rate, fill_rate, n_served, seller_learner, audit_rule, compliance_filter, roster_seed, config_hash
 \end{lstlisting}
@@ -472,24 +473,24 @@ This legacy schema still has \code{active_attack_rate} and lacks \code{Q}, \code
 \section{Reproducibility and Artifact Paths}
 \label{app:repro}
 
-\paragraph{Dated documentation supplement.} Added 2026-11-15, \code{docs/v1.1/db/ARTIFACT_MAP.md} maps every table and figure to frozen inputs, producing commands or recorded gaps, outputs, and protocol/config versions; \code{release/v1.0/SHA256SUMS} hashes the referenced repository paths without copying data. \code{REPRODUCE_v1.md} separates smoke checks, frozen-output verification/re-rendering, and unexecuted full regeneration; \code{ENVIRONMENT.md} and its lock inventory describe the environment validated on that date, not the historical Decision A environment. The dated selected-suite log \code{pytest_2026-11-15.log} records 256 passed and five cache-preparation cases deselected; \code{L2_REPORT.json} records scratch-output checks. This evidence supplements the historical collect-only statement. Staging remains staging; \code{release/v1.0/README.md} lists completeness gaps, and \code{THIRD_PARTY_LICENSES.md} there indexes component provenance and upstream terms with unresolved project licensing left to the owner.
+\paragraph{Dated documentation supplement.} Added 2026-11-15, \code{docs/v1.1/db/ARTIFACT_MAP.md} maps every table and figure to frozen inputs, producing commands or recorded gaps, outputs, and protocol/config versions; \code{release/v1.0/SHA256SUMS} hashes the referenced repository paths without copying data. \code{REPRODUCE_v1.md} separates smoke checks, frozen-output verification/re-rendering, and unexecuted full regeneration; \code{ENVIRONMENT.md} and its lock inventory describe the environment validated on that date, not the historical 1000-round audit study environment. The dated selected-suite log \code{pytest_2026-11-15.log} records 256 passed and five cache-preparation cases deselected; \code{L2_REPORT.json} records scratch-output checks. This evidence supplements the historical collect-only statement. Staging remains staging; \code{release/v1.0/README.md} lists completeness gaps, and \code{THIRD_PARTY_LICENSES.md} there indexes component provenance and upstream terms with unresolved project licensing left to the owner.
 
-\paragraph{Statistical conventions.} \code{docs/v1.1/db/STATISTICS.md} consolidates the analysis code's resampling units, RNGs, marginal versus paired-difference intervals, Holm families, undefined-run handling, and T4 run-level intervals. Same-seed contrasts resample paired run differences, whereas marginal intervals summarize individual conditions; these intervals have different meanings. Seed-level uncertainty reflects simulation variability under a fixed roster and reused task pool; T4 separately resamples rosters but shares task/cache resources. \code{TASKS_AND_CACHE.md}, \code{T4_FEATURES.md}, and \code{METRICS_INTERPRETATION.md} document task reuse, feature construction, and denominator conventions.
+\paragraph{Statistical conventions.} \code{docs/v1.1/db/STATISTICS.md} consolidates the analysis code's resampling units, RNGs, marginal versus paired-difference intervals, Holm families, undefined-run handling, and seller risk-ranking run-level intervals. Same-seed contrasts resample paired run differences, whereas marginal intervals summarize individual conditions; these intervals have different meanings. Seed-level uncertainty reflects simulation variability under a fixed roster and reused task pool; the seller risk-ranking evaluation separately resamples rosters but shares task/cache resources. \code{TASKS_AND_CACHE.md}, \code{T4_FEATURES.md}, and \code{METRICS_INTERPRETATION.md} document task reuse, feature construction, and denominator conventions.
 
-Paths below are relative to the public repository (\url{https://github.com/fuyanjie/token-market}). \code{release/v1.0/} is a staging subset (\code{MANIFEST.json}: \code{staging=true}, \code{not_a_release=true}), containing reproduction/license notes, task notices, the two-Qwen cache and manifest, older \code{results/pi_dense/}, and \code{results/benchmark/production/T2_episodes.jsonl}. It lacks a top-level license, requirements, data card, and production exports; use repository \code{LICENSE}, \code{requirements.txt}, and \code{docs/LICENSE_NOTES.md}. Its reproduction notes retain historical supplement paths. It is not self-contained and does not contain all v1.0 or Decision A results. Frozen \code{release/v0.1/} is unchanged.
+Paths below are relative to the public repository (\url{https://github.com/fuyanjie/token-market}). \code{release/v1.0/} is a staging subset (\code{MANIFEST.json}: \code{staging=true}, \code{not_a_release=true}), containing reproduction/license notes, task notices, the two-Qwen cache and manifest, older \code{results/pi_dense/}, and \code{results/benchmark/production/T2_episodes.jsonl}. It lacks a top-level license, requirements, data card, and production exports; use repository \code{LICENSE}, \code{requirements.txt}, and \code{docs/LICENSE_NOTES.md}. Its reproduction notes retain historical supplement paths. It is not self-contained and does not contain all v1.0 or 1000-round audit study results. Frozen \code{release/v0.1/} is unchanged.
 
 \paragraph{Older small-scale export / demo recipes.}
 \begin{lstlisting}
 # Older 3-seller board (not the 40-seller main table)
 python scripts/export_benchmark_layers.py --full --use-cache --out exports/production
-# Older T1--T3 tasks; no T4 or Decision A
+# Older demo tasks; no seller risk ranking or 1000-round audit study
 python scripts/run_benchmark_tasks.py --full --use-cache
 # Older dense-pi reproduction (see staging REPRODUCE.md)
 scripts/reproduce_pi_dense.sh --full
 \end{lstlisting}
-These existing recipes are not the 40-seller / 1000-round Decision A path and do not regenerate Table~\ref{tab:t1}. The dense-grid JSON has no per-seed export flag; older per-seed rows are in T2 episodes (\code{release/v1.0/REPRODUCE.md}). Official recipes follow; they were not rerun here. No clean-environment rerun or test pass is claimed.
+These existing recipes are not the 40-seller / 1000-round audit study path and do not regenerate Table~\ref{tab:t1}. The dense-grid JSON has no per-seed export flag; older per-seed rows are in the sparse-label episodes file (\code{release/v1.0/REPRODUCE.md}). Official recipes follow; they were not rerun here. No clean-environment rerun or test pass is claimed.
 
-\paragraph{Current entry points (not executed in this pass).} \code{scripts/run_v1.py} accepts \code{--config}, \code{--out}, \code{--methods}, \code{--pi-grid}, \code{--seeds}, \code{--resample-roster}, and \code{--log-dir}; frozen scale is \code{configs/v1.0/frozen/scale.yaml}. T4's local baseline evaluator \code{scripts/run_t4_eval.py} accepts \code{--logs} plus \code{--config}, or \code{--export-dir}, and requires \code{--out}; it computes per-test-run metrics, not an external submission service. Existing D3 and PILOT exports are \code{results/v1.0/t4_eval/export/} and \code{results/v1.0/t4_pilot_eval/export/}; corresponding readouts are listed below. \code{python3}\ \code{scripts/check_t4_leakage.py}\ \code{--dir}\ \code{<export-dir>} checks whitelisted columns and, when label files are supplied, correlation against private token/label references; this heuristic is not a guarantee against simulator shortcuts. Decision A's \code{python3}\ \code{scripts/pass12_decision_a_tables.py} reads frozen eval files and renders tables only; official experiment recipes follow below.
+\paragraph{Current entry points (not executed in this pass).} \code{scripts/run_v1.py} accepts \code{--config}, \code{--out}, \code{--methods}, \code{--pi-grid}, \code{--seeds}, \code{--resample-roster}, and \code{--log-dir}; frozen scale is \code{configs/v1.0/frozen/scale.yaml}. The seller risk-ranking local baseline evaluator \code{scripts/run_t4_eval.py} accepts \code{--logs} plus \code{--config}, or \code{--export-dir}, and requires \code{--out}; it computes per-test-run metrics, not an external submission service. Existing official fixed-audit ($a=0.10$) and PILOT exports are \code{results/v1.0/t4_eval/export/} and \code{results/v1.0/t4_pilot_eval/export/}; corresponding readouts are listed below. \code{python3}\ \code{scripts/check_t4_leakage.py}\ \code{--dir}\ \code{<export-dir>} checks whitelisted columns and, when label files are supplied, correlation against private token/label references; this heuristic is not a guarantee against simulator shortcuts. For the 1000-round audit study, \code{python3}\ \code{scripts/pass12_decision_a_tables.py} reads frozen eval files and renders tables only; official experiment recipes follow below.
 
 \paragraph{Official 40-seller recipes.} The following simulator commands are recorded in the corresponding \code{run_meta.json} \code{argv} fields. The main, fictitious-play, EXP3, and filter-off grids were not rerun in this pass.
 \begin{lstlisting}
@@ -500,23 +501,48 @@ python3 scripts/run_v1.py --config configs/v1.0/scale.yaml --seeds 0-19 --jobs 8
 \end{lstlisting}
 The official egreedy inference is already in \code{results/v1.0/main/inference.json}; its analyzer has no stored official argv. Metadata wall-clock times are cache-backed, not clean-room measurements.
 
-\paragraph{Decision A / v1.2 recipe.} The run metadata records \code{git_head=5e848d9}; the readout was later committed as \code{f759cd6}. The first command is the recorded grid argv. Analysis argv is not stored in \code{decision_a_eval.json}; the analysis recipe uses the readout's paths and protocol hash. The last command only renders frozen tables. None was executed here.
+\paragraph{1000-round audit study / v1.2 recipe.} The run metadata records \code{git_head=5e848d9}; the readout was later committed as \code{f759cd6}. The first command is the recorded grid argv. Analysis argv is not stored in \code{decision_a_eval.json}; the analysis recipe uses the readout's paths and protocol hash. The last command only renders frozen tables. None was executed here.
 \begin{lstlisting}[breakautoindent=false,breakindent=0pt]
 python3 scripts/v1.1/run_wp1.py --mode decision_a --protocol docs/v1.1/PROTOCOL_v1.2.md --protocol-sha256 daddac6c0dddb22b08701caff5715e77215ae13a588512af176ff4933430b102 --n-rounds 1000 --out results/v1.1/v1.2_decision_a --jobs 8
 python3 scripts/v1.1/analyze_decision_a.py --run results/v1.1/v1.2_decision_a --out results/v1.1/v1.2_decision_a_eval --protocol docs/v1.1/PROTOCOL_v1.2.md --protocol-sha256 daddac6c0dddb22b08701caff5715e77215ae13a588512af176ff4933430b102
 python3 scripts/pass12_decision_a_tables.py
 \end{lstlisting}
 
-\paragraph{Environment evidence.} Decision A \code{run_meta} records no Python or package versions. \code{requirements.txt}/\code{pyproject.toml} specify \code{requires-python >=3.13}, package \code{tokenmarket} \code{0.2.0}, and pins \code{PyYAML==6.0.3}, \code{numpy==2.5.4}, \code{matplotlib==3.11.2}, \code{pytest==9.2.0}. The requirements document the v0.1 environment as Python 3.13.5 (CPython, GCC 14.2.0), venv \code{/workspace/tmvenv}; these are not interpreter/package records for the official Decision A run.
+\paragraph{Environment evidence.} The 1000-round audit study \code{run_meta} records no Python or package versions. \code{requirements.txt}/\code{pyproject.toml} specify \code{requires-python >=3.13}, package \code{tokenmarket} \code{0.2.0}, and pins \code{PyYAML==6.0.3}, \code{numpy==2.5.4}, \code{matplotlib==3.11.2}, \code{pytest==9.2.0}. The requirements document the v0.1 environment as Python 3.13.5 (CPython, GCC 14.2.0), venv \code{/workspace/tmvenv}; these are not interpreter/package records for the official 1000-round audit study run.
 
 \paragraph{Unused public-list snapshot.} \code{configs/v1.0/frozen/prices.yaml} (identical to \code{configs/v1.0/prices.yaml}), sha256 \code{c26293cc3d890c6220491d02c06988372c79d0a5856899d2f165004bd8f9840f}, records access on 2026-11-10 to OpenAI (\url{https://developers.openai.com/api/docs/pricing}), Anthropic (\url{https://claude.com/pricing}), and Google (\url{https://aistudio.google.com/docs/pricing}). DeepSeek, Alibaba Model Studio, and \code{gemini-3.1-flash-lite} prices are not filled. The snapshot was not applied to rescale the simulator: \code{price_per_1k} in \code{configs/v1.0/scale.yaml} remains synthetic market units, not automatically rescaled. No applied mapping or calibrated result is claimed; the descriptive comparison is in Table~\ref{tab:price-ratios}, Appendix~\ref{app:price-ratios}.
 
 \paragraph{Board hash semantics.} In \code{scripts/run_v1.py:66--67}, row-level \code{config_hash} is the first 16 characters of SHA-256 over \code{json.dumps(per-run cfg, sort_keys=True, default=str)}. Prefixes vary by method $\times\pi$ and overrides; seed 0, PILOT, $\pi=0$ has \code{8480f34cea55114e}. This is distinct from the frozen \code{scale.yaml} file sha256 in Table~\ref{tab:repro}.
 
-\paragraph{Local T4 interface and records.} An export directory contains \code{features_train.csv}, \code{features_test.csv}, \code{labels_train.csv}, \code{labels_test.csv}, and \code{t4_manifest.json}. Checked exports are \code{results/v1.0/t4_eval/export/} and \code{results/v1.0/t4_pilot_eval/export/}. Besides the required inputs and \code{--out}, \code{scripts/run_t4_eval.py} accepts \code{--n-boot}, \code{--drop-latency}, and \code{--train-seeds}. Eval JSON records export paths and bootstrap counts, not argv: D3 \code{t4_eval/t4_eval.json} has \code{n_boot=2000}, per-run recompute \code{t4_eval_per_run/t4_eval.json} has \code{n_boot=10000}, and PILOT \code{t4_pilot_eval/t4_eval.json} has \code{n_boot=2000} (all under \code{results/v1.0/}). No public submission channel or external scoring service is recorded. \code{scripts/run_leaderboard.py} is an older T1--T3 board helper, not a T4 service.
+\paragraph{Local seller risk-ranking interface and records.} An export directory contains \code{features_train.csv}, \code{features_test.csv}, \code{labels_train.csv}, \code{labels_test.csv}, and \code{t4_manifest.json}. Checked exports are \code{results/v1.0/t4_eval/export/} and \code{results/v1.0/t4_pilot_eval/export/}. Besides the required inputs and \code{--out}, \code{scripts/run_t4_eval.py} accepts \code{--n-boot}, \code{--drop-latency}, and \code{--train-seeds}. Eval JSON records export paths and bootstrap counts, not argv: official fixed-audit \code{t4_eval/t4_eval.json} has \code{n_boot=2000}, per-run recompute \code{t4_eval_per_run/t4_eval.json} has \code{n_boot=10000}, and PILOT \code{t4_pilot_eval/t4_eval.json} has \code{n_boot=2000} (all under \code{results/v1.0/}). No public submission channel or external scoring service is recorded. \code{scripts/run_leaderboard.py} is an older demo board helper, not a seller risk-ranking service.
+
+\paragraph{Identifier mapping for reproduction.} Table~\ref{tab:id-map} maps the readable evaluation names used in this paper to the internal protocol codes and repository paths retained in frozen files and scripts.
 
 \begin{table*}[h]
-\caption{Reproducibility summary (v1.0 and T1 v1.2 Decision A).}
+\caption{Mapping between readable paper names and repository / protocol codes for reproduction.}
+\label{tab:id-map}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.3cm} >{\raggedright\arraybackslash}p{3.0cm} X@{}}
+\toprule
+Readable name in paper & Protocol / repo code & Protocol files, scripts, and artifact paths \\
+\midrule
+Router--audit evaluation & \code{T1} & \code{docs/PROTOCOL_v1.0.md}, \code{docs/v1.1/PROTOCOL_v1.2.md}, \code{results/v1.0/main/}, \code{results/v1.1/v1.2_decision_a_eval/} \\
+1000-round audit study (pre-registered result) & \texttt{Decision A} (\texttt{result 1}); horizon from \code{WP2} & \code{docs/v1.1/PROTOCOL_v1.2.md}, \code{results/v1.1/v1.2_decision_a/}, \code{results/v1.1/v1.2_decision_a_eval/}, \code{scripts/v1.1/run_wp1.py}, \code{scripts/v1.1/analyze_decision_a.py}, \code{scripts/pass12_decision_a_tables.py} \\
+48-round cascade diagnostic & \code{WP1} & \code{docs/v1.1/PROTOCOL_v1.1.md}, \code{results/v1.1/wp1_eval/}, \code{results/v1.1/v1.2_wp1/} \\
+Sparse-label evaluation & \code{T2} & \code{docs/PROTOCOL_v1.0.md}, \code{results/v1.0/main/}, \code{results/v1.0/T2_v01scale_20seed.{md,json}} \\
+Audit-cost efficiency evaluation & \code{T3} (defined, not reported) & \code{docs/PROTOCOL_v1.0.md} (no official 40-seller table in checkout) \\
+Seller risk-ranking evaluation & \code{T4} (official: \code{D3}) & \code{results/v1.0/t4_eval/}, \code{results/v1.0/t4_eval_per_run/}, \code{results/v1.0/t4_pilot_eval/}, \code{scripts/run_t4_eval.py}, \code{scripts/check_t4_leakage.py} \\
+Task-conditioned recommendation evaluation & \code{T5} & \code{docs/PROTOCOL_T5.md}, \code{results/v1.0/t5/}, \code{scripts/run_t5_eval.py}, \code{scripts/check_t5_leakage.py} \\
+Compliance-filter control & \code{A2} & \code{results/v1.0/a2_filter_off/} (\code{A2_paired.{md,json}}), \code{results/v1.0/A2_compliance_control.{md,json}} \\
+Provenance analysis (weak / strong) & \code{A1} & \code{docs/PROTOCOL_v1.0.md} (weak trade/audit trail only; strong provenance deferred) \\
+Fixed-audit $a=0.10$ reference arm & \code{D3} (\code{D3-ref}) & \code{audited_compliance_cascade} / \code{fixed_audit_a0.10} in \code{results/v1.0/main/} \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[h]
+\caption{Reproducibility summary (v1.0 and v1.2 1000-round audit study).}
 \label{tab:repro}
 \small
 \begin{tabularx}{\textwidth}{@{}l X@{}}
@@ -527,26 +553,26 @@ Staging subset (not a full release) & \code{release/v1.0/} (\code{MANIFEST}, \co
 Protocol & \code{docs/PROTOCOL_v1.0.md} (frozen before the 40-seller main table; post-batch clarifications in App.~\ref{app:amend}) \\
 Older five-file boards & \code{exports/production/} and \code{release/v0.1/exports/production/} (3 sellers / 9 seller-rows); not the 40-seller main table \\
 v1.0 readouts & \code{results/v1.0/} (paths below); not all tasks reported or copied into staging \\
-Decision A readout & \code{results/v1.1/v1.2_decision_a_eval/}, commit \code{f759cd6}; \code{decision_a_eval.md} sha256 \code{5d3f52292883a73dec8a892e7e64c250eeb7eb62c09b1bb36508e7e3c034dad9} (verified against its \code{.sha256}) \\
-Decision A protocol & \code{docs/v1.1/PROTOCOL_v1.2.md}, sha256 \code{daddac6c0dddb22b08701caff5715e77215ae13a588512af176ff4933430b102} \\
-Cascade WP1 readout & \code{results/v1.1/wp1_eval/} (\code{wp1_eval.md}, \code{wp1_eval.json}, \code{contrasts.csv}); 48-round egreedy diagnostic, Appendix~\ref{app:other-audit-cells} \\
-v1.2 WP1 rerun & \code{results/v1.1/v1.2_wp1/} (\code{factorial/cells.json}, \code{factorial/per_seed.csv}); no separate v1.2 WP1 eval file \\
+1000-round audit study readout & \code{results/v1.1/v1.2_decision_a_eval/}, commit \code{f759cd6}; \code{decision_a_eval.md} sha256 \code{5d3f52292883a73dec8a892e7e64c250eeb7eb62c09b1bb36508e7e3c034dad9} (verified against its \code{.sha256}) \\
+1000-round audit study protocol & \code{docs/v1.1/PROTOCOL_v1.2.md}, sha256 \code{daddac6c0dddb22b08701caff5715e77215ae13a588512af176ff4933430b102} \\
+48-round cascade diagnostic readout & \code{results/v1.1/wp1_eval/} (\code{wp1_eval.md}, \code{wp1_eval.json}, \code{contrasts.csv}); 48-round egreedy diagnostic, Appendix~\ref{app:other-audit-cells} \\
+v1.2 cascade-diagnostic rerun & \code{results/v1.1/v1.2_wp1/} (\code{factorial/cells.json}, \code{factorial/per_seed.csv}); no separate v1.2 cascade-diagnostic eval file \\
 Lower-penalty rows & $P/4$, $P/16$: \code{results/v1.1/v1.2_decision_a_eval/cells.csv}, \code{contrasts.csv}; Appendix~\ref{app:other-audit-cells} \\
-Decision A table generation & \code{python3}\ \code{scripts/pass12_decision_a_tables.py} $\rightarrow$ \code{docs/latex-sigkdd-v1.0/tables/} (\code{decision_a_*.tex}, \code{wp1_cascade.tex}) \\
+1000-round study table generation & \code{python3}\ \code{scripts/pass12_decision_a_tables.py} $\rightarrow$ \code{docs/latex-sigkdd-v1.0/tables/} (\code{decision_a_*.tex}, \code{wp1_cascade.tex}) \\
 Dense $\pi$ grids & Older \code{configs/pi_dense.yaml} / staged \code{release/v1.0/results/pi_dense/}; 40-seller grid in \code{configs/v1.0/frozen/scale.yaml} \\
 First v1.0 batch (v0.1 scale) & \code{results/v1.0/T2_v01scale_20seed.\{md,json\}}, \code{A2_compliance_control.\{md,json\}}, \code{Q_gate_v01scale.json}, \code{regression_gate_seed0-2.json}, \code{raw/*.jsonl}; scripts \code{scripts/v1/} \\
 40-seller main table (egreedy) & \code{results/v1.0/main/} (\code{inference.md}, \code{inference.json}, \code{summary.md}) \\
 Q-gate peer (fictitious play) & \code{results/v1.0/main_fp/} \\
 Q averaging / gate robustness & \code{results/v1.0/main/Q_tail_only_robustness.md} \\
-A2 filter-off & \code{results/v1.0/a2_filter_off/} (\code{A2_paired.md}, \code{A2_paired.json}) \\
+Compliance-filter control & \code{results/v1.0/a2_filter_off/} (\code{A2_paired.md}, \code{A2_paired.json}) \\
 EXP3 appendix & \code{results/v1.0/main_exp3/} \\
-T4 official (D3, $\pi=1$) & \code{results/v1.0/t4_eval/} (export, unchanged) and \code{results/v1.0/t4_eval_per_run/} (per-run official recompute) \\
-T4 supplement (PILOT, $\pi=1$) & \code{results/v1.0/t4_pilot_eval/} \\
-T5 official (fixed $a=0.10$) & \code{results/v1.0/t5/} (\code{t5_eval.md}, \code{cells.csv}, \code{contrasts.csv}, \code{cells_holdout.csv}); protocol \code{docs/PROTOCOL_T5.md}, sha256 \code{4301f4b281e90b1b835d1e7868e3b00c98bc8eaee382cf29f8646c6fa7272542}; runner \code{scripts/run_t5_eval.py}, leakage check \code{scripts/check_t5_leakage.py} \\
+Seller risk-ranking official (fixed $a=0.10$, $\pi=1$) & \code{results/v1.0/t4_eval/} (export, unchanged) and \code{results/v1.0/t4_eval_per_run/} (per-run official recompute) \\
+Seller risk-ranking supplement (PILOT, $\pi=1$) & \code{results/v1.0/t4_pilot_eval/} \\
+Task-conditioned recommendation (fixed $a=0.10$) & \code{results/v1.0/t5/} (\code{t5_eval.md}, \code{cells.csv}, \code{contrasts.csv}, \code{cells_holdout.csv}); protocol \code{docs/PROTOCOL_T5.md}, sha256 \code{4301f4b281e90b1b835d1e7868e3b00c98bc8eaee382cf29f8646c6fa7272542}; runner \code{scripts/run_t5_eval.py}, leakage check \code{scripts/check_t5_leakage.py} \\
 Frozen scale config & \code{configs/v1.0/frozen/scale.yaml}, sha256 \code{780e9b961d89bad6fd520c9cbfd5710055ff2d5d3e0ff3bcfbd745709eb0da6c} \\
 LLM output cache & \code{release/v1.0/cache/llm_outputs.jsonl} (+ \code{CACHE_MANIFEST.json}) \\
-Feature/Label rules & \S\ref{sec:featlabel} governs T4 (schema has legacy conflicts); \code{scripts/check_t4_leakage.py}; T5 whitelist/blacklist in \code{docs/PROTOCOL_T5.md} (\code{scripts/check_t5_leakage.py}) \\
-Seeds & $\ge$20 (main table); T4 and T5 train 0--13, test 14--19 ($n=6$) \\
+Feature/Label rules & \S\ref{sec:featlabel} governs seller risk ranking (schema has legacy conflicts); \code{scripts/check_t4_leakage.py}; recommendation whitelist/blacklist in \code{docs/PROTOCOL_T5.md} (\code{scripts/check_t5_leakage.py}) \\
+Seeds & $\ge$20 (main table); seller risk ranking and task-conditioned recommendation train 0--13, test 14--19 ($n=6$) \\
 Per-run \code{config_hash} & No single production hash. Official 40-seller values are 16-character SHA-256 prefixes of each per-run config JSON, not the frozen \code{scale.yaml} file hash above \\
 Default knobs & \code{adaptive_audit=false}, \code{reputation_rounds=0}, \code{escrow=false} \\
 Test evidence & No official v1.0 full-suite pass log; historical snapshots only: \code{results/benchmark/pytest_after_draft.txt}, \code{results/v1.1/wp1_impl_validation/pytest_final.log}. Handoff collect-only inventory: 261 tests in 13 files, not executed; \code{pytest==9.2.0} \\
@@ -576,7 +602,7 @@ Layer & Code map \\
 
 \paragraph{Inspectable source rows.} The raw SKU/date/input/output rows are in \code{configs/v1.0/frozen/prices.yaml}; \code{ratios.csv}, \code{MAPPING_RULE.md}, and \code{compute_ratios.py} in \code{results/v1.1/v1.2_price_representativeness/} retain the adopted comparison and exclusions. \code{docs/v1.1/db/REPRESENTATIVENESS.md} indexes those inputs and lists coverage, external evidence, and unsupported dimensions; this remains a descriptive comparison only.
 
-Table~\ref{tab:price-ratios} is generated only from Research's adopted {\def\UrlBreaks{\do\/}\def\UrlBigBreaks{}\Urlmuskip=0mu\code{results/v1.1/v1.2_price_representativeness/ratios.csv}} at commit \code{9072b0d}, following that directory's \code{MAPPING_RULE.md}; {\def\UrlBreaks{\do\/}\def\UrlBigBreaks{}\Urlmuskip=0mu\code{scripts/pass16_price_ratio_tables.py}} verifies the CSV and frozen-input hashes before rendering. This is a descriptive comparison of internal price spreads, not protocol \S7 calibration, not evidence that prices are calibrated, and not a claim that the simulator represents a real API market. Simulator \code{price_per_1k} is a single synthetic unit without an input/output split; Qwen 0.5B/1.5B, mock, and strategic sellers are not mapped to named public SKUs. Public rows require both input and output prices: Google has only two filled models, excluding unverified \code{gemini-3.1-flash-lite}; its spread is not a full-catalog estimate. DeepSeek and Alibaba were empty on 2026-11-10.\footnote{The \code{gemini-4-argon} schedule from 2026-12-01 is footnote-only and excluded from primary max/min; the primary set uses the access-date prices.} There are no real marketplace transaction logs, so latency, volume, jurisdictions, and executed trades cannot be compared quantitatively. The snapshot was not applied, simulator prices were not rescaled, and official Decision A / Result 1 tables and numbers are unchanged.
+Table~\ref{tab:price-ratios} is generated only from Research's adopted {\def\UrlBreaks{\do\/}\def\UrlBigBreaks{}\Urlmuskip=0mu\code{results/v1.1/v1.2_price_representativeness/ratios.csv}} at commit \code{9072b0d}, following that directory's \code{MAPPING_RULE.md}; {\def\UrlBreaks{\do\/}\def\UrlBigBreaks{}\Urlmuskip=0mu\code{scripts/pass16_price_ratio_tables.py}} verifies the CSV and frozen-input hashes before rendering. This is a descriptive comparison of internal price spreads, not protocol \S7 calibration, not evidence that prices are calibrated, and not a claim that the simulator represents a real API market. Simulator \code{price_per_1k} is a single synthetic unit without an input/output split; Qwen 0.5B/1.5B, mock, and strategic sellers are not mapped to named public SKUs. Public rows require both input and output prices: Google has only two filled models, excluding unverified \code{gemini-3.1-flash-lite}; its spread is not a full-catalog estimate. DeepSeek and Alibaba were empty on 2026-11-10.\footnote{The \code{gemini-4-argon} schedule from 2026-12-01 is footnote-only and excluded from primary max/min; the primary set uses the access-date prices.} There are no real marketplace transaction logs, so latency, volume, jurisdictions, and executed trades cannot be compared quantitatively. The snapshot was not applied, simulator prices were not rescaled, and official 1000-round audit study tables and numbers are unchanged.
 
 \input{tables/price_ratios.tex}
 \FloatBarrier
@@ -586,7 +612,7 @@ Table~\ref{tab:price-ratios} is generated only from Research's adopted {\def\Url
 
 This appendix records internal reproducibility, leakage hygiene, and workload-coverage checks separately from the descriptive price-ratio comparison in Appendix~\ref{app:price-ratios}. It does \textbf{not} upgrade Appendix~\ref{app:price-ratios} / Table~\ref{tab:price-ratios} into price calibration or external market validation.
 
-\paragraph{Process checks.} Before scaling to 40 sellers, the v0.1 regression gate (\S\ref{sec:protocol}) verified 1350 compared values across seeds 0--2 with maximum $|\Delta|=0$. Feature/label separation (\S\ref{sec:featlabel}) enforces whitelists and blacklists via \code{scripts/check_t4_leakage.py} for T4 and \code{scripts/check_t5_leakage.py} for T5 (passed: 5{,}017 train rows, 0 offenders; locked in \code{docs/PROTOCOL_T5.md}).
+\paragraph{Process checks.} Before scaling to 40 sellers, the v0.1 regression gate (\S\ref{sec:protocol}) verified 1350 compared values across seeds 0--2 with maximum $|\Delta|=0$. Feature/label separation (\S\ref{sec:featlabel}) enforces whitelists and blacklists via \code{scripts/check_t4_leakage.py} for the seller risk-ranking evaluation and \code{scripts/check_t5_leakage.py} for the task-conditioned recommendation evaluation (passed: 5{,}017 train rows, 0 offenders; locked in \code{docs/PROTOCOL_T5.md}).
 
 \paragraph{Task-pool and cache coverage.} Table~\ref{tab:data-quality} summarizes internal asset counts documented in \code{docs/v1.1/db/TASKS_AND_CACHE.md}. In the seeded synthetic pool (\code{task-pool-1234}, cycling arithmetic, word problems, sequence, and logic across difficulties 1--3), 80 pool IDs map to 77 distinct question texts because three synthetic templates repeat; this is a documentation distinction, not a correction to the main-text 80-task pool wording. The cache \code{cache/llm_outputs.jsonl} holds 250 unique keys (125 per Qwen checkpoint: 77 short + 48 long), keyed by \code{(model_name, prompt_sha256, max_new_tokens)} rather than task ID or seed. \code{sim-fast-mock} samples from configured profiles. The pool and cache are shared across run seeds and train/test splits (not task- or cache-disjoint), and the separate \code{data/long_tasks.jsonl} subset (28 GSM8K + 20 MATH-500) is not main-experiment coverage.
 
@@ -598,7 +624,7 @@ This appendix records internal reproducibility, leakage hygiene, and workload-co
 \toprule
 Asset & Rows / IDs & Distinct prompts & Scope \\
 \midrule
-Synthetic pool (default/scale/Decision A) & 80 IDs & 77 & Seeded (\code{task-pool-1234}); 3 repeated templates (documentation distinction, does not alter main-text 80-task pool wording) \\
+Synthetic pool (default/scale/1000-round study) & 80 IDs & 77 & Seeded (\code{task-pool-1234}); 3 repeated templates (documentation distinction, does not alter main-text 80-task pool wording) \\
 \code{data/long_tasks.jsonl} & 48 IDs & 48 & 28 GSM8K + 20 MATH-500 (separate asset; not main-table coverage) \\
 \code{cache/llm_outputs.jsonl} & 250 keys & 125 & 125 per Qwen checkpoint (\code{Qwen2.5-0.5B}, \code{Qwen2.5-1.5B}); 77 short + 48 long each; \code{sim-fast-mock} uses configured profiles \\
 \bottomrule
@@ -608,10 +634,10 @@ Synthetic pool (default/scale/Decision A) & 80 IDs & 77 & Seeded (\code{task-poo
 \paragraph{External dimensions with no quantitative evidence.} Table~\ref{tab:price-ratios} (Appendix~\ref{app:price-ratios}) compares internal price spreads descriptively and is not calibration. Because no real marketplace transaction logs are used, there is no external quantitative validation for latency distributions, transaction volume, executed trades, seller populations, fraud prevalence, jurisdiction compliance regimes, or production API pricing (\code{docs/v1.1/db/REPRESENTATIVENESS.md}).
 \FloatBarrier
 
-\section{Decision A paired contrasts (v1.2)}
+\section{1000-round audit study paired contrasts (v1.2)}
 \label{app:decision-a}
 
-Tables~\ref{tab:decision-a-pilot} and~\ref{tab:decision-a-strongest} contain every default-parameter paired contrast behind Table~\ref{tab:t1}; no learner is dropped. Means and significance markers are generated from \code{cells.csv} and \code{contrasts.csv}, with the result-1 votes checked against \code{direction_consistency.csv}. All lower-penalty means and report-family markers are in Appendix~\ref{app:other-audit-cells}. All default cells have 20/20 tail-trade runs. These results use identity+length and \code{trust_feedback=false}; they are not direct numerical comparisons with v1.0 audit arms.
+Tables~\ref{tab:decision-a-pilot} and~\ref{tab:decision-a-strongest} contain every default-parameter paired contrast behind Table~\ref{tab:t1}; no learner is dropped. Means and significance markers are generated from \code{cells.csv} and \code{contrasts.csv}, with the pre-registered direction votes checked against \code{direction_consistency.csv}. All lower-penalty means and report-family markers are in Appendix~\ref{app:other-audit-cells}. All default cells have 20/20 tail-trade runs. These results use identity+length and \code{trust_feedback=false}; they are not direct numerical comparisons with v1.0 audit arms.
 
 \input{tables/decision_a_deltas.tex}
 \FloatBarrier
@@ -619,9 +645,9 @@ Tables~\ref{tab:decision-a-pilot} and~\ref{tab:decision-a-strongest} contain eve
 \section{Separate cascade diagnostic and lower-penalty cells}
 \label{app:other-audit-cells}
 
-\paragraph{Cascade: 48-round egreedy diagnostic.} Table~\ref{tab:wp1-cascade} reports $a=0$ means and all paired $a>0$ contrasts at $P=0.25$, $\pi=1$ from \code{results/v1.1/wp1_eval/} (\code{wp1_eval.md}, \code{wp1_eval.json}, \code{contrasts.csv}). This is the v1.1 WP1 diagnostic under \code{PROTOCOL_v1.1.md}, whose sha256 is \code{e9c84494a7031d7023d4861c02a5786a59fbc74541007978a13b9882f209c179}. It is not part of Decision A and is not counted toward result 1. Cascade $\Qmet$ identifiability follows that readout; significance uses its own report family. The v1.2 WP1 rerun outputs are in \code{results/v1.1/v1.2_wp1/factorial/} (\code{cells.json}, \code{per_seed.csv}); there is no separate v1.2 WP1 evaluation file. Its factorial \code{cells.json} equals v1.1 WP1's by parsed-JSON comparison.
+\paragraph{Cascade: 48-round egreedy diagnostic.} Table~\ref{tab:wp1-cascade} reports $a=0$ means and all paired $a>0$ contrasts at $P=0.25$, $\pi=1$ from \code{results/v1.1/wp1_eval/} (\code{wp1_eval.md}, \code{wp1_eval.json}, \code{contrasts.csv}). This is the v1.1 48-round cascade diagnostic under \code{PROTOCOL_v1.1.md}, whose sha256 is \code{e9c84494a7031d7023d4861c02a5786a59fbc74541007978a13b9882f209c179}. It is not part of the 1000-round audit study and is not counted toward its pre-registered result. Cascade $\Qmet$ identifiability follows that readout; significance uses its own report family. The v1.2 cascade-diagnostic rerun outputs are in \code{results/v1.1/v1.2_wp1/factorial/} (\code{cells.json}, \code{per_seed.csv}); there is no separate v1.2 cascade-diagnostic evaluation file. Its factorial \code{cells.json} equals the v1.1 cascade diagnostic's by parsed-JSON comparison.
 
-\paragraph{Lower penalties: 1000 rounds.} Tables~\ref{tab:decision-a-p4} and~\ref{tab:decision-a-p16} report all $P/4$ and $P/16$ means by router, learner, and audit level from \code{v1.2_decision_a_eval/cells.csv}, with the corresponding \code{contrasts.csv} report-family Holm markers. These are separate from the 84-test Decision A family. $P/4$ has frozen $a^*\approx0.18$--$0.20$; $P/16$ has $a^*\approx0.71$--$0.80$. Both tables are descriptive only, never evidence of audit efficacy.
+\paragraph{Lower penalties: 1000 rounds.} Tables~\ref{tab:decision-a-p4} and~\ref{tab:decision-a-p16} report all $P/4$ and $P/16$ means by router, learner, and audit level from \code{v1.2_decision_a_eval/cells.csv}, with the corresponding \code{contrasts.csv} report-family Holm markers. These are separate from the 84-test 1000-round audit study family. $P/4$ has frozen $a^*\approx0.18$--$0.20$; $P/16$ has $a^*\approx0.71$--$0.80$. Both tables are descriptive only, never evidence of audit efficacy.
 
 \input{tables/wp1_cascade.tex}
 \input{tables/decision_a_lower_penalties.tex}
@@ -649,7 +675,7 @@ StageRoute (faithful, MIP) + compliance & \cil{0.056}{0.044}{0.068} & \cil{0.065
 Fixed router (cheapest) & \cil{0.000}{0.000}{0.000} & \cil{0.000}{0.000}{0.000} & \cil{0.508}{0.495}{0.520}$^{\circ}$ & 0/20 \\
 Fixed router (strongest) & \cil{0.446}{0.436}{0.455} & \cil{0.495}{0.485}{0.505} & \cil{0.792}{0.779}{0.804} & 20/20 \\
 Fixed-rate audit $a=0.05$ & \cil{0.005}{0.004}{0.006} & \cil{0.006}{0.005}{0.008} & \cil{0.531}{0.501}{0.559} & 13/20 \\
-D3-ref / fixed-rate audit $a=0.1$ & \cil{0.005}{0.004}{0.006} & \cil{0.006}{0.005}{0.007} & \cil{0.538}{0.508}{0.566} & 13/20 \\
+Fixed-audit $a=0.10$ reference arm & \cil{0.005}{0.004}{0.006} & \cil{0.006}{0.005}{0.007} & \cil{0.538}{0.508}{0.566} & 13/20 \\
 Fixed-rate audit $a=0.2$ & \cil{0.004}{0.003}{0.005} & \cil{0.006}{0.004}{0.007} & \cil{0.519}{0.485}{0.552} & 13/20 \\
 Random-intensity audit & \cil{0.005}{0.004}{0.005} & \cil{0.006}{0.005}{0.007} & \cil{0.533}{0.500}{0.563} & 13/20 \\
 Risk-adaptive audit & \cil{0.005}{0.004}{0.006} & \cil{0.006}{0.005}{0.007} & \cil{0.536}{0.504}{0.565} & 12/20 \\
@@ -665,18 +691,18 @@ Risk-adaptive audit & \cil{0.005}{0.004}{0.006} & \cil{0.006}{0.005}{0.007} & \c
   \label{fig:pareto}
 \end{figure}
 
-\paragraph{Reading (v1.0, 48 rounds).} The fictitious-play gate is a pre-run mechanical rule and just passes: 8 identifiable methods under both egreedy and fictitious play, at every $\pi$, Kendall $\tau_a=0.643$ (23 concordant pairs, 5 discordant), just over 0.6. We do not call this ordering stable. Identifiable points are plotted with interval bars (Figure~\ref{fig:pareto}); we do not declare a Pareto-front winner, and front membership from point estimates is not reported as a finding. Cheapest has the best $\Emet=0$ but $\Qmet$ is not identifiable (0/20 tail-trade runs), so it does not enter the two-dimensional front and is read along $\Emet$ only. At $\pi=1$, differences in $\Emet$ and $\Qmet$ between $a=0.20$ and the D3 reference, random-intensity, and risk-adaptive arms either have intervals containing 0 or fail Holm, so those audit arms are not separable. Audit $\Qmet$ just clears the identifiability line (12--13/20 tail-trade runs; risk-adaptive 12/20, the others 13/20) and is not read as deterrence. Their $\Emet$ is very low ($\approx$0.004--0.005) mainly because they rarely trade with strategic sellers, not because of deterrence. This holds only under the v1.0 48-round setting's audit and slashing parameters; it does not describe the v1.2 1000-round Decision A grid.
+\paragraph{Reading (v1.0, 48 rounds).} The fictitious-play gate is a pre-run mechanical rule and just passes: 8 identifiable methods under both egreedy and fictitious play, at every $\pi$, Kendall $\tau_a=0.643$ (23 concordant pairs, 5 discordant), just over 0.6. We do not call this ordering stable. Identifiable points are plotted with interval bars (Figure~\ref{fig:pareto}); we do not declare a Pareto-front winner, and front membership from point estimates is not reported as a finding. Cheapest has the best $\Emet=0$ but $\Qmet$ is not identifiable (0/20 tail-trade runs), so it does not enter the two-dimensional front and is read along $\Emet$ only. At $\pi=1$, differences in $\Emet$ and $\Qmet$ between $a=0.20$ and the fixed-audit $a=0.10$ reference, random-intensity, and risk-adaptive arms either have intervals containing 0 or fail Holm, so those audit arms are not separable. Audit $\Qmet$ just clears the identifiability line (12--13/20 tail-trade runs; risk-adaptive 12/20, the others 13/20) and is not read as deterrence. Their $\Emet$ is low ($\approx$0.004--0.005) mainly because they rarely trade with strategic sellers, not because of deterrence. This holds only under the v1.0 48-round setting's audit and slashing parameters; it does not describe the v1.2 1000-round audit study grid.
 
 \FloatBarrier
 
 \section{Secondary results}
 \label{app:secondary}
 
-\paragraph{A2 compliance filter control (40 sellers, $\pi=1$).}
-Table~\ref{tab:a2} preserves the frozen A2 filter-off table referenced in \S\ref{sec:a2} with all numbers unchanged.
+\paragraph{Compliance-filter control (40 sellers, $\pi=1$).}
+Table~\ref{tab:a2} preserves the frozen compliance-filter control table referenced in \S\ref{sec:a2} with all numbers unchanged.
 
 \begin{table}[!htbp]
-\caption{A2 filter control, 40 sellers, $\pi=1$, seeds 0--19, paired (mean [95\% CI]). Viol.\ ON $=0$ for every method. Fill-rate off$-$on differences are all Holm-n.s.\ (not shown). D3 OFF is \texttt{fixed\_audit\_a0.10} with \texttt{--no-compliance-filter}. Audit filter-off $\Qmet$ omitted (1/20 tail trades, not identifiable).}
+\caption{Compliance-filter control, 40 sellers, $\pi=1$, seeds 0--19, paired (mean [95\% CI]). Viol.\ ON $=0$ for every method. Fill-rate off$-$on differences are all Holm-n.s.\ (not shown). The $a=0.10$ reference OFF arm is \texttt{fixed\_audit\_a0.10} with \texttt{--no-compliance-filter}. Audit filter-off $\Qmet$ omitted (1/20 tail trades, not identifiable).}
 \label{tab:a2}
 \scriptsize
 \setlength{\tabcolsep}{2.2pt}
@@ -691,7 +717,7 @@ Cheapest & \cil{0.065}{0.062}{0.068} & \cil{0.000}{0.000}{0.000} & \cil{0.000}{0
 Strongest & \cil{0.191}{0.185}{0.197} & \cil{0.446}{0.436}{0.455} & \cil{0.519}{0.512}{0.526} & 20/20 / 20/20 \\
 Random-intensity & \cil{0.166}{0.159}{0.173} & \cil{0.005}{0.004}{0.005} & \cil{0.001}{0.001}{0.002} & 13/20 / 1/20 \\
 Fixed-rate $a=0.05$ & \cil{0.167}{0.160}{0.174} & \cil{0.005}{0.004}{0.006} & \cil{0.001}{0.001}{0.002} & 13/20 / 1/20 \\
-D3-ref ($a=0.1$) & \cil{0.166}{0.159}{0.173} & \cil{0.005}{0.004}{0.006} & \cil{0.001}{0.001}{0.002} & 13/20 / 1/20 \\
+Audit-ref ($a=0.1$) & \cil{0.166}{0.159}{0.173} & \cil{0.005}{0.004}{0.006} & \cil{0.001}{0.001}{0.002} & 13/20 / 1/20 \\
 Fixed-rate $a=0.2$ & \cil{0.167}{0.161}{0.174} & \cil{0.004}{0.003}{0.005} & \cil{0.001}{0.001}{0.002} & 13/20 / 1/20 \\
 Risk-adaptive & \cil{0.166}{0.159}{0.172} & \cil{0.005}{0.004}{0.006} & \cil{0.001}{0.001}{0.002} & 12/20 / 1/20 \\
 \bottomrule
@@ -699,7 +725,7 @@ Risk-adaptive & \cil{0.166}{0.159}{0.172} & \cil{0.005}{0.004}{0.006} & \cil{0.0
 \end{table}
 
 \paragraph{$J$ and $\Emet_{\mathrm{tok}}$ (v1.0 48-round setting, $\pi=1$).}
-Table~\ref{tab:j} reports the joint objective $J$ (mean [95\% CI], 20 seeds). For the v1.0 main table, secondary cost/accuracy intervals are defined but not reported in this manuscript; they are absent from \code{results/v1.0/main/inference.json}. Means exist in \code{summary.md}/\code{per_seed.csv}, without official intervals here. Separately, Tables~\ref{tab:decision-a-acccost-p025}--\ref{tab:decision-a-acccost-p16} copy the already-existing official Decision A \code{accuracy} and \code{cost_per_task} intervals verbatim from \code{results/v1.1/v1.2_decision_a_eval/cells.csv} (not recomputed, not used for main-text ranking, and do not modify Decision A $\Emet/\Qmet$ conclusions). $\Emet_{\mathrm{tok}}$ is the billed-token-weighted side column of the v1.0 Table~\ref{tab:t1-v10}; Figure~\ref{fig:etok} shows the same 19-point $\pi$ sweep. The primary $\Emet$ stays per purchase.
+Table~\ref{tab:j} reports the joint objective $J$ (mean [95\% CI], 20 seeds). For the v1.0 main table, secondary cost/accuracy intervals are defined but not reported in this manuscript; they are absent from \code{results/v1.0/main/inference.json}. Means exist in \code{summary.md}/\code{per_seed.csv}, without official intervals here. Separately, Tables~\ref{tab:decision-a-acccost-p025}--\ref{tab:decision-a-acccost-p16} copy the already-existing official 1000-round audit study \code{accuracy} and \code{cost_per_task} intervals verbatim from \code{results/v1.1/v1.2_decision_a_eval/cells.csv} (not recomputed, not used for main-text ranking, and do not modify 1000-round audit study $\Emet/\Qmet$ conclusions). $\Emet_{\mathrm{tok}}$ is the billed-token-weighted side column of the v1.0 Table~\ref{tab:t1-v10}; Figure~\ref{fig:etok} shows the same 19-point $\pi$ sweep. The primary $\Emet$ stays per purchase.
 
 \input{tables/decision_a_acc_cost.tex}
 
@@ -716,7 +742,7 @@ StageRoute (faithful, MIP) + compliance & 0.688 [0.674, 0.701] \\
 Fixed router (cheapest) & 0.627 [0.617, 0.637] \\
 Fixed router (strongest) & 0.458 [0.450, 0.466] \\
 Fixed-rate audit $a=0.05$ & 0.829 [0.822, 0.835] \\
-D3-ref / fixed-rate audit $a=0.1$ & 0.827 [0.820, 0.834] \\
+Fixed-audit $a=0.10$ reference arm & 0.827 [0.820, 0.834] \\
 Fixed-rate audit $a=0.2$ & 0.823 [0.815, 0.830] \\
 Random-intensity audit & 0.827 [0.820, 0.833] \\
 Risk-adaptive audit & 0.826 [0.819, 0.833] \\
@@ -727,7 +753,7 @@ Risk-adaptive audit & 0.826 [0.819, 0.833] \\
 \begin{figure*}[h]
   \centering
   \includegraphics[width=0.82\textwidth]{figures/fig3_40seller_E_Q_vs_pi.pdf}
-  \caption{T2 curves (companion to Table~\ref{tab:t2}, \S\ref{sec:t2}): buyer exposure $\Emet$ (a) and seller intent $\Qmet$ (b) vs.\ reveal probability $\pi$ at 40 sellers. Lines are means over $n=20$ seeds; bands are 95\% paired-bootstrap CIs (10,000 resamples). The five audit arms share one colour and differ by line style. $\pi$ axis: symlog, linear below 0.08. $\Qmet$ markers: solid 17--20/20 tail-trade runs; half-filled 12--13/20 (audits, just identifiable); hollow 0/20 (cheapest). Audit and fixed-router curves are flat in $\pi$ by construction and are not reported as a finding.}
+  \caption{Sparse-label evaluation curves (companion to Table~\ref{tab:t2}, \S\ref{sec:t2}): buyer exposure $\Emet$ (a) and seller intent $\Qmet$ (b) vs.\ reveal probability $\pi$ at 40 sellers. Lines are means over $n=20$ seeds; bands are 95\% paired-bootstrap CIs (10,000 resamples). The five audit arms share one colour and differ by line style. $\pi$ axis: symlog, linear below 0.08. $\Qmet$ markers: solid 17--20/20 tail-trade runs; half-filled 12--13/20 (audits, just identifiable); hollow 0/20 (cheapest). Audit and fixed-router curves are flat in $\pi$ by construction and are not reported as a finding.}
   \Description{Two line charts against reveal probability pi at 40 sellers. Left: E for PILOT and StageRoute rises as pi falls and the two are close at pi = 0; cheapest stays at 0; strongest is flat near 0.45; audit arms are flat near 0. Right: Q for PILOT stays high and dips only at the lowest pi; StageRoute Q, drawn solid, rises as pi falls; cheapest Q is hollow throughout; audit arms are flat and drawn half-filled (just identifiable, 12-13 of 20 runs).}
   \label{fig:t2}
 \end{figure*}
@@ -740,8 +766,8 @@ Risk-adaptive audit & 0.826 [0.819, 0.833] \\
   \label{fig:etok}
 \end{figure}
 
-\paragraph{$\pistar$ crossover (T2, 40 sellers).}
-$\Delta J = J(\text{D3 reference}) - \max(J_{\text{StageRoute}}, J_{\text{PILOT}})$ with the best bandit taken per seed, paired over seeds (Table~\ref{tab:pistar}). Pre-registered rule: keep $(0.10,0.12)$ only if the interval at $\pi=0.12$ is entirely $<0$ and at $\pi=0.10$ entirely $>0$. $\Delta J$ is positive at every $\pi$, already $+0.114$ [$+0.104$, $+0.122$] at $\pi=1$. No crossover is observed on the evaluated 40-seller grid in any of the 20 seeds (None: 20; non-monotone: 0). The pre-registered condition at $\pi=0.12$ and $\pi=0.10$ is therefore not met, and $(0.10,0.12)$ is not retained. This is an appendix result and is not used in the body as a ranking of D3 against the bandits.
+\paragraph{$\pistar$ crossover (sparse-label evaluation, 40 sellers).}
+$\Delta J = J(\text{audit-ref}) - \max(J_{\text{StageRoute}}, J_{\text{PILOT}})$ with the best bandit taken per seed, paired over seeds (Table~\ref{tab:pistar}). Pre-registered rule: keep $(0.10,0.12)$ only if the interval at $\pi=0.12$ is entirely $<0$ and at $\pi=0.10$ entirely $>0$. $\Delta J$ is positive at every $\pi$, already $+0.114$ [$+0.104$, $+0.122$] at $\pi=1$. No crossover is observed on the evaluated 40-seller grid in any of the 20 seeds (None: 20; non-monotone: 0). The pre-registered condition at $\pi=0.12$ and $\pi=0.10$ is therefore not met, and $(0.10,0.12)$ is not retained. This is an appendix result and is not used in the body as a ranking of the fixed-audit $a=0.10$ reference arm against the bandits.
 
 \begin{table}[h]
 \caption{Paired $\Delta J$ at 40 sellers (mean [95\% CI]) and number of seeds with $\Delta J>0$.}
@@ -805,14 +831,14 @@ $\pi$ & $q_{\mathrm{swap}}$ PILOT & $q_{\mathrm{theft}}$ PILOT & $q_{\mathrm{dow
 \end{table*}
 
 \begin{table*}[h]
-\caption{Per-mode seller intent for the D3 reference and cheapest, 40 sellers, 20 seeds (mean [95\% CI]). $^{\circ}$: not identifiable.}
+\caption{Per-mode seller intent for the fixed-audit $a=0.10$ reference arm and cheapest, 40 sellers, 20 seeds (mean [95\% CI]). $^{\circ}$: not identifiable.}
 \label{tab:qmodeb}
 \footnotesize
 \setlength{\tabcolsep}{2.2pt}
 \renewcommand{\arraystretch}{0.92}
 \begin{tabular}{@{}rcccccc@{}}
 \toprule
-$\pi$ & $q_{\mathrm{swap}}$ D3-ref & $q_{\mathrm{theft}}$ D3-ref & $q_{\mathrm{down.}}$ D3-ref & $q_{\mathrm{swap}}$ cheapest & $q_{\mathrm{theft}}$ cheapest & $q_{\mathrm{down.}}$ cheapest \\
+$\pi$ & $q_{\mathrm{swap}}$ audit-ref & $q_{\mathrm{theft}}$ audit-ref & $q_{\mathrm{down.}}$ audit-ref & $q_{\mathrm{swap}}$ cheapest & $q_{\mathrm{theft}}$ cheapest & $q_{\mathrm{down.}}$ cheapest \\
 \midrule
 1 & \cil{0.601}{0.542}{0.653} & \cil{0.504}{0.476}{0.530} & \cil{0.510}{0.477}{0.546} & \cil{0.514}{0.490}{0.537}$^{\circ}$ & \cil{0.485}{0.461}{0.509}$^{\circ}$ & \cil{0.524}{0.504}{0.542}$^{\circ}$ \\
 0.5 & \cil{0.601}{0.543}{0.654} & \cil{0.504}{0.476}{0.531} & \cil{0.510}{0.477}{0.547} & \cil{0.514}{0.490}{0.538}$^{\circ}$ & \cil{0.485}{0.461}{0.508}$^{\circ}$ & \cil{0.524}{0.504}{0.542}$^{\circ}$ \\
@@ -829,7 +855,7 @@ $\pi$ & $q_{\mathrm{swap}}$ D3-ref & $q_{\mathrm{theft}}$ D3-ref & $q_{\mathrm{d
 \end{table*}
 
 \paragraph{Q-gate checks (Hedge, first batch; EXP3, 40 sellers).}
-The formal 40-seller gate is fictitious play and just passes as in \S\ref{sec:metrics}: Kendall $\tau_a=0.643$ (23 concordant, 5 discordant) at every $\pi$, just over 0.6; we do not call the order stable. This identifiability rule is the protocol trade-support screen ($\texttt{tail\_trade\_rate}>0.5$), not a statistical identification result. As a robustness check at $\pi=1$ under egreedy, the main-table audit $\Qmet$ (0.52--0.54) is the unweighted mean over all 20 seeds, including the 7--8 runs with no tail-segment trade---the protocol definition, which does not require a sale. Restricting the mean to tail-trade runs changes the D3 reference only from 0.538 to 0.536 (other audit arms similarly); $\Qmet$ on no-tail runs is not concentrated at 0.5 (about 0.39--0.62). Dropping the five audit arms whose identifiability is only 12--13/20 leaves PILOT, StageRoute, and strongest, with Kendall $\tau_a=1.0$ at every $\pi$. This column is robustness only and does not change the pre-registered eight-method gate. A Hedge check on the first batch gives Kendall $\tau=1.0$ for the three-policy $\Qmet$ ordering at all 11 $\pi$. At that v0.1 scale the front can only be read along $\Emet$; StageRoute's $\Qmet$ is not identifiable, so no conclusion is drawn about front membership. With three policies, $\tau\ge0.6$ only means an identical order; Hedge does not count toward the gate. \vzeroonenote
+The formal 40-seller gate is fictitious play and just passes as in \S\ref{sec:metrics}: Kendall $\tau_a=0.643$ (23 concordant, 5 discordant) at every $\pi$, just over 0.6; we do not call the order stable. This identifiability rule is the protocol trade-support screen ($\texttt{tail\_trade\_rate}>0.5$), not a statistical identification result. As a robustness check at $\pi=1$ under egreedy, the main-table audit $\Qmet$ (0.52--0.54) is the unweighted mean over all 20 seeds, including the 7--8 runs with no tail-segment trade---the protocol definition, which does not require a sale. Restricting the mean to tail-trade runs changes the fixed-audit $a=0.10$ reference only from 0.538 to 0.536 (other audit arms similarly); $\Qmet$ on no-tail runs is not concentrated at 0.5 (about 0.39--0.62). Dropping the five audit arms whose identifiability is only 12--13/20 leaves PILOT, StageRoute, and strongest, with Kendall $\tau_a=1.0$ at every $\pi$. This column is robustness only and does not change the pre-registered eight-method gate. A Hedge check on the first batch gives Kendall $\tau=1.0$ for the three-policy $\Qmet$ ordering at all 11 $\pi$. At that v0.1 scale the front can only be read along $\Emet$; StageRoute's $\Qmet$ is not identifiable, so no conclusion is drawn about front membership. With three policies, $\tau\ge0.6$ only means an identical order; Hedge does not count toward the gate. \vzeroonenote
 
 The v1.0 48-round EXP3 check at the same 40-seller scale (20 seeds, compliance filter on, fixed roster) is appendix-only and does \emph{not} count toward the gate (Table~\ref{tab:exp3}). For all nine methods and all $\pi$, $\Qmet$ stays near 0.501 (intervals about [0.487, 0.515]), consistent with not learning in 48 rounds; no $\Qmet$ change vs.\ $\pi=1$ is significant. $\Emet$ still rises as $\pi$ falls: PILOT 0.110 [0.107, 0.114] at $\pi=1$, 0.134 [0.124, 0.145] at 0.10, and 0.220 [0.212, 0.229] at 0, with the increase vs.\ $\pi=1$ significant at every lower $\pi$; StageRoute 0.046 [0.038, 0.053] at $\pi=1$, 0.078 [0.066, 0.091] at 0.10, and 0.207 [0.198, 0.216] at 0, with the increase vs.\ $\pi=1$ significant at every $\pi\le 0.14$. Because sellers barely learned to attack, absolute $\Emet$ levels must not be compared with the egreedy main table.
 
@@ -848,17 +874,17 @@ $\pi$ & $\Emet$ PILOT & $\Emet$ StageRoute \\
 \end{tabular}
 \end{table}
 
-\paragraph{Delist trade-off (T3).} Fixed-rate audit $a=0.1$, \code{reputation_rounds}$\in\{0,5,20\}$: $\Emet$, $\Qmet$ over listed rounds, suspended rounds, suspended-period $q$, \code{n_audits}: defined but not reported in this manuscript (no official v1.0 40-seller T3-delist table exists in this checkout). The proposed check asks whether longer delist lowers $\Emet$ while learned $q$ including suspended rounds rises from missing observations; $\Qmet$ excludes suspended rounds.
+\paragraph{Delist trade-off (audit-cost efficiency evaluation).} Fixed-rate audit $a=0.1$, \code{reputation_rounds}$\in\{0,5,20\}$: $\Emet$, $\Qmet$ over listed rounds, suspended rounds, suspended-period $q$, \code{n_audits}: defined but not reported in this manuscript (no official v1.0 40-seller delist table exists in this checkout). The proposed check asks whether longer delist lowers $\Emet$ while learned $q$ including suspended rounds rises from missing observations; $\Qmet$ excludes suspended rounds.
 
-\paragraph{Adaptive audit under equal expected budget (T3).} Fixed vs.\ risk-adaptive at target $a=0.1$, escrow on: $\Emet$, $\Qmet$, \code{n_audits}, realized $a$, escrow held/slashed/released: defined but not reported in this manuscript (no official v1.0 40-seller T3-adaptive table exists in this checkout). Adaptive targeting is a cost/aiming comparison, not a claimed improvement.
+\paragraph{Adaptive audit under equal expected budget (audit-cost efficiency evaluation).} Fixed vs.\ risk-adaptive at target $a=0.1$, escrow on: $\Emet$, $\Qmet$, \code{n_audits}, realized $a$, escrow held/slashed/released: defined but not reported in this manuscript (no official v1.0 40-seller equal-budget adaptive table exists in this checkout). Adaptive targeting is a cost/aiming comparison, not a claimed improvement.
 
-\paragraph{T4 official setting (D3 reference, $\pi=1$).}
+\paragraph{Seller risk-ranking official setting (fixed-audit $a=0.10$ reference arm, $\pi=1$).}
 The official run uses \code{fixed_audit_a0.10}, $\pi=1$, seeds 0--19, and \code{--resample-roster} (Table~\ref{tab:t4counts}). Scores are on sellers who traded in the target window, not every seller on the roster. Train: 7 positives among 208 scored sellers (3 swap, 4 theft, 0 downgrade). Test: 2 positives among 89 scored sellers (1 swap, 1 theft); downgrade is skipped. Only 2 of 6 test runs have both classes for the \code{any} label (seeds 16 and 18, one positive each), which is below the reporting threshold of 4/6 definable runs. We therefore do not report detection performance and do not interpret the latency ablation. This sparsity matches the policy's rare trade with strategic sellers (this batch $\Emet=0.0066$). The post-5b simulator change and split are future work, defined but not reported in this manuscript (not implemented; no post-5b export or evaluation exists in this checkout).
 
 A calculation that pools the 89 test sellers across runs is \emph{not} the protocol (which requires a per-run score, then an average over runs) and is recorded only here: for \code{any} with logistic regression, pooled AUROC $=0.977$ and AP $=0.417$ on 89 sellers (2 positives); the 7-vs-6-feature $\Delta$AUROC is $+0.040$ $[0.011, 0.076]$. We do not read these figures as detection performance or as evidence about latency. Paths: \code{results/v1.0/t4_eval/} (original export, unchanged) and \code{results/v1.0/t4_eval_per_run/} (per-run recompute).
 
 \begin{table}[h]
-\caption{T4 official setting: D3 reference, $\pi=1$, resampled roster; features in rounds 1--32, labels in rounds 33--48. Counts are sellers who traded in the target window.}
+\caption{Seller risk-ranking official setting: fixed-audit $a=0.10$ reference arm, $\pi=1$, resampled roster; features in rounds 1--32, labels in rounds 33--48. Counts are sellers who traded in the target window.}
 \label{tab:t4counts}
 \small
 \setlength{\tabcolsep}{3pt}
@@ -872,11 +898,11 @@ Test (14--19) & 89 & 2 & 1 & 1 & 0 \\
 \end{tabular}
 \end{table}
 
-\paragraph{T4 supplement (PILOT, $\pi=1$, current simulator).}
-This run uses PILOT at $\pi=1$, the same train/test split, and a resampled roster, on the current simulator (before the 5b change). It does not replace the official D3 setting, which still does not report detection performance. All six test runs have both classes for \code{any} and for each attack type (Table~\ref{tab:t4pilotcounts}). Official metrics are the mean of per-test-run scores ($B=2000$; Table~\ref{tab:t4pilot}). This batch $\Emet=0.158$, with tail-segment trades in 20/20 runs. Under this setting only, the without-latency logistic AUROC $0.895$ exceeds the rule baseline $0.703$ in all six test runs; we do not claim that detection is equally strong without latency. Latency contributes on \code{any} (both models' $\Delta$AUROC intervals exclude 0), but the logistic-regression $\Delta$AUROC intervals for swap ($+0.065$ [$-0.019$, $+0.158$]) and downgrade ($+0.144$ [$-0.024$, $+0.301$]) contain 0. Downgrade is clearly weaker (logistic AUROC $0.826$, AP $0.458$, precision@10 $0.167$); theft is near ceiling (logistic AUROC $0.995$, AP $0.972$, precision@10 $0.300$). Path: \code{results/v1.0/t4_pilot_eval/}. Pooled-over-sellers figures in that export are not the protocol and are not reported here. The post-5b split is future work, defined but not reported in this manuscript (not implemented; no post-5b export or evaluation exists in this checkout).
+\paragraph{Seller risk-ranking supplement (PILOT, $\pi=1$, current simulator).}
+This run uses PILOT at $\pi=1$, the same train/test split, and a resampled roster, on the current simulator (before the 5b change). It does not replace the official fixed-audit $a=0.10$ setting, which still does not report detection performance. All six test runs have both classes for \code{any} and for each attack type (Table~\ref{tab:t4pilotcounts}). Official metrics are the mean of per-test-run scores ($B=2000$; Table~\ref{tab:t4pilot}). This batch $\Emet=0.158$, with tail-segment trades in 20/20 runs. Under this setting only, the without-latency logistic AUROC $0.895$ exceeds the rule baseline $0.703$ in all six test runs; we do not claim that detection is equally strong without latency. Latency contributes on \code{any} (both models' $\Delta$AUROC intervals exclude 0), but the logistic-regression $\Delta$AUROC intervals for swap ($+0.065$ [$-0.019$, $+0.158$]) and downgrade ($+0.144$ [$-0.024$, $+0.301$]) contain 0. Downgrade is clearly weaker (logistic AUROC $0.826$, AP $0.458$, precision@10 $0.167$); theft is near ceiling (logistic AUROC $0.995$, AP $0.972$, precision@10 $0.300$). Path: \code{results/v1.0/t4_pilot_eval/}. Pooled-over-sellers figures in that export are not the protocol and are not reported here. The post-5b split is future work, defined but not reported in this manuscript (not implemented; no post-5b export or evaluation exists in this checkout).
 
 \begin{table}[h]
-\caption{T4 supplement: PILOT, $\pi=1$, current simulator, resampled roster; features in rounds 1--32, labels in rounds 33--48. Counts are sellers who traded in the target window.}
+\caption{Seller risk-ranking supplement: PILOT, $\pi=1$, current simulator, resampled roster; features in rounds 1--32, labels in rounds 33--48. Counts are sellers who traded in the target window.}
 \label{tab:t4pilotcounts}
 \small
 \setlength{\tabcolsep}{3pt}
@@ -891,7 +917,7 @@ Test (14--19) & 215 & 49 & 18 & 18 & 13 \\
 \end{table}
 
 \begin{table*}[h]
-\caption{T4 supplement (PILOT, $\pi=1$, current simulator): official mean of per-test-run scores on the any-attack label ($B=2000$; all six test runs scored). The 7-feature column is the full whitelist; 6-feature drops latency. The rule baseline uses no latency, so the two columns coincide.}
+\caption{Seller risk-ranking supplement (PILOT, $\pi=1$, current simulator): official mean of per-test-run scores on the any-attack label ($B=2000$; all six test runs scored). The 7-feature column is the full whitelist; 6-feature drops latency. The rule baseline uses no latency, so the two columns coincide.}
 \label{tab:t4pilot}
 \small
 \setlength{\tabcolsep}{8pt}
@@ -907,17 +933,17 @@ Rule & $0.703$ / $0.703$ & $0$ & $0.493$ / $0.493$ & $0.400$ / $0.400$ \\
 \end{table*}
 
 \clearpage
-\paragraph{First batch (v0.1 scale) T2 table, figures, and reading.}
+\paragraph{First batch (v0.1 scale) sparse-label evaluation table, figures, and reading.}
 The following were the first v1.0 batch at v0.1 scale (3 sellers, one strategic seller using swap and theft only, 11-point $\pi$ grid) and are not the 40-seller main result.
 
 \begin{table*}[h]
-\caption{T2 first batch: $\Emet$ and $\Qmet$ vs.\ $\pi$ (mean [95\% CI], 20 seeds, $L=0$) and fraction of runs with tail-segment trades (StageRoute / PILOT / D3). $^{\circ}$: most runs have no tail trades, so $\Qmet$ is not identifiable (hollow points in the figures). $\Qmet$ is the simple mean of $q_{\mathrm{swap}}$ and $q_{\mathrm{theft}}$ ($q_{\mathrm{downgrade}}$ n/a at v0.1 scale). D3 reference values are constant in $\pi$ by construction. \vzeroonenote}
+\caption{Sparse-label evaluation first batch: $\Emet$ and $\Qmet$ vs.\ $\pi$ (mean [95\% CI], 20 seeds, $L=0$) and fraction of runs with tail-segment trades (StageRoute / PILOT / audit-ref). $^{\circ}$: most runs have no tail trades, so $\Qmet$ is not identifiable (hollow points in the figures). $\Qmet$ is the simple mean of $q_{\mathrm{swap}}$ and $q_{\mathrm{theft}}$ ($q_{\mathrm{downgrade}}$ n/a at v0.1 scale). Fixed-audit reference values are constant in $\pi$ by construction. \vzeroonenote}
 \label{tab:t2v01}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{tabular}{@{}rccccccc@{}}
 \toprule
-$\pi$ & $\Emet$ StageRoute & $\Emet$ PILOT & $\Emet$ D3 ref. & $\Qmet$ StageRoute & $\Qmet$ PILOT & $\Qmet$ D3 ref. & Tail-trade runs \\
+$\pi$ & $\Emet$ StageRoute & $\Emet$ PILOT & $\Emet$ audit-ref & $\Qmet$ StageRoute & $\Qmet$ PILOT & $\Qmet$ audit-ref & Tail-trade runs \\
 \midrule
 1 & 0.014 [0.008, 0.020] & 0.046 [0.038, 0.054] & 0.106 [0.085, 0.131] & 0.689 [0.602, 0.783]$^{\circ}$ & 0.913 [0.860, 0.953] & 0.118 [0.061, 0.187] & 10\% / 75\% / 100\% \\
 0.2 & 0.030 [0.014, 0.049] & 0.072 [0.063, 0.082] & 0.106 [0.085, 0.131] & 0.671 [0.584, 0.767]$^{\circ}$ & 0.912 [0.857, 0.951] & 0.118 [0.059, 0.187] & 0\% / 85\% / 100\% \\
@@ -938,15 +964,15 @@ $\pi$ & $\Emet$ StageRoute & $\Emet$ PILOT & $\Emet$ D3 ref. & $\Qmet$ StageRout
   \centering
   \includegraphics[width=0.5\textwidth]{figures/fig2_v01scale_pareto_EQ.pdf}
   \caption{First batch: $(\Emet,\Qmet)$ at $\pi=1$ (a) and $\pi=0.1$ (b). Points are means over $n=20$ seeds; bars are 95\% paired-bootstrap CIs (10,000 resamples). Hollow points: most runs have no tail-segment trades (StageRoute: 10\% and 15\% of runs), so $\Qmet$ is not identifiable. \vzeroonenote}
-  \Description{Two scatter panels of buyer exposure E against seller intent Q for StageRoute, PILOT, and the D3 reference baseline at pi = 1 and pi = 0.1, with interval bars; StageRoute is drawn hollow.}
+  \Description{Two scatter panels of buyer exposure E against seller intent Q for StageRoute, PILOT, and the fixed-audit a=0.10 reference baseline at pi = 1 and pi = 0.1, with interval bars; StageRoute is drawn hollow.}
   \label{fig:paretov01}
 \end{figure*}
 
 \begin{figure*}[h]
   \centering
   \includegraphics[width=\textwidth]{figures/fig3_v01scale_E_Q_vs_pi.pdf}
-  \caption{First batch: buyer exposure $\Emet$ (a) and seller intent $\Qmet$ (b) vs.\ $\pi$ for StageRoute, PILOT, and the D3 reference (dashed; constant by construction). Lines are means over $n=20$ seeds; bands are 95\% paired-bootstrap CIs (10,000 resamples). Hollow points: StageRoute at every $\pi>0$. The $\pi$ axis is symmetric-log (linear below $\pi=0.05$). \vzeroonenote}
-  \Description{Two line charts against reveal probability pi at v0.1 scale. Left: E for PILOT rises from about 0.05 at pi = 1 to about 0.68 at pi = 0; StageRoute rises from about 0.01 to about 0.08; D3 reference is flat near 0.11. Right: Q for PILOT stays near 0.9; StageRoute, drawn hollow for pi > 0, lies between about 0.67 and 0.93; D3 reference is flat near 0.12.}
+  \caption{First batch: buyer exposure $\Emet$ (a) and seller intent $\Qmet$ (b) vs.\ $\pi$ for StageRoute, PILOT, and the fixed-audit $a=0.10$ reference (dashed; constant by construction). Lines are means over $n=20$ seeds; bands are 95\% paired-bootstrap CIs (10,000 resamples). Hollow points: StageRoute at every $\pi>0$. The $\pi$ axis is symmetric-log (linear below $\pi=0.05$). \vzeroonenote}
+  \Description{Two line charts against reveal probability pi at v0.1 scale. Left: E for PILOT rises from about 0.05 at pi = 1 to about 0.68 at pi = 0; StageRoute rises from about 0.01 to about 0.08; fixed-audit reference is flat near 0.11. Right: Q for PILOT stays near 0.9; StageRoute, drawn hollow for pi > 0, lies between about 0.67 and 0.93; fixed-audit reference is flat near 0.12.}
   \label{fig:t2v01}
 \end{figure*}
 
@@ -955,19 +981,19 @@ $\pi$ & $\Emet$ StageRoute & $\Emet$ PILOT & $\Emet$ D3 ref. & $\Qmet$ StageRout
 \item \textbf{$\Emet$.} PILOT rises from 0.046 at $\pi=1$ to 0.123 at $\pi=0.05$ and 0.684 at $\pi=0$; StageRoute from 0.014 to 0.063 and 0.083. Against $\pi=1$ (paired, Holm over $\pi$), the increase is significant for PILOT at every $\pi\le0.2$ and for StageRoute at every $\pi\le0.12$.
 \item \textbf{StageRoute $\Qmet$.} For $\pi>0$ only 0--15\% of StageRoute runs have tail trades, so its $\Qmet$ is not identifiable (hollow points). $\Qmet$ is statistically higher than at $\pi=1$ at $\pi=0.06$ and $0.05$ (Holm), but this comes from the $\sim$10\% of runs with tail trades and is not interpreted as a deterrence change. Its only identifiable point is $\pi=0$ (0.934), from which we do not generalize.
 \item \textbf{PILOT $\Qmet$.} PILOT still buys from attackers (75--100\% of runs with tail trades), so $\Qmet$ is identifiable; it stays at 0.881--0.937 and shows no significant decrease at any $\pi$. Under this setting's seller learning rule and at v0.1 scale, PILOT does not lower seller attack intent.
-\item \textbf{D3 reference.} $\Qmet=0.118$ and $\Emet=0.106$ at every $\pi$. Only their invariance in $\pi$ holds by construction (audits do not use labels); the values themselves depend on the audit rate and slashing parameters. D3's lower $\Qmet$ than PILOT's holds only under this setting's audit and slashing parameters ($a=0.1$) and the current seller learning rule. This is not evidence that audits deter attacks in general. D3 is a reference point for comparison, not a method.
+\item \textbf{Fixed-audit $a=0.10$ reference.} $\Qmet=0.118$ and $\Emet=0.106$ at every $\pi$. Only their invariance in $\pi$ holds by construction (audits do not use labels); the values themselves depend on the audit rate and slashing parameters. Its lower $\Qmet$ than PILOT's holds only under this setting's audit and slashing parameters ($a=0.1$) and the current seller learning rule. This is not evidence that audits deter attacks in general. It is a reference point for comparison, not a method.
 \end{itemize}
-T2 in this batch uses \code{reputation_rounds=0}: no suspension occurs and no rounds are excluded from $\Qmet$.
+The sparse-label evaluation in this batch uses \code{reputation_rounds=0}: no suspension occurs and no rounds are excluded from $\Qmet$.
 
 \FloatBarrier
-\section{Official T5 full tables, side tables, and descriptive Pareto plot}
+\section{Official task-conditioned recommendation evaluation: full tables, side tables, and descriptive Pareto plot}
 \label{app:t5}
 
-This appendix presents the complete official T5 readout from \code{results/v1.0/t5/} (\code{t5_eval.md}, \code{cells.csv}, \code{cells_holdout.csv}, \code{contrasts.csv}, \code{contrasts_holdout.csv}, \code{tau_selection.json}, \code{leakage_check.json}) under frozen \code{docs/PROTOCOL_T5.md} and \code{configs/v1.0/scale.yaml}.
+This appendix presents the complete official task-conditioned recommendation evaluation readout from \code{results/v1.0/t5/} (\code{t5_eval.md}, \code{cells.csv}, \code{cells_holdout.csv}, \code{contrasts.csv}, \code{contrasts_holdout.csv}, \code{tau_selection.json}, \code{leakage_check.json}) under frozen \code{docs/PROTOCOL_T5.md} and \code{configs/v1.0/scale.yaml}.
 
-\paragraph{Audit diagnostics, leakage check, and $\tau$ selection.} Official T5 uses the v1.0 default fixed audit ($a=0.10$, \code{identity}+\code{length}, \code{trust_feedback=false}); realized audit rates were 0.0982 in training (mean 43.43 audits/run across 14 runs) and 0.1003 in evaluation (mean 45.18, min 35, max 56 across 126 runs). This verifies configuration fidelity and is not a scientific finding. The leakage check (\code{scripts/check_t5_leakage.py}) passed on all 5{,}017 training rows with 0 offenders. Table~\ref{tab:t5-tau} records inner-validation $\tau$ selection (seeds 10--13, non-holdout tasks): both learners selected $\tau=0.90$; two-stage LR triggered the strongest-accuracy floor rule (0.7929 vs.\ 0.8006), whereas GBDT did not (0.8231 $\ge$ 0.8006); settings were not changed.
+\paragraph{Audit diagnostics, leakage check, and $\tau$ selection.} The official task-conditioned recommendation evaluation uses the v1.0 default fixed audit ($a=0.10$, \code{identity}+\code{length}, \code{trust_feedback=false}); realized audit rates were 0.0982 in training (mean 43.43 audits/run across 14 runs) and 0.1003 in evaluation (mean 45.18, min 35, max 56 across 126 runs). This verifies configuration fidelity and is not a scientific finding. The leakage check (\code{scripts/check_t5_leakage.py}) passed on all 5{,}017 training rows with 0 offenders. Table~\ref{tab:t5-tau} records inner-validation $\tau$ selection (seeds 10--13, non-holdout tasks): both learners selected $\tau=0.90$; two-stage LR triggered the strongest-accuracy floor rule (0.7929 vs.\ 0.8006), whereas GBDT did not (0.8231 $\ge$ 0.8006); settings were not changed.
 
-\paragraph{All-tasks tables and $\pi$-grid side tables.} Tables~\ref{tab:t5-all-pi1}--\ref{tab:t5-all-pi0} report all seven official methods over test seeds 14--19 ($n=6$, not 20), including violation rate (0.0000 for all seven methods largely by construction from compliance-filtered eligible sets, not fraud detection) and side oracle regret metrics (not used for ranking; $J$ is not used for main-text ranking). Pairwise significance uses same-seed paired two-sided bootstrap ($B=10{,}000$) with 21-pair Holm correction within each $(\pi,\text{metric})$ at $\alpha=0.05$. At $\pi=1$ (all tasks), key non-significant pairs are accuracy GBDT vs.\ strongest ($p_{\mathrm{Holm}}=0.8452$), LR vs.\ strongest ($p_{\mathrm{Holm}}=0.6048$), LR vs.\ GBDT ($p_{\mathrm{Holm}}=0.0504$), and $\Emet$ LR vs.\ StageRoute ($p_{\mathrm{Holm}}=0.127$) and GBDT vs.\ StageRoute ($p_{\mathrm{Holm}}=1.0$). Because two-stage LR and GBDT are offline-frozen policies not updated at evaluation time, their identical numbers across $\pi\in\{1,0.1,0\}$ hold by design and are not reported as a finding. The $\pi\in\{0.1,0\}$ side tables inspect online methods only: PILOT's $\Emet$ is 0.1212 [0.1098, 0.1325] at $\pi=1$, 0.1559 [0.1430, 0.1688] at $\pi=0.1$, and 0.0987 [0.0586, 0.1389] at $\pi=0$ (wider interval; not monotonic worsening). T2 (\S\ref{sec:t2}, 20 seeds) remains the official result for detecting problems of classical routers under sparse feedback, and frozen T2 numbers are unchanged.
+\paragraph{All-tasks tables and $\pi$-grid side tables.} Tables~\ref{tab:t5-all-pi1}--\ref{tab:t5-all-pi0} report all seven official methods over test seeds 14--19 ($n=6$, not 20), including violation rate (0.0000 for all seven methods largely by construction from compliance-filtered eligible sets, not fraud detection) and side oracle regret metrics (not used for ranking; $J$ is not used for main-text ranking). Pairwise significance uses same-seed paired two-sided bootstrap ($B=10{,}000$) with 21-pair Holm correction within each $(\pi,\text{metric})$ at $\alpha=0.05$. At $\pi=1$ (all tasks), key non-significant pairs are accuracy GBDT vs.\ strongest ($p_{\mathrm{Holm}}=0.8452$), LR vs.\ strongest ($p_{\mathrm{Holm}}=0.6048$), LR vs.\ GBDT ($p_{\mathrm{Holm}}=0.0504$), and $\Emet$ LR vs.\ StageRoute ($p_{\mathrm{Holm}}=0.127$) and GBDT vs.\ StageRoute ($p_{\mathrm{Holm}}=1.0$). Because two-stage LR and GBDT are offline-frozen policies not updated at evaluation time, their identical numbers across $\pi\in\{1,0.1,0\}$ hold by design and are not reported as a finding. The $\pi\in\{0.1,0\}$ side tables inspect online methods only: PILOT's $\Emet$ is 0.1212 [0.1098, 0.1325] at $\pi=1$, 0.1559 [0.1430, 0.1688] at $\pi=0.1$, and 0.0987 [0.0586, 0.1389] at $\pi=0$ (wider interval; not monotonic worsening). The sparse-label evaluation (\S\ref{sec:t2}, 20 seeds) remains the official result for detecting problems of classical routers under sparse feedback, and its frozen numbers are unchanged.
 
 \paragraph{Unique-prompt hold-out side tables.} Tables~\ref{tab:t5-ho-pi1}--\ref{tab:t5-ho-pi0} evaluate the 15 unique prompt hashes excluded from training and $\tau$ selection (drawn via \code{random.Random('t5-prompt-holdout-20261122')}). On this subset at $\pi=1$, GBDT's accuracy lead over LR is not retained (GBDT 0.7519 [0.7333, 0.7667] vs.\ LR 0.7852 [0.7648, 0.8056]). However, untrained baselines also drop similarly from the all-tasks table to the 15-prompt hold-out (strongest 0.8035 $\rightarrow$ 0.7370, random 0.7198 $\rightarrow$ 0.6519, StageRoute 0.7681 $\rightarrow$ 0.6889), so this subset may simply be harder; the drop alone does not establish prompt memorization by GBDT. We do not claim that trained recommenders outperform untrained baselines on unseen prompts, nor that main-table GBDT accuracy generalizes to new prompts.
 
@@ -976,8 +1002,8 @@ This appendix presents the complete official T5 readout from \code{results/v1.0/
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{figures/fig_t5_pareto_acc_cost.pdf}
-  \caption{Descriptive T5 accuracy--cost Pareto plot at $\pi=1$ (all test tasks, seeds 14--19, $n=6$, fixed audit $a=0.10$; means with 95\% bootstrap CIs). Descriptive only; no single winner is declared.}
-  \Description{Scatter plot of task accuracy against synthetic cost per task at pi = 1 for all seven official T5 methods with 95 percent error bars. Cheapest eligible sits at the lower left with lowest cost and accuracy; Two-stage GBDT sits at the upper right with highest cost and accuracy point estimate overlapping strongest eligible in accuracy; Two-stage LR, strongest eligible, PILOT, StageRoute, and random eligible lie between them.}
+  \caption{Descriptive task-conditioned recommendation accuracy--cost Pareto plot at $\pi=1$ (all test tasks, seeds 14--19, $n=6$, fixed audit $a=0.10$; means with 95\% bootstrap CIs). Descriptive only; no single winner is declared.}
+  \Description{Scatter plot of task accuracy against synthetic cost per task at pi = 1 for all seven official task-conditioned recommendation methods with 95 percent error bars. Cheapest eligible sits at the lower left with lowest cost and accuracy; Two-stage GBDT sits at the upper right with highest cost and accuracy point estimate overlapping strongest eligible in accuracy; Two-stage LR, strongest eligible, PILOT, StageRoute, and random eligible lie between them.}
   \label{fig:t5-pareto}
 \end{figure}
 
@@ -1006,14 +1032,14 @@ This appendix maps nearby research questions onto the v1.0 pack. It \textbf{does
 \toprule
 RQ & Example task & Inputs & Labels / supervision & Metrics & Coverage \\
 \midrule
-\textbf{T1--T3 (protocol)} & Router $\times$ audit effect; sparse-label degradation; equal-budget adaptive (appendix) & \code{episodes} (+\code{orders}/\code{audits}) & episode eval only & $\Emet$, $\Qmet$ (primary, gated); \code{n_audits} for T3 & \textbf{v1.0} T1/T2; T3 defined, not reported \\
-\textbf{T4 seller risk ranking} & Rank sellers by future fraud & 7 whitelisted features & held-out fraud labels (rounds 33--48) & AUROC, AP, P@10 & \textbf{v1.0 current simulator}; post-5b not reported \\
-\textbf{T5 task-conditioned recommendation} & Recommend compliant seller/model at lowest expected cost subject to $p\ge\tau$ & task + pre-decision seller whitelist & served \code{correct} $\wedge\neg$\code{attacked} on $\pi=1$ train logs & accuracy, cost, violation, $\Emet$, fill rate, oracle regret (side) & \textbf{v1.0 official} ($n=6$, fixed $a=0.10$, \S\ref{sec:t5}, App.~\ref{app:t5}) \\
-\textbf{A2 multi-jurisdiction compliance} & Hard-filter violation / route reachability; filter-off control & \code{buyers}+\code{orders}(+\code{sellers}) & path $\times$ \code{compliance_profile} (derived) & violation rate, fill rate & \textbf{v1.0 basic} --- not a full regulatory rule library \\
-\textbf{A1 provenance (weak)} & Order $\rightarrow$ claimed/actual model $\rightarrow$ audit trail & \code{orders}$\bowtie$\code{audits}$\bowtie$\code{sellers} & \code{actual_model} (label) & trail completeness; weak ID accuracy & \textbf{v1.0 weak} --- trade/audit trail only \\
-\textbf{A1 provenance (strong)} & Content-level provenance chain & needs hashes + parent links & content/output match & provenance-chain accuracy & \textbf{later} \\
-\textbf{C1 market mechanism} & Posted-price + audit-rate protocols & \code{orders}+\code{episodes}+\code{audits} & episode eval & $\Emet$, $\Qmet$, volume, \code{n_audits} & \textbf{v1.0 partial} (posted-price only; \textbf{no auction}) \\
-\textbf{C1 auctions} & Bid / clear / allocate & needs mechanism fields & allocation labels & efficiency, revenue & \textbf{later} \\
+\textbf{Router--audit, sparse-label, \& efficiency} & Router $\times$ audit effect; sparse-label degradation; equal-budget adaptive (appendix) & \code{episodes} (+\code{orders}/\code{audits}) & episode eval only & $\Emet$, $\Qmet$ (primary, gated); \code{n_audits} for audit-cost efficiency & \textbf{v1.0} router--audit \& sparse-label; audit-cost efficiency defined, not reported \\
+\textbf{Seller risk-ranking evaluation} & Rank sellers by future fraud & 7 whitelisted features & held-out fraud labels (rounds 33--48) & AUROC, AP, P@10 & \textbf{v1.0 current simulator}; post-5b not reported \\
+\textbf{Task-conditioned recommendation evaluation} & Recommend compliant seller/model at lowest expected cost subject to $p\ge\tau$ & task + pre-decision seller whitelist & served \code{correct} $\wedge\neg$\code{attacked} on $\pi=1$ train logs & accuracy, cost, violation, $\Emet$, fill rate, oracle regret (side) & \textbf{v1.0 official} ($n=6$, fixed $a=0.10$, \S\ref{sec:t5}, App.~\ref{app:t5}) \\
+\textbf{Compliance-filter control} & Hard-filter violation / route reachability; filter-off control & \code{buyers}+\code{orders}(+\code{sellers}) & path $\times$ \code{compliance_profile} (derived) & violation rate, fill rate & \textbf{v1.0 basic} --- not a full regulatory rule library \\
+\textbf{Provenance analysis (weak)} & Order $\rightarrow$ claimed/actual model $\rightarrow$ audit trail & \code{orders}$\bowtie$\code{audits}$\bowtie$\code{sellers} & \code{actual_model} (label) & trail completeness; weak ID accuracy & \textbf{v1.0 weak} --- trade/audit trail only \\
+\textbf{Provenance analysis (strong)} & Content-level provenance chain & needs hashes + parent links & content/output match & provenance-chain accuracy & \textbf{later} \\
+\textbf{Market mechanism} & Posted-price + audit-rate protocols & \code{orders}+\code{episodes}+\code{audits} & episode eval & $\Emet$, $\Qmet$, volume, \code{n_audits} & \textbf{v1.0 partial} (posted-price only; \textbf{no auction}) \\
+\textbf{Auctions} & Bid / clear / allocate & needs mechanism fields & allocation labels & efficiency, revenue & \textbf{later} \\
 \textbf{Resale / rewrite / distill} & Downstream reuse of upstream inference & needs event layer & \code{source_order_id}, \code{downstream_model_id} & provenance-chain match & \textbf{later} \\
 \bottomrule
 \end{tabularx}
