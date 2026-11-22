@@ -1,0 +1,147 @@
+% Generated directly from results/v1.0/t5/{cells.csv,cells_holdout.csv,tau_selection.json}.
+\begin{table*}[h]
+\caption{Official T5 frozen $\tau$ selection on inner-validation seeds 10--13 (non-holdout tasks only, $\pi=1$, fixed audit $a=0.10$). Two-stage LR triggered the strongest-accuracy floor rule; GBDT did not. Official settings were not altered.}
+\label{tab:t5-tau}
+\centering\footnotesize
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Learner & Selected $\tau$ & Floor rule triggered & Strongest val acc & Chosen val acc & Chosen val cost/task \\
+\midrule
+Two-stage LR & 0.90 & Yes & 0.8006 & 0.7929 & 0.02498 \\
+Two-stage GBDT & 0.90 & No & 0.8006 & 0.8231 & 0.02666 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Official T5 all test tasks at $\pi=1$ (main table, complete with violation rate and side oracle regret; seeds 14--19, $n=6$, fixed audit $a=0.10$, mean [95\% CI]). Violation rate is $0.0000$ [0.0000, 0.0000] for all seven methods largely by construction (compliance-filtered eligible set). Oracle regret is a side metric only; no single winner is declared.}
+\label{tab:t5-all-pi1}
+\centering\scriptsize
+\setlength{\tabcolsep}{2.6pt}
+\renewcommand{\arraystretch}{0.88}
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+Method & Accuracy & Cost/task & Viol. & $\Emet$ & Fill rate & Oracle acc reg.\ (side) & Oracle cost reg.\ (side) \\
+\midrule
+Two-stage LR (trained) & \cil{0.7920}{0.7771}{0.8062} & \cil{0.02387}{0.02370}{0.02404} & 0.0000 & \cil{0.0113}{0.0049}{0.0193} & \cil{0.9163}{0.9108}{0.9215} & \cil{0.1705}{0.1563}{0.1851} & \cil{0.00898}{0.00861}{0.00932} \\
+Two-stage GBDT (trained) & \cil{0.8118}{0.8000}{0.8229} & \cil{0.02800}{0.02749}{0.02854} & 0.0000 & \cil{0.0319}{0.0192}{0.0458} & \cil{0.9028}{0.8986}{0.9066} & \cil{0.1507}{0.1396}{0.1625} & \cil{0.01210}{0.01070}{0.01352} \\
+\midrule
+Cheapest eligible & \cil{0.6229}{0.6062}{0.6361} & \cil{0.00851}{0.00799}{0.00901} & 0.0000 & \cil{0.0000}{0.0000}{0.0000} & \cil{1.0000}{1.0000}{1.0000} & \cil{0.3396}{0.3264}{0.3559} & \cil{-0.00846}{-0.00930}{-0.00764} \\
+Strongest eligible & \cil{0.8035}{0.7872}{0.8194} & \cil{0.02286}{0.02219}{0.02351} & 0.0000 & \cil{0.1048}{0.0653}{0.1423} & \cil{0.9174}{0.9149}{0.9201} & \cil{0.1590}{0.1431}{0.1757} & \cil{0.00541}{0.00475}{0.00602} \\
+Random eligible & \cil{0.7198}{0.7083}{0.7312} & \cil{0.02160}{0.02113}{0.02204} & 0.0000 & \cil{0.0916}{0.0822}{0.1020} & \cil{0.9292}{0.9236}{0.9344} & \cil{0.2427}{0.2306}{0.2542} & \cil{0.00478}{0.00426}{0.00514} \\
+PILOT (\code{pilot_v1}) & \cil{0.7896}{0.7802}{0.8000} & \cil{0.02468}{0.02458}{0.02479} & 0.0000 & \cil{0.1212}{0.1098}{0.1325} & \cil{0.9830}{0.9760}{0.9899} & \cil{0.1729}{0.1628}{0.1823} & \cil{0.00818}{0.00763}{0.00885} \\
+StageRoute (\code{stageroute_v1}) & \cil{0.7681}{0.7490}{0.7889} & \cil{0.02435}{0.02318}{0.02544} & 0.0000 & \cil{0.0474}{0.0217}{0.0732} & \cil{0.9149}{0.9076}{0.9215} & \cil{0.1944}{0.1733}{0.2139} & \cil{0.00727}{0.00557}{0.00871} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Official T5 all test tasks at $\pi=0.1$ (required side table; offline-frozen learners are $\pi$-invariant by design; seeds 14--19, $n=6$, fixed audit $a=0.10$, mean [95\% CI]). Violation rate is $0.0000$ [0.0000, 0.0000] for all seven methods largely by construction (compliance-filtered eligible set). Oracle regret is a side metric only; no single winner is declared.}
+\label{tab:t5-all-pi01}
+\centering\scriptsize
+\setlength{\tabcolsep}{2.6pt}
+\renewcommand{\arraystretch}{0.88}
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+Method & Accuracy & Cost/task & Viol. & $\Emet$ & Fill rate & Oracle acc reg.\ (side) & Oracle cost reg.\ (side) \\
+\midrule
+Two-stage LR (trained) & \cil{0.7920}{0.7774}{0.8062} & \cil{0.02387}{0.02370}{0.02404} & 0.0000 & \cil{0.0113}{0.0049}{0.0193} & \cil{0.9163}{0.9108}{0.9215} & \cil{0.1705}{0.1566}{0.1854} & \cil{0.00898}{0.00861}{0.00931} \\
+Two-stage GBDT (trained) & \cil{0.8118}{0.8000}{0.8233} & \cil{0.02800}{0.02749}{0.02853} & 0.0000 & \cil{0.0319}{0.0193}{0.0462} & \cil{0.9028}{0.8986}{0.9066} & \cil{0.1507}{0.1392}{0.1625} & \cil{0.01210}{0.01070}{0.01352} \\
+\midrule
+Cheapest eligible & \cil{0.6229}{0.6066}{0.6361} & \cil{0.00851}{0.00800}{0.00901} & 0.0000 & \cil{0.0000}{0.0000}{0.0000} & \cil{1.0000}{1.0000}{1.0000} & \cil{0.3396}{0.3264}{0.3559} & \cil{-0.00846}{-0.00931}{-0.00764} \\
+Strongest eligible & \cil{0.8042}{0.7875}{0.8201} & \cil{0.02284}{0.02216}{0.02349} & 0.0000 & \cil{0.1040}{0.0650}{0.1415} & \cil{0.9174}{0.9149}{0.9201} & \cil{0.1583}{0.1424}{0.1750} & \cil{0.00540}{0.00479}{0.00602} \\
+Random eligible & \cil{0.7038}{0.6917}{0.7139} & \cil{0.02103}{0.02027}{0.02170} & 0.0000 & \cil{0.1046}{0.0943}{0.1149} & \cil{0.9260}{0.9188}{0.9323} & \cil{0.2587}{0.2486}{0.2705} & \cil{0.00406}{0.00321}{0.00493} \\
+PILOT (\code{pilot_v1}) & \cil{0.7830}{0.7684}{0.7965} & \cil{0.02507}{0.02471}{0.02542} & 0.0000 & \cil{0.1559}{0.1430}{0.1688} & \cil{0.9799}{0.9747}{0.9851} & \cil{0.1795}{0.1660}{0.1938} & \cil{0.00689}{0.00603}{0.00768} \\
+StageRoute (\code{stageroute_v1}) & \cil{0.7434}{0.7139}{0.7712} & \cil{0.02210}{0.02129}{0.02292} & 0.0000 & \cil{0.0596}{0.0233}{0.1019} & \cil{0.9271}{0.9198}{0.9323} & \cil{0.2191}{0.1913}{0.2479} & \cil{0.00510}{0.00397}{0.00624} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Official T5 all test tasks at $\pi=0$ (required side table; offline-frozen learners are $\pi$-invariant by design; seeds 14--19, $n=6$, fixed audit $a=0.10$, mean [95\% CI]). Violation rate is $0.0000$ [0.0000, 0.0000] for all seven methods largely by construction (compliance-filtered eligible set). Oracle regret is a side metric only; no single winner is declared.}
+\label{tab:t5-all-pi0}
+\centering\scriptsize
+\setlength{\tabcolsep}{2.6pt}
+\renewcommand{\arraystretch}{0.88}
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+Method & Accuracy & Cost/task & Viol. & $\Emet$ & Fill rate & Oracle acc reg.\ (side) & Oracle cost reg.\ (side) \\
+\midrule
+Two-stage LR (trained) & \cil{0.7920}{0.7778}{0.8056} & \cil{0.02387}{0.02370}{0.02404} & 0.0000 & \cil{0.0113}{0.0049}{0.0193} & \cil{0.9163}{0.9108}{0.9215} & \cil{0.1705}{0.1566}{0.1851} & \cil{0.00898}{0.00861}{0.00932} \\
+Two-stage GBDT (trained) & \cil{0.8118}{0.8000}{0.8233} & \cil{0.02800}{0.02748}{0.02854} & 0.0000 & \cil{0.0319}{0.0189}{0.0462} & \cil{0.9028}{0.8986}{0.9066} & \cil{0.1507}{0.1392}{0.1625} & \cil{0.01210}{0.01070}{0.01354} \\
+\midrule
+Cheapest eligible & \cil{0.6229}{0.6066}{0.6361} & \cil{0.00851}{0.00800}{0.00901} & 0.0000 & \cil{0.0000}{0.0000}{0.0000} & \cil{1.0000}{1.0000}{1.0000} & \cil{0.3396}{0.3264}{0.3559} & \cil{-0.00846}{-0.00929}{-0.00764} \\
+Strongest eligible & \cil{0.8035}{0.7868}{0.8194} & \cil{0.02286}{0.02220}{0.02350} & 0.0000 & \cil{0.1048}{0.0657}{0.1423} & \cil{0.9174}{0.9149}{0.9198} & \cil{0.1590}{0.1427}{0.1750} & \cil{0.00541}{0.00476}{0.00605} \\
+Random eligible & \cil{0.7073}{0.6958}{0.7174} & \cil{0.02141}{0.02090}{0.02190} & 0.0000 & \cil{0.0959}{0.0890}{0.1038} & \cil{0.9316}{0.9236}{0.9406} & \cil{0.2552}{0.2451}{0.2667} & \cil{0.00437}{0.00384}{0.00490} \\
+PILOT (\code{pilot_v1}) & \cil{0.8403}{0.8184}{0.8608} & \cil{0.02217}{0.02168}{0.02265} & 0.0000 & \cil{0.0987}{0.0586}{0.1389} & \cil{0.9844}{0.9809}{0.9875} & \cil{0.1222}{0.1017}{0.1451} & \cil{0.00448}{0.00353}{0.00510} \\
+StageRoute (\code{stageroute_v1}) & \cil{0.7333}{0.7101}{0.7573} & \cil{0.02086}{0.01955}{0.02219} & 0.0000 & \cil{0.0446}{0.0207}{0.0665} & \cil{0.9292}{0.9177}{0.9385} & \cil{0.2292}{0.2049}{0.2524} & \cil{0.00390}{0.00237}{0.00547} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Official T5 unique-prompt hold-out side table at $\pi=1$ (15 unique prompt hashes excluded from training and $\tau$ selection; seeds 14--19, $n=6$, fixed audit $a=0.10$, mean [95\% CI]). Violation rate is $0.0000$ [0.0000, 0.0000] for all seven methods largely by construction. Oracle regret is a side metric only.}
+\label{tab:t5-ho-pi1}
+\centering\scriptsize
+\setlength{\tabcolsep}{2.6pt}
+\renewcommand{\arraystretch}{0.88}
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+Method & Accuracy & Cost/task & Viol. & $\Emet$ & Fill rate & Oracle acc reg.\ (side) & Oracle cost reg.\ (side) \\
+\midrule
+Two-stage LR (trained) & \cil{0.7852}{0.7648}{0.8056} & \cil{0.02076}{0.02035}{0.02116} & 0.0000 & \cil{0.0122}{0.0061}{0.0182} & \cil{0.9074}{0.9019}{0.9148} & \cil{0.1481}{0.1278}{0.1685} & \cil{0.00465}{0.00413}{0.00518} \\
+Two-stage GBDT (trained) & \cil{0.7519}{0.7333}{0.7667} & \cil{0.02556}{0.02501}{0.02608} & 0.0000 & \cil{0.0267}{0.0104}{0.0452} & \cil{0.8981}{0.8907}{0.9074} & \cil{0.1815}{0.1667}{0.2000} & \cil{0.00876}{0.00752}{0.01011} \\
+\midrule
+Cheapest eligible & \cil{0.6093}{0.5852}{0.6334} & \cil{0.00829}{0.00795}{0.00862} & 0.0000 & \cil{0.0000}{0.0000}{0.0000} & \cil{1.0000}{1.0000}{1.0000} & \cil{0.3241}{0.3000}{0.3481} & \cil{-0.00949}{-0.01014}{-0.00881} \\
+Strongest eligible & \cil{0.7370}{0.7093}{0.7630} & \cil{0.02052}{0.01984}{0.02119} & 0.0000 & \cil{0.1178}{0.0960}{0.1379} & \cil{0.9111}{0.9037}{0.9185} & \cil{0.1963}{0.1704}{0.2222} & \cil{0.00232}{0.00160}{0.00292} \\
+Random eligible & \cil{0.6519}{0.6333}{0.6667} & \cil{0.01932}{0.01856}{0.02011} & 0.0000 & \cil{0.0965}{0.0687}{0.1207} & \cil{0.9222}{0.9148}{0.9296} & \cil{0.2815}{0.2667}{0.3000} & \cil{0.00171}{0.00093}{0.00253} \\
+PILOT (\code{pilot_v1}) & \cil{0.7648}{0.7519}{0.7852} & \cil{0.02217}{0.02184}{0.02259} & 0.0000 & \cil{0.1207}{0.1040}{0.1384} & \cil{0.9815}{0.9648}{0.9944} & \cil{0.1685}{0.1481}{0.1815} & \cil{0.00483}{0.00404}{0.00556} \\
+StageRoute (\code{stageroute_v1}) & \cil{0.6889}{0.6648}{0.7111} & \cil{0.02172}{0.02066}{0.02277} & 0.0000 & \cil{0.0448}{0.0163}{0.0732} & \cil{0.9056}{0.8963}{0.9148} & \cil{0.2444}{0.2222}{0.2685} & \cil{0.00389}{0.00236}{0.00527} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Official T5 unique-prompt hold-out side table at $\pi=0.1$ (15 unique prompt hashes excluded from training and $\tau$ selection; seeds 14--19, $n=6$, fixed audit $a=0.10$, mean [95\% CI]). Violation rate is $0.0000$ [0.0000, 0.0000] for all seven methods largely by construction. Oracle regret is a side metric only.}
+\label{tab:t5-ho-pi01}
+\centering\scriptsize
+\setlength{\tabcolsep}{2.6pt}
+\renewcommand{\arraystretch}{0.88}
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+Method & Accuracy & Cost/task & Viol. & $\Emet$ & Fill rate & Oracle acc reg.\ (side) & Oracle cost reg.\ (side) \\
+\midrule
+Two-stage LR (trained) & \cil{0.7852}{0.7648}{0.8056} & \cil{0.02075}{0.02035}{0.02116} & 0.0000 & \cil{0.0122}{0.0061}{0.0182} & \cil{0.9074}{0.9019}{0.9148} & \cil{0.1481}{0.1278}{0.1685} & \cil{0.00465}{0.00413}{0.00517} \\
+Two-stage GBDT (trained) & \cil{0.7519}{0.7333}{0.7667} & \cil{0.02556}{0.02500}{0.02608} & 0.0000 & \cil{0.0267}{0.0103}{0.0450} & \cil{0.8981}{0.8907}{0.9056} & \cil{0.1815}{0.1667}{0.2000} & \cil{0.00876}{0.00756}{0.01011} \\
+\midrule
+Cheapest eligible & \cil{0.6093}{0.5852}{0.6352} & \cil{0.00829}{0.00796}{0.00862} & 0.0000 & \cil{0.0000}{0.0000}{0.0000} & \cil{1.0000}{1.0000}{1.0000} & \cil{0.3241}{0.2981}{0.3481} & \cil{-0.00949}{-0.01014}{-0.00881} \\
+Strongest eligible & \cil{0.7407}{0.7167}{0.7630} & \cil{0.02050}{0.01983}{0.02117} & 0.0000 & \cil{0.1137}{0.0919}{0.1358} & \cil{0.9111}{0.9037}{0.9185} & \cil{0.1926}{0.1704}{0.2167} & \cil{0.00231}{0.00159}{0.00291} \\
+Random eligible & \cil{0.6500}{0.6222}{0.6704} & \cil{0.01938}{0.01821}{0.02047} & 0.0000 & \cil{0.1070}{0.0946}{0.1203} & \cil{0.9185}{0.9093}{0.9259} & \cil{0.2833}{0.2630}{0.3093} & \cil{0.00166}{0.00036}{0.00295} \\
+PILOT (\code{pilot_v1}) & \cil{0.7185}{0.6907}{0.7444} & \cil{0.02222}{0.02159}{0.02261} & 0.0000 & \cil{0.1771}{0.1658}{0.1884} & \cil{0.9722}{0.9611}{0.9815} & \cil{0.2148}{0.1889}{0.2426} & \cil{0.00337}{0.00215}{0.00455} \\
+StageRoute (\code{stageroute_v1}) & \cil{0.6815}{0.6463}{0.7130} & \cil{0.02008}{0.01941}{0.02082} & 0.0000 & \cil{0.0579}{0.0140}{0.1035} & \cil{0.9222}{0.9148}{0.9296} & \cil{0.2519}{0.2204}{0.2852} & \cil{0.00230}{0.00128}{0.00329} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Official T5 unique-prompt hold-out side table at $\pi=0$ (15 unique prompt hashes excluded from training and $\tau$ selection; seeds 14--19, $n=6$, fixed audit $a=0.10$, mean [95\% CI]). Violation rate is $0.0000$ [0.0000, 0.0000] for all seven methods largely by construction. Oracle regret is a side metric only.}
+\label{tab:t5-ho-pi0}
+\centering\scriptsize
+\setlength{\tabcolsep}{2.6pt}
+\renewcommand{\arraystretch}{0.88}
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+Method & Accuracy & Cost/task & Viol. & $\Emet$ & Fill rate & Oracle acc reg.\ (side) & Oracle cost reg.\ (side) \\
+\midrule
+Two-stage LR (trained) & \cil{0.7852}{0.7648}{0.8056} & \cil{0.02076}{0.02035}{0.02116} & 0.0000 & \cil{0.0122}{0.0061}{0.0182} & \cil{0.9074}{0.9019}{0.9148} & \cil{0.1481}{0.1278}{0.1685} & \cil{0.00465}{0.00413}{0.00519} \\
+Two-stage GBDT (trained) & \cil{0.7519}{0.7333}{0.7667} & \cil{0.02556}{0.02500}{0.02608} & 0.0000 & \cil{0.0267}{0.0103}{0.0452} & \cil{0.8981}{0.8907}{0.9056} & \cil{0.1815}{0.1667}{0.2000} & \cil{0.00876}{0.00753}{0.01010} \\
+\midrule
+Cheapest eligible & \cil{0.6093}{0.5852}{0.6333} & \cil{0.00829}{0.00794}{0.00863} & 0.0000 & \cil{0.0000}{0.0000}{0.0000} & \cil{1.0000}{1.0000}{1.0000} & \cil{0.3241}{0.3000}{0.3481} & \cil{-0.00949}{-0.01015}{-0.00881} \\
+Strongest eligible & \cil{0.7370}{0.7111}{0.7630} & \cil{0.02052}{0.01985}{0.02119} & 0.0000 & \cil{0.1178}{0.0960}{0.1379} & \cil{0.9111}{0.9037}{0.9185} & \cil{0.1963}{0.1722}{0.2241} & \cil{0.00232}{0.00159}{0.00292} \\
+Random eligible & \cil{0.6481}{0.6222}{0.6778} & \cil{0.01938}{0.01870}{0.02010} & 0.0000 & \cil{0.1103}{0.0923}{0.1269} & \cil{0.9241}{0.9130}{0.9389} & \cil{0.2852}{0.2556}{0.3111} & \cil{0.00161}{0.00075}{0.00255} \\
+PILOT (\code{pilot_v1}) & \cil{0.7741}{0.7481}{0.7963} & \cil{0.01979}{0.01935}{0.02023} & 0.0000 & \cil{0.1077}{0.0662}{0.1512} & \cil{0.9796}{0.9741}{0.9852} & \cil{0.1593}{0.1370}{0.1852} & \cil{0.00136}{0.00041}{0.00220} \\
+StageRoute (\code{stageroute_v1}) & \cil{0.6630}{0.6333}{0.7000} & \cil{0.01857}{0.01693}{0.02016} & 0.0000 & \cil{0.0364}{0.0201}{0.0507} & \cil{0.9204}{0.9093}{0.9333} & \cil{0.2704}{0.2333}{0.3000} & \cil{0.00080}{-0.00102}{0.00248} \\
+\bottomrule
+\end{tabular}
+\end{table*}
